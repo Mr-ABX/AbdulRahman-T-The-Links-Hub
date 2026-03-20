@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --radius-3xl: 24px;
+}
+
+@layer base {
+  body {
+    @apply bg-[#050505] text-white antialiased selection:bg-white/20;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)];
+  }
+  
+  .glass-hover {
+    @apply hover:bg-white/[0.06] hover:border-white/[0.15] transition-all duration-500;
+  }
+
+  .mesh-gradient {
+    background-color: #050505;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(76, 29, 149, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(15, 118, 110, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(190, 18, 60, 0.1) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(30, 58, 138, 0.15) 0px, transparent 50%);
+  }
+}
