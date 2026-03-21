@@ -160,6 +160,7 @@ const tabs: { name: Category; icon: React.ReactNode }[] = [
 ];
 
 const projects = [
+  { name: "The Architect's Doodle Trap", mainCategory: 'Interactive Experiences', tags: ['Games', 'Free Apps'], pricing: 'Free', desc: 'A creative puzzle game built for the web.', url: 'https://the-architects-doodle-trap.netlify.app/', previewUrl: 'https://the-architects-doodle-trap.netlify.app/', color: 'text-yellow-400', bg: 'bg-yellow-500/10', icon: <Gamepad2 size={20} /> },
   { name: 'Vesper AI Notes', mainCategory: 'Apps & Dev', tags: ['SaaS', 'AI Tools', 'Free Apps'], pricing: 'Free', desc: 'AI-powered note-taking and knowledge base.', url: 'https://vesper-ai-notes.netlify.app/', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: <Bot size={20} /> },
   { name: 'Vibelex', mainCategory: 'Web Platforms', tags: ['SaaS', 'Free Apps'], pricing: 'Free', desc: 'Modern digital experience platform.', url: 'https://vibelex.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Globe size={20} /> },
   { name: 'Zen Maker', mainCategory: 'Apps & Dev', tags: ['SaaS'], pricing: 'Paid', price: '$2.99/yr', desc: 'Minimalist creation tool for focused builders.', url: 'https://zen-maker.netlify.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Layout size={20} /> },
@@ -490,74 +491,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Category 2: Work With Me (Hire & Consult) */}
-              <div>
-                <h3 className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-                  <Briefcase size={12} className="text-emerald-400" /> Work With Me
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-[180px]">
-                  
-                  {/* Calendar / Consultation Widget */}
-                  <BentoCard size="1x1" className="bg-amber-500/5 border-amber-500/10 group/cal cursor-pointer" onClick={() => window.open('https://calendly.com/digital-b3asts/quick-free-consultation', '_blank')}>
-                    <div className="flex flex-col h-full">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 group-hover/cal:scale-110 transition-transform">
-                          <Zap size={20} />
-                        </div>
-                        <span className="text-[8px] text-white/20 uppercase font-bold tracking-widest">Consulting</span>
-                      </div>
-                      <h3 className="font-bold text-lg mb-1">Book a Strategy Call</h3>
-                      <p className="text-xs text-white/40 font-light mb-auto">Need expert advice? Let's discuss your automation or SaaS needs.</p>
-                      <div className="flex items-center gap-2 text-amber-400 text-[10px] font-bold uppercase tracking-widest mt-4 group-hover/cal:gap-3 transition-all">
-                        <span>Schedule 15-Min Call</span>
-                        <ArrowRight size={14} />
-                      </div>
-                    </div>
-                  </BentoCard>
-
-                  {/* Hire Me Widget */}
-                  <BentoCard size="1x1" className="bg-emerald-500/5 border-emerald-500/10 group/hire cursor-pointer" onClick={() => setActiveTab('Connect')}>
-                    <div className="flex flex-col h-full">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover/hire:scale-110 transition-transform">
-                          <Briefcase size={20} />
-                        </div>
-                        <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-emerald-500/20 text-[8px] text-emerald-400 font-bold uppercase tracking-widest">
-                          <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-                          Available
-                        </div>
-                      </div>
-                      <h3 className="font-bold text-lg mb-1">Start a Project</h3>
-                      <p className="text-xs text-white/40 font-light mb-auto">Looking for a dedicated developer to build your next big idea?</p>
-                      <div className="flex items-center gap-2 text-emerald-400 text-[10px] font-bold uppercase tracking-widest mt-4 group-hover/hire:gap-3 transition-all">
-                        <span>Request a Proposal</span>
-                        <ArrowRight size={14} />
-                      </div>
-                    </div>
-                  </BentoCard>
-
-                  {/* Automation Shortcut */}
-                  <BentoCard size="2x1" className="group cursor-pointer hover:bg-white/[0.04] transition-colors relative overflow-hidden" onClick={() => setActiveTab('Automation')}>
-                    <div className="absolute right-0 bottom-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity translate-x-4 translate-y-4">
-                      <Bot size={80} />
-                    </div>
-                    <div className="relative z-10 h-full flex flex-col justify-center">
-                      <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider mb-3 w-fit">
-                        Services
-                      </div>
-                      <h3 className="text-xl font-bold mb-2">Automate Your Business</h3>
-                      <p className="text-white/50 text-sm max-w-[250px] mb-4">Save 100+ hours/month with custom n8n workflows and AI systems.</p>
-                      <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold group-hover:gap-3 transition-all">
-                        <span>View Automation Services</span>
-                        <ArrowRight size={14} />
-                      </div>
-                    </div>
-                  </BentoCard>
-
-                </div>
-              </div>
-
-              {/* Category 3: Explore My Work (Apps & Projects) */}
+              {/* Category 2: Explore My Work (Apps & Projects) */}
               <div>
                 <h3 className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                   <AppWindow size={12} className="text-indigo-400" /> Explore My Work
@@ -629,6 +563,73 @@ export default function App() {
                         <div className="w-6 h-6 rounded-full border-2 border-[#050505] bg-indigo-500 flex items-center justify-center text-[8px] font-bold">
                           +
                         </div>
+                      </div>
+                    </div>
+                  </BentoCard>
+
+                </div>
+              </div>
+
+              {/* Category 3: Work With Me (Hire & Consult) */}
+              <div>
+                <h3 className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                  <Briefcase size={12} className="text-emerald-400" /> Work With Me
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-[180px]">
+                  
+                  {/* Calendar / Consultation Widget */}
+                  <BentoCard size="1x1" className="bg-amber-500/5 border-amber-500/10 group/cal cursor-pointer" onClick={() => window.open('https://calendly.com/digital-b3asts/quick-free-consultation', '_blank')}>
+                    <div className="flex flex-col h-full">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 group-hover/cal:scale-110 transition-transform">
+                          <Zap size={20} />
+                        </div>
+                        <span className="text-[8px] text-white/20 uppercase font-bold tracking-widest">Consulting</span>
+                      </div>
+                      <h3 className="font-bold text-lg mb-1">Book a Strategy Call</h3>
+                      <p className="text-xs text-white/40 font-light mb-auto">Need expert advice? Let's discuss your automation or SaaS needs.</p>
+                      <div className="flex items-center gap-2 text-amber-400 text-[10px] font-bold uppercase tracking-widest mt-4 group-hover/cal:gap-3 transition-all">
+                        <span>Schedule 15-Min Call</span>
+                        <ArrowRight size={14} />
+                      </div>
+                    </div>
+                  </BentoCard>
+
+                  {/* Hire Me Widget */}
+                  <BentoCard size="1x1" className="bg-emerald-500/5 border-emerald-500/10 group/hire cursor-pointer" onClick={() => setActiveTab('Connect')}>
+                    <div className="flex flex-col h-full">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover/hire:scale-110 transition-transform">
+                          <Briefcase size={20} />
+                        </div>
+                        <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-emerald-500/20 text-[8px] text-emerald-400 font-bold uppercase tracking-widest">
+                          <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+                          Available
+                        </div>
+                      </div>
+                      <h3 className="font-bold text-lg mb-1">Start a Project</h3>
+                      <p className="text-xs text-white/40 font-light mb-auto">Looking for a dedicated developer to build your next big idea?</p>
+                      <div className="flex items-center gap-2 text-emerald-400 text-[10px] font-bold uppercase tracking-widest mt-4 group-hover/hire:gap-3 transition-all">
+                        <span>Request a Proposal</span>
+                        <ArrowRight size={14} />
+                      </div>
+                    </div>
+                  </BentoCard>
+
+                  {/* Automation Shortcut */}
+                  <BentoCard size="2x1" className="group cursor-pointer hover:bg-white/[0.04] transition-colors relative overflow-hidden" onClick={() => setActiveTab('Automation')}>
+                    <div className="absolute right-0 bottom-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity translate-x-4 translate-y-4">
+                      <Bot size={80} />
+                    </div>
+                    <div className="relative z-10 h-full flex flex-col justify-center">
+                      <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider mb-3 w-fit">
+                        Services
+                      </div>
+                      <h3 className="text-xl font-bold mb-2">Automate Your Business</h3>
+                      <p className="text-white/50 text-sm max-w-[250px] mb-4">Save 100+ hours/month with custom n8n workflows and AI systems.</p>
+                      <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold group-hover:gap-3 transition-all">
+                        <span>View Automation Services</span>
+                        <ArrowRight size={14} />
                       </div>
                     </div>
                   </BentoCard>
@@ -751,10 +752,23 @@ export default function App() {
                       <BentoCard 
                         key={p.name} 
                         size={i === 0 && projectFilter === 'All' ? "2x1" : "1x1"} 
-                        className={cn(p.bg, "border-white/5 cursor-pointer")}
+                        className={cn(p.bg, "border-white/5 cursor-pointer relative overflow-hidden group/project")}
                         onClick={() => setSelectedProject(p)}
                       >
-                        <div className="flex flex-col h-full">
+                        {(p as any).previewUrl && (
+                          <div className="absolute inset-0 z-0 opacity-20 group-hover/project:opacity-60 transition-opacity duration-500 pointer-events-none">
+                            <div className="w-[200%] h-[200%] origin-top-left scale-50">
+                              <iframe 
+                                src={(p as any).previewUrl} 
+                                className="w-full h-full border-0"
+                                tabIndex={-1}
+                                aria-hidden="true"
+                              />
+                            </div>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                          </div>
+                        )}
+                        <div className="flex flex-col h-full relative z-10">
                           <div className="flex justify-between items-start mb-4">
                             <div className={cn("p-2 rounded-xl bg-black/20", p.color)}>
                               {p.icon}
