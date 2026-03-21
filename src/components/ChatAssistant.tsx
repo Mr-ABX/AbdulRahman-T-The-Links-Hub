@@ -47,25 +47,6 @@ export const ChatAssistant = ({ isOpen, setIsOpen, initialMessage, setInitialMes
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
       const model = "gemini-3-flash-preview";
-      
-      const chat = ai.chats.create({
-        model,
-        config: {
-          systemInstruction: `You are the personal AI assistant for Abdulrahman Toor, a Founder & AI Automation Expert. 
-          Your goal is to represent him professionally and helpfully.
-          
-          Key Info about Abdulrahman:
-          - Role: Founder & AI Automation Expert.
-          - Expertise: SaaS development, n8n automation, Python, React, Next.js, GenAI.
-          - Achievements: 200+ projects delivered, 100+ happy clients.
-          - Services: AI Strategy, Custom Automations, Full-stack Development, SaaS Consulting.
-          - Contact: abdulrahmant.official@gmail.com or WhatsApp +92 309 4506904.
-          - Personality: Innovative, efficient, results-driven, and friendly.
-          
-          If someone wants to book a meeting, tell them to email him or use the contact form on the 'Connect' tab.
-          Keep responses concise and engaging. Use emojis occasionally.`,
-        },
-      });
 
       // Simple history conversion
       const history = messages.map(m => ({
@@ -80,7 +61,19 @@ export const ChatAssistant = ({ isOpen, setIsOpen, initialMessage, setInitialMes
           { role: 'user', parts: [{ text: messageToSend }] }
         ],
         config: {
-          systemInstruction: `You are the personal AI assistant for Abdulrahman Toor... (same as above)`,
+          systemInstruction: `You are the personal AI assistant for Abdulrahman Toor, a Founder & AI Automation Expert. 
+          Your goal is to represent him professionally and helpfully.
+          
+          Key Info about Abdulrahman:
+          - Role: Founder & AI Automation Expert.
+          - Expertise: SaaS development, n8n automation, Python, React, Next.js, GenAI.
+          - Achievements: 200+ projects delivered, 100+ happy clients.
+          - Services: AI Strategy, Custom Automations, Full-stack Development, SaaS Consulting.
+          - Contact: abdulrahmant.official@gmail.com or WhatsApp +92 309 4506904.
+          - Personality: Innovative, efficient, results-driven, and friendly.
+          
+          If someone wants to book a meeting, tell them to email him or use the contact form on the 'Connect' tab.
+          Keep responses concise and engaging. Use emojis occasionally.`,
         }
       });
 
