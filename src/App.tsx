@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Home, 
@@ -161,6 +162,8 @@ const tabs: { name: Category; icon: React.ReactNode }[] = [
 
 const projects = [
   { name: "The Architect's Doodle Trap", mainCategory: 'Interactive Experiences', tags: ['Games', 'Free Apps'], pricing: 'Free', desc: 'A creative puzzle game built for the web.', url: 'https://the-architects-doodle-trap.netlify.app/', previewUrl: 'https://the-architects-doodle-trap.netlify.app/', color: 'text-yellow-400', bg: 'bg-yellow-500/10', icon: <Gamepad2 size={20} /> },
+  { name: "Trust Nothing", mainCategory: 'Interactive Experiences', tags: ['Games', 'Free Apps'], pricing: 'Free', desc: 'A psychological thriller game that challenges your perception.', url: 'https://trust-nothing.netlify.app/', previewUrl: 'https://trust-nothing.netlify.app/', color: 'text-red-500', bg: 'bg-red-500/10', icon: <Gamepad2 size={20} /> },
+  { name: "Gekko Dash", mainCategory: 'Interactive Experiences', tags: ['Games', 'Free Apps'], pricing: 'Free', desc: 'A fast-paced neon runner game with addictive mechanics.', url: 'https://gekko-dash.netlify.app/', previewUrl: 'https://gekko-dash.netlify.app/', color: 'text-lime-400', bg: 'bg-lime-500/10', icon: <Gamepad2 size={20} /> },
   { name: 'Vesper AI Notes', mainCategory: 'Apps & Dev', tags: ['SaaS', 'AI Tools', 'Free Apps'], pricing: 'Free', desc: 'AI-powered note-taking and knowledge base.', url: 'https://vesper-ai-notes.netlify.app/', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: <Bot size={20} /> },
   { name: 'Vibelex', mainCategory: 'Web Platforms', tags: ['SaaS', 'Free Apps'], pricing: 'Free', desc: 'Modern digital experience platform.', url: 'https://vibelex.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Globe size={20} /> },
   { name: 'Zen Maker', mainCategory: 'Apps & Dev', tags: ['SaaS'], pricing: 'Paid', price: '$2.99/yr', desc: 'Minimalist creation tool for focused builders.', url: 'https://zen-maker.netlify.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Layout size={20} /> },
@@ -245,7 +248,26 @@ const LiveAutomationFeed = () => {
 };
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<Category>('Home');
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const activeTab = useMemo<Category>(() => {
+    const path = location.pathname;
+    if (path === '/projects') return 'Projects';
+    if (path === '/automation') return 'Automation';
+    if (path === '/ebooks') return 'Ebooks';
+    if (path === '/content') return 'Content';
+    if (path === '/about') return 'About';
+    if (path === '/reviews') return 'Reviews';
+    if (path === '/connect') return 'Connect';
+    return 'Home';
+  }, [location.pathname]);
+
+  const setActiveTab = (tab: Category) => {
+    if (tab === 'Home') navigate('/');
+    else navigate(`/${tab.toLowerCase()}`);
+  };
+
   const [projectFilter, setProjectFilter] = useState<string>('All');
   const [activeProjectCategory, setActiveProjectCategory] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -497,6 +519,54 @@ export default function App() {
                   <AppWindow size={12} className="text-indigo-400" /> Explore My Work
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-[180px]">
+
+                  {/* Featured Game: Trust Nothing */}
+                  <BentoCard size="2x1" className="bg-red-500/5 border-red-500/10 group/game cursor-pointer overflow-hidden" onClick={() => {
+                    const project = projects.find(p => p.name === "Trust Nothing");
+                    if (project) setSelectedProject(project);
+                  }}>
+                    <div className="absolute right-0 top-0 w-1/2 h-full opacity-10 group-hover/game:opacity-20 transition-opacity pointer-events-none">
+                      <div className="w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-from)_0%,_transparent_70%)] from-red-500/40" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Gamepad2 size={120} className="text-red-500 rotate-12" />
+                      </div>
+                    </div>
+                    <div className="relative z-10 h-full flex flex-col justify-center">
+                      <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-red-500/20 text-red-500 text-[10px] font-bold uppercase tracking-wider mb-3 w-fit">
+                        New Game
+                      </div>
+                      <h3 className="text-xl font-bold mb-2">Trust Nothing</h3>
+                      <p className="text-white/50 text-sm max-w-[250px] mb-4">A psychological thriller experience. Can you survive the mind games?</p>
+                      <div className="flex items-center gap-2 text-red-500 text-xs font-bold group-hover/game:gap-3 transition-all">
+                        <span>Play Now</span>
+                        <ArrowRight size={14} />
+                      </div>
+                    </div>
+                  </BentoCard>
+
+                  {/* Featured Game: Gekko Dash */}
+                  <BentoCard size="2x1" className="bg-lime-500/5 border-lime-500/10 group/gekko cursor-pointer overflow-hidden" onClick={() => {
+                    const project = projects.find(p => p.name === "Gekko Dash");
+                    if (project) setSelectedProject(project);
+                  }}>
+                    <div className="absolute right-0 top-0 w-1/2 h-full opacity-10 group-hover/gekko:opacity-20 transition-opacity pointer-events-none">
+                      <div className="w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-from)_0%,_transparent_70%)] from-lime-500/40" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Zap size={120} className="text-lime-400 -rotate-12" />
+                      </div>
+                    </div>
+                    <div className="relative z-10 h-full flex flex-col justify-center">
+                      <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-lime-500/20 text-lime-400 text-[10px] font-bold uppercase tracking-wider mb-3 w-fit">
+                        Trending
+                      </div>
+                      <h3 className="text-xl font-bold mb-2">Gekko Dash</h3>
+                      <p className="text-white/50 text-sm max-w-[250px] mb-4">Fast-paced neon action. How far can you dash before the lights go out?</p>
+                      <div className="flex items-center gap-2 text-lime-400 text-xs font-bold group-hover/gekko:gap-3 transition-all">
+                        <span>Play Now</span>
+                        <ArrowRight size={14} />
+                      </div>
+                    </div>
+                  </BentoCard>
 
                   {/* Get My Apps Widget (NEW) */}
                   <BentoCard size="2x1" className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border-blue-500/20 group/apps cursor-pointer" onClick={() => setActiveTab('Projects')}>
