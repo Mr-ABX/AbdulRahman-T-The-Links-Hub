@@ -48,10 +48,16 @@ import {
   User,
   Video,
   Brain,
-  Mic
+  Mic,
+  Sparkles,
+  Users,
+  Activity,
+  X
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+
+import { ChatAssistant } from './components/ChatAssistant';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -67,6 +73,39 @@ interface BentoCardProps {
   onClick?: () => void;
   key?: React.Key;
 }
+
+const SkeletonCard = ({ size = '1x1' }: { size?: BentoCardProps['size'], key?: React.Key }) => {
+  const sizeClasses = {
+    '1x1': 'col-span-1 row-span-1',
+    '2x1': 'col-span-2 row-span-1',
+    '2x2': 'col-span-2 row-span-2',
+    '1x2': 'col-span-1 row-span-2',
+    '3x1': 'col-span-3 row-span-1',
+    '3x2': 'col-span-3 row-span-2',
+    '4x1': 'col-span-4 row-span-1',
+  };
+
+  return (
+    <div className={cn(
+      "glass rounded-[2rem] p-6 flex flex-col gap-4 relative overflow-hidden border border-white/5 animate-pulse",
+      sizeClasses[size]
+    )}>
+      <div className="flex justify-between items-start">
+        <div className="w-10 h-10 rounded-xl bg-white/5" />
+        <div className="w-16 h-4 rounded-full bg-white/5" />
+      </div>
+      <div className="space-y-2">
+        <div className="w-3/4 h-6 rounded-lg bg-white/10" />
+        <div className="w-full h-4 rounded-lg bg-white/5" />
+        <div className="w-5/6 h-4 rounded-lg bg-white/5" />
+      </div>
+      <div className="mt-auto w-24 h-4 rounded-lg bg-white/5" />
+      
+      {/* Shimmer effect */}
+      <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" />
+    </div>
+  );
+};
 
 const BentoCard = ({ children, className, size = '1x1', delay = 0, onClick }: BentoCardProps) => {
   const sizeClasses = {
@@ -111,7 +150,32 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<Category>('Home');
   const [projectFilter, setProjectFilter] = useState<string>('All');
   const [activeProjectCategory, setActiveProjectCategory] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
+  const [automationTasks, setAutomationTasks] = useState(1248);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [initialChatMessage, setInitialChatMessage] = useState('');
   const navRef = React.useRef<HTMLDivElement>(null);
+
+  const openChatWithSearch = (query: string) => {
+    setInitialChatMessage(query);
+    setIsChatOpen(true);
+  };
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setAutomationTasks(prev => prev + Math.floor(Math.random() * 2) + 1);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  React.useEffect(() => {
+    if (activeTab === 'Projects') {
+      setIsLoading(true);
+      const timer = setTimeout(() => setIsLoading(false), 800);
+      return () => clearTimeout(timer);
+    }
+  }, [activeTab, activeProjectCategory, projectFilter]);
 
   React.useEffect(() => {
     const activeBtn = navRef.current?.querySelector('[data-active="true"]');
@@ -141,6 +205,7 @@ export default function App() {
     { name: 'SpeakEasy AI', mainCategory: 'Apps & Dev', tags: ['Repos', 'Free Apps', 'AI Tools'], pricing: 'Free', desc: '100% Free AI Text-To-Speech Tool.', url: 'https://github.com/Mr-ABX/SpeakEasy-AI-Text-To-Speech-Tool---100-Free-by-AbdulrahmanT', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Mic size={20} /> },
     { name: 'AI Personality Quiz', mainCategory: 'Apps & Dev', tags: ['Repos', 'AI Tools'], pricing: 'Free', desc: 'Local run AI Personality Quiz Model.', url: 'https://github.com/Mr-ABX/AI-Personality-Quiz-Model', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Brain size={20} /> },
     { name: 'ASCII TypeArt', mainCategory: 'Apps & Dev', tags: ['Repos', 'Free Apps', 'AI Tools'], pricing: 'Free', desc: 'AI art generator for ASCII Canvas.', url: 'https://github.com/Mr-ABX/ASCII-TypeArt-Canvas-Img-to-Art-', color: 'text-teal-400', bg: 'bg-teal-500/10', icon: <Palette size={20} /> },
+    { name: 'GenAI Studio', mainCategory: 'Apps & Dev', tags: ['AI Tools', 'SaaS', 'GenAI'], pricing: 'Paid', price: 'Custom', desc: 'Enterprise-grade generative AI platform for content creation.', url: '#', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <Sparkles size={20} /> },
   ];
 
   const reviews = [
@@ -174,60 +239,176 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             {/* Left Column - Tall Profile */}
             <div className="md:col-span-5 flex flex-col">
-              <BentoCard size="1x1" className="bg-gradient-to-br from-indigo-500/10 to-purple-500/10 p-0 overflow-hidden group/profile flex-1 min-h-[600px] md:min-h-[700px] relative border-none">
-                <div className="absolute inset-0">
-                  <img 
-                    src="/assets/my-pfp-full.jpeg" 
-                    alt="Abdulrahman Toor" 
-                    className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile:scale-105"
-                    referrerPolicy="no-referrer"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80';
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent"></div>
-                </div>
-                
-                <div className="absolute top-4 right-4 flex flex-col gap-3">
-                  <a href="https://www.instagram.com/abdulrahman.toor/" target="_blank" className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all border border-white/5"><Instagram size={18} /></a>
-                  <a href="https://www.linkedin.com/in/abdulrahman-t/" target="_blank" className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all border border-white/5"><Linkedin size={18} /></a>
-                  <a href="https://github.com/Mr-ABX/" target="_blank" className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all border border-white/5"><Github size={18} /></a>
-                  <a href="https://x.com/Mr_AbdulrahmanT" target="_blank" className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all border border-white/5"><Twitter size={18} /></a>
-                  <a href="https://www.youtube.com/@abdulrahman-toor/" target="_blank" className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all border border-white/5"><Youtube size={18} /></a>
-                  <a href="#" target="_blank" className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all border border-white/5"><Facebook size={18} /></a>
-                </div>
+              <div className="sticky top-24 space-y-4">
+                <motion.div 
+                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  whileHover={{ y: -5 }}
+                  className="glass rounded-[2.5rem] overflow-hidden group/profile min-h-[600px] md:min-h-[750px] relative border border-white/10 shadow-2xl"
+                >
+                  {/* Background Image */}
+                  <div className="absolute inset-0 z-0">
+                    <img 
+                      src="/assets/my-pfp-full.jpeg" 
+                      alt="Abdulrahman Toor" 
+                      className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile:scale-105"
+                      referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80';
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent"></div>
+                  </div>
+                  
+                  {/* Social Floating Icons */}
+                  <div className="absolute top-6 right-6 z-20 flex flex-col gap-3">
+                    <a href="https://www.instagram.com/abdulrahman.toor/" target="_blank" className="w-12 h-12 rounded-2xl bg-black/40 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all border border-white/5 shadow-xl"><Instagram size={20} /></a>
+                    <a href="https://www.linkedin.com/in/abdulrahman-t/" target="_blank" className="w-12 h-12 rounded-2xl bg-black/40 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all border border-white/5 shadow-xl"><Linkedin size={20} /></a>
+                    <a href="https://github.com/Mr-ABX/" target="_blank" className="w-12 h-12 rounded-2xl bg-black/40 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all border border-white/5 shadow-xl"><Github size={20} /></a>
+                    <a href="https://x.com/Mr_AbdulrahmanT" target="_blank" className="w-12 h-12 rounded-2xl bg-black/40 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all border border-white/5 shadow-xl"><Twitter size={20} /></a>
+                  </div>
 
-                <div className="absolute bottom-0 left-0 right-0 p-8 flex flex-col justify-end">
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-medium w-fit border border-emerald-500/20">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                      Open for Hire & Partnerships
+                  {/* Content Area */}
+                  <div className="absolute inset-0 z-10 p-8 flex flex-col justify-end">
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      <div className="inline-flex items-center h-9 px-3 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold border border-emerald-500/20 group/badge-hire transition-all duration-500 cursor-default backdrop-blur-md overflow-hidden hover:pr-4">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+                        <span className="max-w-0 overflow-hidden group-hover/badge-hire:max-w-[200px] group-hover/badge-hire:ml-2 transition-all duration-500 whitespace-nowrap opacity-0 group-hover/badge-hire:opacity-100">Available for Projects</span>
+                      </div>
+                      <div className="inline-flex items-center h-9 px-3 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-bold border border-indigo-500/20 group/badge-projects transition-all duration-500 cursor-default backdrop-blur-md overflow-hidden hover:pr-4">
+                        <Trophy size={14} className="shrink-0" />
+                        <span className="max-w-0 overflow-hidden group-hover/badge-projects:max-w-[200px] group-hover/badge-projects:ml-2 transition-all duration-500 whitespace-nowrap opacity-0 group-hover/badge-projects:opacity-100">200+ Delivered</span>
+                      </div>
                     </div>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-medium w-fit border border-indigo-500/20">
-                      <Trophy size={12} />
-                      200+ Projects Delivered
+                    
+                    <div className="space-y-1 mb-6">
+                      <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white drop-shadow-lg">Abdulrahman Toor</h1>
+                      <h2 className="text-xl text-indigo-400 font-semibold drop-shadow-md">Founder & AI Automation Expert</h2>
+                    </div>
+
+                    <p className="text-white/80 text-sm leading-relaxed mb-8 max-w-md font-medium drop-shadow-sm">
+                      Architecting the future with AI. I build scalable SaaS platforms, high-performance automation systems, and open-source tools that turn complexity into growth.
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <motion.button 
+                        whileHover={{ scale: 1.02, y: -1 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setActiveTab('Connect')} 
+                        className="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 rounded-xl text-sm font-bold hover:shadow-[0_0_20px_rgba(99,102,241,0.3)] transition-all flex items-center justify-center gap-2 group/btn relative overflow-hidden"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                        <Mail size={16} className="group-hover/btn:rotate-12 transition-transform relative z-10" /> 
+                        <span className="relative z-10">Get in Touch</span>
+                      </motion.button>
+                      <motion.button 
+                        whileHover={{ scale: 1.02, y: -1 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setActiveTab('Projects')} 
+                        className="flex-1 bg-white/10 text-white px-5 py-3 rounded-xl text-sm font-bold hover:bg-white/20 transition-all backdrop-blur-md border border-white/10 flex items-center justify-center gap-2 group/btn shadow-lg"
+                      >
+                        <span>View My Work</span>
+                        <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
+                      </motion.button>
                     </div>
                   </div>
-                  <h1 className="text-4xl font-bold mb-2 tracking-tight text-white">Abdulrahman Toor</h1>
-                  <h2 className="text-xl text-indigo-400 font-medium mb-4">Founder & AI Automation Expert</h2>
-                  <p className="text-white/70 text-sm leading-relaxed mb-6 max-w-md">
-                    Architecting the future with AI. I build scalable SaaS platforms, high-performance automation systems, and open-source tools that turn complexity into growth.
-                  </p>
-                  <div className="flex gap-4">
-                    <button onClick={() => setActiveTab('Connect')} className="flex-1 bg-white text-black px-6 py-3 rounded-xl font-medium hover:bg-white/90 transition-colors flex items-center justify-center gap-2">
-                      <Mail size={18} /> Connect
-                    </button>
-                    <button onClick={() => setActiveTab('Projects')} className="flex-1 bg-white/10 text-white px-6 py-3 rounded-xl font-medium hover:bg-white/20 transition-colors backdrop-blur-md border border-white/5 flex items-center justify-center gap-2">
-                      View Work <ArrowRight size={18} />
-                    </button>
+                </motion.div>
+
+                {/* Interactive Tech Cloud Widget */}
+                <BentoCard size="1x1" className="bg-white/[0.02] overflow-hidden group/cloud">
+                  <div className="flex flex-col h-full">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                        <Cpu size={20} />
+                      </div>
+                      <span className="text-[8px] text-white/20 uppercase font-bold tracking-widest">Tech Cloud</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2 relative">
+                      {['React', 'Next.js', 'n8n', 'Python', 'AI', 'SaaS', 'Supabase', 'Docker', 'AWS'].map((tech, i) => (
+                        <motion.span 
+                          key={tech}
+                          animate={{ 
+                            y: [0, -5, 0],
+                            x: [0, i % 2 === 0 ? 5 : -5, 0]
+                          }}
+                          transition={{ 
+                            duration: 3 + i, 
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }}
+                          className="px-3 py-1.5 rounded-xl bg-white/5 text-[10px] text-white/60 font-medium hover:bg-indigo-500/20 hover:text-indigo-400 transition-colors cursor-default border border-white/5"
+                        >
+                          {tech}
+                        </motion.span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </BentoCard>
+                </BentoCard>
+              </div>
             </div>
 
             {/* Right Column - Shortcuts */}
             <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-[180px]">
               
+              {/* AI Assistant Quick Widget */}
+              <BentoCard size="2x1" className="bg-gradient-to-br from-indigo-500/10 to-purple-600/10 border-indigo-500/20 group/ai-widget relative overflow-hidden">
+                <div className="absolute -right-4 -top-4 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl group-hover/ai-widget:bg-indigo-500/20 transition-colors" />
+                <div className="relative z-10 h-full flex flex-col justify-center p-2">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-indigo-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
+                      <Bot size={20} />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold">Ask My AI Assistant</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Powered by Gemini 3 Flash</p>
+                    </div>
+                  </div>
+                  <div className="relative group/input">
+                    <input 
+                      type="text" 
+                      placeholder="Ask about my projects, skills, or availability..." 
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          openChatWithSearch((e.target as HTMLInputElement).value);
+                          (e.target as HTMLInputElement).value = '';
+                        }
+                      }}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 pr-12 text-sm focus:outline-none focus:border-indigo-500/50 transition-all group-hover/input:bg-white/10"
+                    />
+                    <button 
+                      onClick={(e) => {
+                        const input = (e.currentTarget.previousSibling as HTMLInputElement);
+                        if (input.value) {
+                          openChatWithSearch(input.value);
+                          input.value = '';
+                        }
+                      }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-indigo-500 text-white hover:bg-indigo-400 transition-colors"
+                    >
+                      <ArrowRight size={16} />
+                    </button>
+                  </div>
+                </div>
+              </BentoCard>
+
+              {/* Calendar / Consultation Widget */}
+              <BentoCard size="1x1" className="bg-amber-500/5 border-amber-500/10 group/cal cursor-pointer" onClick={() => window.open('https://calendly.com/digital-b3asts/quick-free-consultation', '_blank')}>
+                <div className="flex flex-col h-full">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 group-hover/cal:scale-110 transition-transform">
+                      <Zap size={20} />
+                    </div>
+                    <span className="text-[8px] text-white/20 uppercase font-bold tracking-widest">Booking</span>
+                  </div>
+                  <h3 className="font-bold text-lg mb-1">Free Consultation</h3>
+                  <p className="text-xs text-white/40 font-light mb-auto">Book a quick 15-min strategy call via Calendly.</p>
+                  <div className="flex items-center gap-2 text-amber-400 text-[10px] font-bold uppercase tracking-widest mt-4 group-hover/cal:gap-3 transition-all">
+                    <span>Schedule Now</span>
+                    <ArrowRight size={14} />
+                  </div>
+                </div>
+              </BentoCard>
+
               {/* Projects Shortcut */}
               <BentoCard size="2x1" className="group cursor-pointer hover:bg-white/[0.04] transition-colors relative overflow-hidden" onClick={() => { setActiveTab('Projects'); setActiveProjectCategory(null); }}>
                 <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -261,8 +442,9 @@ export default function App() {
                   </div>
                   <h3 className="text-lg font-bold mb-2">AI Automation</h3>
                   <p className="text-white/50 text-sm mb-auto">n8n workflows & intelligent systems.</p>
-                  <div className="flex items-center text-emerald-400 text-sm font-medium mt-4">
-                    View Systems <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+                  <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold mt-4 group-hover:gap-3 transition-all">
+                    <span>View Systems</span>
+                    <ArrowRight size={14} />
                   </div>
                 </div>
               </BentoCard>
@@ -275,8 +457,9 @@ export default function App() {
                   </div>
                   <h3 className="text-lg font-bold mb-2">Client Reviews</h3>
                   <p className="text-white/50 text-sm mb-auto">See what others say about my work.</p>
-                  <div className="flex items-center text-amber-400 text-sm font-medium mt-4">
-                    Read Testimonials <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+                  <div className="flex items-center gap-2 text-amber-400 text-xs font-bold mt-4 group-hover:gap-3 transition-all">
+                    <span>Read Testimonials</span>
+                    <ArrowRight size={14} />
                   </div>
                 </div>
               </BentoCard>
@@ -291,7 +474,130 @@ export default function App() {
                     New Releases
                   </div>
                   <h3 className="text-xl font-bold mb-2">Ebooks & Guides</h3>
-                  <p className="text-white/50 text-sm max-w-[200px]">Level up your skills with my latest digital books.</p>
+                  <p className="text-white/50 text-sm max-w-[200px] mb-4">Level up your skills with my latest digital books.</p>
+                  <div className="flex items-center gap-2 text-purple-400 text-xs font-bold group-hover:gap-3 transition-all">
+                    <span>Browse Library</span>
+                    <ArrowRight size={14} />
+                  </div>
+                </div>
+              </BentoCard>
+
+              {/* Hire Me Widget */}
+              <BentoCard size="1x1" className="bg-emerald-500/5 border-emerald-500/10">
+                <div className="flex flex-col h-full">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                      <Briefcase size={20} />
+                    </div>
+                    <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-emerald-500/20 text-[8px] text-emerald-400 font-bold uppercase tracking-widest">
+                      <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+                      Available
+                    </div>
+                  </div>
+                  <h3 className="font-bold text-lg mb-1">Hire Me</h3>
+                  <p className="text-xs text-white/40 font-light mb-auto">Looking for AI automation or SaaS development? Let's talk.</p>
+                  <button onClick={() => setActiveTab('Connect')} className="w-full py-2 rounded-xl bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-widest hover:bg-emerald-500 hover:text-white transition-all">
+                    Start Project
+                  </button>
+                </div>
+              </BentoCard>
+
+              {/* Stats Widget */}
+              <BentoCard size="1x1" className="bg-indigo-500/5 border-indigo-500/10">
+                <div className="flex flex-col h-full justify-between">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                    <Users size={20} />
+                  </div>
+                  <div>
+                    <h3 className="text-3xl font-bold tracking-tighter">100+</h3>
+                    <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Happy Clients</p>
+                  </div>
+                  <div className="flex -space-x-2">
+                    {[1, 2, 3, 4].map(i => (
+                      <div key={i} className="w-6 h-6 rounded-full border-2 border-[#050505] bg-white/10 flex items-center justify-center text-[8px] font-bold">
+                        {String.fromCharCode(64 + i)}
+                      </div>
+                    ))}
+                    <div className="w-6 h-6 rounded-full border-2 border-[#050505] bg-indigo-500 flex items-center justify-center text-[8px] font-bold">
+                      +
+                    </div>
+                  </div>
+                </div>
+              </BentoCard>
+
+              {/* Active Status Widget */}
+              <BentoCard size="1x1" className="bg-white/[0.02]">
+                <div className="flex flex-col h-full">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/40">
+                      <Activity size={20} />
+                    </div>
+                    <span className="text-[8px] text-white/20 uppercase font-bold tracking-widest">Live Status</span>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-white/40">Current Focus</span>
+                      <span className="text-[10px] font-bold text-indigo-400">GenAI SaaS</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-white/40">Location</span>
+                      <span className="text-[10px] font-bold">Pakistan</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-white/40">Local Time</span>
+                      <span className="text-[10px] font-bold">{new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    </div>
+                  </div>
+                </div>
+              </BentoCard>
+
+              {/* Tech Stack Widget (Moved to left column, replaced here with Automation Feed) */}
+              <BentoCard size="1x1" className="bg-white/[0.02] group">
+                <div className="flex flex-col h-full">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                      <Zap size={20} />
+                    </div>
+                    <span className="text-[8px] text-white/20 uppercase font-bold tracking-widest">Live Automation</span>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-white/40">Tasks Today</span>
+                      <span className="text-sm font-bold text-emerald-400">{automationTasks.toLocaleString()}</span>
+                    </div>
+                    <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: '75%' }}
+                        transition={{ duration: 2, ease: "easeOut" }}
+                        className="h-full bg-emerald-500"
+                      />
+                    </div>
+                    <p className="text-[10px] text-white/30 italic">"Efficiency is the key to scale."</p>
+                  </div>
+                </div>
+              </BentoCard>
+
+              {/* Newsletter Widget */}
+              <BentoCard size="1x1" className="bg-indigo-500/5 border-indigo-500/10 group">
+                <div className="flex flex-col h-full">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                      <Newspaper size={20} />
+                    </div>
+                    <span className="text-[8px] text-white/20 uppercase font-bold tracking-widest">Newsletter</span>
+                  </div>
+                  <h3 className="text-sm font-bold mb-2">Get AI Insights</h3>
+                  <div className="relative mt-auto">
+                    <input 
+                      type="email" 
+                      placeholder="Your email" 
+                      className="w-full bg-white/5 border border-white/10 rounded-xl py-2 px-3 text-[10px] focus:outline-none focus:border-indigo-500/50 transition-colors"
+                    />
+                    <button className="absolute right-1 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-indigo-500 text-white hover:bg-indigo-400 transition-colors">
+                      <ArrowRight size={12} />
+                    </button>
+                  </div>
                 </div>
               </BentoCard>
 
@@ -400,29 +706,44 @@ export default function App() {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[180px]">
-                <AnimatePresence mode="popLayout">
-                  {filteredProjects.map((p, i) => (
-                    <BentoCard key={p.name} size={i === 0 && projectFilter === 'All' ? "2x1" : "1x1"} className={cn(p.bg, "border-white/5")}>
-                      <div className="flex flex-col h-full">
-                        <div className="flex justify-between items-start mb-4">
-                          <div className={cn("p-2 rounded-xl bg-black/20", p.color)}>
-                            {p.icon}
+                {isLoading ? (
+                  Array.from({ length: 6 }).map((_, i) => (
+                    <SkeletonCard key={i} size={i === 0 && projectFilter === 'All' ? "2x1" : "1x1"} />
+                  ))
+                ) : (
+                  <AnimatePresence mode="popLayout">
+                    {filteredProjects.map((p, i) => (
+                      <BentoCard 
+                        key={p.name} 
+                        size={i === 0 && projectFilter === 'All' ? "2x1" : "1x1"} 
+                        className={cn(p.bg, "border-white/5 cursor-pointer")}
+                        onClick={() => setSelectedProject(p)}
+                      >
+                        <div className="flex flex-col h-full">
+                          <div className="flex justify-between items-start mb-4">
+                            <div className={cn("p-2 rounded-xl bg-black/20", p.color)}>
+                              {p.icon}
+                            </div>
+                            <div className="flex flex-col items-end gap-1">
+                              <span className={cn("text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
+                                {p.pricing} {p.price && `(${p.price})`}
+                              </span>
+                              <a href={p.url} target="_blank" className="text-white/20 hover:text-white transition-colors">
+                                <ExternalLink size={16} />
+                              </a>
+                            </div>
                           </div>
-                          <div className="flex flex-col items-end gap-1">
-                            <span className={cn("text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
-                              {p.pricing} {p.price && `(${p.price})`}
-                            </span>
-                            <a href={p.url} target="_blank" className="text-white/20 hover:text-white transition-colors">
-                              <ExternalLink size={16} />
-                            </a>
+                          <h3 className="font-bold text-lg mb-1">{p.name}</h3>
+                          <p className="text-xs text-white/50 line-clamp-2 font-light mb-auto">{p.desc}</p>
+                          <div className="mt-4 flex items-center gap-2 text-[10px] font-bold text-white/40 group-hover:text-white transition-colors">
+                            <span>View Project</span>
+                            <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
                           </div>
                         </div>
-                        <h3 className="font-bold text-lg mb-1">{p.name}</h3>
-                        <p className="text-xs text-white/50 line-clamp-2 font-light">{p.desc}</p>
-                      </div>
-                    </BentoCard>
-                  ))}
-                </AnimatePresence>
+                      </BentoCard>
+                    ))}
+                  </AnimatePresence>
+                )}
               </div>
             )}
           </div>
@@ -825,10 +1146,125 @@ export default function App() {
           </div>
         );
 
+      case 'Reviews':
+        return (
+          <div className="space-y-8 overflow-hidden">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-4">
+              <div>
+                <h2 className="text-3xl font-bold tracking-tight">Client Testimonials</h2>
+                <p className="text-white/50 text-sm mt-1">Real feedback from people I've worked with.</p>
+              </div>
+              <div className="flex items-center gap-4 px-4 py-2 rounded-2xl bg-white/5 border border-white/10">
+                <div className="flex text-amber-400">
+                  {[1, 2, 3, 4, 5].map(i => <Star key={i} size={14} fill="currentColor" />)}
+                </div>
+                <span className="text-sm font-bold">5.0 Average Rating</span>
+              </div>
+            </div>
+
+            {/* Auto-scrolling Reviews Marquee */}
+            <div className="relative flex flex-col gap-6 py-10">
+              <div className="flex gap-6 animate-marquee whitespace-nowrap">
+                {[...reviews, ...reviews].map((review, i) => (
+                  <div key={i} className="inline-block w-[350px] shrink-0">
+                    <BentoCard size="1x1" delay={0} className="bg-white/[0.02] hover:bg-white/[0.04] transition-colors border-white/5 h-full whitespace-normal">
+                      <div className="flex flex-col h-full">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex text-amber-400 gap-0.5">
+                            {[1, 2, 3, 4, 5].map(star => (
+                              <Star key={star} size={10} fill="currentColor" />
+                            ))}
+                          </div>
+                          <div className="px-2 py-0.5 rounded-full bg-white/5 text-[8px] text-white/40 uppercase font-bold tracking-widest">
+                            Verified
+                          </div>
+                        </div>
+                        <p className="text-sm text-white/70 italic leading-relaxed mb-6 font-light">"{review.text}"</p>
+                        <div className="mt-auto flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center text-indigo-400 font-bold border border-white/10">
+                            {review.name.charAt(0)}
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-bold text-white">{review.name}</h4>
+                            <p className="text-[10px] text-white/40">{review.role} • {review.location}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </BentoCard>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="flex gap-6 animate-marquee-reverse whitespace-nowrap">
+                {[...reviews, ...reviews].reverse().map((review, i) => (
+                  <div key={i} className="inline-block w-[350px] shrink-0">
+                    <BentoCard size="1x1" delay={0} className="bg-white/[0.02] hover:bg-white/[0.04] transition-colors border-white/5 h-full whitespace-normal">
+                      <div className="flex flex-col h-full">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex text-amber-400 gap-0.5">
+                            {[1, 2, 3, 4, 5].map(star => (
+                              <Star key={star} size={10} fill="currentColor" />
+                            ))}
+                          </div>
+                          <div className="px-2 py-0.5 rounded-full bg-white/5 text-[8px] text-white/40 uppercase font-bold tracking-widest">
+                            Verified
+                          </div>
+                        </div>
+                        <p className="text-sm text-white/70 italic leading-relaxed mb-6 font-light">"{review.text}"</p>
+                        <div className="mt-auto flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center text-indigo-400 font-bold border border-white/10">
+                            {review.name.charAt(0)}
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-bold text-white">{review.name}</h4>
+                            <p className="text-[10px] text-white/40">{review.role} • {review.location}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </BentoCard>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Call to action */}
+            <div className="px-4">
+              <BentoCard size="3x1" className="bg-indigo-500/10 border-indigo-500/20 text-center py-12">
+                <div className="max-w-xl mx-auto">
+                  <h3 className="text-2xl font-bold mb-3">Ready to start your project?</h3>
+                  <p className="text-white/60 mb-8 text-sm">Join these happy clients and let's build something extraordinary together.</p>
+                  <button 
+                    onClick={() => setActiveTab('Connect')}
+                    className="px-8 py-4 rounded-2xl bg-white text-black font-bold hover:bg-white/90 transition-all shadow-xl shadow-white/10 flex items-center gap-2 mx-auto"
+                  >
+                    <Mail size={18} /> Get a Free Quote
+                  </button>
+                </div>
+              </BentoCard>
+            </div>
+          </div>
+        );
+
       case 'Connect':
         return (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[140px]">
-             {/* WhatsApp Card */}
+             {/* Calendly Card */}
+            <BentoCard size="2x2" className="bg-amber-500/5 border-amber-500/10 group/cal cursor-pointer" onClick={() => window.open('https://calendly.com/digital-b3asts/quick-free-consultation', '_blank')}>
+              <div className="flex flex-col h-full justify-center items-center text-center p-8">
+                <div className="w-20 h-20 rounded-3xl bg-amber-500/10 flex items-center justify-center text-amber-400 mb-6 group-hover/cal:scale-110 transition-transform duration-500">
+                  <Zap size={48} />
+                </div>
+                <h3 className="text-2xl font-bold mb-2">Free Consultation</h3>
+                <p className="text-white/40 text-sm mb-6 font-light">Book a 15-min strategy call</p>
+                <button 
+                  className="px-8 py-3 rounded-2xl bg-amber-500 text-white text-xs font-bold hover:bg-amber-400 transition-all shadow-xl shadow-amber-500/20"
+                >
+                  Schedule Now
+                </button>
+              </div>
+            </BentoCard>
+
+            {/* WhatsApp Card */}
             <BentoCard size="2x2" className="bg-emerald-500/5 border-emerald-500/10 group/wa">
               <div className="flex flex-col h-full justify-center items-center text-center p-8">
                 <div className="w-20 h-20 rounded-3xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-6 group-hover/wa:scale-110 transition-transform duration-500">
@@ -956,17 +1392,136 @@ export default function App() {
         </AnimatePresence>
       </main>
 
+      {/* Chat Assistant */}
+      <ChatAssistant 
+        isOpen={isChatOpen} 
+        setIsOpen={setIsChatOpen} 
+        initialMessage={initialChatMessage}
+        setInitialMessage={setInitialChatMessage}
+      />
+
+      {/* Project Case Study Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8"
+          >
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setSelectedProject(null)} />
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto glass rounded-[2.5rem] border border-white/10 shadow-2xl no-scrollbar"
+            >
+              <button 
+                onClick={() => setSelectedProject(null)}
+                className="absolute top-6 right-6 p-3 rounded-2xl bg-white/5 hover:bg-white/10 text-white/40 hover:text-white transition-all z-20"
+              >
+                <X size={24} />
+              </button>
+
+              <div className="p-8 md:p-12">
+                <div className="flex flex-col md:flex-row gap-12">
+                  <div className="flex-1">
+                    <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center mb-8", selectedProject.bg, selectedProject.color)}>
+                      {selectedProject.icon}
+                    </div>
+                    <h2 className="text-4xl font-bold mb-4">{selectedProject.name}</h2>
+                    <div className="flex flex-wrap gap-2 mb-8">
+                      {selectedProject.tags.map(tag => (
+                        <span key={tag} className="px-3 py-1 rounded-full bg-white/5 text-xs text-white/60 border border-white/5">{tag}</span>
+                      ))}
+                    </div>
+                    <div className="prose prose-invert max-w-none">
+                      <h3 className="text-xl font-bold mb-4 text-indigo-400">The Challenge</h3>
+                      <p className="text-white/70 mb-8 leading-relaxed">
+                        {selectedProject.desc} This project was built to address the growing need for {selectedProject.mainCategory.toLowerCase()} solutions that scale effortlessly.
+                      </p>
+                      
+                      <h3 className="text-xl font-bold mb-4 text-indigo-400">Key Features</h3>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                        {['Real-time processing', 'AI-driven insights', 'Scalable architecture', 'Intuitive UI/UX'].map(f => (
+                          <li key={f} className="flex items-center gap-3 text-sm text-white/60 bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <CheckCircle2 size={18} className="text-emerald-400 shrink-0" />
+                            {f}
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div className="flex gap-4">
+                        <a 
+                          href={selectedProject.url} 
+                          target="_blank" 
+                          className="flex-1 bg-white text-black px-8 py-4 rounded-2xl font-bold text-center hover:bg-white/90 transition-all flex items-center justify-center gap-2"
+                        >
+                          Live Demo <ExternalLink size={18} />
+                        </a>
+                        <button className="flex-1 bg-white/5 text-white px-8 py-4 rounded-2xl font-bold border border-white/10 hover:bg-white/10 transition-all">
+                          View Code
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="md:w-1/3 space-y-6">
+                    <div className="p-6 rounded-3xl bg-white/5 border border-white/5">
+                      <h4 className="text-xs font-bold uppercase tracking-widest text-white/30 mb-4">Project Stats</h4>
+                      <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-white/50">Category</span>
+                          <span className="text-sm font-bold">{selectedProject.mainCategory}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-white/50">Status</span>
+                          <span className="text-sm font-bold text-emerald-400">Live</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-white/50">Pricing</span>
+                          <span className="text-sm font-bold">{selectedProject.pricing}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-6 rounded-3xl bg-indigo-500/10 border border-indigo-500/20">
+                      <h4 className="text-xs font-bold uppercase tracking-widest text-indigo-400 mb-4">Tech Used</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {['React', 'TypeScript', 'Tailwind', 'Node.js'].map(t => (
+                          <span key={t} className="px-3 py-1.5 rounded-xl bg-white/5 text-[10px] font-bold">{t}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Footer */}
-      <footer className="mt-24 text-white/20 text-[10px] flex flex-col items-center gap-4 uppercase tracking-[0.3em]">
-        <div className="flex items-center gap-4">
-          <p>© 2026 AbdulRahman-T</p>
-          <div className="w-1 h-1 rounded-full bg-white/10" />
-          <p>Built with Antigravity</p>
-        </div>
-        <div className="flex items-center gap-6 mt-2">
-          <a href="https://github.com/Mr-ABX/" className="hover:text-white transition-colors">GitHub</a>
-          <a href="https://x.com/Mr_AbdulrahmanT" className="hover:text-white transition-colors">Twitter</a>
-          <a href="https://www.linkedin.com/in/abdulrahman-t/" className="hover:text-white transition-colors">LinkedIn</a>
+      <footer className="mt-32 py-12 border-t border-white/5">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex flex-col items-center md:items-start gap-2">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center text-white font-bold text-sm">A</div>
+              <span className="font-bold text-lg tracking-tight">Abdulrahman Toor</span>
+            </div>
+            <p className="text-white/30 text-xs font-light max-w-xs text-center md:text-left">
+              Architecting the future of AI automation and high-performance SaaS platforms.
+            </p>
+          </div>
+          
+          <div className="flex flex-col items-center md:items-end gap-4">
+            <div className="flex gap-8 text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
+              <button onClick={() => setActiveTab('Home')} className="hover:text-white transition-colors">Home</button>
+              <button onClick={() => setActiveTab('Projects')} className="hover:text-white transition-colors">Projects</button>
+              <button onClick={() => setActiveTab('Connect')} className="hover:text-white transition-colors">Contact</button>
+            </div>
+            <div className="text-white/20 text-[10px] font-medium tracking-widest uppercase">
+              © {new Date().getFullYear()} Abdulrahman Toor. All rights reserved.
+            </div>
+          </div>
         </div>
       </footer>
     </div>
