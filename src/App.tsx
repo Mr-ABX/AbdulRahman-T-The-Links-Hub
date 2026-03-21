@@ -247,6 +247,89 @@ const LiveAutomationFeed = () => {
   );
 };
 
+const FeaturedCarousel = ({ projects, onSelect }: { projects: any[], onSelect: (p: any) => void }) => {
+  const [index, setIndex] = useState(0);
+  const featured = useMemo(() => projects.filter(p => ['Trust Nothing', 'Gekko Dash', 'The Architect\'s Doodle Trap', 'Vesper AI Notes'].includes(p.name)), [projects]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % featured.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [featured.length]);
+
+  const current = featured[index];
+
+  return (
+    <BentoCard 
+      size="2x2" 
+      className="relative overflow-hidden group/featured cursor-pointer border-indigo-500/30 bg-indigo-500/5 shadow-[0_0_30px_rgba(99,102,241,0.05)]"
+      onClick={() => onSelect(current)}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current.name}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.05 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+          className="absolute inset-0 p-8 flex flex-col"
+        >
+          {/* Background Decoration */}
+          <div className="absolute inset-0 opacity-20 pointer-events-none">
+            <div className={`absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,_var(--tw-gradient-from)_0%,_transparent_70%)] ${current.bg.replace('bg-', 'from-')}`} />
+            <div className="absolute right-0 bottom-0 translate-x-1/4 translate-y-1/4">
+              {React.cloneElement(current.icon as React.ReactElement, { size: 240, className: `${current.color} opacity-20 rotate-12` })}
+            </div>
+          </div>
+
+          <div className="relative z-10 h-full flex flex-col">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className={`w-12 h-12 rounded-2xl ${current.bg} flex items-center justify-center ${current.color} shadow-lg`}>
+                  {React.cloneElement(current.icon as React.ReactElement, { size: 24 })}
+                </div>
+                <div>
+                  <div className={`text-[10px] font-bold uppercase tracking-[0.2em] ${current.color}`}>Featured Project</div>
+                  <div className="flex gap-1.5 mt-1">
+                    {featured.map((_, i) => (
+                      <div 
+                        key={i} 
+                        className={`h-1 rounded-full transition-all duration-500 ${i === index ? 'w-6 bg-indigo-400' : 'w-2 bg-white/10'}`} 
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="p-2 rounded-full bg-white/5 border border-white/10">
+                <Sparkles size={16} className="text-yellow-400 animate-pulse" />
+              </div>
+            </div>
+            
+            <div className="mt-auto">
+              <h3 className="text-4xl font-bold mb-4 tracking-tight group-hover/featured:translate-x-2 transition-transform duration-500">{current.name}</h3>
+              <p className="text-white/60 text-lg max-w-md mb-8 leading-relaxed line-clamp-3">{current.desc}</p>
+              
+              <div className="flex items-center gap-4">
+                <div className={`px-6 py-3 rounded-2xl ${current.bg} ${current.color} font-bold text-sm flex items-center gap-2 group-hover/featured:scale-105 transition-all shadow-xl border border-white/5`}>
+                  <span>Explore Now</span>
+                  <ArrowRight size={18} />
+                </div>
+                <div className="text-white/30 text-xs font-medium italic">
+                  Click to view details
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+      
+      {/* Decorative Corner */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-indigo-500/10 to-transparent pointer-events-none" />
+    </BentoCard>
+  );
+};
+
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -520,53 +603,8 @@ export default function App() {
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-[180px]">
 
-                  {/* Featured Game: Trust Nothing */}
-                  <BentoCard size="2x1" className="bg-red-500/5 border-red-500/10 group/game cursor-pointer overflow-hidden" onClick={() => {
-                    const project = projects.find(p => p.name === "Trust Nothing");
-                    if (project) setSelectedProject(project);
-                  }}>
-                    <div className="absolute right-0 top-0 w-1/2 h-full opacity-10 group-hover/game:opacity-20 transition-opacity pointer-events-none">
-                      <div className="w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-from)_0%,_transparent_70%)] from-red-500/40" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Gamepad2 size={120} className="text-red-500 rotate-12" />
-                      </div>
-                    </div>
-                    <div className="relative z-10 h-full flex flex-col justify-center">
-                      <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-red-500/20 text-red-500 text-[10px] font-bold uppercase tracking-wider mb-3 w-fit">
-                        New Game
-                      </div>
-                      <h3 className="text-xl font-bold mb-2">Trust Nothing</h3>
-                      <p className="text-white/50 text-sm max-w-[250px] mb-4">A psychological thriller experience. Can you survive the mind games?</p>
-                      <div className="flex items-center gap-2 text-red-500 text-xs font-bold group-hover/game:gap-3 transition-all">
-                        <span>Play Now</span>
-                        <ArrowRight size={14} />
-                      </div>
-                    </div>
-                  </BentoCard>
-
-                  {/* Featured Game: Gekko Dash */}
-                  <BentoCard size="2x1" className="bg-lime-500/5 border-lime-500/10 group/gekko cursor-pointer overflow-hidden" onClick={() => {
-                    const project = projects.find(p => p.name === "Gekko Dash");
-                    if (project) setSelectedProject(project);
-                  }}>
-                    <div className="absolute right-0 top-0 w-1/2 h-full opacity-10 group-hover/gekko:opacity-20 transition-opacity pointer-events-none">
-                      <div className="w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-from)_0%,_transparent_70%)] from-lime-500/40" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Zap size={120} className="text-lime-400 -rotate-12" />
-                      </div>
-                    </div>
-                    <div className="relative z-10 h-full flex flex-col justify-center">
-                      <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-lime-500/20 text-lime-400 text-[10px] font-bold uppercase tracking-wider mb-3 w-fit">
-                        Trending
-                      </div>
-                      <h3 className="text-xl font-bold mb-2">Gekko Dash</h3>
-                      <p className="text-white/50 text-sm max-w-[250px] mb-4">Fast-paced neon action. How far can you dash before the lights go out?</p>
-                      <div className="flex items-center gap-2 text-lime-400 text-xs font-bold group-hover/gekko:gap-3 transition-all">
-                        <span>Play Now</span>
-                        <ArrowRight size={14} />
-                      </div>
-                    </div>
-                  </BentoCard>
+                  {/* Featured Carousel Widget */}
+                  <FeaturedCarousel projects={projects} onSelect={setSelectedProject} />
 
                   {/* Get My Apps Widget (NEW) */}
                   <BentoCard size="2x1" className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border-blue-500/20 group/apps cursor-pointer" onClick={() => setActiveTab('Projects')}>
