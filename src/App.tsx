@@ -337,7 +337,7 @@ const FeaturedCarousel = ({ projects, onSelect }: { projects: any[], onSelect: (
       </AnimatePresence>
       
       {/* Decorative Corner */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-indigo-500/10 to-transparent pointer-events-none" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-indigo-500/10 to-transparent pointer-events-none rounded-tr-[2rem] rounded-bl-[2rem]" />
     </BentoCard>
   );
 };
