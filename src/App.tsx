@@ -162,6 +162,8 @@ const tabs: { name: Category; icon: React.ReactNode }[] = [
 ];
 
 const projects = [
+  { name: "ARGUS // INTELLIGENCE", mainCategory: 'AI Solutions', tags: ['Cybersecurity', 'OSINT', 'SaaS'], pricing: 'Paid', desc: 'A high-tech cybersecurity dashboard tracking visitor IP, location, and network details with a live map interface.', url: 'https://argus-osint-soc.vercel.app/', previewUrl: 'https://argus-osint-soc.vercel.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Globe size={20} /> },
+  { name: "Koe Audio Studio", mainCategory: 'AI Solutions', tags: ['Audio', 'AI Tools', 'SaaS'], pricing: 'Paid', desc: 'Next-generation parametric voice synthesis suite. Voice cloning and advanced speech generation.', url: 'https://koe-audiostudio.netlify.app/', previewUrl: 'https://koe-audiostudio.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Mic size={20} /> },
   { name: "FlowType - Minimalist Touch Typing", mainCategory: 'Interactive Experiences', tags: ['Typing', 'Interactive', 'AI Tools', 'Free Apps'], pricing: 'Free', desc: 'An ultra-minimalist, distraction-free touch typing application with mechanical keyboard sounds, real-time analytics, and AI-generated practice content.', url: 'https://theflowtype.netlify.app/', previewUrl: 'https://theflowtype.netlify.app/', color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: <Terminal size={20} /> },
   { name: "Babel | Learn Fictional Languages", mainCategory: 'Apps & Dev', tags: ['Education', 'Gamified', 'Free Apps'], pricing: 'Free', desc: 'Master the languages of the multiverse. A high-end, gamified learning app for fictional tongues like Minionese, Klingon, and High Valyrian.', url: 'https://babel-learn-fiction.netlify.app/', previewUrl: 'https://babel-learn-fiction.netlify.app/', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <BookOpen size={20} /> },
   { name: "Virtuoso Web Piano & Beat Studio", mainCategory: 'Interactive Experiences', tags: ['Music', 'Interactive', 'Free Apps'], pricing: 'Free', desc: 'A premium, responsive web music workstation featuring a Grand Piano, multiple synthesizers, and a 16-pad Beat Studio for rhythm creation.', url: 'https://virtuoso-keys.netlify.app/', previewUrl: 'https://virtuoso-keys.netlify.app/', color: 'text-amber-400', bg: 'bg-amber-500/10', icon: <Palette size={20} /> },
@@ -999,7 +1001,7 @@ export default function App() {
             <BentoCard size="2x2" className="p-0 overflow-hidden group/book">
               <div className="relative h-full w-full">
                 <img 
-                  src="/assets/31 ways to ruin your life cover.png" 
+                  src="/assets/31-ways-to-ruin-your-life-cover.png" 
                   alt="31 Ways to Ruin Your Life" 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover/book:scale-105"
                   referrerPolicy="no-referrer"
