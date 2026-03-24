@@ -67,6 +67,7 @@ function cn(...inputs: ClassValue[]) {
 }
 
 type Category = 'Home' | 'Projects' | 'Automation' | 'Ebooks' | 'Content' | 'About' | 'Reviews' | 'Connect';
+type ProjectCategory = 'Apps & Dev' | 'Web Platforms' | 'Interactive Experiences' | 'Graphics & Marketing' | 'AI Solutions';
 
 interface BentoCardProps {
   children: React.ReactNode;
@@ -161,19 +162,22 @@ const tabs: { name: Category; icon: React.ReactNode }[] = [
 ];
 
 const projects = [
+  { name: "FlowType - Minimalist Touch Typing", mainCategory: 'Interactive Experiences', tags: ['Typing', 'Interactive', 'AI Tools', 'Free Apps'], pricing: 'Free', desc: 'An ultra-minimalist, distraction-free touch typing application with mechanical keyboard sounds, real-time analytics, and AI-generated practice content.', url: 'https://theflowtype.netlify.app/', previewUrl: 'https://theflowtype.netlify.app/', color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: <Terminal size={20} /> },
+  { name: "Babel | Learn Fictional Languages", mainCategory: 'Apps & Dev', tags: ['Education', 'Gamified', 'Free Apps'], pricing: 'Free', desc: 'Master the languages of the multiverse. A high-end, gamified learning app for fictional tongues like Minionese, Klingon, and High Valyrian.', url: 'https://babel-learn-fiction.netlify.app/', previewUrl: 'https://babel-learn-fiction.netlify.app/', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <BookOpen size={20} /> },
+  { name: "Virtuoso Web Piano & Beat Studio", mainCategory: 'Interactive Experiences', tags: ['Music', 'Interactive', 'Free Apps'], pricing: 'Free', desc: 'A premium, responsive web music workstation featuring a Grand Piano, multiple synthesizers, and a 16-pad Beat Studio for rhythm creation.', url: 'https://virtuoso-keys.netlify.app/', previewUrl: 'https://virtuoso-keys.netlify.app/', color: 'text-amber-400', bg: 'bg-amber-500/10', icon: <Palette size={20} /> },
   { name: "The Architect's Doodle Trap", mainCategory: 'Interactive Experiences', tags: ['Games', 'Free Apps'], pricing: 'Free', desc: 'A creative puzzle game built for the web.', url: 'https://the-architects-doodle-trap.netlify.app/', previewUrl: 'https://the-architects-doodle-trap.netlify.app/', color: 'text-yellow-400', bg: 'bg-yellow-500/10', icon: <Gamepad2 size={20} /> },
   { name: "Trust Nothing", mainCategory: 'Interactive Experiences', tags: ['Games', 'Free Apps'], pricing: 'Free', desc: 'A psychological thriller game that challenges your perception.', url: 'https://trust-nothing.netlify.app/', previewUrl: 'https://trust-nothing.netlify.app/', color: 'text-red-500', bg: 'bg-red-500/10', icon: <Gamepad2 size={20} /> },
   { name: "Gekko Dash", mainCategory: 'Interactive Experiences', tags: ['Games', 'Free Apps'], pricing: 'Free', desc: 'A fast-paced neon runner game with addictive mechanics.', url: 'https://gekko-dash.netlify.app/', previewUrl: 'https://gekko-dash.netlify.app/', color: 'text-lime-400', bg: 'bg-lime-500/10', icon: <Gamepad2 size={20} /> },
-  { name: 'Vesper AI Notes', mainCategory: 'Apps & Dev', tags: ['SaaS', 'AI Tools', 'Free Apps'], pricing: 'Free', desc: 'AI-powered note-taking and knowledge base.', url: 'https://vesper-ai-notes.netlify.app/', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: <Bot size={20} /> },
-  { name: 'Vibelex', mainCategory: 'Web Platforms', tags: ['SaaS', 'Free Apps'], pricing: 'Free', desc: 'Modern digital experience platform.', url: 'https://vibelex.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Globe size={20} /> },
-  { name: 'Zen Maker', mainCategory: 'Apps & Dev', tags: ['SaaS'], pricing: 'Paid', price: '$2.99/yr', desc: 'Minimalist creation tool for focused builders.', url: 'https://zen-maker.netlify.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Layout size={20} /> },
-  { name: 'LevelUp Hero', mainCategory: 'Apps & Dev', tags: ['Mobile', 'Free Apps'], pricing: 'Free', desc: "Gamified OS for your life's journey.", url: 'https://levelup-heros-journey-os.vercel.app/', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <Smartphone size={20} /> },
-  { name: 'Kairos Beta', mainCategory: 'Apps & Dev', tags: ['SaaS', 'AI Tools'], pricing: 'Paid', desc: 'Time management redefined for the AI era.', url: 'https://kairos-beta3.vercel.app/', color: 'text-rose-400', bg: 'bg-rose-500/10', icon: <AppWindow size={20} /> },
+  { name: 'Vesper AI Notes', mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools', 'Free Apps'], pricing: 'Free', desc: 'AI-powered note-taking and knowledge base.', url: 'https://vesper-ai-notes.netlify.app/', previewUrl: 'https://vesper-ai-notes.netlify.app/', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: <Bot size={20} /> },
+  { name: 'Vibelex', mainCategory: 'Web Platforms', tags: ['SaaS', 'Free Apps'], pricing: 'Free', desc: 'Modern digital experience platform.', url: 'https://vibelex.netlify.app/', previewUrl: 'https://vibelex.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Globe size={20} /> },
+  { name: 'Zen Maker', mainCategory: 'Apps & Dev', tags: ['SaaS'], pricing: 'Paid', price: '$2.99/yr', desc: 'Minimalist creation tool for focused builders.', url: 'https://zen-maker.netlify.app/', previewUrl: 'https://zen-maker.netlify.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Layout size={20} /> },
+  { name: 'LevelUp Hero', mainCategory: 'Apps & Dev', tags: ['Mobile', 'Free Apps'], pricing: 'Free', desc: "Gamified OS for your life's journey.", url: 'https://levelup-heros-journey-os.vercel.app/', previewUrl: 'https://levelup-heros-journey-os.vercel.app/', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <Smartphone size={20} /> },
+  { name: 'Kairos Beta', mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Paid', desc: 'Time management redefined for the AI era.', url: 'https://kairos-beta3.vercel.app/', previewUrl: 'https://kairos-beta3.vercel.app/', color: 'text-rose-400', bg: 'bg-rose-500/10', icon: <AppWindow size={20} /> },
   { name: 'Cyber Quest', mainCategory: 'Interactive Experiences', tags: ['Games', 'Free Apps'], pricing: 'Free', desc: 'A futuristic RPG built with React & Three.js.', url: '#', color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: <Gamepad2 size={20} /> },
-  { name: 'SpeakEasy AI', mainCategory: 'Apps & Dev', tags: ['Repos', 'Free Apps', 'AI Tools'], pricing: 'Free', desc: '100% Free AI Text-To-Speech Tool.', url: 'https://github.com/Mr-ABX/SpeakEasy-AI-Text-To-Speech-Tool---100-Free-by-AbdulrahmanT', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Mic size={20} /> },
-  { name: 'AI Personality Quiz', mainCategory: 'Apps & Dev', tags: ['Repos', 'AI Tools'], pricing: 'Free', desc: 'Local run AI Personality Quiz Model.', url: 'https://github.com/Mr-ABX/AI-Personality-Quiz-Model', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Brain size={20} /> },
+  { name: 'SpeakEasy AI', mainCategory: 'AI Solutions', tags: ['Repos', 'Free Apps', 'AI Tools'], pricing: 'Free', desc: '100% Free AI Text-To-Speech Tool.', url: 'https://github.com/Mr-ABX/SpeakEasy-AI-Text-To-Speech-Tool---100-Free-by-AbdulrahmanT', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Mic size={20} /> },
+  { name: 'AI Personality Quiz', mainCategory: 'AI Solutions', tags: ['Repos', 'AI Tools'], pricing: 'Free', desc: 'Local run AI Personality Quiz Model.', url: 'https://github.com/Mr-ABX/AI-Personality-Quiz-Model', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Brain size={20} /> },
   { name: 'ASCII TypeArt', mainCategory: 'Apps & Dev', tags: ['Repos', 'Free Apps', 'AI Tools'], pricing: 'Free', desc: 'AI art generator for ASCII Canvas.', url: 'https://github.com/Mr-ABX/ASCII-TypeArt-Canvas-Img-to-Art-', color: 'text-teal-400', bg: 'bg-teal-500/10', icon: <Palette size={20} /> },
-  { name: 'GenAI Studio', mainCategory: 'Apps & Dev', tags: ['AI Tools', 'SaaS', 'GenAI'], pricing: 'Paid', price: 'Custom', desc: 'Enterprise-grade generative AI platform for content creation.', url: '#', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <Sparkles size={20} /> },
+  { name: 'GenAI Studio', mainCategory: 'AI Solutions', tags: ['AI Tools', 'SaaS', 'GenAI'], pricing: 'Paid', price: 'Custom', desc: 'Enterprise-grade generative AI platform for content creation.', url: '#', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <Sparkles size={20} /> },
 ];
 
 const reviews = [
@@ -249,7 +253,7 @@ const LiveAutomationFeed = () => {
 
 const FeaturedCarousel = ({ projects, onSelect }: { projects: any[], onSelect: (p: any) => void }) => {
   const [index, setIndex] = useState(0);
-  const featured = useMemo(() => projects.filter(p => ['Trust Nothing', 'Gekko Dash', 'The Architect\'s Doodle Trap', 'Vesper AI Notes'].includes(p.name)), [projects]);
+  const featured = useMemo(() => projects.filter(p => ['FlowType - Minimalist Touch Typing', 'Babel | Learn Fictional Languages', 'Virtuoso Web Piano & Beat Studio', 'Trust Nothing', 'Gekko Dash', 'The Architect\'s Doodle Trap', 'Vesper AI Notes'].includes(p.name)), [projects]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -276,10 +280,18 @@ const FeaturedCarousel = ({ projects, onSelect }: { projects: any[], onSelect: (
           className="absolute inset-0 p-8 flex flex-col"
         >
           {/* Background Decoration */}
-          <div className="absolute inset-0 opacity-20 pointer-events-none">
-            <div className={`absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,_var(--tw-gradient-from)_0%,_transparent_70%)] ${current.bg.replace('bg-', 'from-')}`} />
+          <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[2rem]">
+            {current.url !== '#' && (
+              <img 
+                src={`https://image.thum.io/get/width/1200/crop/800/noanimate/${current.url}`}
+                alt={current.name}
+                className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover/featured:scale-105 transition-transform duration-700"
+              />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent" />
+            <div className={`absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_70%_30%,_var(--tw-gradient-from)_0%,_transparent_70%)] ${current.bg.replace('bg-', 'from-')}`} />
             <div className="absolute right-0 bottom-0 translate-x-1/4 translate-y-1/4">
-              {React.cloneElement(current.icon as React.ReactElement, { size: 240, className: `${current.color} opacity-20 rotate-12` })}
+              {React.cloneElement(current.icon as React.ReactElement, { size: 240, className: `${current.color} opacity-10 rotate-12` })}
             </div>
           </div>
 
@@ -352,7 +364,7 @@ export default function App() {
   };
 
   const [projectFilter, setProjectFilter] = useState<string>('All');
-  const [activeProjectCategory, setActiveProjectCategory] = useState<string | null>(null);
+  const [activeProjectCategory, setActiveProjectCategory] = useState<ProjectCategory | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -753,6 +765,19 @@ export default function App() {
         if (!activeProjectCategory) {
           return (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-[200px]">
+              <BentoCard size="2x1" onClick={() => setActiveProjectCategory('AI Solutions')} className="cursor-pointer hover:bg-emerald-500/10 transition-colors group relative overflow-hidden">
+                <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                  <Brain size={160} />
+                </div>
+                <div className="relative z-10 flex flex-col h-full justify-center">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 group-hover:scale-110 transition-transform">
+                    <Brain size={24} />
+                  </div>
+                  <h3 className="text-3xl font-bold mb-2">AI Solutions</h3>
+                  <p className="text-white/50 text-sm max-w-md leading-relaxed">Enterprise-grade AI Platforms, LLM Tools, and Autonomous Agents designed for the next generation of digital growth.</p>
+                </div>
+              </BentoCard>
+
               <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Apps & Dev')} className="cursor-pointer hover:bg-indigo-500/10 transition-colors group relative overflow-hidden">
                 <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
                   <Code2 size={120} />
@@ -863,17 +888,15 @@ export default function App() {
                         className={cn(p.bg, "border-white/5 cursor-pointer relative overflow-hidden group/project")}
                         onClick={() => setSelectedProject(p)}
                       >
-                        {(p as any).previewUrl && (
-                          <div className="absolute inset-0 z-0 opacity-20 group-hover/project:opacity-60 transition-opacity duration-500 pointer-events-none">
-                            <div className="w-[200%] h-[200%] origin-top-left scale-50">
-                              <iframe 
-                                src={(p as any).previewUrl} 
-                                className="w-full h-full border-0"
-                                tabIndex={-1}
-                                aria-hidden="true"
-                              />
-                            </div>
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                        {p.url !== '#' && (
+                          <div className="absolute inset-0 z-0 opacity-20 group-hover/project:opacity-50 transition-opacity duration-500 pointer-events-none overflow-hidden rounded-[2rem]">
+                            <img 
+                              src={`https://image.thum.io/get/width/600/crop/600/noanimate/${p.url}`}
+                              alt={p.name}
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover/project:scale-110"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent" />
                           </div>
                         )}
                         <div className="flex flex-col h-full relative z-10">
@@ -1634,6 +1657,29 @@ export default function App() {
                     </div>
                   </div>
                 </div>
+
+                {/* Live Preview Section */}
+                {(selectedProject as any).previewUrl && (
+                  <div className="mt-12">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-1 h-6 bg-indigo-500 rounded-full" />
+                      <h3 className="text-xl font-bold tracking-tight">Live Preview</h3>
+                    </div>
+                    <div className="w-full aspect-video rounded-[2rem] overflow-hidden border border-white/10 glass relative group/preview shadow-2xl">
+                      <iframe 
+                        src={(selectedProject as any).previewUrl} 
+                        className="w-full h-full border-0"
+                        title={`${selectedProject.name} Live Preview`}
+                      />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/preview:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                        <div className="px-6 py-3 rounded-2xl bg-white text-black font-bold flex items-center gap-2">
+                          <ExternalLink size={18} />
+                          Interact with App
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </motion.div>
           </motion.div>
