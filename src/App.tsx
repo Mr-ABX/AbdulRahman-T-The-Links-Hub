@@ -76,6 +76,7 @@ interface BentoCardProps {
   size?: '1x1' | '2x1' | '2x2' | '1x2' | '3x1' | '3x2' | '4x1';
   delay?: number;
   onClick?: () => void;
+  background?: React.ReactNode;
   key?: React.Key;
 }
 
@@ -112,7 +113,7 @@ const SkeletonCard = ({ size = '1x1' }: { size?: BentoCardProps['size'], key?: R
   );
 };
 
-const BentoCard = ({ children, className, size = '1x1', delay = 0, onClick }: BentoCardProps) => {
+const BentoCard = ({ children, className, size = '1x1', delay = 0, onClick, background }: BentoCardProps) => {
   const sizeClasses = {
     '1x1': 'col-span-1 row-span-1',
     '2x1': 'col-span-1 md:col-span-2 row-span-1',
@@ -143,6 +144,7 @@ const BentoCard = ({ children, className, size = '1x1', delay = 0, onClick }: Be
         className
       )}
     >
+      {background}
       <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       <div className="relative z-10 h-full flex flex-col justify-between">
         {children}
@@ -868,9 +870,8 @@ export default function App() {
                             size="1x1" 
                             className={cn(p.bg, "border-white/5 cursor-pointer relative overflow-hidden group/project h-[320px]")}
                             onClick={() => setSelectedProject(p)}
-                          >
-                            {p.url !== '#' && (
-                              <div className="absolute inset-0 z-0 opacity-20 group-hover/project:opacity-60 transition-opacity duration-500 pointer-events-none overflow-hidden rounded-[2rem]">
+                            background={p.url !== '#' ? (
+                              <div className="absolute inset-0 z-0 opacity-30 group-hover/project:opacity-70 transition-opacity duration-500 pointer-events-none overflow-hidden">
                                 <img 
                                   src={`https://image.thum.io/get/width/600/crop/600/noanimate/${p.url}`}
                                   alt={p.name}
@@ -878,9 +879,10 @@ export default function App() {
                                   loading="lazy"
                                   referrerPolicy="no-referrer"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent" />
                               </div>
-                            )}
+                            ) : null}
+                          >
                             <div className="flex flex-col h-full relative z-10">
                               <div className="flex justify-between items-start mb-4">
                                 <div className={cn("p-3 rounded-2xl bg-black/20 backdrop-blur-md", p.color)}>
@@ -1061,9 +1063,8 @@ export default function App() {
                         size={i === 0 && projectFilter === 'All' ? "2x1" : "1x1"} 
                         className={cn(p.bg, "border-white/5 cursor-pointer relative overflow-hidden group/project")}
                         onClick={() => setSelectedProject(p)}
-                      >
-                        {p.url !== '#' && (
-                          <div className="absolute inset-0 z-0 opacity-20 group-hover/project:opacity-50 transition-opacity duration-500 pointer-events-none overflow-hidden rounded-[2rem]">
+                        background={p.url !== '#' ? (
+                          <div className="absolute inset-0 z-0 opacity-30 group-hover/project:opacity-60 transition-opacity duration-500 pointer-events-none overflow-hidden">
                             <img 
                               src={`https://image.thum.io/get/width/600/crop/600/noanimate/${p.url}`}
                               alt={p.name}
@@ -1071,9 +1072,10 @@ export default function App() {
                               loading="lazy"
                               referrerPolicy="no-referrer"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/70 to-transparent" />
                           </div>
-                        )}
+                        ) : null}
+                      >
                         <div className="flex flex-col h-full relative z-10">
                           <div className="flex justify-between items-start mb-4">
                             <div className={cn("p-2 rounded-xl bg-black/20", p.color)}>
