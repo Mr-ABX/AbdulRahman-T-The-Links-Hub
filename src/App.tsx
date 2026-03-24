@@ -114,12 +114,12 @@ const SkeletonCard = ({ size = '1x1' }: { size?: BentoCardProps['size'], key?: R
 const BentoCard = ({ children, className, size = '1x1', delay = 0, onClick }: BentoCardProps) => {
   const sizeClasses = {
     '1x1': 'col-span-1 row-span-1',
-    '2x1': 'col-span-2 row-span-1',
-    '2x2': 'col-span-2 row-span-2',
+    '2x1': 'col-span-1 md:col-span-2 row-span-1',
+    '2x2': 'col-span-1 md:col-span-2 row-span-2',
     '1x2': 'col-span-1 row-span-2',
-    '3x1': 'col-span-3 row-span-1',
-    '3x2': 'col-span-3 row-span-2',
-    '4x1': 'col-span-4 row-span-1',
+    '3x1': 'col-span-1 md:col-span-3 row-span-1',
+    '3x2': 'col-span-1 md:col-span-3 row-span-2',
+    '4x1': 'col-span-1 md:col-span-4 row-span-1',
   };
 
   return (
@@ -267,7 +267,7 @@ const FeaturedCarousel = ({ projects, onSelect }: { projects: any[], onSelect: (
   return (
     <BentoCard 
       size="2x2" 
-      className="relative overflow-hidden group/featured cursor-pointer border-indigo-500/30 bg-indigo-500/5 shadow-[0_0_30px_rgba(99,102,241,0.05)]"
+      className="relative overflow-hidden group/featured cursor-pointer border-indigo-500/30 bg-indigo-500/5 shadow-[0_0_30px_rgba(99,102,241,0.05)] min-h-[450px] md:min-h-0"
       onClick={() => onSelect(current)}
     >
       <AnimatePresence mode="wait">
@@ -277,7 +277,7 @@ const FeaturedCarousel = ({ projects, onSelect }: { projects: any[], onSelect: (
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 1.05 }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
-          className="absolute inset-0 p-8 flex flex-col"
+          className="absolute inset-0 p-6 md:p-8 flex flex-col"
         >
           {/* Background Decoration */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[2rem]">
@@ -286,6 +286,7 @@ const FeaturedCarousel = ({ projects, onSelect }: { projects: any[], onSelect: (
                 src={`https://image.thum.io/get/width/1200/crop/800/noanimate/${current.url}`}
                 alt={current.name}
                 className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover/featured:scale-105 transition-transform duration-700"
+                referrerPolicy="no-referrer"
               />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent" />
@@ -296,9 +297,9 @@ const FeaturedCarousel = ({ projects, onSelect }: { projects: any[], onSelect: (
           </div>
 
           <div className="relative z-10 h-full flex flex-col">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-4 md:mb-6">
               <div className="flex items-center gap-3">
-                <div className={`w-12 h-12 rounded-2xl ${current.bg} flex items-center justify-center ${current.color} shadow-lg`}>
+                <div className={`w-10 h-10 md:w-12 md:h-12 rounded-2xl ${current.bg} flex items-center justify-center ${current.color} shadow-lg`}>
                   {React.cloneElement(current.icon as React.ReactElement, { size: 24 })}
                 </div>
                 <div>
@@ -319,15 +320,15 @@ const FeaturedCarousel = ({ projects, onSelect }: { projects: any[], onSelect: (
             </div>
             
             <div className="mt-auto">
-              <h3 className="text-4xl font-bold mb-4 tracking-tight group-hover/featured:translate-x-2 transition-transform duration-500">{current.name}</h3>
-              <p className="text-white/60 text-lg max-w-md mb-8 leading-relaxed line-clamp-3">{current.desc}</p>
+              <h3 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 tracking-tight group-hover/featured:translate-x-2 transition-transform duration-500">{current.name}</h3>
+              <p className="text-white/60 text-sm md:text-lg max-w-md mb-6 md:mb-8 leading-relaxed line-clamp-3">{current.desc}</p>
               
               <div className="flex items-center gap-4">
-                <div className={`px-6 py-3 rounded-2xl ${current.bg} ${current.color} font-bold text-sm flex items-center gap-2 group-hover/featured:scale-105 transition-all shadow-xl border border-white/5`}>
+                <div className={`px-4 py-2 md:px-6 md:py-3 rounded-2xl ${current.bg} ${current.color} font-bold text-xs md:text-sm flex items-center gap-2 group-hover/featured:scale-105 transition-all shadow-xl border border-white/5`}>
                   <span>Explore Now</span>
                   <ArrowRight size={18} />
                 </div>
-                <div className="text-white/30 text-xs font-medium italic">
+                <div className="text-white/30 text-[10px] md:text-xs font-medium italic">
                   Click to view details
                 </div>
               </div>
@@ -422,7 +423,7 @@ export default function App() {
                       className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile:scale-105"
                       referrerPolicy="no-referrer"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80';
+                        (e.target as HTMLImageElement).src = 'https://api.dicebear.com/7.x/notionists/svg?seed=Abdulrahman&backgroundColor=6366f1';
                       }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent"></div>
@@ -523,7 +524,7 @@ export default function App() {
                 <h3 className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                   <Book size={12} className="text-purple-400" /> Learn & Connect
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-[180px]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-[minmax(180px,auto)]">
                   
                   {/* AI Assistant Quick Widget */}
                   <BentoCard size="2x1" className="bg-gradient-to-br from-indigo-500/10 to-purple-600/10 border-indigo-500/20 group/ai-widget relative overflow-hidden">
@@ -613,7 +614,7 @@ export default function App() {
                 <h3 className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                   <AppWindow size={12} className="text-indigo-400" /> Explore My Work
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-[180px]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-[minmax(180px,auto)]">
 
                   {/* Featured Carousel Widget */}
                   <FeaturedCarousel projects={projects} onSelect={setSelectedProject} />
@@ -695,7 +696,7 @@ export default function App() {
                 <h3 className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                   <Briefcase size={12} className="text-emerald-400" /> Work With Me
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-[180px]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-[minmax(180px,auto)]">
                   
                   {/* Calendar / Consultation Widget */}
                   <BentoCard size="1x1" className="bg-amber-500/5 border-amber-500/10 group/cal cursor-pointer" onClick={() => window.open('https://calendly.com/digital-b3asts/quick-free-consultation', '_blank')}>
@@ -764,7 +765,7 @@ export default function App() {
       case 'Projects':
         if (!activeProjectCategory) {
           return (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-[200px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-[minmax(200px,auto)]">
               <BentoCard size="2x1" onClick={() => setActiveProjectCategory('AI Solutions')} className="cursor-pointer hover:bg-emerald-500/10 transition-colors group relative overflow-hidden">
                 <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
                   <Brain size={160} />
@@ -874,7 +875,7 @@ export default function App() {
                 <p className="text-white/50">I'm currently working on exciting things for this category.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[180px]">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(180px,auto)]">
                 {isLoading ? (
                   Array.from({ length: 6 }).map((_, i) => (
                     <SkeletonCard key={i} size={i === 0 && projectFilter === 'All' ? "2x1" : "1x1"} />
@@ -895,6 +896,7 @@ export default function App() {
                               alt={p.name}
                               className="w-full h-full object-cover transition-transform duration-700 group-hover/project:scale-110"
                               loading="lazy"
+                              referrerPolicy="no-referrer"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent" />
                           </div>
@@ -931,7 +933,7 @@ export default function App() {
 
       case 'Automation':
         return (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[200px]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
             <BentoCard size="2x1" className="bg-purple-500/5 border-purple-500/10">
               <div className="flex justify-between items-start">
                 <div>
@@ -993,13 +995,17 @@ export default function App() {
 
       case 'Ebooks':
         return (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[220px]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(220px,auto)]">
             <BentoCard size="2x2" className="p-0 overflow-hidden group/book">
               <div className="relative h-full w-full">
                 <img 
                   src="/assets/31 ways to ruin your life cover.png" 
                   alt="31 Ways to Ruin Your Life" 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover/book:scale-105"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800&q=80';
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-8">
                   <div className="flex items-center gap-2 mb-2">
@@ -1059,7 +1065,7 @@ export default function App() {
 
       case 'Content':
         return (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[200px]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
             <BentoCard size="2x1" className="bg-red-500/5 border-red-500/10">
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-start mb-4">
@@ -1112,7 +1118,7 @@ export default function App() {
                 <div className="w-1 h-6 bg-indigo-500 rounded-full" />
                 <h2 className="text-2xl font-bold tracking-tight">About</h2>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[160px]">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[minmax(160px,auto)]">
                 {/* Profile Card (Mini) */}
                 <BentoCard size="2x2" className="bg-gradient-to-br from-indigo-500/10 to-purple-500/10 p-8 flex flex-col justify-between group/profile-mini relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-50" />
@@ -1125,7 +1131,7 @@ export default function App() {
                         className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile-mini:scale-105"
                         referrerPolicy="no-referrer"
                         onError={(e) => {
-                          (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80';
+                          (e.target as HTMLImageElement).src = 'https://api.dicebear.com/7.x/notionists/svg?seed=Abdulrahman&backgroundColor=6366f1';
                         }}
                       />
                     </div>
@@ -1222,7 +1228,7 @@ export default function App() {
                 <div className="w-1 h-6 bg-purple-500 rounded-full" />
                 <h2 className="text-2xl font-bold tracking-tight">Ventures</h2>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[180px]">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(180px,auto)]">
                 {/* Personal Site */}
                 <BentoCard size="2x1" className="bg-indigo-500/5 border-indigo-500/10 group/site">
                   <div className="flex items-center justify-between h-full">
@@ -1410,7 +1416,7 @@ export default function App() {
 
       case 'Connect':
         return (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[140px]">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[minmax(140px,auto)]">
              {/* Calendly Card */}
             <BentoCard size="2x2" className="bg-amber-500/5 border-amber-500/10 group/cal cursor-pointer" onClick={() => window.open('https://calendly.com/digital-b3asts/quick-free-consultation', '_blank')}>
               <div className="flex flex-col h-full justify-center items-center text-center p-8">
