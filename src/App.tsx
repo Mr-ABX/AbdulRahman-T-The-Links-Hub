@@ -55,7 +55,9 @@ import {
   Users,
   Activity,
   X,
-  Download
+  Download,
+  LayoutGrid,
+  List
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -68,7 +70,7 @@ function cn(...inputs: ClassValue[]) {
 }
 
 type Category = 'Home' | 'Projects' | 'Automation' | 'Ebooks' | 'Content' | 'About' | 'Reviews' | 'Connect';
-type ProjectCategory = 'Apps & Dev' | 'Web Platforms' | 'Interactive Experiences' | 'Graphics & Marketing' | 'AI Solutions';
+type ProjectCategory = 'Apps & Dev' | 'Web Platforms' | 'Interactive Experiences' | 'Video & Motion Graphics' | 'AI Solutions';
 
 interface BentoCardProps {
   children: React.ReactNode;
@@ -174,7 +176,7 @@ const projects = [
   { name: "Trust Nothing", mainCategory: 'Interactive Experiences', tags: ['Games', 'Free Apps'], pricing: 'Free', desc: 'A psychological thriller game that challenges your perception.', url: 'https://trust-nothing.netlify.app/', previewUrl: 'https://trust-nothing.netlify.app/', color: 'text-red-500', bg: 'bg-red-500/10', icon: <Gamepad2 size={20} /> },
   { name: "Gekko Dash", mainCategory: 'Interactive Experiences', tags: ['Games', 'Free Apps'], pricing: 'Free', desc: 'A fast-paced neon runner game with addictive mechanics.', url: 'https://gekko-dash.netlify.app/', previewUrl: 'https://gekko-dash.netlify.app/', color: 'text-lime-400', bg: 'bg-lime-500/10', icon: <Gamepad2 size={20} /> },
   { name: 'Vesper AI Notes', mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools', 'Free Apps'], pricing: 'Free', desc: 'AI-powered note-taking and knowledge base.', url: 'https://vesper-ai-notes.netlify.app/', previewUrl: 'https://vesper-ai-notes.netlify.app/', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: <Bot size={20} /> },
-  { name: 'Vibelex', mainCategory: 'Web Platforms', tags: ['SaaS', 'Free Apps'], pricing: 'Free', desc: 'Modern digital experience platform.', url: 'https://vibelex.netlify.app/', previewUrl: 'https://vibelex.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Globe size={20} /> },
+  { name: 'Vibelex', mainCategory: 'Apps & Dev', tags: ['SaaS', 'Free Apps'], pricing: 'Free', desc: 'Modern digital experience platform.', url: 'https://vibelex.netlify.app/', previewUrl: 'https://vibelex.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Globe size={20} /> },
   { name: 'Zen Maker', mainCategory: 'Apps & Dev', tags: ['SaaS'], pricing: 'Paid', price: '$2.99/yr', desc: 'Minimalist creation tool for focused builders.', url: 'https://zen-maker.netlify.app/', previewUrl: 'https://zen-maker.netlify.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Layout size={20} /> },
   { name: 'LevelUp Hero', mainCategory: 'Apps & Dev', tags: ['Mobile', 'Free Apps'], pricing: 'Free', desc: "Gamified OS for your life's journey.", url: 'https://levelup-heros-journey-os.vercel.app/', previewUrl: 'https://levelup-heros-journey-os.vercel.app/', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <Smartphone size={20} /> },
   { name: 'Kairos Beta', mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Paid', desc: 'Time management redefined for the AI era.', url: 'https://kairos-beta3.vercel.app/', previewUrl: 'https://kairos-beta3.vercel.app/', color: 'text-rose-400', bg: 'bg-rose-500/10', icon: <AppWindow size={20} /> },
@@ -183,6 +185,12 @@ const projects = [
   { name: 'AI Personality Quiz', mainCategory: 'AI Solutions', tags: ['Repos', 'AI Tools'], pricing: 'Free', desc: 'Local run AI Personality Quiz Model.', url: 'https://github.com/Mr-ABX/AI-Personality-Quiz-Model', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Brain size={20} /> },
   { name: 'ASCII TypeArt', mainCategory: 'Apps & Dev', tags: ['Repos', 'Free Apps', 'AI Tools'], pricing: 'Free', desc: 'AI art generator for ASCII Canvas.', url: 'https://github.com/Mr-ABX/ASCII-TypeArt-Canvas-Img-to-Art-', color: 'text-teal-400', bg: 'bg-teal-500/10', icon: <Palette size={20} /> },
   { name: 'GenAI Studio', mainCategory: 'AI Solutions', tags: ['AI Tools', 'SaaS', 'GenAI'], pricing: 'Paid', price: 'Custom', desc: 'Enterprise-grade generative AI platform for content creation.', url: '#', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <Sparkles size={20} /> },
+  { name: 'Fusion Nexus', mainCategory: 'Apps & Dev', tags: ['Web', 'SaaS'], pricing: 'Free', desc: 'Advanced web platform and digital solutions.', url: 'https://fusionnexus.infni-t.com', previewUrl: 'https://fusionnexus.infni-t.com', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Globe size={20} /> },
+  { name: 'Solution Lab', mainCategory: 'Apps & Dev', tags: ['Web', 'SaaS'], pricing: 'Free', desc: 'Innovative solutions and digital lab.', url: 'https://solutionlab.infni-t.com', previewUrl: 'https://solutionlab.infni-t.com', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: <AppWindow size={20} /> },
+  { name: 'InstaShred', mainCategory: 'Apps & Dev', tags: ['Web', 'Fitness'], pricing: 'Free', desc: 'Fitness and shredding platform.', url: 'https://instashred.com/', previewUrl: 'https://instashred.com/', color: 'text-red-400', bg: 'bg-red-500/10', icon: <Zap size={20} /> },
+  { name: 'Junno Express', mainCategory: 'Apps & Dev', tags: ['Web', 'E-commerce'], pricing: 'Free', desc: 'E-commerce and express delivery platform.', url: 'https://junnoexpress.com/', previewUrl: 'https://junnoexpress.com/', color: 'text-yellow-400', bg: 'bg-yellow-500/10', icon: <Globe size={20} /> },
+  { name: 'Recallers', mainCategory: 'Apps & Dev', tags: ['Web', 'Pets'], pricing: 'Free', desc: 'Dog training and recallers platform.', url: 'https://dogsthat.com/recallers/', previewUrl: 'https://dogsthat.com/recallers/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Globe size={20} /> },
+  { name: 'Video & Motion Graphics Portfolio', mainCategory: 'Video & Motion Graphics', tags: ['Video', 'VFX', 'Portfolio'], pricing: 'Free', desc: 'A showcase of my video editing, motion graphics, and VFX work.', url: 'https://www.youtube.com/watch?v=0Wh7MhqeHHA&list=PL7BsW-EOVU09CgVg1O4vk3U6fujfm1xw9', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Video size={20} /> },
 ];
 
 const reviews = [
@@ -377,6 +385,7 @@ export default function App() {
   const [initialChatMessage, setInitialChatMessage] = useState('');
   const [isInImmersiveMode, setIsInImmersiveMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const navRef = React.useRef<HTMLDivElement>(null);
 
   const openChatWithSearch = (query: string) => {
@@ -549,12 +558,12 @@ export default function App() {
                     <div className="absolute -right-4 -top-4 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl group-hover/ai-widget:bg-indigo-500/20 transition-colors" />
                     <div className="relative z-10 h-full flex flex-col justify-center p-2">
                       <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 p-2 group-hover/ai-widget:scale-110 transition-transform">
-                          <img src="/assets/1-logo.svg" alt="A.T. Intelligence" className="w-full h-full object-contain" />
+                        <div className="w-10 h-10 rounded-xl bg-indigo-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 group-hover/ai-widget:scale-110 transition-transform">
+                          <Bot size={20} />
                         </div>
                         <div>
-                          <h3 className="text-lg font-bold">A.T. Intelligence</h3>
-                          <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Personal AI Assistant</p>
+                          <h3 className="text-lg font-bold">Ask My AI Assistant</h3>
+                          <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Powered by Gemini 3 Flash</p>
                         </div>
                       </div>
                       <div className="relative group/input">
@@ -785,61 +794,125 @@ export default function App() {
           const immersiveTags = ['All', ...Array.from(new Set(projects.flatMap(p => p.tags)))];
           
           return (
-            <div className="space-y-8 min-h-screen pb-20">
-              {/* Immersive Header */}
-              <div className="sticky top-0 z-40 py-6 glass backdrop-blur-3xl border-b border-white/10 px-4 -mx-4 md:-mx-8">
-                <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
-                  <div className="flex items-center gap-4">
+            <div className="flex flex-col md:flex-row gap-8 min-h-screen pb-20 max-w-[1600px] mx-auto px-4 mt-8">
+              {/* Floating Sidebar */}
+              <aside className="w-full md:w-64 lg:w-72 shrink-0">
+                <div className="sticky top-8 glass backdrop-blur-3xl border border-white/10 rounded-[2rem] p-6 flex flex-col gap-8 shadow-2xl">
+                  <div className="flex items-center gap-3">
                     <button 
                       onClick={() => {
                         setIsInImmersiveMode(false);
                         setSearchQuery('');
                         setProjectFilter('All');
                       }} 
-                      className="p-3 rounded-2xl bg-white/5 hover:bg-white/10 transition-all border border-white/10 group"
+                      className="p-2.5 rounded-full bg-white/5 hover:bg-white/10 transition-all border border-white/10 group"
                     >
-                      <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+                      <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
                     </button>
                     <div>
-                      <h2 className="text-2xl font-bold tracking-tight">App Gallery</h2>
-                      <p className="text-xs text-white/40 uppercase tracking-widest font-bold">Explore My Full Portfolio</p>
+                      <h2 className="text-xl font-bold tracking-tight">App Gallery</h2>
+                      <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Portfolio</p>
                     </div>
                   </div>
 
-                  <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 flex-1 max-w-2xl">
-                    <div className="relative flex-1 group">
-                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-indigo-400 transition-colors" size={18} />
+                  <div className="space-y-6">
+                    <div className="relative group">
+                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-indigo-400 transition-colors" size={16} />
                       <input 
                         type="text" 
-                        placeholder="Search apps, games, or tech..." 
+                        placeholder="Search projects..." 
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-indigo-500/50 transition-all focus:bg-white/10"
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-indigo-500/50 transition-all focus:bg-white/10"
                       />
                     </div>
                     
-                    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-                      {['All', 'AI Solutions', 'Apps & Dev', 'Interactive Experiences'].map((cat) => (
-                        <button
-                          key={cat}
-                          onClick={() => setActiveProjectCategory(cat === 'All' ? null : cat as ProjectCategory)}
-                          className={cn(
-                            "px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all whitespace-nowrap border",
-                            (cat === 'All' && !activeProjectCategory) || activeProjectCategory === cat
-                              ? "bg-white text-black border-white" 
-                              : "bg-white/5 text-white/40 border-white/5 hover:bg-white/10"
-                          )}
+                    <div className="space-y-2">
+                      <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3 px-1">Categories</h3>
+                      <div className="flex flex-col gap-1">
+                        {['All', 'AI Solutions', 'Apps & Dev', 'Interactive Experiences', 'Video & Motion Graphics'].map((cat) => {
+                          const isActive = (cat === 'All' && !activeProjectCategory) || activeProjectCategory === cat;
+                          const catTags = cat === 'All' ? [] : Array.from(new Set(projects.filter(p => p.mainCategory === cat).flatMap(p => p.tags)));
+                          
+                          return (
+                            <div key={cat} className="flex flex-col gap-1">
+                              <button
+                                onClick={() => {
+                                  setActiveProjectCategory(cat === 'All' ? null : cat as ProjectCategory);
+                                  setProjectFilter('All');
+                                }}
+                                className={cn(
+                                  "px-4 py-3 rounded-xl text-xs font-bold transition-all text-left border",
+                                  isActive
+                                    ? "bg-white text-black border-white shadow-lg shadow-white/10" 
+                                    : "bg-transparent text-white/60 border-transparent hover:bg-white/5 hover:text-white"
+                                )}
+                              >
+                                {cat}
+                              </button>
+                              
+                              {/* Subcategories (Tags) */}
+                              <AnimatePresence>
+                                {isActive && cat !== 'All' && catTags.length > 0 && (
+                                  <motion.div 
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: 'auto', opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    className="pl-4 py-2 flex flex-col gap-1 border-l border-white/10 ml-2 mt-1 overflow-hidden"
+                                  >
+                                    <button
+                                      onClick={() => setProjectFilter('All')}
+                                      className={cn(
+                                        "text-left text-[10px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all", 
+                                        projectFilter === 'All' ? "bg-white/10 text-white" : "text-white/40 hover:text-white hover:bg-white/5"
+                                      )}
+                                    >
+                                      All {cat}
+                                    </button>
+                                    {catTags.map(tag => (
+                                      <button
+                                        key={tag}
+                                        onClick={() => setProjectFilter(tag)}
+                                        className={cn(
+                                          "text-left text-[10px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all", 
+                                          projectFilter === tag ? "bg-white/10 text-white" : "text-white/40 hover:text-white hover:bg-white/5"
+                                        )}
+                                      >
+                                        {tag}
+                                      </button>
+                                    ))}
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 pt-4 border-t border-white/10">
+                      <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3 px-1">View Mode</h3>
+                      <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10">
+                        <button 
+                          onClick={() => setViewMode('grid')}
+                          className={cn("flex-1 flex justify-center items-center gap-2 py-2 rounded-xl transition-all text-xs font-bold", viewMode === 'grid' ? "bg-white/10 text-white shadow-sm" : "text-white/40 hover:text-white")}
                         >
-                          {cat}
+                          <LayoutGrid size={14} /> Grid
                         </button>
-                      ))}
+                        <button 
+                          onClick={() => setViewMode('list')}
+                          className={cn("flex-1 flex justify-center items-center gap-2 py-2 rounded-xl transition-all text-xs font-bold", viewMode === 'list' ? "bg-white/10 text-white shadow-sm" : "text-white/40 hover:text-white")}
+                        >
+                          <List size={14} /> List
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </aside>
 
-              {/* Immersive Grid */}
-              <div className="max-w-7xl mx-auto px-4">
+              {/* Main Content Area */}
+              <div className="flex-1 min-w-0">
                 {filteredProjects.length === 0 ? (
                   <div className="py-20 text-center glass rounded-[3rem] border border-white/5">
                     <div className="w-20 h-20 rounded-3xl bg-white/5 flex items-center justify-center mx-auto mb-6 text-white/10">
@@ -855,7 +928,10 @@ export default function App() {
                     </button>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  <div className={cn(
+                    "gap-6",
+                    viewMode === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3" : "grid grid-cols-1 xl:grid-cols-2"
+                  )}>
                     <AnimatePresence mode="popLayout">
                       {filteredProjects.map((p, i) => (
                         <motion.div
@@ -868,9 +944,13 @@ export default function App() {
                         >
                           <BentoCard 
                             size="1x1" 
-                            className={cn(p.bg, "border-white/5 cursor-pointer relative overflow-hidden group/project h-[320px]")}
+                            className={cn(
+                              p.bg, 
+                              "border-white/5 cursor-pointer relative overflow-hidden group/project",
+                              viewMode === 'grid' ? "h-[320px]" : "h-auto p-4 flex flex-col sm:flex-row items-start sm:items-center gap-6"
+                            )}
                             onClick={() => setSelectedProject(p)}
-                            background={p.url !== '#' ? (
+                            background={p.url !== '#' && viewMode === 'grid' ? (
                               <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[2rem]">
                                 <img 
                                   src={`https://image.thum.io/get/width/600/crop/600/noanimate/${p.url}`}
@@ -883,32 +963,69 @@ export default function App() {
                               </div>
                             ) : null}
                           >
-                            <div className="flex flex-col h-full relative z-10">
-                              <div className="flex justify-between items-start mb-4">
+                            <div className={cn(
+                              "relative z-10",
+                              viewMode === 'grid' ? "flex flex-col h-full" : "flex flex-col sm:flex-row items-start sm:items-center w-full gap-4"
+                            )}>
+                              <div className={cn(
+                                "flex items-start",
+                                viewMode === 'grid' ? "justify-between mb-4" : "gap-4 shrink-0"
+                              )}>
                                 <div className={cn("p-3 rounded-2xl bg-black/20 backdrop-blur-md", p.color)}>
                                   {p.icon}
                                 </div>
-                                <div className="flex flex-col items-end gap-2">
+                                {viewMode === 'grid' && (
+                                  <div className="flex flex-col items-end gap-2">
+                                    <span className={cn("text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
+                                      {p.pricing}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                              
+                              <div className={cn(
+                                "flex-1",
+                                viewMode === 'grid' ? "mt-auto" : ""
+                              )}>
+                                {viewMode === 'list' && (
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <span className="text-[10px] text-white/40 uppercase tracking-widest">{p.mainCategory}</span>
+                                  </div>
+                                )}
+                                <h3 className={cn("font-bold mb-2 group-hover/project:text-indigo-400 transition-colors", viewMode === 'grid' ? "text-xl" : "text-lg")}>{p.name}</h3>
+                                <p className={cn("text-white/60 font-light leading-relaxed", viewMode === 'grid' ? "text-xs line-clamp-3 mb-auto" : "text-sm line-clamp-2 mb-2")}>{p.desc}</p>
+                                
+                                <div className={cn("flex items-center", viewMode === 'grid' ? "mt-6 justify-between" : "gap-2")}>
+                                  <div className="flex gap-1">
+                                    {p.tags.slice(0, viewMode === 'grid' ? 2 : 4).map(tag => (
+                                      <span key={tag} className="px-2 py-0.5 rounded-md bg-white/5 text-[8px] text-white/40 font-bold uppercase tracking-tighter border border-white/5">
+                                        {tag}
+                                      </span>
+                                    ))}
+                                    {p.tags.length > (viewMode === 'grid' ? 2 : 4) && (
+                                      <span className="px-2 py-0.5 rounded-md bg-white/5 text-[8px] text-white/40 font-bold uppercase tracking-tighter border border-white/5">
+                                        +{p.tags.length - (viewMode === 'grid' ? 2 : 4)}
+                                      </span>
+                                    )}
+                                  </div>
+                                  {viewMode === 'grid' && (
+                                    <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover/project:bg-indigo-500 group-hover/project:text-white transition-all">
+                                      <ArrowRight size={14} />
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+
+                              {viewMode === 'list' && (
+                                <div className="flex flex-col items-end gap-2 shrink-0 ml-auto">
                                   <span className={cn("text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
                                     {p.pricing}
                                   </span>
+                                  <div className="mt-4 p-2 rounded-full bg-white/5 text-white/40 group-hover/project:bg-white/10 group-hover/project:text-white transition-all">
+                                    <ArrowRight size={16} className="group-hover/project:-rotate-45 transition-transform" />
+                                  </div>
                                 </div>
-                              </div>
-                              <h3 className="font-bold text-xl mb-2 group-hover/project:text-indigo-400 transition-colors">{p.name}</h3>
-                              <p className="text-xs text-white/60 line-clamp-3 font-light mb-auto leading-relaxed">{p.desc}</p>
-                              
-                              <div className="mt-6 flex items-center justify-between">
-                                <div className="flex gap-1">
-                                  {p.tags.slice(0, 2).map(tag => (
-                                    <span key={tag} className="px-2 py-0.5 rounded-md bg-white/5 text-[8px] text-white/40 font-bold uppercase tracking-tighter border border-white/5">
-                                      {tag}
-                                    </span>
-                                  ))}
-                                </div>
-                                <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover/project:bg-indigo-500 group-hover/project:text-white transition-all">
-                                  <ArrowRight size={14} />
-                                </div>
-                              </div>
+                              )}
                             </div>
                           </BentoCard>
                         </motion.div>
@@ -992,16 +1109,16 @@ export default function App() {
                 </div>
               </BentoCard>
 
-              <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Graphics & Marketing')} className="cursor-pointer hover:bg-pink-500/10 transition-colors group relative overflow-hidden">
+              <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Video & Motion Graphics')} className="cursor-pointer hover:bg-pink-500/10 transition-colors group relative overflow-hidden">
                 <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <Palette size={120} />
+                  <Video size={120} />
                 </div>
                 <div className="relative z-10 flex flex-col h-full justify-center">
                   <div className="w-12 h-12 rounded-2xl bg-pink-500/20 flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition-transform">
-                    <Palette size={24} />
+                    <Video size={24} />
                   </div>
-                  <h3 className="text-2xl font-bold mb-2">Graphics & Marketing</h3>
-                  <p className="text-white/50 text-sm max-w-[200px]">Design assets, marketing campaigns, and brand identities.</p>
+                  <h3 className="text-2xl font-bold mb-2">Video & Motion Graphics</h3>
+                  <p className="text-white/50 text-sm max-w-[200px]">A showcase of my video editing, motion graphics, and VFX work.</p>
                 </div>
               </BentoCard>
               </div>
@@ -1269,6 +1386,35 @@ export default function App() {
                 <div>
                   <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] mb-1">Blog</p>
                   <h3 className="font-bold text-sm leading-tight group-hover:text-indigo-400 transition-colors">AI in 2026: The Shift to Autonomous Agents</h3>
+                </div>
+              </div>
+            </BentoCard>
+
+            <BentoCard size="2x1" className="bg-purple-500/5 border-purple-500/10 p-0 overflow-hidden group/music">
+              <div className="flex flex-col md:flex-row h-full">
+                <div className="p-6 flex flex-col justify-between flex-1">
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
+                        <Sparkles size={16} />
+                      </div>
+                      <span className="text-[10px] text-purple-400 uppercase tracking-widest font-bold">AI Music</span>
+                    </div>
+                    <h3 className="font-bold text-xl mb-2">My AI Generated Music</h3>
+                    <p className="text-white/50 text-sm font-light">Listen to tracks I've created using advanced AI music generation tools.</p>
+                  </div>
+                </div>
+                <div className="w-full md:w-1/2 min-h-[200px] bg-black/50 relative">
+                  <iframe 
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.youtube.com/embed/VxCV8_2UZIM" 
+                    title="AI Generated Music" 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full object-cover"
+                  ></iframe>
                 </div>
               </div>
             </BentoCard>
@@ -1901,8 +2047,10 @@ export default function App() {
         <footer className="mt-32 py-12 border-t border-white/5">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             <div className="flex flex-col items-center md:items-start gap-2">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center text-white font-bold text-sm">A</div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden p-2">
+                  <img src="/assets/2-logo.svg" alt="Logo" className="w-full h-full object-contain opacity-80" />
+                </div>
                 <span className="font-bold text-lg tracking-tight">Abdulrahman Toor</span>
               </div>
               <p className="text-white/30 text-xs font-light max-w-xs text-center md:text-left">
