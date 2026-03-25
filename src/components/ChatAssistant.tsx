@@ -17,7 +17,7 @@ interface ChatAssistantProps {
 
 export const ChatAssistant = ({ isOpen, setIsOpen, initialMessage, setInitialMessage }: ChatAssistantProps) => {
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: "Hi! I'm Abdulrahman's AI assistant. How can I help you today? I can tell you about his projects, skills, or help you book a meeting." }
+    { role: 'model', text: "Hi! I'm A.T. Intelligence, Abdulrahman's personal AI. How can I help you today? I can tell you about his projects, skills, or help you book a meeting." }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -100,11 +100,11 @@ export const ChatAssistant = ({ isOpen, setIsOpen, initialMessage, setInitialMes
             {/* Header */}
             <div className="p-6 border-b border-white/5 bg-white/5 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
-                  <Bot size={20} />
+                <div className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 p-2">
+                  <img src="/assets/1-logo.svg" alt="A.T. AI" className="w-full h-full object-contain" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm">AI Assistant</h3>
+                  <h3 className="font-bold text-sm">A.T. Intelligence</h3>
                   <div className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span className="text-[10px] text-white/40 font-medium uppercase tracking-wider">Online</span>
@@ -177,12 +177,16 @@ export const ChatAssistant = ({ isOpen, setIsOpen, initialMessage, setInitialMes
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="w-16 h-16 rounded-full bg-indigo-500 flex items-center justify-center text-white shadow-2xl shadow-indigo-500/40 hover:bg-indigo-400 transition-all relative group"
+        className="w-16 h-16 rounded-full bg-[#0a0a0a] border border-white/10 backdrop-blur-xl flex items-center justify-center text-white shadow-[0_0_30px_rgba(99,102,241,0.3)] hover:bg-white/5 transition-all relative group"
       >
         <div className="absolute inset-0 rounded-full bg-indigo-500 animate-ping opacity-20 group-hover:opacity-0 transition-opacity" />
-        {isOpen ? <X size={28} /> : <MessageCircle size={28} />}
+        {isOpen ? (
+          <X size={28} />
+        ) : (
+          <img src="/assets/1-logo.svg" alt="A.T. Intelligence" className="w-8 h-8 object-contain" />
+        )}
         {!isOpen && (
-          <div className="absolute -top-2 -right-2 w-6 h-6 bg-emerald-500 rounded-full border-4 border-[#050505] flex items-center justify-center">
+          <div className="absolute -top-1 -right-1 w-5 h-5 bg-indigo-500 rounded-full border-2 border-[#050505] flex items-center justify-center">
             <Sparkles size={10} className="text-white" />
           </div>
         )}

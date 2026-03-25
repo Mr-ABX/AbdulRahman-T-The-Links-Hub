@@ -60,9 +60,9 @@ export const CustomCursor = () => {
         transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }}
       />
       
-      {/* Normal State: Logo */}
+      {/* Normal State: Sleek Triangle */}
       <motion.div
-        className="absolute w-6 h-6"
+        className="absolute w-full h-full"
         initial={false}
         animate={{ 
           scale: isHovering ? 0 : 1,
@@ -70,11 +70,9 @@ export const CustomCursor = () => {
         }}
         transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }}
       >
-        <img 
-          src="/assets/1-logo.svg" 
-          alt="cursor" 
-          className="w-full h-full object-contain"
-        />
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 16 L28 19 L22 22 L19 28 Z" />
+        </svg>
       </motion.div>
     </div>
   );

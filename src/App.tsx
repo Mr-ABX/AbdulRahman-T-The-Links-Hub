@@ -549,12 +549,12 @@ export default function App() {
                     <div className="absolute -right-4 -top-4 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl group-hover/ai-widget:bg-indigo-500/20 transition-colors" />
                     <div className="relative z-10 h-full flex flex-col justify-center p-2">
                       <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 rounded-xl bg-indigo-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 group-hover/ai-widget:scale-110 transition-transform">
-                          <Bot size={20} />
+                        <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 p-2 group-hover/ai-widget:scale-110 transition-transform">
+                          <img src="/assets/1-logo.svg" alt="A.T. Intelligence" className="w-full h-full object-contain" />
                         </div>
                         <div>
-                          <h3 className="text-lg font-bold">Ask My AI Assistant</h3>
-                          <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Powered by Gemini 3 Flash</p>
+                          <h3 className="text-lg font-bold">A.T. Intelligence</h3>
+                          <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Personal AI Assistant</p>
                         </div>
                       </div>
                       <div className="relative group/input">
