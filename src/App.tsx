@@ -70,7 +70,7 @@ function cn(...inputs: ClassValue[]) {
 }
 
 type Category = 'Home' | 'Projects' | 'Automation' | 'Ebooks' | 'Content' | 'About' | 'Reviews' | 'Connect';
-type ProjectCategory = 'Apps & Dev' | 'Web Platforms' | 'Interactive Experiences' | 'Video & Motion Graphics' | 'AI Solutions';
+type ProjectCategory = 'Apps & Dev' | 'Web Development Projects' | 'Interactive Experiences' | 'Video & Motion Graphics' | 'Graphics & Marketing' | 'AI Solutions';
 
 interface BentoCardProps {
   children: React.ReactNode;
@@ -167,30 +167,30 @@ const tabs: { name: Category; icon: React.ReactNode }[] = [
 ];
 
 const projects = [
-  { name: "ARGUS // INTELLIGENCE", mainCategory: 'AI Solutions', tags: ['Cybersecurity', 'OSINT', 'SaaS'], pricing: 'Paid', desc: 'A high-tech cybersecurity dashboard tracking visitor IP, location, and network details with a live map interface.', url: 'https://argus-osint-soc.vercel.app/', previewUrl: 'https://argus-osint-soc.vercel.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Globe size={20} /> },
-  { name: "Koe Audio Studio", mainCategory: 'AI Solutions', tags: ['Audio', 'AI Tools', 'SaaS'], pricing: 'Paid', desc: 'Next-generation parametric voice synthesis suite. Voice cloning and advanced speech generation.', url: 'https://koe-audiostudio.netlify.app/', previewUrl: 'https://koe-audiostudio.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Mic size={20} /> },
-  { name: "FlowType - Minimalist Touch Typing", mainCategory: 'Interactive Experiences', tags: ['Typing', 'Interactive', 'AI Tools', 'Free Apps'], pricing: 'Free', desc: 'An ultra-minimalist, distraction-free touch typing application with mechanical keyboard sounds, real-time analytics, and AI-generated practice content.', url: 'https://theflowtype.netlify.app/', previewUrl: 'https://theflowtype.netlify.app/', color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: <Terminal size={20} /> },
-  { name: "Babel | Learn Fictional Languages", mainCategory: 'Apps & Dev', tags: ['Education', 'Gamified', 'Free Apps'], pricing: 'Free', desc: 'Master the languages of the multiverse. A high-end, gamified learning app for fictional tongues like Minionese, Klingon, and High Valyrian.', url: 'https://babel-learn-fiction.netlify.app/', previewUrl: 'https://babel-learn-fiction.netlify.app/', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <BookOpen size={20} /> },
-  { name: "Virtuoso Web Piano & Beat Studio", mainCategory: 'Interactive Experiences', tags: ['Music', 'Interactive', 'Free Apps'], pricing: 'Free', desc: 'A premium, responsive web music workstation featuring a Grand Piano, multiple synthesizers, and a 16-pad Beat Studio for rhythm creation.', url: 'https://virtuoso-keys.netlify.app/', previewUrl: 'https://virtuoso-keys.netlify.app/', color: 'text-amber-400', bg: 'bg-amber-500/10', icon: <Palette size={20} /> },
-  { name: "The Architect's Doodle Trap", mainCategory: 'Interactive Experiences', tags: ['Games', 'Free Apps'], pricing: 'Free', desc: 'A creative puzzle game built for the web.', url: 'https://the-architects-doodle-trap.netlify.app/', previewUrl: 'https://the-architects-doodle-trap.netlify.app/', color: 'text-yellow-400', bg: 'bg-yellow-500/10', icon: <Gamepad2 size={20} /> },
-  { name: "Trust Nothing", mainCategory: 'Interactive Experiences', tags: ['Games', 'Free Apps'], pricing: 'Free', desc: 'A psychological thriller game that challenges your perception.', url: 'https://trust-nothing.netlify.app/', previewUrl: 'https://trust-nothing.netlify.app/', color: 'text-red-500', bg: 'bg-red-500/10', icon: <Gamepad2 size={20} /> },
-  { name: "Gekko Dash", mainCategory: 'Interactive Experiences', tags: ['Games', 'Free Apps'], pricing: 'Free', desc: 'A fast-paced neon runner game with addictive mechanics.', url: 'https://gekko-dash.netlify.app/', previewUrl: 'https://gekko-dash.netlify.app/', color: 'text-lime-400', bg: 'bg-lime-500/10', icon: <Gamepad2 size={20} /> },
-  { name: 'Vesper AI Notes', mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools', 'Free Apps'], pricing: 'Free', desc: 'AI-powered note-taking and knowledge base.', url: 'https://vesper-ai-notes.netlify.app/', previewUrl: 'https://vesper-ai-notes.netlify.app/', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: <Bot size={20} /> },
-  { name: 'Vibelex', mainCategory: 'Apps & Dev', tags: ['SaaS', 'Free Apps'], pricing: 'Free', desc: 'Modern digital experience platform.', url: 'https://vibelex.netlify.app/', previewUrl: 'https://vibelex.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Globe size={20} /> },
+  { name: "ARGUS // INTELLIGENCE", mainCategory: 'AI Solutions', tags: ['SaaS', 'Cybersecurity'], pricing: 'Paid', desc: 'A high-tech cybersecurity dashboard tracking visitor IP, location, and network details with a live map interface.', url: 'https://argus-osint-soc.vercel.app/', previewUrl: 'https://argus-osint-soc.vercel.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Globe size={20} /> },
+  { name: "Koe Audio Studio", mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Paid', desc: 'Next-generation parametric voice synthesis suite. Voice cloning and advanced speech generation.', url: 'https://koe-audiostudio.netlify.app/', previewUrl: 'https://koe-audiostudio.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Mic size={20} /> },
+  { name: "FlowType - Minimalist Touch Typing", mainCategory: 'Interactive Experiences', tags: ['Web', 'AI Tools'], pricing: 'Free', desc: 'An ultra-minimalist, distraction-free touch typing application with mechanical keyboard sounds, real-time analytics, and AI-generated practice content.', url: 'https://theflowtype.netlify.app/', previewUrl: 'https://theflowtype.netlify.app/', color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: <Terminal size={20} /> },
+  { name: "Babel | Learn Fictional Languages", mainCategory: 'Apps & Dev', tags: ['Web', 'Education'], pricing: 'Free', desc: 'Master the languages of the multiverse. A high-end, gamified learning app for fictional tongues like Minionese, Klingon, and High Valyrian.', url: 'https://babel-learn-fiction.netlify.app/', previewUrl: 'https://babel-learn-fiction.netlify.app/', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <BookOpen size={20} /> },
+  { name: "Virtuoso Web Piano & Beat Studio", mainCategory: 'Interactive Experiences', tags: ['Web', 'Interactive'], pricing: 'Free', desc: 'A premium, responsive web music workstation featuring a Grand Piano, multiple synthesizers, and a 16-pad Beat Studio for rhythm creation.', url: 'https://virtuoso-keys.netlify.app/', previewUrl: 'https://virtuoso-keys.netlify.app/', color: 'text-amber-400', bg: 'bg-amber-500/10', icon: <Palette size={20} /> },
+  { name: "The Architect's Doodle Trap", mainCategory: 'Interactive Experiences', tags: ['Games'], pricing: 'Free', desc: 'A creative puzzle game built for the web.', url: 'https://the-architects-doodle-trap.netlify.app/', previewUrl: 'https://the-architects-doodle-trap.netlify.app/', color: 'text-yellow-400', bg: 'bg-yellow-500/10', icon: <Gamepad2 size={20} /> },
+  { name: "Trust Nothing", mainCategory: 'Interactive Experiences', tags: ['Games'], pricing: 'Free', desc: 'A psychological thriller game that challenges your perception.', url: 'https://trust-nothing.netlify.app/', previewUrl: 'https://trust-nothing.netlify.app/', color: 'text-red-500', bg: 'bg-red-500/10', icon: <Gamepad2 size={20} /> },
+  { name: "Gekko Dash", mainCategory: 'Interactive Experiences', tags: ['Games'], pricing: 'Free', desc: 'A fast-paced neon runner game with addictive mechanics.', url: 'https://gekko-dash.netlify.app/', previewUrl: 'https://gekko-dash.netlify.app/', color: 'text-lime-400', bg: 'bg-lime-500/10', icon: <Gamepad2 size={20} /> },
+  { name: 'Vesper AI Notes', mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Free', desc: 'AI-powered note-taking and knowledge base.', url: 'https://vesper-ai-notes.netlify.app/', previewUrl: 'https://vesper-ai-notes.netlify.app/', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: <Bot size={20} /> },
+  { name: 'Vibelex', mainCategory: 'Apps & Dev', tags: ['Web', 'SaaS'], pricing: 'Free', desc: 'Modern digital experience platform.', url: 'https://vibelex.netlify.app/', previewUrl: 'https://vibelex.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Globe size={20} /> },
   { name: 'Zen Maker', mainCategory: 'Apps & Dev', tags: ['SaaS'], pricing: 'Paid', price: '$2.99/yr', desc: 'Minimalist creation tool for focused builders.', url: 'https://zen-maker.netlify.app/', previewUrl: 'https://zen-maker.netlify.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Layout size={20} /> },
-  { name: 'LevelUp Hero', mainCategory: 'Apps & Dev', tags: ['Mobile', 'Free Apps'], pricing: 'Free', desc: "Gamified OS for your life's journey.", url: 'https://levelup-heros-journey-os.vercel.app/', previewUrl: 'https://levelup-heros-journey-os.vercel.app/', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <Smartphone size={20} /> },
+  { name: 'LevelUp Hero', mainCategory: 'Apps & Dev', tags: ['Mobile', 'Games'], pricing: 'Free', desc: "Gamified OS for your life's journey.", url: 'https://levelup-heros-journey-os.vercel.app/', previewUrl: 'https://levelup-heros-journey-os.vercel.app/', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <Smartphone size={20} /> },
   { name: 'Kairos Beta', mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Paid', desc: 'Time management redefined for the AI era.', url: 'https://kairos-beta3.vercel.app/', previewUrl: 'https://kairos-beta3.vercel.app/', color: 'text-rose-400', bg: 'bg-rose-500/10', icon: <AppWindow size={20} /> },
-  { name: 'Cyber Quest', mainCategory: 'Interactive Experiences', tags: ['Games', 'Free Apps'], pricing: 'Free', desc: 'A futuristic RPG built with React & Three.js.', url: '#', color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: <Gamepad2 size={20} /> },
-  { name: 'SpeakEasy AI', mainCategory: 'AI Solutions', tags: ['Repos', 'Free Apps', 'AI Tools'], pricing: 'Free', desc: '100% Free AI Text-To-Speech Tool.', url: 'https://github.com/Mr-ABX/SpeakEasy-AI-Text-To-Speech-Tool---100-Free-by-AbdulrahmanT', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Mic size={20} /> },
-  { name: 'AI Personality Quiz', mainCategory: 'AI Solutions', tags: ['Repos', 'AI Tools'], pricing: 'Free', desc: 'Local run AI Personality Quiz Model.', url: 'https://github.com/Mr-ABX/AI-Personality-Quiz-Model', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Brain size={20} /> },
-  { name: 'ASCII TypeArt', mainCategory: 'Apps & Dev', tags: ['Repos', 'Free Apps', 'AI Tools'], pricing: 'Free', desc: 'AI art generator for ASCII Canvas.', url: 'https://github.com/Mr-ABX/ASCII-TypeArt-Canvas-Img-to-Art-', color: 'text-teal-400', bg: 'bg-teal-500/10', icon: <Palette size={20} /> },
-  { name: 'GenAI Studio', mainCategory: 'AI Solutions', tags: ['AI Tools', 'SaaS', 'GenAI'], pricing: 'Paid', price: 'Custom', desc: 'Enterprise-grade generative AI platform for content creation.', url: '#', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <Sparkles size={20} /> },
-  { name: 'Fusion Nexus', mainCategory: 'Apps & Dev', tags: ['Web', 'SaaS'], pricing: 'Free', desc: 'Advanced web platform and digital solutions.', url: 'https://fusionnexus.infni-t.com', previewUrl: 'https://fusionnexus.infni-t.com', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Globe size={20} /> },
-  { name: 'Solution Lab', mainCategory: 'Apps & Dev', tags: ['Web', 'SaaS'], pricing: 'Free', desc: 'Innovative solutions and digital lab.', url: 'https://solutionlab.infni-t.com', previewUrl: 'https://solutionlab.infni-t.com', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: <AppWindow size={20} /> },
-  { name: 'InstaShred', mainCategory: 'Apps & Dev', tags: ['Web', 'Fitness'], pricing: 'Free', desc: 'Fitness and shredding platform.', url: 'https://instashred.com/', previewUrl: 'https://instashred.com/', color: 'text-red-400', bg: 'bg-red-500/10', icon: <Zap size={20} /> },
-  { name: 'Junno Express', mainCategory: 'Apps & Dev', tags: ['Web', 'E-commerce'], pricing: 'Free', desc: 'E-commerce and express delivery platform.', url: 'https://junnoexpress.com/', previewUrl: 'https://junnoexpress.com/', color: 'text-yellow-400', bg: 'bg-yellow-500/10', icon: <Globe size={20} /> },
-  { name: 'Recallers', mainCategory: 'Apps & Dev', tags: ['Web', 'Pets'], pricing: 'Free', desc: 'Dog training and recallers platform.', url: 'https://dogsthat.com/recallers/', previewUrl: 'https://dogsthat.com/recallers/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Globe size={20} /> },
-  { name: 'Video & Motion Graphics Portfolio', mainCategory: 'Video & Motion Graphics', tags: ['Video', 'VFX', 'Portfolio'], pricing: 'Free', desc: 'A showcase of my video editing, motion graphics, and VFX work.', url: 'https://www.youtube.com/watch?v=0Wh7MhqeHHA&list=PL7BsW-EOVU09CgVg1O4vk3U6fujfm1xw9', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Video size={20} /> },
+  { name: 'Cyber Quest', mainCategory: 'Interactive Experiences', tags: ['Games'], pricing: 'Free', desc: 'A futuristic RPG built with React & Three.js.', url: '#', color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: <Gamepad2 size={20} /> },
+  { name: 'SpeakEasy AI', mainCategory: 'AI Solutions', tags: ['Open Source', 'AI Tools'], pricing: 'Free', desc: '100% Free AI Text-To-Speech Tool.', url: 'https://github.com/Mr-ABX/SpeakEasy-AI-Text-To-Speech-Tool---100-Free-by-AbdulrahmanT', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Mic size={20} /> },
+  { name: 'AI Personality Quiz', mainCategory: 'AI Solutions', tags: ['Open Source', 'AI Tools'], pricing: 'Free', desc: 'Local run AI Personality Quiz Model.', url: 'https://github.com/Mr-ABX/AI-Personality-Quiz-Model', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Brain size={20} /> },
+  { name: 'ASCII TypeArt', mainCategory: 'Apps & Dev', tags: ['Open Source', 'AI Tools'], pricing: 'Free', desc: 'AI art generator for ASCII Canvas.', url: 'https://github.com/Mr-ABX/ASCII-TypeArt-Canvas-Img-to-Art-', color: 'text-teal-400', bg: 'bg-teal-500/10', icon: <Palette size={20} /> },
+  { name: 'GenAI Studio', mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Paid', price: 'Custom', desc: 'Enterprise-grade generative AI platform for content creation.', url: '#', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <Sparkles size={20} /> },
+  { name: 'Fusion Nexus', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'Advanced web platform and digital solutions.', url: 'https://fusionnexus.infni-t.com', previewUrl: 'https://fusionnexus.infni-t.com', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Globe size={20} /> },
+  { name: 'Solution Lab', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'Innovative solutions and digital lab.', url: 'https://solutionlab.infni-t.com', previewUrl: 'https://solutionlab.infni-t.com', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: <AppWindow size={20} /> },
+  { name: 'InstaShred', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'Fitness and shredding platform.', url: 'https://instashred.com/', previewUrl: 'https://instashred.com/', color: 'text-red-400', bg: 'bg-red-500/10', icon: <Zap size={20} /> },
+  { name: 'Junno Express', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'E-commerce and express delivery platform.', url: 'https://junnoexpress.com/', previewUrl: 'https://junnoexpress.com/', color: 'text-yellow-400', bg: 'bg-yellow-500/10', icon: <Globe size={20} /> },
+  { name: 'Recallers', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'Dog training and recallers platform.', url: 'https://dogsthat.com/recallers/', previewUrl: 'https://dogsthat.com/recallers/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Globe size={20} /> },
+  { name: 'Video & Motion Graphics Portfolio', mainCategory: 'Video & Motion Graphics', tags: ['Portfolio', 'Video'], pricing: 'Free', desc: 'A showcase of my video editing, motion graphics, and VFX work.', url: 'https://www.youtube.com/watch?v=0Wh7MhqeHHA&list=PL7BsW-EOVU09CgVg1O4vk3U6fujfm1xw9', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Video size={20} /> },
 ];
 
 const reviews = [
@@ -830,7 +830,7 @@ export default function App() {
                     <div className="space-y-2">
                       <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3 px-1">Categories</h3>
                       <div className="flex flex-col gap-1">
-                        {['All', 'AI Solutions', 'Apps & Dev', 'Interactive Experiences', 'Video & Motion Graphics'].map((cat) => {
+                        {['All', 'AI Solutions', 'Apps & Dev', 'Web Development Projects', 'Interactive Experiences', 'Video & Motion Graphics', 'Graphics & Marketing'].map((cat) => {
                           const isActive = (cat === 'All' && !activeProjectCategory) || activeProjectCategory === cat;
                           const catTags = cat === 'All' ? [] : Array.from(new Set(projects.filter(p => p.mainCategory === cat).flatMap(p => p.tags)));
                           
@@ -1056,8 +1056,8 @@ export default function App() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-[minmax(200px,auto)]">
-                <BentoCard size="2x1" onClick={() => setActiveProjectCategory('AI Solutions')} className="cursor-pointer hover:bg-emerald-500/10 transition-colors group relative overflow-hidden">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
+                <BentoCard size="2x1" onClick={() => setActiveProjectCategory('AI Solutions')} className="md:col-span-2 cursor-pointer hover:bg-emerald-500/10 transition-colors group relative overflow-hidden">
                 <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
                   <Brain size={160} />
                 </div>
@@ -1083,7 +1083,7 @@ export default function App() {
                 </div>
               </BentoCard>
 
-              <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Web Platforms')} className="cursor-pointer hover:bg-purple-500/10 transition-colors group relative overflow-hidden">
+              <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Web Development Projects')} className="cursor-pointer hover:bg-purple-500/10 transition-colors group relative overflow-hidden">
                 <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
                   <Globe size={120} />
                 </div>
@@ -1091,7 +1091,7 @@ export default function App() {
                   <div className="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition-transform">
                     <Globe size={24} />
                   </div>
-                  <h3 className="text-2xl font-bold mb-2">Web Platforms</h3>
+                  <h3 className="text-2xl font-bold mb-2">Web Development Projects</h3>
                   <p className="text-white/50 text-sm max-w-[200px]">Modern digital experiences and scalable web applications.</p>
                 </div>
               </BentoCard>
@@ -1119,6 +1119,19 @@ export default function App() {
                   </div>
                   <h3 className="text-2xl font-bold mb-2">Video & Motion Graphics</h3>
                   <p className="text-white/50 text-sm max-w-[200px]">A showcase of my video editing, motion graphics, and VFX work.</p>
+                </div>
+              </BentoCard>
+
+              <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Graphics & Marketing')} className="cursor-pointer hover:bg-orange-500/10 transition-colors group relative overflow-hidden">
+                <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                  <Palette size={120} />
+                </div>
+                <div className="relative z-10 flex flex-col h-full justify-center">
+                  <div className="w-12 h-12 rounded-2xl bg-orange-500/20 flex items-center justify-center text-orange-400 mb-4 group-hover:scale-110 transition-transform">
+                    <Palette size={24} />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-2">Graphics & Marketing</h3>
+                  <p className="text-white/50 text-sm max-w-[200px]">Design assets, marketing campaigns, and brand identities.</p>
                 </div>
               </BentoCard>
               </div>
