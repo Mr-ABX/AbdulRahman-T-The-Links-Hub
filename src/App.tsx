@@ -290,7 +290,7 @@ const FeaturedCarousel = ({ projects, onSelect }: { projects: any[], onSelect: (
               <img 
                 src={`https://image.thum.io/get/width/1200/crop/800/noanimate/${current.url}`}
                 alt={current.name}
-                className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover/featured:scale-105 transition-transform duration-700"
+                className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover/featured:opacity-100 group-hover/featured:scale-105 transition-all duration-700"
                 referrerPolicy="no-referrer"
               />
             )}
@@ -871,15 +871,15 @@ export default function App() {
                             className={cn(p.bg, "border-white/5 cursor-pointer relative overflow-hidden group/project h-[320px]")}
                             onClick={() => setSelectedProject(p)}
                             background={p.url !== '#' ? (
-                              <div className="absolute inset-0 z-0 opacity-30 group-hover/project:opacity-70 transition-opacity duration-500 pointer-events-none overflow-hidden">
+                              <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[2rem]">
                                 <img 
                                   src={`https://image.thum.io/get/width/600/crop/600/noanimate/${p.url}`}
                                   alt={p.name}
-                                  className="w-full h-full object-cover transition-transform duration-700 group-hover/project:scale-110"
+                                  className="w-full h-full object-cover opacity-80 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
                                   loading="lazy"
                                   referrerPolicy="no-referrer"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent" />
                               </div>
                             ) : null}
                           >
@@ -1064,15 +1064,15 @@ export default function App() {
                         className={cn(p.bg, "border-white/5 cursor-pointer relative overflow-hidden group/project")}
                         onClick={() => setSelectedProject(p)}
                         background={p.url !== '#' ? (
-                          <div className="absolute inset-0 z-0 opacity-30 group-hover/project:opacity-60 transition-opacity duration-500 pointer-events-none overflow-hidden">
+                          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[2rem]">
                             <img 
                               src={`https://image.thum.io/get/width/600/crop/600/noanimate/${p.url}`}
                               alt={p.name}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover/project:scale-110"
+                              className="w-full h-full object-cover opacity-80 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
                               loading="lazy"
                               referrerPolicy="no-referrer"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/70 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent" />
                           </div>
                         ) : null}
                       >
@@ -1691,6 +1691,26 @@ export default function App() {
             ref={navRef}
             className="glass rounded-full p-1.5 flex items-center gap-1 overflow-x-auto no-scrollbar shadow-2xl border border-white/10 max-w-full backdrop-blur-2xl"
           >
+            {/* Animated Logo */}
+            <div className="relative w-10 h-10 md:w-12 md:h-12 ml-1 mr-2 group cursor-pointer flex-shrink-0 flex items-center justify-center rounded-full bg-white/5 border border-white/10 overflow-hidden transition-all duration-500 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]">
+              {/* Outer rotating ring for tech feel */}
+              <div className="absolute inset-0 border-2 border-dashed border-white/20 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-[spin_4s_linear_infinite] transition-opacity duration-500" />
+              
+              <img 
+                src="/assets/1-logo.svg" 
+                alt="Logo" 
+                className="absolute inset-0 w-full h-full p-2 md:p-2.5 object-contain transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-50 group-hover:opacity-0 group-hover:-rotate-90"
+              />
+              <img 
+                src="/assets/2-logo.svg" 
+                alt="Logo Hover" 
+                className="absolute inset-0 w-full h-full p-2 md:p-2.5 object-contain opacity-0 scale-150 rotate-90 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-100 group-hover:opacity-100 group-hover:rotate-0"
+              />
+            </div>
+            
+            {/* Divider */}
+            <div className="w-px h-8 bg-white/10 mx-1 flex-shrink-0" />
+
             {tabs.map((tab) => (
               <button
                 key={tab.name}

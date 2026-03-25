@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 
 export const CustomCursor = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const cursorRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      if (!isVisible) setIsVisible(true);
+      if (cursorRef.current) {
+        // Update position directly via DOM for zero latency (centered for 32x32 container)
+        cursorRef.current.style.transform = `translate3d(${e.clientX - 16}px, ${e.clientY - 16}px, 0)`;
+      }
     };
     
     const handleMouseOver = (e: MouseEvent) => {
@@ -22,36 +27,55 @@ export const CustomCursor = () => {
       setIsHovering(!!isClickable);
     };
 
-    window.addEventListener('mousemove', updateMousePosition);
-    window.addEventListener('mouseover', handleMouseOver);
+    const handleMouseLeave = () => setIsVisible(false);
+    const handleMouseEnter = () => setIsVisible(true);
+
+    window.addEventListener('mousemove', updateMousePosition, { passive: true });
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
+    document.addEventListener('mouseleave', handleMouseLeave);
+    document.addEventListener('mouseenter', handleMouseEnter);
     
     return () => {
       window.removeEventListener('mousemove', updateMousePosition);
       window.removeEventListener('mouseover', handleMouseOver);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('mouseenter', handleMouseEnter);
     };
-  }, []);
+  }, [isVisible]);
 
   return (
-    <>
+    <div
+      ref={cursorRef}
+      className="fixed top-0 left-0 w-8 h-8 pointer-events-none z-[9999] mix-blend-difference hidden md:flex items-center justify-center will-change-transform"
+      style={{ opacity: isVisible ? 1 : 0, transition: 'opacity 0.3s ease' }}
+    >
+      {/* Hover State: Expanded Circle */}
       <motion.div
-        className="fixed top-0 left-0 w-2 h-2 bg-indigo-400 rounded-full pointer-events-none z-[9999] mix-blend-screen hidden md:block shadow-[0_0_10px_rgba(129,140,248,0.8)]"
+        className="absolute w-full h-full bg-white rounded-full"
+        initial={false}
         animate={{ 
-          x: mousePosition.x - 4, 
-          y: mousePosition.y - 4,
-          scale: isHovering ? 0 : 1
+          scale: isHovering ? 1.25 : 0,
+          opacity: isHovering ? 1 : 0
         }}
-        transition={{ type: 'tween', ease: 'backOut', duration: 0.1 }}
+        transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }}
       />
+      
+      {/* Normal State: Logo */}
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 border border-indigo-500/50 rounded-full pointer-events-none z-[9998] hidden md:block backdrop-blur-[1px]"
+        className="absolute w-6 h-6"
+        initial={false}
         animate={{ 
-          x: mousePosition.x - 16, 
-          y: mousePosition.y - 16,
-          scale: isHovering ? 1.5 : 1,
-          backgroundColor: isHovering ? 'rgba(99, 102, 241, 0.1)' : 'rgba(99, 102, 241, 0)'
+          scale: isHovering ? 0 : 1,
+          opacity: isHovering ? 0 : 1
         }}
-        transition={{ type: 'spring', stiffness: 150, damping: 15, mass: 0.5 }}
-      />
-    </>
+        transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }}
+      >
+        <img 
+          src="/assets/1-logo.svg" 
+          alt="cursor" 
+          className="w-full h-full object-contain"
+        />
+      </motion.div>
+    </div>
   );
 };
