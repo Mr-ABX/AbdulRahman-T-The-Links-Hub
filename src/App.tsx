@@ -65,12 +65,17 @@ import { twMerge } from 'tailwind-merge';
 import { ChatAssistant } from './components/ChatAssistant';
 import { CustomCursor } from './components/CustomCursor';
 
+import myPfpFull from './assets/my-pfp-full.jpeg';
+import bookCover from './assets/31-ways-to-ruin-your-life-cover.png';
+import logo1 from './assets/1-logo.svg';
+import logo2 from './assets/2-logo.svg';
+
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-type Category = 'Home' | 'Projects' | 'Automation' | 'Ebooks' | 'Content' | 'About' | 'Reviews' | 'Connect';
-type ProjectCategory = 'Apps & Dev' | 'Web Development Projects' | 'Interactive Experiences' | 'Video & Motion Graphics' | 'Graphics & Marketing' | 'AI Solutions';
+type Category = 'Home' | 'Projects' | 'Apps' | 'Automation' | 'Ebooks' | 'Content' | 'About' | 'Reviews' | 'Connect';
+type ProjectCategory = 'Apps & Dev' | 'Web Development Projects' | 'Interactive Experiences' | 'Video & Motion Graphics' | 'Graphics & Marketing' | 'AI Solutions' | 'My Personal Apps';
 
 interface BentoCardProps {
   children: React.ReactNode;
@@ -158,6 +163,7 @@ const BentoCard = ({ children, className, size = '1x1', delay = 0, onClick, back
 const tabs: { name: Category; icon: React.ReactNode }[] = [
   { name: 'Home', icon: <Home size={18} /> },
   { name: 'Projects', icon: <AppWindow size={18} /> },
+  { name: 'Apps', icon: <LayoutGrid size={18} /> },
   { name: 'Ebooks', icon: <Book size={18} /> },
   { name: 'Content', icon: <Newspaper size={18} /> },
   { name: 'Automation', icon: <Bot size={18} /> },
@@ -167,6 +173,11 @@ const tabs: { name: Category; icon: React.ReactNode }[] = [
 ];
 
 const projects = [
+  { name: "Project X (Unreleased)", mainCategory: 'My Personal Apps', tags: ['Experimental', 'AI'], pricing: 'Private', desc: 'An experimental AI-driven personal assistant with deep system integration.', url: '#', previewUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Lock size={20} /> },
+  { name: "Nexus Engine", mainCategory: 'My Personal Apps', tags: ['Game Engine', '3D'], pricing: 'Private', desc: 'A custom 3D rendering engine built from scratch for next-gen interactive experiences.', url: '#', previewUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', color: 'text-rose-400', bg: 'bg-rose-500/10', icon: <Lock size={20} /> },
+  { name: "NodeRaptor - n8n Architect", mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Free', desc: 'An AI-powered architect for n8n workflows, capable of analyzing, debugging, and building automations directly via your n8n instance.', url: 'https://noderaptor.netlify.app/', previewUrl: 'https://noderaptor.netlify.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Bot size={20} /> },
+  { name: "O.S.K.A.R. (Sentient Interface)", mainCategory: 'Interactive Experiences', tags: ['AI Tools', 'Interactive'], pricing: 'Free', desc: 'A full-screen, interactive AI digital desk and companion with dynamic digital eyes, real-time voice, vision, and natural interaction capabilities.', url: 'https://project-oskar.netlify.app/', previewUrl: 'https://project-oskar.netlify.app/', color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: <Brain size={20} /> },
+  { name: "Noodle Draw", mainCategory: 'Apps & Dev', tags: ['Web', 'AI Tools'], pricing: 'Free', desc: 'A professional-grade infinite canvas drawing application with tablet pressure sensitivity and AI creative assistance.', url: 'https://noodle-draw.netlify.app/', previewUrl: 'https://noodle-draw.netlify.app/', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Palette size={20} /> },
   { name: "ARGUS // INTELLIGENCE", mainCategory: 'AI Solutions', tags: ['SaaS', 'Cybersecurity'], pricing: 'Paid', desc: 'A high-tech cybersecurity dashboard tracking visitor IP, location, and network details with a live map interface.', url: 'https://argus-osint-soc.vercel.app/', previewUrl: 'https://argus-osint-soc.vercel.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Globe size={20} /> },
   { name: "Koe Audio Studio", mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Paid', desc: 'Next-generation parametric voice synthesis suite. Voice cloning and advanced speech generation.', url: 'https://koe-audiostudio.netlify.app/', previewUrl: 'https://koe-audiostudio.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Mic size={20} /> },
   { name: "FlowType - Minimalist Touch Typing", mainCategory: 'Interactive Experiences', tags: ['Web', 'AI Tools'], pricing: 'Free', desc: 'An ultra-minimalist, distraction-free touch typing application with mechanical keyboard sounds, real-time analytics, and AI-generated practice content.', url: 'https://theflowtype.netlify.app/', previewUrl: 'https://theflowtype.netlify.app/', color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: <Terminal size={20} /> },
@@ -363,6 +374,7 @@ export default function App() {
   const activeTab = useMemo<Category>(() => {
     const path = location.pathname;
     if (path === '/projects') return 'Projects';
+    if (path === '/apps') return 'Apps';
     if (path === '/automation') return 'Automation';
     if (path === '/ebooks') return 'Ebooks';
     if (path === '/content') return 'Content';
@@ -408,6 +420,11 @@ export default function App() {
     }
   }, [activeTab]);
 
+  React.useEffect(() => {
+    setActiveProjectCategory(null);
+    setProjectFilter('All');
+  }, [activeTab]);
+
   const filteredProjects = useMemo(() => {
     let base = projects;
     if (activeProjectCategory) {
@@ -445,7 +462,7 @@ export default function App() {
                   {/* Background Image */}
                   <div className="absolute inset-0 z-0">
                     <img 
-                      src="/assets/my-pfp-full.jpeg" 
+                      src={myPfpFull} 
                       alt="Abdulrahman Toor" 
                       className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile:scale-105"
                       referrerPolicy="no-referrer"
@@ -789,9 +806,12 @@ export default function App() {
           </div>
         );
 
+      case 'Apps':
       case 'Projects': {
         if (isInImmersiveMode) {
-          const immersiveTags = ['All', ...Array.from(new Set(projects.flatMap(p => p.tags)))];
+          const immersiveCategories = activeTab === 'Projects' 
+            ? ['All', 'Web Development Projects', 'Video & Motion Graphics', 'Graphics & Marketing']
+            : ['All', 'AI Solutions', 'Apps & Dev', 'Interactive Experiences', 'My Personal Apps'];
           
           return (
             <div className="flex flex-col md:flex-row gap-8 min-h-screen pb-20 max-w-[1600px] mx-auto px-4 mt-8">
@@ -811,7 +831,7 @@ export default function App() {
                     </button>
                     <div>
                       <h2 className="text-xl font-bold tracking-tight">App Gallery</h2>
-                      <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Portfolio</p>
+                      <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">{activeTab}</p>
                     </div>
                   </div>
 
@@ -830,9 +850,10 @@ export default function App() {
                     <div className="space-y-2">
                       <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3 px-1">Categories</h3>
                       <div className="flex flex-col gap-1">
-                        {['All', 'AI Solutions', 'Apps & Dev', 'Web Development Projects', 'Interactive Experiences', 'Video & Motion Graphics', 'Graphics & Marketing'].map((cat) => {
+                        {immersiveCategories.map((cat) => {
                           const isActive = (cat === 'All' && !activeProjectCategory) || activeProjectCategory === cat;
-                          const catTags = cat === 'All' ? [] : Array.from(new Set(projects.filter(p => p.mainCategory === cat).flatMap(p => p.tags)));
+                          const catProjects = cat === 'All' ? projects.filter(p => immersiveCategories.includes(p.mainCategory)) : projects.filter(p => p.mainCategory === cat);
+                          const catTags = cat === 'All' ? [] : Array.from(new Set(catProjects.flatMap(p => p.tags)));
                           
                           return (
                             <div key={cat} className="flex flex-col gap-1">
@@ -842,13 +863,19 @@ export default function App() {
                                   setProjectFilter('All');
                                 }}
                                 className={cn(
-                                  "px-4 py-3 rounded-xl text-xs font-bold transition-all text-left border",
+                                  "px-4 py-3 rounded-xl text-xs font-bold transition-all text-left border flex items-center justify-between group",
                                   isActive
                                     ? "bg-white text-black border-white shadow-lg shadow-white/10" 
                                     : "bg-transparent text-white/60 border-transparent hover:bg-white/5 hover:text-white"
                                 )}
                               >
-                                {cat}
+                                <span>{cat}</span>
+                                <span className={cn(
+                                  "text-[10px] px-2 py-0.5 rounded-full font-bold",
+                                  isActive ? "bg-black/10 text-black" : "bg-white/10 text-white/40 group-hover:bg-white/20 group-hover:text-white"
+                                )}>
+                                  {catProjects.length}
+                                </span>
                               </button>
                               
                               {/* Subcategories (Tags) */}
@@ -863,24 +890,28 @@ export default function App() {
                                     <button
                                       onClick={() => setProjectFilter('All')}
                                       className={cn(
-                                        "text-left text-[10px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all", 
+                                        "text-left text-[10px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all flex items-center justify-between", 
                                         projectFilter === 'All' ? "bg-white/10 text-white" : "text-white/40 hover:text-white hover:bg-white/5"
                                       )}
                                     >
-                                      All {cat}
+                                      <span>All {cat}</span>
+                                      <span className="opacity-50">({catProjects.length})</span>
                                     </button>
-                                    {catTags.map(tag => (
+                                    {catTags.map(tag => {
+                                      const tagCount = catProjects.filter(p => p.tags.includes(tag)).length;
+                                      return (
                                       <button
                                         key={tag}
                                         onClick={() => setProjectFilter(tag)}
                                         className={cn(
-                                          "text-left text-[10px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all", 
+                                          "text-left text-[10px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all flex items-center justify-between", 
                                           projectFilter === tag ? "bg-white/10 text-white" : "text-white/40 hover:text-white hover:bg-white/5"
                                         )}
                                       >
-                                        {tag}
+                                        <span>{tag}</span>
+                                        <span className="opacity-50">({tagCount})</span>
                                       </button>
-                                    ))}
+                                    )})}
                                   </motion.div>
                                 )}
                               </AnimatePresence>
@@ -1039,104 +1070,144 @@ export default function App() {
         }
 
         if (!activeProjectCategory) {
-          return (
-            <div className="space-y-8">
-              <div className="flex items-center justify-between bg-indigo-500/10 border border-indigo-500/20 p-6 rounded-[2.5rem] relative overflow-hidden group">
-                <div className="absolute -right-8 -top-8 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl group-hover:bg-indigo-500/30 transition-colors" />
-                <div className="relative z-10">
-                  <h3 className="text-2xl font-bold mb-2">Immersive Gallery Mode</h3>
-                  <p className="text-white/50 text-sm max-w-md">Experience my projects in a focused, full-screen gallery with advanced search and filtering.</p>
+          if (activeTab === 'Projects') {
+            return (
+              <div className="space-y-8">
+                <div className="flex items-center justify-between bg-indigo-500/10 border border-indigo-500/20 p-6 rounded-[2.5rem] relative overflow-hidden group">
+                  <div className="absolute -right-8 -top-8 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl group-hover:bg-indigo-500/30 transition-colors" />
+                  <div className="relative z-10">
+                    <h3 className="text-2xl font-bold mb-2">Immersive Gallery Mode</h3>
+                    <p className="text-white/50 text-sm max-w-md">Experience my projects in a focused, full-screen gallery with advanced search and filtering.</p>
+                  </div>
+                  <button 
+                    onClick={() => setIsInImmersiveMode(true)}
+                    className="relative z-10 px-6 py-3 rounded-2xl bg-indigo-500 text-white font-bold hover:bg-indigo-400 transition-all shadow-xl shadow-indigo-500/20 flex items-center gap-2 group-hover:scale-105"
+                  >
+                    <Rocket size={18} />
+                    <span>Enter Gallery</span>
+                  </button>
                 </div>
-                <button 
-                  onClick={() => setIsInImmersiveMode(true)}
-                  className="relative z-10 px-6 py-3 rounded-2xl bg-indigo-500 text-white font-bold hover:bg-indigo-400 transition-all shadow-xl shadow-indigo-500/20 flex items-center gap-2 group-hover:scale-105"
-                >
-                  <Rocket size={18} />
-                  <span>Enter Gallery</span>
-                </button>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
+                  <BentoCard size="2x1" onClick={() => setActiveProjectCategory('Web Development Projects')} className="md:col-span-2 cursor-pointer hover:bg-purple-500/10 transition-colors group relative overflow-hidden">
+                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                      <Globe size={160} />
+                    </div>
+                    <div className="relative z-10 flex flex-col h-full justify-center">
+                      <div className="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition-transform">
+                        <Globe size={24} />
+                      </div>
+                      <h3 className="text-3xl font-bold mb-2">Web Development Projects <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Web Development Projects').length})</span></h3>
+                      <p className="text-white/50 text-sm max-w-md leading-relaxed">Modern digital experiences and scalable web applications.</p>
+                    </div>
+                  </BentoCard>
+
+                  <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Video & Motion Graphics')} className="cursor-pointer hover:bg-pink-500/10 transition-colors group relative overflow-hidden">
+                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                      <Video size={120} />
+                    </div>
+                    <div className="relative z-10 flex flex-col h-full justify-center">
+                      <div className="w-12 h-12 rounded-2xl bg-pink-500/20 flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition-transform">
+                        <Video size={24} />
+                      </div>
+                      <h3 className="text-2xl font-bold mb-2">Video & Motion Graphics <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Video & Motion Graphics').length})</span></h3>
+                      <p className="text-white/50 text-sm max-w-[200px]">A showcase of my video editing, motion graphics, and VFX work.</p>
+                    </div>
+                  </BentoCard>
+
+                  <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Graphics & Marketing')} className="cursor-pointer hover:bg-orange-500/10 transition-colors group relative overflow-hidden">
+                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                      <Palette size={120} />
+                    </div>
+                    <div className="relative z-10 flex flex-col h-full justify-center">
+                      <div className="w-12 h-12 rounded-2xl bg-orange-500/20 flex items-center justify-center text-orange-400 mb-4 group-hover:scale-110 transition-transform">
+                        <Palette size={24} />
+                      </div>
+                      <h3 className="text-2xl font-bold mb-2">Graphics & Marketing <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Graphics & Marketing').length})</span></h3>
+                      <p className="text-white/50 text-sm max-w-[200px]">Design assets, marketing campaigns, and brand identities.</p>
+                    </div>
+                  </BentoCard>
+                </div>
               </div>
+            );
+          } else {
+            return (
+              <div className="space-y-8">
+                <div className="text-center md:text-left mb-8">
+                  <h2 className="text-3xl font-bold mb-4">Apps & Tools</h2>
+                  <p className="text-white/60 max-w-2xl">
+                    Here I build apps, games, tools, and experiences for you, the community, and my own self too.
+                  </p>
+                </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
-                <BentoCard size="2x1" onClick={() => setActiveProjectCategory('AI Solutions')} className="md:col-span-2 cursor-pointer hover:bg-emerald-500/10 transition-colors group relative overflow-hidden">
-                <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <Brain size={160} />
-                </div>
-                <div className="relative z-10 flex flex-col h-full justify-center">
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 group-hover:scale-110 transition-transform">
-                    <Brain size={24} />
+                <div className="bg-amber-500/10 border border-amber-500/20 p-6 rounded-[2rem] flex items-start gap-4">
+                  <div className="p-3 bg-amber-500/20 rounded-xl text-amber-400 shrink-0">
+                    <Activity size={24} />
                   </div>
-                  <h3 className="text-3xl font-bold mb-2">AI Solutions</h3>
-                  <p className="text-white/50 text-sm max-w-md leading-relaxed">Enterprise-grade AI Platforms, LLM Tools, and Autonomous Agents designed for the next generation of digital growth.</p>
+                  <div>
+                    <h3 className="text-lg font-bold text-amber-400 mb-1">Development Status</h3>
+                    <p className="text-white/70 text-sm leading-relaxed">
+                      Some apps are complete and some are still under development. If you face any issues, contact us or wait until the development is finished or the problem is fixed.
+                    </p>
+                  </div>
                 </div>
-              </BentoCard>
 
-              <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Apps & Dev')} className="cursor-pointer hover:bg-indigo-500/10 transition-colors group relative overflow-hidden">
-                <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <Code2 size={120} />
-                </div>
-                <div className="relative z-10 flex flex-col h-full justify-center">
-                  <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 mb-4 group-hover:scale-110 transition-transform">
-                    <Code2 size={24} />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-2">Apps & Dev</h3>
-                  <p className="text-white/50 text-sm max-w-[200px]">SaaS, Mobile Apps, AI Tools & Open Source Repos.</p>
-                </div>
-              </BentoCard>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
+                  <BentoCard size="2x1" onClick={() => setActiveProjectCategory('AI Solutions')} className="md:col-span-2 cursor-pointer hover:bg-emerald-500/10 transition-colors group relative overflow-hidden">
+                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                      <Brain size={160} />
+                    </div>
+                    <div className="relative z-10 flex flex-col h-full justify-center">
+                      <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 group-hover:scale-110 transition-transform">
+                        <Brain size={24} />
+                      </div>
+                      <h3 className="text-3xl font-bold mb-2">AI Solutions <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'AI Solutions').length})</span></h3>
+                      <p className="text-white/50 text-sm max-w-md leading-relaxed">Enterprise-grade AI Platforms, LLM Tools, and Autonomous Agents designed for the next generation of digital growth.</p>
+                    </div>
+                  </BentoCard>
 
-              <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Web Development Projects')} className="cursor-pointer hover:bg-purple-500/10 transition-colors group relative overflow-hidden">
-                <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <Globe size={120} />
-                </div>
-                <div className="relative z-10 flex flex-col h-full justify-center">
-                  <div className="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition-transform">
-                    <Globe size={24} />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-2">Web Development Projects</h3>
-                  <p className="text-white/50 text-sm max-w-[200px]">Modern digital experiences and scalable web applications.</p>
-                </div>
-              </BentoCard>
+                  <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Apps & Dev')} className="cursor-pointer hover:bg-indigo-500/10 transition-colors group relative overflow-hidden">
+                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                      <Code2 size={120} />
+                    </div>
+                    <div className="relative z-10 flex flex-col h-full justify-center">
+                      <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 mb-4 group-hover:scale-110 transition-transform">
+                        <Code2 size={24} />
+                      </div>
+                      <h3 className="text-2xl font-bold mb-2">Apps & Dev <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Apps & Dev').length})</span></h3>
+                      <p className="text-white/50 text-sm max-w-[200px]">SaaS, Mobile Apps, AI Tools & Open Source Repos.</p>
+                    </div>
+                  </BentoCard>
 
-              <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Interactive Experiences')} className="cursor-pointer hover:bg-cyan-500/10 transition-colors group relative overflow-hidden">
-                <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <Gamepad2 size={120} />
-                </div>
-                <div className="relative z-10 flex flex-col h-full justify-center">
-                  <div className="w-12 h-12 rounded-2xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
-                    <Gamepad2 size={24} />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-2">Interactive Experiences</h3>
-                  <p className="text-white/50 text-sm max-w-[200px]">Games, 3D environments, and interactive storytelling.</p>
-                </div>
-              </BentoCard>
+                  <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Interactive Experiences')} className="cursor-pointer hover:bg-cyan-500/10 transition-colors group relative overflow-hidden">
+                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                      <Gamepad2 size={120} />
+                    </div>
+                    <div className="relative z-10 flex flex-col h-full justify-center">
+                      <div className="w-12 h-12 rounded-2xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
+                        <Gamepad2 size={24} />
+                      </div>
+                      <h3 className="text-2xl font-bold mb-2">Interactive Experiences <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Interactive Experiences').length})</span></h3>
+                      <p className="text-white/50 text-sm max-w-[200px]">Games, 3D environments, and interactive storytelling.</p>
+                    </div>
+                  </BentoCard>
 
-              <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Video & Motion Graphics')} className="cursor-pointer hover:bg-pink-500/10 transition-colors group relative overflow-hidden">
-                <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <Video size={120} />
+                  <BentoCard size="2x1" onClick={() => setActiveProjectCategory('My Personal Apps')} className="md:col-span-2 cursor-pointer hover:bg-rose-500/10 transition-colors group relative overflow-hidden">
+                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                      <Lock size={160} />
+                    </div>
+                    <div className="relative z-10 flex flex-col h-full justify-center">
+                      <div className="w-12 h-12 rounded-2xl bg-rose-500/20 flex items-center justify-center text-rose-400 mb-4 group-hover:scale-110 transition-transform">
+                        <Lock size={24} />
+                      </div>
+                      <h3 className="text-2xl font-bold mb-2">My Personal Apps <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'My Personal Apps').length})</span></h3>
+                      <p className="text-white/50 text-sm max-w-[300px]">Special apps currently not published, giving a glimpse into my personal builds and experiments.</p>
+                    </div>
+                  </BentoCard>
                 </div>
-                <div className="relative z-10 flex flex-col h-full justify-center">
-                  <div className="w-12 h-12 rounded-2xl bg-pink-500/20 flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition-transform">
-                    <Video size={24} />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-2">Video & Motion Graphics</h3>
-                  <p className="text-white/50 text-sm max-w-[200px]">A showcase of my video editing, motion graphics, and VFX work.</p>
-                </div>
-              </BentoCard>
-
-              <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Graphics & Marketing')} className="cursor-pointer hover:bg-orange-500/10 transition-colors group relative overflow-hidden">
-                <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <Palette size={120} />
-                </div>
-                <div className="relative z-10 flex flex-col h-full justify-center">
-                  <div className="w-12 h-12 rounded-2xl bg-orange-500/20 flex items-center justify-center text-orange-400 mb-4 group-hover:scale-110 transition-transform">
-                    <Palette size={24} />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-2">Graphics & Marketing</h3>
-                  <p className="text-white/50 text-sm max-w-[200px]">Design assets, marketing campaigns, and brand identities.</p>
-                </div>
-              </BentoCard>
               </div>
-            </div>
-          );
+            );
+          }
         }
 
         const categoryProjects = projects.filter(p => p.mainCategory === activeProjectCategory);
@@ -1149,25 +1220,28 @@ export default function App() {
                 <ArrowLeft size={20} />
               </button>
               <div>
-                <h2 className="text-2xl font-bold">{activeProjectCategory}</h2>
+                <h2 className="text-2xl font-bold">{activeProjectCategory} <span className="text-white/30 text-lg">({categoryProjects.length})</span></h2>
                 <p className="text-sm text-white/50">Explore my work in this category.</p>
               </div>
             </div>
 
             {categoryTags.length > 1 && (
               <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
-                {categoryTags.map((f) => (
+                {categoryTags.map((f) => {
+                  const count = f === 'All' ? categoryProjects.length : categoryProjects.filter(p => p.tags.includes(f)).length;
+                  return (
                   <button
                     key={f}
                     onClick={() => setProjectFilter(f)}
                     className={cn(
-                      "px-4 py-2 rounded-2xl text-xs font-medium transition-all whitespace-nowrap",
+                      "px-4 py-2 rounded-2xl text-xs font-medium transition-all whitespace-nowrap flex items-center gap-1.5",
                       projectFilter === f ? "bg-white text-black" : "bg-white/5 text-white/40 hover:bg-white/10"
                     )}
                   >
-                    {f}
+                    <span>{f}</span>
+                    <span className={cn("opacity-50", projectFilter === f ? "text-black/50" : "text-white/30")}>({count})</span>
                   </button>
-                ))}
+                )})}
               </div>
             )}
 
@@ -1215,9 +1289,11 @@ export default function App() {
                               <span className={cn("text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
                                 {p.pricing} {p.price && `(${p.price})`}
                               </span>
-                              <a href={p.url} target="_blank" className="text-white/20 hover:text-white transition-colors">
-                                <ExternalLink size={16} />
-                              </a>
+                              {p.mainCategory !== 'My Personal Apps' && (
+                                <a href={p.url} target="_blank" className="text-white/20 hover:text-white transition-colors">
+                                  <ExternalLink size={16} />
+                                </a>
+                              )}
                             </div>
                           </div>
                           <h3 className="font-bold text-lg mb-1">{p.name}</h3>
@@ -1305,9 +1381,10 @@ export default function App() {
             <BentoCard size="2x2" className="p-0 overflow-hidden group/book">
               <div className="relative h-full w-full">
                 <img 
-                  src="/assets/31-ways-to-ruin-your-life-cover.png" 
+                  src={bookCover} 
                   alt="31 Ways to Ruin Your Life" 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover/book:scale-105"
+                  loading="lazy"
                   referrerPolicy="no-referrer"
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = 'none';
@@ -1461,9 +1538,10 @@ export default function App() {
                   <div className="relative z-10 flex justify-between items-start">
                     <div className="w-32 h-32 rounded-3xl overflow-hidden shadow-2xl border border-white/10">
                       <img 
-                        src="/assets/my-pfp-full.jpeg" 
+                        src={myPfpFull} 
                         alt="Abdulrahman Toor" 
                         className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile-mini:scale-105"
+                        loading="lazy"
                         referrerPolicy="no-referrer"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = 'https://api.dicebear.com/7.x/notionists/svg?seed=Abdulrahman&backgroundColor=6366f1';
@@ -1856,12 +1934,12 @@ export default function App() {
               <div className="absolute inset-0 border-2 border-dashed border-white/20 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-[spin_4s_linear_infinite] transition-opacity duration-500" />
               
               <img 
-                src="/assets/1-logo.svg" 
+                src={logo1} 
                 alt="Logo" 
                 className="absolute inset-0 w-full h-full p-2 md:p-2.5 object-contain transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-50 group-hover:opacity-0 group-hover:-rotate-90"
               />
               <img 
-                src="/assets/2-logo.svg" 
+                src={logo2} 
                 alt="Logo Hover" 
                 className="absolute inset-0 w-full h-full p-2 md:p-2.5 object-contain opacity-0 scale-150 rotate-90 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-100 group-hover:opacity-100 group-hover:rotate-0"
               />
@@ -1985,16 +2063,20 @@ export default function App() {
                       </ul>
 
                       <div className="flex gap-4">
-                        <a 
-                          href={selectedProject.url} 
-                          target="_blank" 
-                          className="flex-1 bg-white text-black px-8 py-4 rounded-2xl font-bold text-center hover:bg-white/90 transition-all flex items-center justify-center gap-2"
-                        >
-                          Live Demo <ExternalLink size={18} />
-                        </a>
-                        <button className="flex-1 bg-white/5 text-white px-8 py-4 rounded-2xl font-bold border border-white/10 hover:bg-white/10 transition-all">
-                          View Code
-                        </button>
+                        {selectedProject.mainCategory !== 'My Personal Apps' && (
+                          <>
+                            <a 
+                              href={selectedProject.url} 
+                              target="_blank" 
+                              className="flex-1 bg-white text-black px-8 py-4 rounded-2xl font-bold text-center hover:bg-white/90 transition-all flex items-center justify-center gap-2"
+                            >
+                              Live Demo <ExternalLink size={18} />
+                            </a>
+                            <button className="flex-1 bg-white/5 text-white px-8 py-4 rounded-2xl font-bold border border-white/10 hover:bg-white/10 transition-all">
+                              View Code
+                            </button>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -2040,12 +2122,14 @@ export default function App() {
                         className="w-full h-full border-0"
                         title={`${selectedProject.name} Live Preview`}
                       />
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/preview:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                        <div className="px-6 py-3 rounded-2xl bg-white text-black font-bold flex items-center gap-2">
-                          <ExternalLink size={18} />
-                          Interact with App
+                      {selectedProject.mainCategory !== 'My Personal Apps' && (
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/preview:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                          <div className="px-6 py-3 rounded-2xl bg-white text-black font-bold flex items-center gap-2">
+                            <ExternalLink size={18} />
+                            Interact with App
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -2062,7 +2146,7 @@ export default function App() {
             <div className="flex flex-col items-center md:items-start gap-2">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden p-2">
-                  <img src="/assets/2-logo.svg" alt="Logo" className="w-full h-full object-contain opacity-80" />
+                  <img src={logo2} alt="Logo" className="w-full h-full object-contain opacity-80" loading="lazy" />
                 </div>
                 <span className="font-bold text-lg tracking-tight">Abdulrahman Toor</span>
               </div>

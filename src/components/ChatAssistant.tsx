@@ -45,7 +45,10 @@ export const ChatAssistant = ({ isOpen, setIsOpen, initialMessage, setInitialMes
     setIsLoading(true);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
+      const ai = new GoogleGenAI({ 
+        apiKey: process.env.GEMINI_API_KEY || '',
+        httpOptions: { fetch: window.fetch.bind(window) }
+      });
       const model = "gemini-3-flash-preview";
 
       // Simple history conversion
