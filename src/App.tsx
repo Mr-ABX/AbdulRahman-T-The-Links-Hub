@@ -57,7 +57,9 @@ import {
   X,
   Download,
   LayoutGrid,
-  List
+  List,
+  Lock,
+  Play
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -69,6 +71,7 @@ import myPfpFull from './assets/my-pfp-full.jpeg';
 import bookCover from './assets/31-ways-to-ruin-your-life-cover.png';
 import logo1 from './assets/1-logo.svg';
 import logo2 from './assets/2-logo.svg';
+import myPfp from './assets/my-pfp.jpg';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -173,35 +176,35 @@ const tabs: { name: Category; icon: React.ReactNode }[] = [
 ];
 
 const projects = [
-  { name: "Project X (Unreleased)", mainCategory: 'My Personal Apps', tags: ['Experimental', 'AI'], pricing: 'Private', desc: 'An experimental AI-driven personal assistant with deep system integration.', url: '#', previewUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Lock size={20} /> },
-  { name: "Nexus Engine", mainCategory: 'My Personal Apps', tags: ['Game Engine', '3D'], pricing: 'Private', desc: 'A custom 3D rendering engine built from scratch for next-gen interactive experiences.', url: '#', previewUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', color: 'text-rose-400', bg: 'bg-rose-500/10', icon: <Lock size={20} /> },
-  { name: "NodeRaptor - n8n Architect", mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Free', desc: 'An AI-powered architect for n8n workflows, capable of analyzing, debugging, and building automations directly via your n8n instance.', url: 'https://noderaptor.netlify.app/', previewUrl: 'https://noderaptor.netlify.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Bot size={20} /> },
-  { name: "O.S.K.A.R. (Sentient Interface)", mainCategory: 'Interactive Experiences', tags: ['AI Tools', 'Interactive'], pricing: 'Free', desc: 'A full-screen, interactive AI digital desk and companion with dynamic digital eyes, real-time voice, vision, and natural interaction capabilities.', url: 'https://project-oskar.netlify.app/', previewUrl: 'https://project-oskar.netlify.app/', color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: <Brain size={20} /> },
-  { name: "Noodle Draw", mainCategory: 'Apps & Dev', tags: ['Web', 'AI Tools'], pricing: 'Free', desc: 'A professional-grade infinite canvas drawing application with tablet pressure sensitivity and AI creative assistance.', url: 'https://noodle-draw.netlify.app/', previewUrl: 'https://noodle-draw.netlify.app/', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Palette size={20} /> },
-  { name: "ARGUS // INTELLIGENCE", mainCategory: 'AI Solutions', tags: ['SaaS', 'Cybersecurity'], pricing: 'Paid', desc: 'A high-tech cybersecurity dashboard tracking visitor IP, location, and network details with a live map interface.', url: 'https://argus-osint-soc.vercel.app/', previewUrl: 'https://argus-osint-soc.vercel.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Globe size={20} /> },
-  { name: "Koe Audio Studio", mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Paid', desc: 'Next-generation parametric voice synthesis suite. Voice cloning and advanced speech generation.', url: 'https://koe-audiostudio.netlify.app/', previewUrl: 'https://koe-audiostudio.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Mic size={20} /> },
-  { name: "FlowType - Minimalist Touch Typing", mainCategory: 'Interactive Experiences', tags: ['Web', 'AI Tools'], pricing: 'Free', desc: 'An ultra-minimalist, distraction-free touch typing application with mechanical keyboard sounds, real-time analytics, and AI-generated practice content.', url: 'https://theflowtype.netlify.app/', previewUrl: 'https://theflowtype.netlify.app/', color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: <Terminal size={20} /> },
-  { name: "Babel | Learn Fictional Languages", mainCategory: 'Apps & Dev', tags: ['Web', 'Education'], pricing: 'Free', desc: 'Master the languages of the multiverse. A high-end, gamified learning app for fictional tongues like Minionese, Klingon, and High Valyrian.', url: 'https://babel-learn-fiction.netlify.app/', previewUrl: 'https://babel-learn-fiction.netlify.app/', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <BookOpen size={20} /> },
-  { name: "Virtuoso Web Piano & Beat Studio", mainCategory: 'Interactive Experiences', tags: ['Web', 'Interactive'], pricing: 'Free', desc: 'A premium, responsive web music workstation featuring a Grand Piano, multiple synthesizers, and a 16-pad Beat Studio for rhythm creation.', url: 'https://virtuoso-keys.netlify.app/', previewUrl: 'https://virtuoso-keys.netlify.app/', color: 'text-amber-400', bg: 'bg-amber-500/10', icon: <Palette size={20} /> },
-  { name: "The Architect's Doodle Trap", mainCategory: 'Interactive Experiences', tags: ['Games'], pricing: 'Free', desc: 'A creative puzzle game built for the web.', url: 'https://the-architects-doodle-trap.netlify.app/', previewUrl: 'https://the-architects-doodle-trap.netlify.app/', color: 'text-yellow-400', bg: 'bg-yellow-500/10', icon: <Gamepad2 size={20} /> },
-  { name: "Trust Nothing", mainCategory: 'Interactive Experiences', tags: ['Games'], pricing: 'Free', desc: 'A psychological thriller game that challenges your perception.', url: 'https://trust-nothing.netlify.app/', previewUrl: 'https://trust-nothing.netlify.app/', color: 'text-red-500', bg: 'bg-red-500/10', icon: <Gamepad2 size={20} /> },
-  { name: "Gekko Dash", mainCategory: 'Interactive Experiences', tags: ['Games'], pricing: 'Free', desc: 'A fast-paced neon runner game with addictive mechanics.', url: 'https://gekko-dash.netlify.app/', previewUrl: 'https://gekko-dash.netlify.app/', color: 'text-lime-400', bg: 'bg-lime-500/10', icon: <Gamepad2 size={20} /> },
-  { name: 'Vesper AI Notes', mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Free', desc: 'AI-powered note-taking and knowledge base.', url: 'https://vesper-ai-notes.netlify.app/', previewUrl: 'https://vesper-ai-notes.netlify.app/', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: <Bot size={20} /> },
-  { name: 'Vibelex', mainCategory: 'Apps & Dev', tags: ['Web', 'SaaS'], pricing: 'Free', desc: 'Modern digital experience platform.', url: 'https://vibelex.netlify.app/', previewUrl: 'https://vibelex.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Globe size={20} /> },
-  { name: 'Zen Maker', mainCategory: 'Apps & Dev', tags: ['SaaS'], pricing: 'Paid', price: '$2.99/yr', desc: 'Minimalist creation tool for focused builders.', url: 'https://zen-maker.netlify.app/', previewUrl: 'https://zen-maker.netlify.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Layout size={20} /> },
-  { name: 'LevelUp Hero', mainCategory: 'Apps & Dev', tags: ['Mobile', 'Games'], pricing: 'Free', desc: "Gamified OS for your life's journey.", url: 'https://levelup-heros-journey-os.vercel.app/', previewUrl: 'https://levelup-heros-journey-os.vercel.app/', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <Smartphone size={20} /> },
-  { name: 'Kairos Beta', mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Paid', desc: 'Time management redefined for the AI era.', url: 'https://kairos-beta3.vercel.app/', previewUrl: 'https://kairos-beta3.vercel.app/', color: 'text-rose-400', bg: 'bg-rose-500/10', icon: <AppWindow size={20} /> },
-  { name: 'Cyber Quest', mainCategory: 'Interactive Experiences', tags: ['Games'], pricing: 'Free', desc: 'A futuristic RPG built with React & Three.js.', url: '#', color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: <Gamepad2 size={20} /> },
-  { name: 'SpeakEasy AI', mainCategory: 'AI Solutions', tags: ['Open Source', 'AI Tools'], pricing: 'Free', desc: '100% Free AI Text-To-Speech Tool.', url: 'https://github.com/Mr-ABX/SpeakEasy-AI-Text-To-Speech-Tool---100-Free-by-AbdulrahmanT', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Mic size={20} /> },
-  { name: 'AI Personality Quiz', mainCategory: 'AI Solutions', tags: ['Open Source', 'AI Tools'], pricing: 'Free', desc: 'Local run AI Personality Quiz Model.', url: 'https://github.com/Mr-ABX/AI-Personality-Quiz-Model', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Brain size={20} /> },
-  { name: 'ASCII TypeArt', mainCategory: 'Apps & Dev', tags: ['Open Source', 'AI Tools'], pricing: 'Free', desc: 'AI art generator for ASCII Canvas.', url: 'https://github.com/Mr-ABX/ASCII-TypeArt-Canvas-Img-to-Art-', color: 'text-teal-400', bg: 'bg-teal-500/10', icon: <Palette size={20} /> },
-  { name: 'GenAI Studio', mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Paid', price: 'Custom', desc: 'Enterprise-grade generative AI platform for content creation.', url: '#', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <Sparkles size={20} /> },
-  { name: 'Fusion Nexus', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'Advanced web platform and digital solutions.', url: 'https://fusionnexus.infni-t.com', previewUrl: 'https://fusionnexus.infni-t.com', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Globe size={20} /> },
-  { name: 'Solution Lab', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'Innovative solutions and digital lab.', url: 'https://solutionlab.infni-t.com', previewUrl: 'https://solutionlab.infni-t.com', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: <AppWindow size={20} /> },
-  { name: 'InstaShred', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'Fitness and shredding platform.', url: 'https://instashred.com/', previewUrl: 'https://instashred.com/', color: 'text-red-400', bg: 'bg-red-500/10', icon: <Zap size={20} /> },
-  { name: 'Junno Express', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'E-commerce and express delivery platform.', url: 'https://junnoexpress.com/', previewUrl: 'https://junnoexpress.com/', color: 'text-yellow-400', bg: 'bg-yellow-500/10', icon: <Globe size={20} /> },
-  { name: 'Recallers', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'Dog training and recallers platform.', url: 'https://dogsthat.com/recallers/', previewUrl: 'https://dogsthat.com/recallers/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Globe size={20} /> },
-  { name: 'Video & Motion Graphics Portfolio', mainCategory: 'Video & Motion Graphics', tags: ['Portfolio', 'Video'], pricing: 'Free', desc: 'A showcase of my video editing, motion graphics, and VFX work.', url: 'https://www.youtube.com/watch?v=0Wh7MhqeHHA&list=PL7BsW-EOVU09CgVg1O4vk3U6fujfm1xw9', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Video size={20} /> },
+  { name: "Project X (Unreleased)", mainCategory: 'My Personal Apps', tags: ['Experimental', 'AI'], pricing: 'Private', desc: 'An experimental AI-driven personal assistant with deep system integration.', url: '#', previewUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Lock size={20} />, status: 'Development' },
+  { name: "Nexus Engine", mainCategory: 'My Personal Apps', tags: ['Game Engine', '3D'], pricing: 'Private', desc: 'A custom 3D rendering engine built from scratch for next-gen interactive experiences.', url: '#', previewUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', color: 'text-rose-400', bg: 'bg-rose-500/10', icon: <Lock size={20} />, status: 'Development' },
+  { name: "NodeRaptor - n8n Architect", mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Free', desc: 'An AI-powered architect for n8n workflows, capable of analyzing, debugging, and building automations directly via your n8n instance.', url: 'https://noderaptor.netlify.app/', previewUrl: 'https://noderaptor.netlify.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Bot size={20} />, status: 'Production' },
+  { name: "O.S.K.A.R. (Sentient Interface)", mainCategory: 'Interactive Experiences', tags: ['AI Tools', 'Interactive'], pricing: 'Free', desc: 'A full-screen, interactive AI digital desk and companion with dynamic digital eyes, real-time voice, vision, and natural interaction capabilities.', url: 'https://project-oskar.netlify.app/', previewUrl: 'https://project-oskar.netlify.app/', color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: <Brain size={20} />, status: 'Production' },
+  { name: "Noodle Draw", mainCategory: 'Apps & Dev', tags: ['Web', 'AI Tools', 'Collaborative'], pricing: 'Free', desc: 'A professional-grade infinite canvas drawing application with real-time collaboration, tablet pressure sensitivity, and AI creative assistance.', url: 'https://noodle-draw-akwy.onrender.com', previewUrl: 'https://noodle-draw-akwy.onrender.com', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Palette size={20} />, status: 'Production' },
+  { name: "ARGUS // INTELLIGENCE", mainCategory: 'AI Solutions', tags: ['SaaS', 'Cybersecurity'], pricing: 'Paid', desc: 'A high-tech cybersecurity dashboard tracking visitor IP, location, and network details with a live map interface.', url: 'https://argus-osint-soc.vercel.app/', previewUrl: 'https://argus-osint-soc.vercel.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Globe size={20} />, status: 'Production' },
+  { name: "Koe Audio Studio", mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Paid', desc: 'Next-generation parametric voice synthesis suite. Voice cloning and advanced speech generation.', url: 'https://koe-audiostudio.netlify.app/', previewUrl: 'https://koe-audiostudio.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Mic size={20} />, status: 'Production' },
+  { name: "FlowType - Minimalist Touch Typing", mainCategory: 'Interactive Experiences', tags: ['Web', 'AI Tools'], pricing: 'Free', desc: 'An ultra-minimalist, distraction-free touch typing application with mechanical keyboard sounds, real-time analytics, and AI-generated practice content.', url: 'https://theflowtype.netlify.app/', previewUrl: 'https://theflowtype.netlify.app/', color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: <Terminal size={20} />, status: 'Production' },
+  { name: "Babel | Learn Fictional Languages", mainCategory: 'Apps & Dev', tags: ['Web', 'Education'], pricing: 'Free', desc: 'Master the languages of the multiverse. A high-end, gamified learning app for fictional tongues like Minionese, Klingon, and High Valyrian.', url: 'https://babel-learn-fiction.netlify.app/', previewUrl: 'https://babel-learn-fiction.netlify.app/', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <BookOpen size={20} />, status: 'Production' },
+  { name: "Virtuoso Web Piano & Beat Studio", mainCategory: 'Interactive Experiences', tags: ['Web', 'Interactive'], pricing: 'Free', desc: 'A premium, responsive web music workstation featuring a Grand Piano, multiple synthesizers, and a 16-pad Beat Studio for rhythm creation.', url: 'https://virtuoso-keys.netlify.app/', previewUrl: 'https://virtuoso-keys.netlify.app/', color: 'text-amber-400', bg: 'bg-amber-500/10', icon: <Palette size={20} />, status: 'Production' },
+  { name: "The Architect's Doodle Trap", mainCategory: 'Interactive Experiences', tags: ['Games'], pricing: 'Free', desc: 'A creative puzzle game built for the web.', url: 'https://the-architects-doodle-trap.netlify.app/', previewUrl: 'https://the-architects-doodle-trap.netlify.app/', color: 'text-yellow-400', bg: 'bg-yellow-500/10', icon: <Gamepad2 size={20} />, status: 'Production' },
+  { name: "Trust Nothing", mainCategory: 'Interactive Experiences', tags: ['Games'], pricing: 'Free', desc: 'A psychological thriller game that challenges your perception.', url: 'https://trust-nothing.netlify.app/', previewUrl: 'https://trust-nothing.netlify.app/', color: 'text-red-500', bg: 'bg-red-500/10', icon: <Gamepad2 size={20} />, status: 'Production' },
+  { name: "Gekko Dash", mainCategory: 'Interactive Experiences', tags: ['Games'], pricing: 'Free', desc: 'A fast-paced neon runner game with addictive mechanics.', url: 'https://gekko-dash.netlify.app/', previewUrl: 'https://gekko-dash.netlify.app/', color: 'text-lime-400', bg: 'bg-lime-500/10', icon: <Gamepad2 size={20} />, status: 'Production' },
+  { name: 'Vesper AI Notes', mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Free', desc: 'AI-powered note-taking and knowledge base.', url: 'https://vesper-ai-notes.netlify.app/', previewUrl: 'https://vesper-ai-notes.netlify.app/', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: <Bot size={20} />, status: 'Production' },
+  { name: 'Vibelex', mainCategory: 'Apps & Dev', tags: ['Web', 'SaaS'], pricing: 'Free', desc: 'Modern digital experience platform.', url: 'https://vibelex.netlify.app/', previewUrl: 'https://vibelex.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Globe size={20} />, status: 'Production' },
+  { name: 'Zen Maker', mainCategory: 'Apps & Dev', tags: ['SaaS'], pricing: 'Paid', price: '$2.99/yr', desc: 'Minimalist creation tool for focused builders.', url: 'https://zen-maker.netlify.app/', previewUrl: 'https://zen-maker.netlify.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Layout size={20} />, status: 'Production' },
+  { name: 'LevelUp Hero', mainCategory: 'Apps & Dev', tags: ['Mobile', 'Games'], pricing: 'Free', desc: "Gamified OS for your life's journey.", url: 'https://levelup-heros-journey-os.vercel.app/', previewUrl: 'https://levelup-heros-journey-os.vercel.app/', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <Smartphone size={20} />, status: 'Production' },
+  { name: 'Kairos Beta', mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Paid', desc: 'Time management redefined for the AI era.', url: 'https://kairos-beta3.vercel.app/', previewUrl: 'https://kairos-beta3.vercel.app/', color: 'text-rose-400', bg: 'bg-rose-500/10', icon: <AppWindow size={20} />, status: 'Beta' },
+  { name: 'Cyber Quest', mainCategory: 'Interactive Experiences', tags: ['Games'], pricing: 'Free', desc: 'A futuristic RPG built with React & Three.js.', url: '#', color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: <Gamepad2 size={20} />, status: 'Development' },
+  { name: 'SpeakEasy AI', mainCategory: 'AI Solutions', tags: ['Open Source', 'AI Tools'], pricing: 'Free', desc: '100% Free AI Text-To-Speech Tool.', url: 'https://github.com/Mr-ABX/SpeakEasy-AI-Text-To-Speech-Tool---100-Free-by-AbdulrahmanT', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Mic size={20} />, status: 'Production' },
+  { name: 'AI Personality Quiz', mainCategory: 'AI Solutions', tags: ['Open Source', 'AI Tools'], pricing: 'Free', desc: 'Local run AI Personality Quiz Model.', url: 'https://github.com/Mr-ABX/AI-Personality-Quiz-Model', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Brain size={20} />, status: 'Production' },
+  { name: 'ASCII TypeArt', mainCategory: 'Apps & Dev', tags: ['Open Source', 'AI Tools'], pricing: 'Free', desc: 'AI art generator for ASCII Canvas.', url: 'https://github.com/Mr-ABX/ASCII-TypeArt-Canvas-Img-to-Art-', color: 'text-teal-400', bg: 'bg-teal-500/10', icon: <Palette size={20} />, status: 'Production' },
+  { name: 'GenAI Studio', mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Paid', price: 'Custom', desc: 'Enterprise-grade generative AI platform for content creation.', url: '#', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <Sparkles size={20} />, status: 'Beta' },
+  { name: 'Fusion Nexus', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'Advanced web platform and digital solutions.', url: 'https://fusionnexus.infni-t.com', previewUrl: 'https://fusionnexus.infni-t.com', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Globe size={20} />, status: 'Production' },
+  { name: 'Solution Lab', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'Innovative solutions and digital lab.', url: 'https://solutionlab.infni-t.com', previewUrl: 'https://solutionlab.infni-t.com', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: <AppWindow size={20} />, status: 'Production' },
+  { name: 'InstaShred', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'Fitness and shredding platform.', url: 'https://instashred.com/', previewUrl: 'https://instashred.com/', color: 'text-red-400', bg: 'bg-red-500/10', icon: <Zap size={20} />, status: 'Production' },
+  { name: 'Junno Express', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'E-commerce and express delivery platform.', url: 'https://junnoexpress.com/', previewUrl: 'https://junnoexpress.com/', color: 'text-yellow-400', bg: 'bg-yellow-500/10', icon: <Globe size={20} />, status: 'Production' },
+  { name: 'Recallers', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'Dog training and recallers platform.', url: 'https://dogsthat.com/recallers/', previewUrl: 'https://dogsthat.com/recallers/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Globe size={20} />, status: 'Production' },
+  { name: 'Video & Motion Graphics Portfolio', mainCategory: 'Video & Motion Graphics', tags: ['Portfolio', 'Video'], pricing: 'Free', desc: 'A showcase of my video editing, motion graphics, and VFX work.', url: 'https://www.youtube.com/watch?v=0Wh7MhqeHHA&list=PL7BsW-EOVU09CgVg1O4vk3U6fujfm1xw9', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Video size={20} />, status: 'Production' },
 ];
 
 const reviews = [
@@ -406,7 +409,13 @@ export default function App() {
   };
 
   React.useEffect(() => {
-    if (activeTab === 'Projects') {
+    if (activeTab !== 'Apps') {
+      setIsInImmersiveMode(false);
+    }
+  }, [activeTab]);
+
+  React.useEffect(() => {
+    if (activeTab === 'Projects' || activeTab === 'Apps') {
       setIsLoading(true);
       const timer = setTimeout(() => setIsLoading(false), 300);
       return () => clearTimeout(timer);
@@ -701,7 +710,7 @@ export default function App() {
                       <div className="flex gap-2 mt-4">
                         <button onClick={(e) => { e.stopPropagation(); setActiveTab('Projects'); setActiveProjectCategory('Apps & Dev'); }} className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-medium flex items-center gap-1.5 transition-colors"><Code2 size={14}/> Apps</button>
                         <button onClick={(e) => { e.stopPropagation(); setActiveTab('Projects'); setActiveProjectCategory('Interactive Experiences'); }} className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-medium flex items-center gap-1.5 transition-colors"><Gamepad2 size={14}/> Games</button>
-                        <button onClick={(e) => { e.stopPropagation(); setActiveTab('Projects'); setActiveProjectCategory('Web Platforms'); }} className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-medium flex items-center gap-1.5 transition-colors"><Globe size={14}/> Web</button>
+                        <button onClick={(e) => { e.stopPropagation(); setActiveTab('Projects'); setActiveProjectCategory('Web Development Projects'); }} className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-medium flex items-center gap-1.5 transition-colors"><Globe size={14}/> Web</button>
                       </div>
                     </div>
                   </BentoCard>
@@ -808,10 +817,8 @@ export default function App() {
 
       case 'Apps':
       case 'Projects': {
-        if (isInImmersiveMode) {
-          const immersiveCategories = activeTab === 'Projects' 
-            ? ['All', 'Web Development Projects', 'Video & Motion Graphics', 'Graphics & Marketing']
-            : ['All', 'AI Solutions', 'Apps & Dev', 'Interactive Experiences', 'My Personal Apps'];
+        if (isInImmersiveMode && activeTab === 'Apps') {
+          const immersiveCategories = ['All', 'AI Solutions', 'Apps & Dev', 'Interactive Experiences', 'My Personal Apps'];
           
           return (
             <div className="flex flex-col md:flex-row gap-8 min-h-screen pb-20 max-w-[1600px] mx-auto px-4 mt-8">
@@ -981,10 +988,13 @@ export default function App() {
                               viewMode === 'grid' ? "h-[320px]" : "h-auto p-4 flex flex-col sm:flex-row items-start sm:items-center gap-6"
                             )}
                             onClick={() => setSelectedProject(p)}
-                            background={p.url !== '#' && viewMode === 'grid' ? (
+                            background={(p.url !== '#' || (p.previewUrl && p.previewUrl.includes('youtube.com/embed/'))) && viewMode === 'grid' ? (
                               <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[2rem]">
                                 <img 
-                                  src={`https://image.thum.io/get/width/600/crop/600/noanimate/${p.url}`}
+                                  src={p.url !== '#' 
+                                    ? `https://image.thum.io/get/width/600/crop/600/noanimate/${p.url}`
+                                    : `https://img.youtube.com/vi/${p.previewUrl.split('/').pop()}/maxresdefault.jpg`
+                                  }
                                   alt={p.name}
                                   className="w-full h-full object-cover opacity-80 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
                                   loading="lazy"
@@ -1010,6 +1020,16 @@ export default function App() {
                                     <span className={cn("text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
                                       {p.pricing}
                                     </span>
+                                    {p.status && (
+                                      <span className={cn(
+                                        "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter",
+                                        p.status === 'Development' ? "bg-amber-500/20 text-amber-400" :
+                                        p.status === 'Beta' ? "bg-blue-500/20 text-blue-400" :
+                                        "bg-emerald-500/20 text-emerald-400"
+                                      )}>
+                                        {p.status}
+                                      </span>
+                                    )}
                                   </div>
                                 )}
                               </div>
@@ -1023,7 +1043,19 @@ export default function App() {
                                     <span className="text-[10px] text-white/40 uppercase tracking-widest">{p.mainCategory}</span>
                                   </div>
                                 )}
-                                <h3 className={cn("font-bold mb-2 group-hover/project:text-indigo-400 transition-colors", viewMode === 'grid' ? "text-xl" : "text-lg")}>{p.name}</h3>
+                                <div className="flex items-center gap-3 mb-2">
+                                  <h3 className={cn("font-bold group-hover/project:text-indigo-400 transition-colors", viewMode === 'grid' ? "text-xl" : "text-lg")}>{p.name}</h3>
+                                  {p.status && (
+                                    <span className={cn(
+                                      "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter",
+                                      p.status === 'Development' ? "bg-amber-500/20 text-amber-400" :
+                                      p.status === 'Beta' ? "bg-blue-500/20 text-blue-400" :
+                                      "bg-emerald-500/20 text-emerald-400"
+                                    )}>
+                                      {p.status}
+                                    </span>
+                                  )}
+                                </div>
                                 <p className={cn("text-white/60 font-light leading-relaxed", viewMode === 'grid' ? "text-xs line-clamp-3 mb-auto" : "text-sm line-clamp-2 mb-2")}>{p.desc}</p>
                                 
                                 <div className={cn("flex items-center", viewMode === 'grid' ? "mt-6 justify-between" : "gap-2")}>
@@ -1041,7 +1073,7 @@ export default function App() {
                                   </div>
                                   {viewMode === 'grid' && (
                                     <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover/project:bg-indigo-500 group-hover/project:text-white transition-all">
-                                      <ArrowRight size={14} />
+                                      {p.mainCategory === 'My Personal Apps' ? <Play size={14} fill="currentColor" /> : <ArrowRight size={14} />}
                                     </div>
                                   )}
                                 </div>
@@ -1073,21 +1105,6 @@ export default function App() {
           if (activeTab === 'Projects') {
             return (
               <div className="space-y-8">
-                <div className="flex items-center justify-between bg-indigo-500/10 border border-indigo-500/20 p-6 rounded-[2.5rem] relative overflow-hidden group">
-                  <div className="absolute -right-8 -top-8 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl group-hover:bg-indigo-500/30 transition-colors" />
-                  <div className="relative z-10">
-                    <h3 className="text-2xl font-bold mb-2">Immersive Gallery Mode</h3>
-                    <p className="text-white/50 text-sm max-w-md">Experience my projects in a focused, full-screen gallery with advanced search and filtering.</p>
-                  </div>
-                  <button 
-                    onClick={() => setIsInImmersiveMode(true)}
-                    className="relative z-10 px-6 py-3 rounded-2xl bg-indigo-500 text-white font-bold hover:bg-indigo-400 transition-all shadow-xl shadow-indigo-500/20 flex items-center gap-2 group-hover:scale-105"
-                  >
-                    <Rocket size={18} />
-                    <span>Enter Gallery</span>
-                  </button>
-                </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
                   <BentoCard size="2x1" onClick={() => setActiveProjectCategory('Web Development Projects')} className="md:col-span-2 cursor-pointer hover:bg-purple-500/10 transition-colors group relative overflow-hidden">
                     <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
@@ -1133,6 +1150,21 @@ export default function App() {
           } else {
             return (
               <div className="space-y-8">
+                <div className="flex items-center justify-between bg-indigo-500/10 border border-indigo-500/20 p-6 rounded-[2.5rem] relative overflow-hidden group">
+                  <div className="absolute -right-8 -top-8 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/30 transition-colors" />
+                  <div className="relative z-10">
+                    <h3 className="text-2xl font-bold mb-2">Immersive App Gallery</h3>
+                    <p className="text-white/50 text-sm max-w-md">Experience my apps in a focused, full-screen gallery with advanced search and filtering.</p>
+                  </div>
+                  <button 
+                    onClick={() => setIsInImmersiveMode(true)}
+                    className="relative z-10 px-6 py-3 rounded-2xl bg-indigo-500 text-white font-bold hover:bg-indigo-400 transition-all shadow-xl shadow-indigo-500/20 flex items-center gap-2 group-hover:scale-105"
+                  >
+                    <Rocket size={18} />
+                    <span>Enter Gallery</span>
+                  </button>
+                </div>
+
                 <div className="text-center md:text-left mb-8">
                   <h2 className="text-3xl font-bold mb-4">Apps & Tools</h2>
                   <p className="text-white/60 max-w-2xl">
@@ -1267,10 +1299,13 @@ export default function App() {
                         size={i === 0 && projectFilter === 'All' ? "2x1" : "1x1"} 
                         className={cn(p.bg, "border-white/5 cursor-pointer relative overflow-hidden group/project")}
                         onClick={() => setSelectedProject(p)}
-                        background={p.url !== '#' ? (
+                        background={p.url !== '#' || (p.previewUrl && p.previewUrl.includes('youtube.com/embed/')) ? (
                           <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[2rem]">
                             <img 
-                              src={`https://image.thum.io/get/width/600/crop/600/noanimate/${p.url}`}
+                              src={p.url !== '#' 
+                                ? `https://image.thum.io/get/width/600/crop/600/noanimate/${p.url}`
+                                : `https://img.youtube.com/vi/${p.previewUrl.split('/').pop()}/maxresdefault.jpg`
+                              }
                               alt={p.name}
                               className="w-full h-full object-cover opacity-80 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
                               loading="lazy"
@@ -1296,11 +1331,27 @@ export default function App() {
                               )}
                             </div>
                           </div>
-                          <h3 className="font-bold text-lg mb-1">{p.name}</h3>
+                          <div className="flex items-center justify-between gap-2 mb-1">
+                            <h3 className="font-bold text-lg">{p.name}</h3>
+                            {p.status && (
+                              <span className={cn(
+                                "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter",
+                                p.status === 'Development' ? "bg-amber-500/20 text-amber-400" :
+                                p.status === 'Beta' ? "bg-blue-500/20 text-blue-400" :
+                                "bg-emerald-500/20 text-emerald-400"
+                              )}>
+                                {p.status}
+                              </span>
+                            )}
+                          </div>
                           <p className="text-xs text-white/50 line-clamp-2 font-light mb-auto">{p.desc}</p>
                           <div className="mt-4 flex items-center gap-2 text-[10px] font-bold text-white/40 group-hover:text-white transition-colors">
-                            <span>View Project</span>
-                            <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                            <span>{p.mainCategory === 'My Personal Apps' ? 'Watch Preview' : 'View Project'}</span>
+                            {p.mainCategory === 'My Personal Apps' ? (
+                              <Play size={12} fill="currentColor" className="group-hover:scale-110 transition-transform" />
+                            ) : (
+                              <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                            )}
                           </div>
                         </div>
                       </BentoCard>
@@ -1538,7 +1589,7 @@ export default function App() {
                   <div className="relative z-10 flex justify-between items-start">
                     <div className="w-32 h-32 rounded-3xl overflow-hidden shadow-2xl border border-white/10">
                       <img 
-                        src={myPfpFull} 
+                        src={myPfp} 
                         alt="Abdulrahman Toor" 
                         className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile-mini:scale-105"
                         loading="lazy"
@@ -2090,7 +2141,14 @@ export default function App() {
                         </div>
                         <div className="flex justify-between items-center">
                           <span className="text-sm text-white/50">Status</span>
-                          <span className="text-sm font-bold text-emerald-400">Live</span>
+                          <span className={cn(
+                            "text-sm font-bold",
+                            selectedProject.status === 'Development' ? "text-amber-400" :
+                            selectedProject.status === 'Beta' ? "text-blue-400" :
+                            "text-emerald-400"
+                          )}>
+                            {selectedProject.status || 'Live'}
+                          </span>
                         </div>
                         <div className="flex justify-between items-center">
                           <span className="text-sm text-white/50">Pricing</span>

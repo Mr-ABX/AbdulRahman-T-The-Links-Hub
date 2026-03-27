@@ -47,7 +47,7 @@ export const ChatAssistant = ({ isOpen, setIsOpen, initialMessage, setInitialMes
     try {
       const ai = new GoogleGenAI({ 
         apiKey: process.env.GEMINI_API_KEY || '',
-        httpOptions: { fetch: window.fetch.bind(window) }
+        httpOptions: { fetch: window.fetch.bind(window) } as any
       });
       const model = "gemini-3-flash-preview";
 
