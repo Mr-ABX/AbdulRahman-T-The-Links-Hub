@@ -67,11 +67,11 @@ import { twMerge } from 'tailwind-merge';
 import { ChatAssistant } from './components/ChatAssistant';
 import { CustomCursor } from './components/CustomCursor';
 
-import myPfpFull from './assets/my-pfp-full.jpeg';
-import bookCover from './assets/31-ways-to-ruin-your-life-cover.png';
-import logo1 from './assets/1-logo.svg';
-import logo2 from './assets/2-logo.svg';
-import myPfp from './assets/my-pfp.jpg';
+const myPfpFull = "/assets/my-pfp-full.jpeg";
+const bookCover = "/assets/31-ways-to-ruin-your-life-cover.png";
+const logo1 = "/assets/1-logo.svg";
+const logo2 = "/assets/2-logo.svg";
+const myPfp = "/assets/my-pfp.jpg";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -193,6 +193,7 @@ const projects = [
   { name: 'Vibelex', mainCategory: 'Apps & Dev', tags: ['Web', 'SaaS'], pricing: 'Free', desc: 'Modern digital experience platform.', url: 'https://vibelex.netlify.app/', previewUrl: 'https://vibelex.netlify.app/', color: 'text-purple-400', bg: 'bg-purple-500/10', icon: <Globe size={20} />, status: 'Production' },
   { name: 'Zen Maker', mainCategory: 'Apps & Dev', tags: ['SaaS'], pricing: 'Paid', price: '$2.99/yr', desc: 'Minimalist creation tool for focused builders.', url: 'https://zen-maker.netlify.app/', previewUrl: 'https://zen-maker.netlify.app/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Layout size={20} />, status: 'Production' },
   { name: 'LevelUp Hero', mainCategory: 'Apps & Dev', tags: ['Mobile', 'Games'], pricing: 'Free', desc: "Gamified OS for your life's journey.", url: 'https://levelup-heros-journey-os.vercel.app/', previewUrl: 'https://levelup-heros-journey-os.vercel.app/', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <Smartphone size={20} />, status: 'Production' },
+  { name: 'KAIROS - The AI Cockpit [▴ Beta 4.O]_(z2.0)', mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Paid', desc: 'A high-end AI Ad Creative Studio for E-commerce, featuring Brand DNA management, smart image stacking, and advanced editing capabilities powered by Gemini.', url: 'https://kairos-beta4.vercel.app/', previewUrl: 'https://kairos-beta4.vercel.app/', color: 'text-rose-400', bg: 'bg-rose-500/10', icon: <AppWindow size={20} />, status: 'Beta' },
   { name: 'Kairos Beta', mainCategory: 'AI Solutions', tags: ['SaaS', 'AI Tools'], pricing: 'Paid', desc: 'Time management redefined for the AI era.', url: 'https://kairos-beta3.vercel.app/', previewUrl: 'https://kairos-beta3.vercel.app/', color: 'text-rose-400', bg: 'bg-rose-500/10', icon: <AppWindow size={20} />, status: 'Beta' },
   { name: 'Cyber Quest', mainCategory: 'Interactive Experiences', tags: ['Games'], pricing: 'Free', desc: 'A futuristic RPG built with React & Three.js.', url: '#', color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: <Gamepad2 size={20} />, status: 'Development' },
   { name: 'SpeakEasy AI', mainCategory: 'AI Solutions', tags: ['Open Source', 'AI Tools'], pricing: 'Free', desc: '100% Free AI Text-To-Speech Tool.', url: 'https://github.com/Mr-ABX/SpeakEasy-AI-Text-To-Speech-Tool---100-Free-by-AbdulrahmanT', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Mic size={20} />, status: 'Production' },
@@ -409,6 +410,10 @@ export default function App() {
   };
 
   React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [activeTab]);
+
+  React.useEffect(() => {
     if (activeTab !== 'Apps') {
       setIsInImmersiveMode(false);
     }
@@ -474,10 +479,6 @@ export default function App() {
                       src={myPfpFull} 
                       alt="Abdulrahman Toor" 
                       className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile:scale-105"
-                      referrerPolicy="no-referrer"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://api.dicebear.com/7.x/notionists/svg?seed=Abdulrahman&backgroundColor=6366f1';
-                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent"></div>
                   </div>
@@ -1593,10 +1594,6 @@ export default function App() {
                         alt="Abdulrahman Toor" 
                         className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile-mini:scale-105"
                         loading="lazy"
-                        referrerPolicy="no-referrer"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = 'https://api.dicebear.com/7.x/notionists/svg?seed=Abdulrahman&backgroundColor=6366f1';
-                        }}
                       />
                     </div>
                     <div className="flex gap-2">
