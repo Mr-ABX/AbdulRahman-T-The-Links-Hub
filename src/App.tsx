@@ -595,9 +595,9 @@ export default function App() {
                     exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
                     whileHover={{ y: -5, transition: { duration: 0.2 } }}
                     transition={{ duration: 0.6, type: "spring", stiffness: 100, damping: 15 }}
-                    className="col-span-1 md:col-span-2 row-span-1 relative overflow-hidden rounded-[2rem] p-[1px] group/ai-widget"
+                    className="col-span-1 md:col-span-2 row-span-1 relative overflow-hidden rounded-[2rem] p-[1px] border border-indigo-500/20 group/ai-widget"
                   >
-                    <div className="absolute inset-0 bg-[conic-gradient(from_0deg,transparent_0_270deg,#6366f1_300deg,#a855f7_330deg,#ec4899_360deg)] animate-border-spin" />
+                    <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_270deg,#6366f1_300deg,#a855f7_330deg,#ec4899_360deg)] animate-border-spin" />
                     <div className="relative h-full w-full bg-[#050505] rounded-[calc(2rem-1px)] p-6 flex flex-col justify-between overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-600/10" />
                       <div className="absolute -right-4 -top-4 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl group-hover/ai-widget:bg-indigo-500/20 transition-colors" />
@@ -1234,8 +1234,8 @@ export default function App() {
           } else {
             return (
               <div className="space-y-8">
-                <div className="relative overflow-hidden rounded-[2.5rem] p-[1px] group">
-                  <div className="absolute inset-0 bg-[conic-gradient(from_0deg,transparent_0_270deg,#6366f1_300deg,#a855f7_330deg,#ec4899_360deg)] animate-border-spin" />
+                <div className="relative overflow-hidden rounded-[2.5rem] p-[1px] border border-indigo-500/20 group">
+                  <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_270deg,#6366f1_300deg,#a855f7_330deg,#ec4899_360deg)] animate-border-spin" />
                   <div className="relative h-full w-full bg-[#050505] rounded-[calc(2.5rem-1px)] p-6 flex flex-col md:flex-row items-start md:items-center justify-between overflow-hidden gap-4">
                     <div className="absolute inset-0 bg-indigo-500/10" />
                     <div className="absolute -right-8 -top-8 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/30 transition-colors" />
