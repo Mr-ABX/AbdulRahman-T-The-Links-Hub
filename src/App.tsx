@@ -371,6 +371,14 @@ const FeaturedCarousel = ({ projects, onSelect }: { projects: any[], onSelect: (
   );
 };
 
+const categoryDescriptions: Record<string, string> = {
+  'All': 'Explore my complete portfolio of projects, apps, and experiments.',
+  'AI Solutions': 'Advanced artificial intelligence tools and automated workflows.',
+  'Apps & Dev': 'Full-stack applications, developer tools, and software projects.',
+  'Interactive Experiences': 'Immersive 3D worlds, games, and creative web experiences.',
+  'My Personal Apps': 'Private tools and experimental projects built for personal use.',
+};
+
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -581,45 +589,56 @@ export default function App() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-[minmax(180px,auto)]">
                   
                   {/* AI Assistant Quick Widget */}
-                  <BentoCard size="2x1" className="bg-gradient-to-br from-indigo-500/10 to-purple-600/10 border-indigo-500/20 group/ai-widget relative overflow-hidden">
-                    <div className="absolute -right-4 -top-4 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl group-hover/ai-widget:bg-indigo-500/20 transition-colors" />
-                    <div className="relative z-10 h-full flex flex-col justify-center p-2">
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 rounded-xl bg-indigo-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 group-hover/ai-widget:scale-110 transition-transform">
-                          <Bot size={20} />
+                  <motion.div
+                    initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                    transition={{ duration: 0.6, type: "spring", stiffness: 100, damping: 15 }}
+                    className="col-span-1 md:col-span-2 row-span-1 relative overflow-hidden rounded-[2rem] p-[1px] group/ai-widget"
+                  >
+                    <div className="absolute inset-0 bg-[conic-gradient(from_0deg,transparent_0_270deg,#6366f1_300deg,#a855f7_330deg,#ec4899_360deg)] animate-border-spin" />
+                    <div className="relative h-full w-full bg-[#050505] rounded-[calc(2rem-1px)] p-6 flex flex-col justify-between overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-600/10" />
+                      <div className="absolute -right-4 -top-4 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl group-hover/ai-widget:bg-indigo-500/20 transition-colors" />
+                      <div className="relative z-10 h-full flex flex-col justify-center p-2">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-10 h-10 rounded-xl bg-indigo-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 group-hover/ai-widget:scale-110 transition-transform">
+                            <Bot size={20} />
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-bold">Ask My AI Assistant</h3>
+                            <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Powered by Gemini 3 Flash</p>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="text-lg font-bold">Ask My AI Assistant</h3>
-                          <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Powered by Gemini 3 Flash</p>
+                        <div className="relative group/input">
+                          <input 
+                            type="text" 
+                            placeholder="Ask about my projects, skills, or availability..." 
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                openChatWithSearch((e.target as HTMLInputElement).value);
+                                (e.target as HTMLInputElement).value = '';
+                              }
+                            }}
+                            className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 pr-12 text-sm focus:outline-none focus:border-indigo-500/50 transition-all group-hover/input:bg-white/10"
+                          />
+                          <button 
+                            onClick={(e) => {
+                              const input = (e.currentTarget.previousSibling as HTMLInputElement);
+                              if (input.value) {
+                                openChatWithSearch(input.value);
+                                input.value = '';
+                              }
+                            }}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-indigo-500 text-white hover:bg-indigo-400 transition-colors"
+                          >
+                            <ArrowRight size={16} />
+                          </button>
                         </div>
-                      </div>
-                      <div className="relative group/input">
-                        <input 
-                          type="text" 
-                          placeholder="Ask about my projects, skills, or availability..." 
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                              openChatWithSearch((e.target as HTMLInputElement).value);
-                              (e.target as HTMLInputElement).value = '';
-                            }
-                          }}
-                          className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 pr-12 text-sm focus:outline-none focus:border-indigo-500/50 transition-all group-hover/input:bg-white/10"
-                        />
-                        <button 
-                          onClick={(e) => {
-                            const input = (e.currentTarget.previousSibling as HTMLInputElement);
-                            if (input.value) {
-                              openChatWithSearch(input.value);
-                              input.value = '';
-                            }
-                          }}
-                          className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-indigo-500 text-white hover:bg-indigo-400 transition-colors"
-                        >
-                          <ArrowRight size={16} />
-                        </button>
                       </div>
                     </div>
-                  </BentoCard>
+                  </motion.div>
 
                   {/* Ebooks Shortcut */}
                   <BentoCard size="1x1" className="group cursor-pointer hover:bg-white/[0.04] transition-colors relative overflow-hidden" onClick={() => setActiveTab('Ebooks')}>
@@ -967,11 +986,20 @@ export default function App() {
                     </button>
                   </div>
                 ) : (
-                  <div className={cn(
-                    "gap-6",
-                    viewMode === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3" : "grid grid-cols-1 xl:grid-cols-2"
-                  )}>
-                    <AnimatePresence mode="popLayout">
+                  <div className="flex flex-col gap-6">
+                    <div className="mb-2">
+                      <h2 className="text-3xl font-bold text-white mb-2">
+                        {projectFilter === 'All' ? `All ${activeTab}` : projectFilter}
+                      </h2>
+                      <p className="text-white/50 text-sm">
+                        {categoryDescriptions[projectFilter] || `Explore projects related to ${projectFilter}.`}
+                      </p>
+                    </div>
+                    <div className={cn(
+                      "gap-6",
+                      viewMode === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3" : "grid grid-cols-1 xl:grid-cols-2"
+                    )}>
+                      <AnimatePresence mode="popLayout">
                       {filteredProjects.map((p, i) => (
                         <motion.div
                           key={p.name}
@@ -986,109 +1014,163 @@ export default function App() {
                             className={cn(
                               p.bg, 
                               "border-white/5 cursor-pointer relative overflow-hidden group/project",
-                              viewMode === 'grid' ? "h-[320px]" : "h-auto p-4 flex flex-col sm:flex-row items-start sm:items-center gap-6"
+                              viewMode === 'grid' ? "h-[380px] p-0" : "h-auto p-4 flex flex-col sm:flex-row items-start sm:items-center gap-6"
                             )}
                             onClick={() => setSelectedProject(p)}
-                            background={(p.url !== '#' || (p.previewUrl && p.previewUrl.includes('youtube.com/embed/'))) && viewMode === 'grid' ? (
-                              <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[2rem]">
-                                <img 
-                                  src={p.url !== '#' 
-                                    ? `https://image.thum.io/get/width/600/crop/600/noanimate/${p.url}`
-                                    : `https://img.youtube.com/vi/${p.previewUrl.split('/').pop()}/maxresdefault.jpg`
-                                  }
-                                  alt={p.name}
-                                  className="w-full h-full object-cover opacity-80 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
-                                  loading="lazy"
-                                  referrerPolicy="no-referrer"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent" />
-                              </div>
-                            ) : null}
+                            background={null}
                           >
                             <div className={cn(
                               "relative z-10",
-                              viewMode === 'grid' ? "flex flex-col h-full" : "flex flex-col sm:flex-row items-start sm:items-center w-full gap-4"
+                              viewMode === 'grid' ? "flex flex-col h-full w-full" : "flex flex-col sm:flex-row items-start sm:items-center w-full gap-4"
                             )}>
-                              <div className={cn(
-                                "flex items-start",
-                                viewMode === 'grid' ? "justify-between mb-4" : "gap-4 shrink-0"
-                              )}>
-                                <div className={cn("p-3 rounded-2xl bg-black/20 backdrop-blur-md", p.color)}>
-                                  {p.icon}
-                                </div>
-                                {viewMode === 'grid' && (
-                                  <div className="flex flex-col items-end gap-2">
+                              {viewMode === 'grid' ? (
+                                <>
+                                  {/* Top part: Image Preview */}
+                                  <div className="relative h-[180px] w-full shrink-0 overflow-hidden">
+                                    {p.url !== '#' || (p.previewUrl && p.previewUrl.includes('youtube.com/embed/')) ? (
+                                      <img 
+                                        src={p.url !== '#' 
+                                          ? `https://image.thum.io/get/width/600/crop/600/noanimate/${p.url}`
+                                          : `https://img.youtube.com/vi/${p.previewUrl.split('/').pop()}/maxresdefault.jpg`
+                                        }
+                                        alt={p.name}
+                                        className="w-full h-full object-cover opacity-80 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer"
+                                      />
+                                    ) : (
+                                      <div className="w-full h-full bg-white/5 flex items-center justify-center">
+                                        <div className="opacity-20 scale-150">
+                                          {p.icon}
+                                        </div>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Gradient overlay on image */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent opacity-90" />
+                                    
+                                    {/* Badges top right */}
+                                    <div className="absolute top-4 right-4 flex flex-col items-end gap-2">
+                                      <span className={cn("text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider backdrop-blur-md border border-white/10 shadow-lg", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
+                                        {p.pricing}
+                                      </span>
+                                      {p.status && (
+                                        <span className={cn(
+                                          "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter backdrop-blur-md border border-white/10 shadow-lg",
+                                          p.status === 'Development' ? "bg-amber-500/20 text-amber-400" :
+                                          p.status === 'Beta' ? "bg-blue-500/20 text-blue-400" :
+                                          "bg-emerald-500/20 text-emerald-400"
+                                        )}>
+                                          {p.status}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+
+                                  {/* Middle part: Blurred/faded overlapped button */}
+                                  <div className="relative -mt-8 px-5 flex justify-between items-end z-20">
+                                    <div className={cn("p-3.5 rounded-2xl bg-[#0a0a0a]/80 backdrop-blur-xl border border-white/10 shadow-2xl", p.color)}>
+                                      {p.icon}
+                                    </div>
+                                    <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center group-hover/project:bg-indigo-500 group-hover/project:text-white transition-all shadow-xl">
+                                      {p.mainCategory === 'My Personal Apps' ? <Play size={16} fill="currentColor" /> : <ArrowRight size={16} />}
+                                    </div>
+                                  </div>
+
+                                  {/* Bottom part: Content */}
+                                  <div className="flex-1 p-5 pt-4 flex flex-col bg-[#050505]/50">
+                                    <h3 className="font-bold text-xl group-hover/project:text-indigo-400 transition-colors mb-2 line-clamp-1">{p.name}</h3>
+                                    <p className="text-sm text-white/60 font-light leading-relaxed line-clamp-2 mb-4 flex-1">{p.desc}</p>
+                                    
+                                    <div className="flex items-center gap-2 mt-auto">
+                                      {p.tags.slice(0, 3).map(tag => (
+                                        <span key={tag} className="px-2 py-1 rounded-md bg-white/5 text-[9px] text-white/50 font-medium uppercase tracking-wider border border-white/5">
+                                          {tag}
+                                        </span>
+                                      ))}
+                                      {p.tags.length > 3 && (
+                                        <span className="px-2 py-1 rounded-md bg-white/5 text-[9px] text-white/50 font-medium uppercase tracking-wider border border-white/5">
+                                          +{p.tags.length - 3}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                </>
+                              ) : (
+                                <>
+                                  <div className="flex items-start gap-4 shrink-0">
+                                    <div className={cn("p-3 rounded-2xl bg-black/20 backdrop-blur-md", p.color)}>
+                                      {p.icon}
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-2 mb-1">
+                                      <span className="text-[10px] text-white/40 uppercase tracking-widest">{p.mainCategory}</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 mb-2">
+                                      <h3 className="font-bold text-lg group-hover/project:text-indigo-400 transition-colors">{p.name}</h3>
+                                      {p.status && (
+                                        <span className={cn(
+                                          "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter block",
+                                          p.status === 'Development' ? "bg-amber-500/20 text-amber-400" :
+                                          p.status === 'Beta' ? "bg-blue-500/20 text-blue-400" :
+                                          "bg-emerald-500/20 text-emerald-400"
+                                        )}>
+                                          {p.status}
+                                        </span>
+                                      )}
+                                    </div>
+                                    <p className="text-sm text-white/60 font-light leading-relaxed line-clamp-2 mb-2">{p.desc}</p>
+                                    
+                                    <div className="flex items-center gap-2">
+                                      <div className="flex gap-1">
+                                        {p.tags.slice(0, 4).map(tag => (
+                                          <span key={tag} className="px-2 py-0.5 rounded-md bg-white/5 text-[8px] text-white/40 font-bold uppercase tracking-tighter border border-white/5">
+                                            {tag}
+                                          </span>
+                                        ))}
+                                        {p.tags.length > 4 && (
+                                          <span className="px-2 py-0.5 rounded-md bg-white/5 text-[8px] text-white/40 font-bold uppercase tracking-tighter border border-white/5">
+                                            +{p.tags.length - 4}
+                                          </span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div className="flex flex-col items-end gap-2 shrink-0 ml-auto">
                                     <span className={cn("text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
                                       {p.pricing}
                                     </span>
-                                    {p.status && (
-                                      <span className={cn(
-                                        "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter",
-                                        p.status === 'Development' ? "bg-amber-500/20 text-amber-400" :
-                                        p.status === 'Beta' ? "bg-blue-500/20 text-blue-400" :
-                                        "bg-emerald-500/20 text-emerald-400"
-                                      )}>
-                                        {p.status}
-                                      </span>
-                                    )}
-                                  </div>
-                                )}
-                              </div>
-                              
-                              <div className={cn(
-                                "flex-1",
-                                viewMode === 'grid' ? "mt-auto" : ""
-                              )}>
-                                {viewMode === 'list' && (
-                                  <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-[10px] text-white/40 uppercase tracking-widest">{p.mainCategory}</span>
-                                  </div>
-                                )}
-                                <div className="flex items-center gap-3 mb-2">
-                                  <h3 className={cn("font-bold group-hover/project:text-indigo-400 transition-colors", viewMode === 'grid' ? "text-xl" : "text-lg")}>{p.name}</h3>
-                                  {p.status && (
-                                    <span className={cn(
-                                      "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter",
-                                      p.status === 'Development' ? "bg-amber-500/20 text-amber-400" :
-                                      p.status === 'Beta' ? "bg-blue-500/20 text-blue-400" :
-                                      "bg-emerald-500/20 text-emerald-400"
-                                    )}>
-                                      {p.status}
-                                    </span>
-                                  )}
-                                </div>
-                                <p className={cn("text-white/60 font-light leading-relaxed", viewMode === 'grid' ? "text-xs line-clamp-3 mb-auto" : "text-sm line-clamp-2 mb-2")}>{p.desc}</p>
-                                
-                                <div className={cn("flex items-center", viewMode === 'grid' ? "mt-6 justify-between" : "gap-2")}>
-                                  <div className="flex gap-1">
-                                    {p.tags.slice(0, viewMode === 'grid' ? 2 : 4).map(tag => (
-                                      <span key={tag} className="px-2 py-0.5 rounded-md bg-white/5 text-[8px] text-white/40 font-bold uppercase tracking-tighter border border-white/5">
-                                        {tag}
-                                      </span>
-                                    ))}
-                                    {p.tags.length > (viewMode === 'grid' ? 2 : 4) && (
-                                      <span className="px-2 py-0.5 rounded-md bg-white/5 text-[8px] text-white/40 font-bold uppercase tracking-tighter border border-white/5">
-                                        +{p.tags.length - (viewMode === 'grid' ? 2 : 4)}
-                                      </span>
-                                    )}
-                                  </div>
-                                  {viewMode === 'grid' && (
-                                    <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover/project:bg-indigo-500 group-hover/project:text-white transition-all">
-                                      {p.mainCategory === 'My Personal Apps' ? <Play size={14} fill="currentColor" /> : <ArrowRight size={14} />}
+                                    <div className="mt-auto p-2 rounded-full bg-white/5 text-white/40 group-hover/project:bg-white/10 group-hover/project:text-white transition-all">
+                                      <ArrowRight size={16} className="group-hover/project:-rotate-45 transition-transform" />
                                     </div>
-                                  )}
-                                </div>
-                              </div>
-
-                              {viewMode === 'list' && (
-                                <div className="flex flex-col items-end gap-2 shrink-0 ml-auto">
-                                  <span className={cn("text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
-                                    {p.pricing}
-                                  </span>
-                                  <div className="mt-4 p-2 rounded-full bg-white/5 text-white/40 group-hover/project:bg-white/10 group-hover/project:text-white transition-all">
-                                    <ArrowRight size={16} className="group-hover/project:-rotate-45 transition-transform" />
                                   </div>
-                                </div>
+
+                                  {/* List View Image Preview */}
+                                  <div className="hidden sm:block relative w-40 h-28 rounded-xl overflow-hidden shrink-0 border border-white/10 ml-2">
+                                    {p.url !== '#' || (p.previewUrl && p.previewUrl.includes('youtube.com/embed/')) ? (
+                                      <img 
+                                        src={p.url !== '#' 
+                                          ? `https://image.thum.io/get/width/400/crop/400/noanimate/${p.url}`
+                                          : `https://img.youtube.com/vi/${p.previewUrl.split('/').pop()}/maxresdefault.jpg`
+                                        }
+                                        alt={p.name}
+                                        className="w-full h-full object-cover opacity-60 group-hover/project:opacity-100 transition-all duration-500 group-hover/project:scale-110"
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer"
+                                      />
+                                    ) : (
+                                      <div className="w-full h-full bg-white/5 flex items-center justify-center">
+                                        <div className="opacity-20 scale-150">
+                                          {p.icon}
+                                        </div>
+                                      </div>
+                                    )}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/80 to-transparent opacity-50" />
+                                  </div>
+                                </>
                               )}
                             </div>
                           </BentoCard>
@@ -1096,6 +1178,7 @@ export default function App() {
                       ))}
                     </AnimatePresence>
                   </div>
+                </div>
                 )}
               </div>
             </div>
@@ -1151,19 +1234,45 @@ export default function App() {
           } else {
             return (
               <div className="space-y-8">
-                <div className="flex items-center justify-between bg-indigo-500/10 border border-indigo-500/20 p-6 rounded-[2.5rem] relative overflow-hidden group">
-                  <div className="absolute -right-8 -top-8 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/30 transition-colors" />
-                  <div className="relative z-10">
-                    <h3 className="text-2xl font-bold mb-2">Immersive App Gallery</h3>
-                    <p className="text-white/50 text-sm max-w-md">Experience my apps in a focused, full-screen gallery with advanced search and filtering.</p>
+                <div className="relative overflow-hidden rounded-[2.5rem] p-[1px] group">
+                  <div className="absolute inset-0 bg-[conic-gradient(from_0deg,transparent_0_270deg,#6366f1_300deg,#a855f7_330deg,#ec4899_360deg)] animate-border-spin" />
+                  <div className="relative h-full w-full bg-[#050505] rounded-[calc(2.5rem-1px)] p-6 flex flex-col md:flex-row items-start md:items-center justify-between overflow-hidden gap-4">
+                    <div className="absolute inset-0 bg-indigo-500/10" />
+                    <div className="absolute -right-8 -top-8 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/30 transition-colors" />
+                    <div className="relative z-10">
+                      <h3 className="text-2xl font-bold mb-2">Immersive App Gallery</h3>
+                      <p className="text-white/50 text-sm max-w-md">Experience my apps in a focused, full-screen gallery with advanced search and filtering.</p>
+                    </div>
+                    <button 
+                      onClick={() => setIsInImmersiveMode(true)}
+                      className="relative z-10 px-6 py-3 rounded-2xl bg-indigo-500 text-white font-bold hover:bg-indigo-400 transition-all shadow-xl shadow-indigo-500/20 flex items-center gap-2 group-hover:scale-105 shrink-0"
+                    >
+                      <Rocket size={18} />
+                      <span>Enter Gallery</span>
+                    </button>
                   </div>
-                  <button 
-                    onClick={() => setIsInImmersiveMode(true)}
-                    className="relative z-10 px-6 py-3 rounded-2xl bg-indigo-500 text-white font-bold hover:bg-indigo-400 transition-all shadow-xl shadow-indigo-500/20 flex items-center gap-2 group-hover:scale-105"
-                  >
-                    <Rocket size={18} />
-                    <span>Enter Gallery</span>
-                  </button>
+                </div>
+
+                <div className="bg-amber-500/10 border border-amber-500/20 py-3 px-4 md:px-6 rounded-full flex items-center gap-4 overflow-hidden relative">
+                  <div className="flex items-center gap-2 text-amber-400 shrink-0 z-10 bg-[#050505] pr-2 md:pr-4 py-1 rounded-full">
+                    <Activity size={18} />
+                    <span className="font-bold text-xs md:text-sm whitespace-nowrap">Development Status</span>
+                  </div>
+                  <div className="flex-1 overflow-hidden relative flex items-center [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+                    <div className="flex whitespace-nowrap animate-marquee text-amber-400/70 text-xs md:text-sm">
+                      <span className="mx-4">Some apps are complete and some are still under development.</span>
+                      <span className="mx-4">•</span>
+                      <span className="mx-4">If you face any issues, contact us or wait until the development is finished or the problem is fixed.</span>
+                      <span className="mx-4">•</span>
+                      <span className="mx-4">Some apps are complete and some are still under development.</span>
+                      <span className="mx-4">•</span>
+                      <span className="mx-4">If you face any issues, contact us or wait until the development is finished or the problem is fixed.</span>
+                      <span className="mx-4">•</span>
+                      <span className="mx-4">Some apps are complete and some are still under development.</span>
+                      <span className="mx-4">•</span>
+                      <span className="mx-4">If you face any issues, contact us or wait until the development is finished or the problem is fixed.</span>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="text-center md:text-left mb-8">
@@ -1171,18 +1280,6 @@ export default function App() {
                   <p className="text-white/60 max-w-2xl">
                     Here I build apps, games, tools, and experiences for you, the community, and my own self too.
                   </p>
-                </div>
-
-                <div className="bg-amber-500/10 border border-amber-500/20 p-6 rounded-[2rem] flex items-start gap-4">
-                  <div className="p-3 bg-amber-500/20 rounded-xl text-amber-400 shrink-0">
-                    <Activity size={24} />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-amber-400 mb-1">Development Status</h3>
-                    <p className="text-white/70 text-sm leading-relaxed">
-                      Some apps are complete and some are still under development. If you face any issues, contact us or wait until the development is finished or the problem is fixed.
-                    </p>
-                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
