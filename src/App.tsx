@@ -1231,9 +1231,10 @@ export default function App() {
           } else {
             return (
               <div className="space-y-8">
-                <div className="relative overflow-hidden rounded-[2.5rem] p-[1px] group">
+                <div className="relative overflow-hidden rounded-[2.5rem] p-[2px] group">
                   <div className="absolute inset-0 bg-indigo-500/20 rounded-[2.5rem]" />
-                  <div className="relative h-full w-full bg-[#050505] rounded-[calc(2.5rem-1px)] p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between overflow-hidden gap-6">
+                  <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_270deg,#6366f1_300deg,#a855f7_330deg,#ec4899_360deg)] animate-border-spin blur-md opacity-70" />
+                  <div className="relative h-full w-full bg-[#050505] rounded-[calc(2.5rem-2px)] p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between overflow-hidden gap-6">
                     <div className="absolute inset-0 bg-indigo-500/5" />
                     <div className="relative z-10">
                       <h3 className="text-3xl font-bold mb-2">Immersive App Gallery</h3>
@@ -2153,7 +2154,7 @@ export default function App() {
       {/* Main Content */}
       <main className={cn(
         "w-full pt-4 transition-all duration-500",
-        (isInImmersiveMode || activeTab === 'Projects' || activeTab === 'Apps') ? "max-w-full" : "max-w-4xl"
+        isInImmersiveMode ? "max-w-full" : "max-w-4xl"
       )}>
         <AnimatePresence mode="wait">
           <motion.div
