@@ -67,11 +67,13 @@ import { twMerge } from 'tailwind-merge';
 import { ChatAssistant } from './components/ChatAssistant';
 import { CustomCursor } from './components/CustomCursor';
 
-const myPfpFull = "/assets/my-pfp-full.jpeg";
-const bookCover = "/assets/31-ways-to-ruin-your-life-cover.png";
-const logo1 = "/assets/1-logo.svg";
-const logo2 = "/assets/2-logo.svg";
-const myPfp = "/assets/my-pfp.jpg";
+import { ASSET_LINKS } from './constants/assets';
+
+const myPfpFull = ASSET_LINKS.myPfpFull;
+const bookCover = ASSET_LINKS.bookCover;
+const logo1 = ASSET_LINKS.logo1Svg;
+const logo2 = ASSET_LINKS.logo2Svg;
+const myPfp = ASSET_LINKS.myPfp;
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

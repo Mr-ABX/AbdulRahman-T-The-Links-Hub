@@ -2,7 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MessageCircle, X, Send, Bot, User, Sparkles, Loader2 } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
-import logo1 from '../assets/1-logo.svg';
+import { ASSET_LINKS } from '../constants/assets';
+
+const logo1 = ASSET_LINKS.logo1Svg;
 
 interface Message {
   role: 'user' | 'model';
