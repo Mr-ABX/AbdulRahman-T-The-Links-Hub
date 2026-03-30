@@ -295,7 +295,7 @@ const FeaturedCarousel = ({ projects, onSelect }: { projects: any[], onSelect: (
   return (
     <BentoCard 
       size="2x2" 
-      className="relative overflow-hidden group/featured cursor-pointer border-indigo-500/30 bg-indigo-500/5 shadow-[0_0_30px_rgba(99,102,241,0.05)] min-h-[450px] md:min-h-0"
+      className="relative overflow-hidden group/featured cursor-pointer border-indigo-500/30 bg-indigo-500/5 shadow-[0_0_30px_rgba(99,102,241,0.05)] min-h-[450px] md:min-h-0 !p-0"
       onClick={() => onSelect(current)}
     >
       <AnimatePresence mode="wait">
@@ -349,7 +349,7 @@ const FeaturedCarousel = ({ projects, onSelect }: { projects: any[], onSelect: (
             
             <div className="mt-auto">
               <h3 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 tracking-tight group-hover/featured:translate-x-2 transition-transform duration-500">{current.name}</h3>
-              <p className="text-white/60 text-sm md:text-lg max-w-md mb-6 md:mb-8 leading-relaxed line-clamp-3">{current.desc}</p>
+              <p className="text-white/60 text-sm md:text-lg max-w-md mb-4 md:mb-6 leading-relaxed line-clamp-2 md:line-clamp-3">{current.desc}</p>
               
               <div className="flex items-center gap-4">
                 <div className={`px-4 py-2 md:px-6 md:py-3 rounded-2xl ${current.bg} ${current.color} font-bold text-xs md:text-sm flex items-center gap-2 group-hover/featured:scale-105 transition-all shadow-xl border border-white/5`}>
@@ -401,7 +401,7 @@ export default function App() {
     else navigate(`/${tab.toLowerCase()}`);
   };
 
-  const [projectFilter, setProjectFilter] = useState<string>('All');
+  const [projectFilter, setProjectFilter] = useState<string[]>([]);
   const [activeProjectCategory, setActiveProjectCategory] = useState<ProjectCategory | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
@@ -444,13 +444,18 @@ export default function App() {
 
   React.useEffect(() => {
     setActiveProjectCategory(null);
-    setProjectFilter('All');
+    setProjectFilter([]);
+    setSearchQuery('');
   }, [activeTab]);
 
   const filteredProjects = useMemo(() => {
     let base = projects;
     if (activeProjectCategory) {
       base = base.filter(p => p.mainCategory === activeProjectCategory);
+    }
+    
+    if (projectFilter.length > 0) {
+      base = base.filter(p => projectFilter.every(f => p.tags.includes(f)));
     }
     
     if (searchQuery) {
@@ -460,8 +465,6 @@ export default function App() {
         p.desc.toLowerCase().includes(query) || 
         p.tags.some(tag => tag.toLowerCase().includes(query))
       );
-    } else if (projectFilter !== 'All') {
-      base = base.filter(p => p.tags.includes(projectFilter));
     }
     
     return base;
@@ -482,14 +485,20 @@ export default function App() {
                   className="glass rounded-[2.5rem] overflow-hidden group/profile min-h-[600px] md:min-h-[750px] relative border border-white/10 shadow-2xl"
                 >
                   {/* Background Image */}
-                  <div className="absolute inset-0 z-0">
-                    <img 
-                      src={myPfpFull} 
-                      alt="Abdulrahman Toor" 
-                      className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent"></div>
-                  </div>
+                    <div className="absolute inset-0 z-0">
+                      <img 
+                        src={myPfpFull} 
+                        alt="Abdulrahman Toor" 
+                        className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile:scale-105"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          if (!target.src.includes('dicebear')) {
+                            target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=Abdulrahman';
+                          }
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent"></div>
+                    </div>
                   
                   {/* Social Floating Icons */}
                   <div className="absolute top-6 right-6 z-20 flex flex-col gap-3">
@@ -842,7 +851,7 @@ export default function App() {
           const immersiveCategories = ['All', 'AI Solutions', 'Apps & Dev', 'Interactive Experiences', 'My Personal Apps'];
           
           return (
-            <div className="flex flex-col md:flex-row gap-8 min-h-screen pb-20 max-w-[1600px] mx-auto px-4 mt-8">
+            <div className="flex flex-col md:flex-row gap-8 min-h-screen pb-20 w-full px-4 md:px-8 mt-8">
               {/* Floating Sidebar */}
               <aside className="w-full md:w-64 lg:w-72 shrink-0">
                 <div className="sticky top-8 glass backdrop-blur-3xl border border-white/10 rounded-[2rem] p-6 flex flex-col gap-8 shadow-2xl">
@@ -851,7 +860,7 @@ export default function App() {
                       onClick={() => {
                         setIsInImmersiveMode(false);
                         setSearchQuery('');
-                        setProjectFilter('All');
+                        setProjectFilter([]);
                       }} 
                       className="p-2.5 rounded-full bg-white/5 hover:bg-white/10 transition-all border border-white/10 group"
                     >
@@ -888,7 +897,7 @@ export default function App() {
                               <button
                                 onClick={() => {
                                   setActiveProjectCategory(cat === 'All' ? null : cat as ProjectCategory);
-                                  setProjectFilter('All');
+                                  setProjectFilter([]);
                                 }}
                                 className={cn(
                                   "px-4 py-3 rounded-xl text-xs font-bold transition-all text-left border flex items-center justify-between group",
@@ -916,10 +925,10 @@ export default function App() {
                                     className="pl-4 py-2 flex flex-col gap-1 border-l border-white/10 ml-2 mt-1 overflow-hidden"
                                   >
                                     <button
-                                      onClick={() => setProjectFilter('All')}
+                                      onClick={() => setProjectFilter([])}
                                       className={cn(
                                         "text-left text-[10px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all flex items-center justify-between", 
-                                        projectFilter === 'All' ? "bg-white/10 text-white" : "text-white/40 hover:text-white hover:bg-white/5"
+                                        projectFilter.length === 0 ? "bg-white/10 text-white" : "text-white/40 hover:text-white hover:bg-white/5"
                                       )}
                                     >
                                       <span>All {cat}</span>
@@ -930,10 +939,10 @@ export default function App() {
                                       return (
                                       <button
                                         key={tag}
-                                        onClick={() => setProjectFilter(tag)}
+                                        onClick={() => setProjectFilter(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag])}
                                         className={cn(
-                                          "text-left text-[10px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all flex items-center justify-between", 
-                                          projectFilter === tag ? "bg-white/10 text-white" : "text-white/40 hover:text-white hover:bg-white/5"
+                                          "text-left text-[10px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all flex items-center justify-between",
+                                          projectFilter.includes(tag) ? "bg-white/10 text-white" : "text-white/40 hover:text-white hover:bg-white/5"
                                         )}
                                       >
                                         <span>{tag}</span>
@@ -980,7 +989,7 @@ export default function App() {
                     <h3 className="text-2xl font-bold mb-2">No results found</h3>
                     <p className="text-white/40">Try adjusting your search or filters to find what you're looking for.</p>
                     <button 
-                      onClick={() => { setSearchQuery(''); setProjectFilter('All'); setActiveProjectCategory(null); }}
+                      onClick={() => { setSearchQuery(''); setProjectFilter([]); setActiveProjectCategory(null); }}
                       className="mt-8 px-6 py-3 rounded-xl bg-indigo-500 text-white font-bold hover:bg-indigo-400 transition-all"
                     >
                       Clear All Filters
@@ -990,10 +999,10 @@ export default function App() {
                   <div className="flex flex-col gap-6">
                     <div className="mb-2">
                       <h2 className="text-3xl font-bold text-white mb-2">
-                        {projectFilter === 'All' ? `All ${activeTab}` : projectFilter}
+                        {projectFilter.length === 0 ? `All ${activeTab}` : projectFilter.join(', ')}
                       </h2>
                       <p className="text-white/50 text-sm">
-                        {categoryDescriptions[projectFilter] || `Explore projects related to ${projectFilter}.`}
+                        {projectFilter.length === 0 ? categoryDescriptions['All'] : `Explore projects related to ${projectFilter.join(', ')}.`}
                       </p>
                     </div>
                     <div className={cn(
@@ -1015,43 +1024,36 @@ export default function App() {
                             className={cn(
                               p.bg, 
                               "border-white/5 cursor-pointer relative overflow-hidden group/project",
-                              viewMode === 'grid' ? "h-[380px] p-0" : "h-auto p-4 flex flex-col sm:flex-row items-start sm:items-center gap-6"
+                              viewMode === 'grid' ? "h-[450px] p-0" : "h-auto p-4 flex flex-col sm:flex-row items-start sm:items-center gap-6"
                             )}
                             onClick={() => setSelectedProject(p)}
-                            background={null}
+                            background={p.url !== '#' || (p.previewUrl && p.previewUrl.includes('youtube.com/embed/')) ? (
+                              <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[2rem]">
+                                <img 
+                                  src={p.url !== '#' 
+                                    ? `https://image.thum.io/get/width/800/crop/800/noanimate/${p.url}`
+                                    : `https://img.youtube.com/vi/${p.previewUrl.split('/').pop()}/maxresdefault.jpg`
+                                  }
+                                  alt={p.name}
+                                  className="w-full h-full object-cover opacity-60 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
+                                  loading="lazy"
+                                  referrerPolicy="no-referrer"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/90 to-transparent" />
+                              </div>
+                            ) : null}
                           >
                             <div className={cn(
-                              "relative z-10",
-                              viewMode === 'grid' ? "flex flex-col h-full w-full" : "flex flex-col sm:flex-row items-start sm:items-center w-full gap-4"
+                              "relative z-10 h-full w-full flex flex-col",
+                              viewMode === 'grid' ? "justify-end p-6" : "sm:flex-row items-start sm:items-center gap-4"
                             )}>
                               {viewMode === 'grid' ? (
                                 <>
-                                  {/* Top part: Image Preview */}
-                                  <div className="relative h-[180px] w-full shrink-0 overflow-hidden">
-                                    {p.url !== '#' || (p.previewUrl && p.previewUrl.includes('youtube.com/embed/')) ? (
-                                      <img 
-                                        src={p.url !== '#' 
-                                          ? `https://image.thum.io/get/width/600/crop/600/noanimate/${p.url}`
-                                          : `https://img.youtube.com/vi/${p.previewUrl.split('/').pop()}/maxresdefault.jpg`
-                                        }
-                                        alt={p.name}
-                                        className="w-full h-full object-cover opacity-80 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
-                                        loading="lazy"
-                                        referrerPolicy="no-referrer"
-                                      />
-                                    ) : (
-                                      <div className="w-full h-full bg-white/5 flex items-center justify-center">
-                                        <div className="opacity-20 scale-150">
-                                          {p.icon}
-                                        </div>
-                                      </div>
-                                    )}
-                                    
-                                    {/* Gradient overlay on image */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent opacity-90" />
-                                    
-                                    {/* Badges top right */}
-                                    <div className="absolute top-4 right-4 flex flex-col items-end gap-2">
+                                  <div className="flex justify-between items-start mb-auto">
+                                    <div className={cn("p-3 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10", p.color)}>
+                                      {p.icon}
+                                    </div>
+                                    <div className="flex flex-col items-end gap-2">
                                       <span className={cn("text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider backdrop-blur-md border border-white/10 shadow-lg", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
                                         {p.pricing}
                                       </span>
@@ -1068,32 +1070,26 @@ export default function App() {
                                     </div>
                                   </div>
 
-                                  {/* Middle part: Blurred/faded overlapped button */}
-                                  <div className="relative -mt-8 px-5 flex justify-between items-end z-20">
-                                    <div className={cn("p-3.5 rounded-2xl bg-[#0a0a0a]/80 backdrop-blur-xl border border-white/10 shadow-2xl", p.color)}>
-                                      {p.icon}
-                                    </div>
-                                    <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center group-hover/project:bg-indigo-500 group-hover/project:text-white transition-all shadow-xl">
-                                      {p.mainCategory === 'My Personal Apps' ? <Play size={16} fill="currentColor" /> : <ArrowRight size={16} />}
-                                    </div>
-                                  </div>
-
-                                  {/* Bottom part: Content */}
-                                  <div className="flex-1 p-5 pt-4 flex flex-col bg-[#050505]/50">
-                                    <h3 className="font-bold text-xl group-hover/project:text-indigo-400 transition-colors mb-2 line-clamp-1">{p.name}</h3>
-                                    <p className="text-sm text-white/60 font-light leading-relaxed line-clamp-2 mb-4 flex-1">{p.desc}</p>
+                                  <div className="mt-4">
+                                    <h3 className="font-bold text-2xl group-hover/project:text-indigo-400 transition-colors mb-2 line-clamp-1">{p.name}</h3>
+                                    <p className="text-sm text-white/70 font-light leading-relaxed line-clamp-2 mb-4">{p.desc}</p>
                                     
-                                    <div className="flex items-center gap-2 mt-auto">
+                                    <div className="flex flex-wrap items-center gap-2 mb-4">
                                       {p.tags.slice(0, 3).map(tag => (
                                         <span key={tag} className="px-2 py-1 rounded-md bg-white/5 text-[9px] text-white/50 font-medium uppercase tracking-wider border border-white/5">
                                           {tag}
                                         </span>
                                       ))}
-                                      {p.tags.length > 3 && (
-                                        <span className="px-2 py-1 rounded-md bg-white/5 text-[9px] text-white/50 font-medium uppercase tracking-wider border border-white/5">
-                                          +{p.tags.length - 3}
-                                        </span>
-                                      )}
+                                    </div>
+
+                                    <div className="flex items-center justify-between">
+                                      <div className="text-[10px] font-bold text-white/40 group-hover:text-white transition-colors flex items-center gap-2">
+                                        <span>{p.mainCategory === 'My Personal Apps' ? 'Watch Preview' : 'View Project'}</span>
+                                        <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                                      </div>
+                                      <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center group-hover/project:bg-indigo-500 group-hover/project:text-white transition-all shadow-xl">
+                                        {p.mainCategory === 'My Personal Apps' ? <Play size={16} fill="currentColor" /> : <ArrowRight size={16} />}
+                                      </div>
                                     </div>
                                   </div>
                                 </>
@@ -1235,21 +1231,19 @@ export default function App() {
           } else {
             return (
               <div className="space-y-8">
-                <div className="relative overflow-hidden rounded-[2.5rem] p-[2px] group">
+                <div className="relative overflow-hidden rounded-[2.5rem] p-[1px] group">
                   <div className="absolute inset-0 bg-indigo-500/20 rounded-[2.5rem]" />
-                  <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_270deg,#6366f1_300deg,#a855f7_330deg,#ec4899_360deg)] animate-border-spin blur-md opacity-70" />
-                  <div className="relative h-full w-full bg-[#050505] rounded-[calc(2.5rem-2px)] p-6 flex flex-col md:flex-row items-start md:items-center justify-between overflow-hidden gap-4">
-                    <div className="absolute inset-0 bg-indigo-500/10" />
-                    <div className="absolute -right-8 -top-8 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/30 transition-colors" />
+                  <div className="relative h-full w-full bg-[#050505] rounded-[calc(2.5rem-1px)] p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between overflow-hidden gap-6">
+                    <div className="absolute inset-0 bg-indigo-500/5" />
                     <div className="relative z-10">
-                      <h3 className="text-2xl font-bold mb-2">Immersive App Gallery</h3>
-                      <p className="text-white/50 text-sm max-w-md">Experience my apps in a focused, full-screen gallery with advanced search and filtering.</p>
+                      <h3 className="text-3xl font-bold mb-2">Immersive App Gallery</h3>
+                      <p className="text-white/50 text-base max-w-xl font-light">Experience my apps in a focused, full-screen gallery with advanced search and filtering.</p>
                     </div>
                     <button 
                       onClick={() => setIsInImmersiveMode(true)}
-                      className="relative z-10 px-6 py-3 rounded-2xl bg-indigo-500 text-white font-bold hover:bg-indigo-400 transition-all shadow-xl shadow-indigo-500/20 flex items-center gap-2 group-hover:scale-105 shrink-0"
+                      className="relative z-10 px-8 py-4 rounded-2xl bg-indigo-500 text-white font-bold hover:bg-indigo-400 transition-all shadow-xl shadow-indigo-500/20 flex items-center gap-3 group-hover:scale-105 shrink-0"
                     >
-                      <Rocket size={18} />
+                      <Rocket size={20} />
                       <span>Enter Gallery</span>
                     </button>
                   </div>
@@ -1347,13 +1341,26 @@ export default function App() {
 
         return (
           <div className="space-y-6">
-            <div className="flex items-center gap-4 mb-2">
-              <button onClick={() => { setActiveProjectCategory(null); setProjectFilter('All'); }} className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors">
-                <ArrowLeft size={20} />
-              </button>
-              <div>
-                <h2 className="text-2xl font-bold">{activeProjectCategory} <span className="text-white/30 text-lg">({categoryProjects.length})</span></h2>
-                <p className="text-sm text-white/50">Explore my work in this category.</p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
+              <div className="flex items-center gap-4">
+                <button onClick={() => { setActiveProjectCategory(null); setProjectFilter([]); setSearchQuery(''); }} className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors">
+                  <ArrowLeft size={20} />
+                </button>
+                <div>
+                  <h2 className="text-2xl font-bold">{activeProjectCategory} <span className="text-white/30 text-lg">({categoryProjects.length})</span></h2>
+                  <p className="text-sm text-white/50">Explore my work in this category.</p>
+                </div>
+              </div>
+              
+              <div className="relative group w-full sm:w-64">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-indigo-400 transition-colors" size={16} />
+                <input 
+                  type="text" 
+                  placeholder="Search projects..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-2 pl-11 pr-4 text-sm focus:outline-none focus:border-indigo-500/50 transition-all focus:bg-white/10"
+                />
               </div>
             </div>
 
@@ -1361,17 +1368,24 @@ export default function App() {
               <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
                 {categoryTags.map((f) => {
                   const count = f === 'All' ? categoryProjects.length : categoryProjects.filter(p => p.tags.includes(f)).length;
+                  const isSelected = f === 'All' ? projectFilter.length === 0 : projectFilter.includes(f);
                   return (
                   <button
                     key={f}
-                    onClick={() => setProjectFilter(f)}
+                    onClick={() => {
+                      if (f === 'All') {
+                        setProjectFilter([]);
+                      } else {
+                        setProjectFilter(prev => prev.includes(f) ? prev.filter(t => t !== f) : [...prev, f]);
+                      }
+                    }}
                     className={cn(
                       "px-4 py-2 rounded-2xl text-xs font-medium transition-all whitespace-nowrap flex items-center gap-1.5",
-                      projectFilter === f ? "bg-white text-black" : "bg-white/5 text-white/40 hover:bg-white/10"
+                      isSelected ? "bg-white text-black" : "bg-white/5 text-white/40 hover:bg-white/10"
                     )}
                   >
                     <span>{f}</span>
-                    <span className={cn("opacity-50", projectFilter === f ? "text-black/50" : "text-white/30")}>({count})</span>
+                    <span className={cn("opacity-50", isSelected ? "text-black/50" : "text-white/30")}>({count})</span>
                   </button>
                 )})}
               </div>
@@ -1389,69 +1403,67 @@ export default function App() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(180px,auto)]">
                 {isLoading ? (
                   Array.from({ length: 6 }).map((_, i) => (
-                    <SkeletonCard key={i} size={i === 0 && projectFilter === 'All' ? "2x1" : "1x1"} />
+                    <SkeletonCard key={i} size={i === 0 && projectFilter.length === 0 ? "2x1" : "1x1"} />
                   ))
                 ) : (
                   <AnimatePresence mode="popLayout">
                     {filteredProjects.map((p, i) => (
                       <BentoCard 
                         key={p.name} 
-                        size={i === 0 && projectFilter === 'All' ? "2x1" : "1x1"} 
-                        className={cn(p.bg, "border-white/5 cursor-pointer relative overflow-hidden group/project")}
+                        size={i === 0 && projectFilter.length === 0 ? "2x1" : "1x1"} 
+                        className={cn(p.bg, "border-white/5 cursor-pointer relative overflow-hidden group/project h-[400px] p-0")}
                         onClick={() => setSelectedProject(p)}
                         background={p.url !== '#' || (p.previewUrl && p.previewUrl.includes('youtube.com/embed/')) ? (
                           <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[2rem]">
                             <img 
                               src={p.url !== '#' 
-                                ? `https://image.thum.io/get/width/600/crop/600/noanimate/${p.url}`
+                                ? `https://image.thum.io/get/width/800/crop/800/noanimate/${p.url}`
                                 : `https://img.youtube.com/vi/${p.previewUrl.split('/').pop()}/maxresdefault.jpg`
                               }
                               alt={p.name}
-                              className="w-full h-full object-cover opacity-80 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
+                              className="w-full h-full object-cover opacity-60 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
                               loading="lazy"
                               referrerPolicy="no-referrer"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/90 to-transparent" />
                           </div>
                         ) : null}
                       >
-                        <div className="flex flex-col h-full relative z-10">
-                          <div className="flex justify-between items-start mb-4">
-                            <div className={cn("p-2 rounded-xl bg-black/20", p.color)}>
+                        <div className="flex flex-col h-full relative z-10 p-6 justify-end">
+                          <div className="flex justify-between items-start mb-auto">
+                            <div className={cn("p-2 rounded-xl bg-black/40 backdrop-blur-md border border-white/10", p.color)}>
                               {p.icon}
                             </div>
                             <div className="flex flex-col items-end gap-1">
-                              <span className={cn("text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
+                              <span className={cn("text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter backdrop-blur-md border border-white/10", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
                                 {p.pricing} {p.price && `(${p.price})`}
                               </span>
-                              {p.mainCategory !== 'My Personal Apps' && (
-                                <a href={p.url} target="_blank" className="text-white/20 hover:text-white transition-colors">
-                                  <ExternalLink size={16} />
-                                </a>
+                              {p.status && (
+                                <span className={cn(
+                                  "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter backdrop-blur-md border border-white/10",
+                                  p.status === 'Development' ? "bg-amber-500/20 text-amber-400" :
+                                  p.status === 'Beta' ? "bg-blue-500/20 text-blue-400" :
+                                  "bg-emerald-500/20 text-emerald-400"
+                                )}>
+                                  {p.status}
+                                </span>
                               )}
                             </div>
                           </div>
-                          <div className="flex items-center justify-between gap-2 mb-1">
-                            <h3 className="font-bold text-lg">{p.name}</h3>
-                            {p.status && (
-                              <span className={cn(
-                                "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter",
-                                p.status === 'Development' ? "bg-amber-500/20 text-amber-400" :
-                                p.status === 'Beta' ? "bg-blue-500/20 text-blue-400" :
-                                "bg-emerald-500/20 text-emerald-400"
-                              )}>
-                                {p.status}
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-xs text-white/50 line-clamp-2 font-light mb-auto">{p.desc}</p>
-                          <div className="mt-4 flex items-center gap-2 text-[10px] font-bold text-white/40 group-hover:text-white transition-colors">
-                            <span>{p.mainCategory === 'My Personal Apps' ? 'Watch Preview' : 'View Project'}</span>
-                            {p.mainCategory === 'My Personal Apps' ? (
-                              <Play size={12} fill="currentColor" className="group-hover:scale-110 transition-transform" />
-                            ) : (
-                              <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-                            )}
+                          
+                          <div className="mt-4">
+                            <h3 className="font-bold text-xl mb-1 group-hover/project:text-indigo-400 transition-colors">{p.name}</h3>
+                            <p className="text-xs text-white/70 line-clamp-2 font-light mb-4">{p.desc}</p>
+                            
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2 text-[10px] font-bold text-white/40 group-hover:text-white transition-colors">
+                                <span>{p.mainCategory === 'My Personal Apps' ? 'Watch Preview' : 'View Project'}</span>
+                                <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                              </div>
+                              <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center group-hover/project:bg-indigo-500 group-hover/project:text-white transition-all shadow-xl">
+                                {p.mainCategory === 'My Personal Apps' ? <Play size={16} fill="currentColor" /> : <ArrowRight size={16} />}
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </BentoCard>
@@ -1693,6 +1705,12 @@ export default function App() {
                         alt="Abdulrahman Toor" 
                         className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile-mini:scale-105"
                         loading="lazy"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          if (!target.src.includes('fallback')) {
+                            target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=Abdulrahman';
+                          }
+                        }}
                       />
                     </div>
                     <div className="flex gap-2">
@@ -2135,7 +2153,7 @@ export default function App() {
       {/* Main Content */}
       <main className={cn(
         "w-full pt-4 transition-all duration-500",
-        isInImmersiveMode ? "max-w-full" : "max-w-4xl"
+        (isInImmersiveMode || activeTab === 'Projects' || activeTab === 'Apps') ? "max-w-full" : "max-w-4xl"
       )}>
         <AnimatePresence mode="wait">
           <motion.div

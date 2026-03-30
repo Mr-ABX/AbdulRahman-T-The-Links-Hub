@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MessageCircle, X, Send, Bot, User, Sparkles, Loader2 } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
+import logo1 from '../assets/1-logo.svg';
 
 interface Message {
   role: 'user' | 'model';
@@ -104,7 +105,7 @@ export const ChatAssistant = ({ isOpen, setIsOpen, initialMessage, setInitialMes
             <div className="p-6 border-b border-white/5 bg-white/5 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 p-2">
-                  <img src="/assets/1-logo.svg" alt="A.T. AI" className="w-full h-full object-contain" />
+                  <img src={logo1} alt="A.T. AI" className="w-full h-full object-contain" />
                 </div>
                 <div>
                   <h3 className="font-bold text-sm">A.T. Intelligence</h3>
@@ -186,7 +187,7 @@ export const ChatAssistant = ({ isOpen, setIsOpen, initialMessage, setInitialMes
         {isOpen ? (
           <X size={28} />
         ) : (
-          <img src="/assets/1-logo.svg" alt="A.T. Intelligence" className="w-8 h-8 object-contain" />
+          <img src={logo1} alt="A.T. Intelligence" className="w-8 h-8 object-contain" />
         )}
         {!isOpen && (
           <div className="absolute -top-1 -right-1 w-5 h-5 bg-indigo-500 rounded-full border-2 border-[#050505] flex items-center justify-center">
