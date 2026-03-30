@@ -485,19 +485,18 @@ export default function App() {
                   className="glass rounded-[2.5rem] overflow-hidden group/profile min-h-[600px] md:min-h-[750px] relative border border-white/10 shadow-2xl"
                 >
                   {/* Background Image */}
-                    <div className="absolute inset-0 z-0">
+                    <div className="absolute inset-0 z-0 bg-indigo-500/10 flex items-center justify-center text-8xl">
+                      👨🏽‍💻
                       <img 
                         src={myPfpFull} 
                         alt="Abdulrahman Toor" 
-                        className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile:scale-105"
+                        className="absolute inset-0 w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile:scale-105"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
-                          if (!target.src.includes('dicebear')) {
-                            target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=Abdulrahman';
-                          }
+                          target.style.display = 'none';
                         }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent pointer-events-none"></div>
                     </div>
                   
                   {/* Social Floating Icons */}
@@ -1700,17 +1699,16 @@ export default function App() {
                   <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-50" />
                   
                   <div className="relative z-10 flex justify-between items-start">
-                    <div className="w-32 h-32 rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+                    <div className="relative w-32 h-32 rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-indigo-500/10 flex items-center justify-center text-5xl">
+                      👨🏽‍💻
                       <img 
                         src={myPfp} 
                         alt="Abdulrahman Toor" 
-                        className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile-mini:scale-105"
+                        className="absolute inset-0 w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile-mini:scale-105"
                         loading="lazy"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
-                          if (!target.src.includes('fallback')) {
-                            target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=Abdulrahman';
-                          }
+                          target.style.display = 'none';
                         }}
                       />
                     </div>
