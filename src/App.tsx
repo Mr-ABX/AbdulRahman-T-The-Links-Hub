@@ -622,31 +622,13 @@ export default function App() {
                             <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Powered by Gemini 3 Flash</p>
                           </div>
                         </div>
-                        <div className="relative group/input">
-                          <input 
-                            type="text" 
-                            placeholder="Ask about my projects, skills, or availability..." 
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') {
-                                openChatWithSearch((e.target as HTMLInputElement).value);
-                                (e.target as HTMLInputElement).value = '';
-                              }
-                            }}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 pr-12 text-sm focus:outline-none focus:border-indigo-500/50 transition-all group-hover/input:bg-white/10"
-                          />
-                          <button 
-                            onClick={(e) => {
-                              const input = (e.currentTarget.previousSibling as HTMLInputElement);
-                              if (input.value) {
-                                openChatWithSearch(input.value);
-                                input.value = '';
-                              }
-                            }}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-indigo-500 text-white hover:bg-indigo-400 transition-colors"
-                          >
-                            <ArrowRight size={16} />
-                          </button>
-                        </div>
+                        <button 
+                          onClick={() => openChatWithSearch('')}
+                          className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm hover:bg-white/10 transition-all flex items-center justify-between group-hover/ai-widget:border-indigo-500/50"
+                        >
+                          <span className="text-white/60">Click to start chatting...</span>
+                          <ArrowRight size={16} className="text-indigo-400" />
+                        </button>
                       </div>
                     </div>
                   </motion.div>
@@ -678,13 +660,9 @@ export default function App() {
                       <h3 className="text-sm font-bold mb-1">Join My Newsletter</h3>
                       <p className="text-white/50 text-[10px] mb-auto">Weekly insights on AI trends.</p>
                       <div className="relative mt-auto">
-                        <input 
-                          type="email" 
-                          placeholder="Your email" 
-                          className="w-full bg-white/5 border border-white/10 rounded-xl py-2 px-3 text-[10px] focus:outline-none focus:border-indigo-500/50 transition-colors"
-                        />
-                        <button className="absolute right-1 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-indigo-500 text-white hover:bg-indigo-400 transition-colors">
-                          <ArrowRight size={12} />
+                        <button className="w-full bg-indigo-500 hover:bg-indigo-400 text-white rounded-xl py-2 px-3 text-xs font-bold transition-colors flex items-center justify-center gap-2">
+                          <span>Subscribe Now</span>
+                          <ArrowRight size={14} />
                         </button>
                       </div>
                     </div>
@@ -1698,7 +1676,6 @@ export default function App() {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[minmax(160px,auto)]">
                 {/* Profile Card (Mini) */}
                 <BentoCard size="2x2" className="bg-gradient-to-br from-indigo-500/10 to-purple-500/10 p-8 flex flex-col justify-between group/profile-mini relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-50" />
                   
                   <div className="relative z-10 flex justify-between items-start">
                     <div className="relative w-32 h-32 rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-indigo-500/10 flex items-center justify-center text-5xl">
