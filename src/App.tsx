@@ -6,6 +6,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
+import confetti from 'canvas-confetti';
 import { 
   Home, 
   AppWindow, 
@@ -59,10 +60,12 @@ import {
   LayoutGrid,
   List,
   Lock,
-  Play
+  Play,
+  Settings
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import Lenis from 'lenis';
 
 import { ChatAssistant } from './components/ChatAssistant';
 import { CustomCursor } from './components/CustomCursor';
@@ -79,7 +82,7 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-type Category = 'Home' | 'Projects' | 'Apps' | 'Automation' | 'Ebooks' | 'Content' | 'About' | 'Reviews' | 'Connect';
+type Category = 'Home' | 'Projects' | 'Apps' | 'Automation' | 'Ebooks' | 'Content' | 'About' | 'Reviews' | 'Connect' | 'Success';
 type ProjectCategory = 'Apps & Dev' | 'Web Development Projects' | 'Interactive Experiences' | 'Video & Motion Graphics' | 'Graphics & Marketing' | 'AI Solutions' | 'My Personal Apps';
 
 interface BentoCardProps {
@@ -395,6 +398,7 @@ export default function App() {
     if (path === '/about') return 'About';
     if (path === '/reviews') return 'Reviews';
     if (path === '/connect') return 'Connect';
+    if (path === '/success') return 'Success';
     return 'Home';
   }, [location.pathname]);
 
@@ -412,7 +416,82 @@ export default function App() {
   const [isInImmersiveMode, setIsInImmersiveMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [hideCustomCursor, setHideCustomCursor] = useState(false);
+  const [enableSmoothScroll, setEnableSmoothScroll] = useState(true);
   const navRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!enableSmoothScroll) return;
+    
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, [enableSmoothScroll]);
+
+  useEffect(() => {
+    if (!hideCustomCursor) {
+      document.body.classList.add('hide-native-cursor');
+    } else {
+      document.body.classList.remove('hide-native-cursor');
+    }
+    
+    return () => {
+      document.body.classList.remove('hide-native-cursor');
+    };
+  }, [hideCustomCursor]);
+
+  useEffect(() => {
+    if (activeTab === 'Success') {
+      const fireConfetti = () => {
+        const defaults = {
+          spread: 70,
+          ticks: 150,
+          gravity: 0.8,
+          decay: 0.94,
+          startVelocity: 50,
+          colors: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'],
+          zIndex: 100
+        };
+
+        // Left cannon
+        confetti({
+          ...defaults,
+          particleCount: 80,
+          angle: 60,
+          origin: { x: 0, y: 1 }
+        });
+
+        // Right cannon
+        confetti({
+          ...defaults,
+          particleCount: 80,
+          angle: 120,
+          origin: { x: 1, y: 1 }
+        });
+      };
+
+      // Fire once immediately
+      fireConfetti();
+      
+      // Fire again after a short delay for a richer but still minimal effect
+      const timeout = setTimeout(fireConfetti, 400);
+      
+      return () => clearTimeout(timeout);
+    }
+  }, [activeTab]);
 
   const openChatWithSearch = (query: string) => {
     setInitialChatMessage(query);
@@ -1544,6 +1623,7 @@ export default function App() {
                     <motion.button 
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
+                      onClick={() => window.open('https://buy.polar.sh/polar_cl_w7kAdvkAHugeoJVUiB7Fmj8rNJsucriPLLpuJ3mXMML', '_blank')}
                       className="px-6 py-3 rounded-2xl bg-white text-black text-xs font-bold hover:bg-white/90 transition-all shadow-xl shadow-white/10"
                     >
                       Get the Book
@@ -2055,6 +2135,50 @@ export default function App() {
             </BentoCard>
           </div>
         );
+
+      case 'Success':
+        return (
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <BentoCard size="2x2" className="max-w-lg w-full text-center p-12 flex flex-col items-center justify-center relative overflow-hidden bg-white/[0.02] border-emerald-500/20">
+              {/* Background glow */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-500/10 blur-[80px] rounded-full pointer-events-none" />
+              
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", bounce: 0.5, duration: 0.8 }}
+                className="w-24 h-24 rounded-full bg-emerald-500/20 flex items-center justify-center mb-8 border border-emerald-500/30 relative z-10"
+              >
+                <CheckCircle2 size={48} className="text-emerald-400" />
+              </motion.div>
+              
+              <h2 className="text-4xl font-bold mb-4 tracking-tight relative z-10">Payment Successful!</h2>
+              <p className="text-white/60 mb-8 max-w-sm mx-auto leading-relaxed font-light relative z-10">
+                Thank you for your purchase. Your order has been confirmed and the details have been sent to your email.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 w-full justify-center relative z-10">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setActiveTab('Ebooks')}
+                  className="px-6 py-3 rounded-2xl bg-white/5 text-white text-sm font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2 border border-white/10"
+                >
+                  <ArrowLeft size={16} />
+                  Back to Ebooks
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setActiveTab('Home')}
+                  className="px-6 py-3 rounded-2xl bg-emerald-500 text-black text-sm font-bold hover:bg-emerald-400 transition-all shadow-xl shadow-emerald-500/20"
+                >
+                  Return Home
+                </motion.button>
+              </div>
+            </BentoCard>
+          </div>
+        );
     }
   };
 
@@ -2063,7 +2187,7 @@ export default function App() {
       "min-h-screen mesh-gradient flex flex-col items-center selection:bg-indigo-500/30",
       isInImmersiveMode ? "py-0 px-0" : "py-12 px-4 md:py-20"
     )}>
-      <CustomCursor />
+      {!hideCustomCursor && <CustomCursor />}
       {/* Header / Navigation */}
       {!isInImmersiveMode && (
         <header className="w-full mb-12 sticky top-6 md:top-8 z-50 px-4 flex justify-center">
@@ -2124,6 +2248,20 @@ export default function App() {
                 </span>
               </button>
             ))}
+
+            {/* Divider */}
+            <div className="w-px h-8 bg-white/10 mx-1 flex-shrink-0" />
+
+            {/* Settings Button */}
+            <button
+              onClick={() => setIsSettingsOpen(true)}
+              className="relative rounded-full text-[11px] md:text-sm font-semibold transition-all duration-500 flex items-center justify-center whitespace-nowrap outline-none group px-3 py-2.5 md:px-4 md:py-3 text-white/30 hover:text-white/60 hover:bg-white/5 hover:px-5 hover:md:px-7"
+              title="Settings"
+            >
+              <span className="relative z-10 transition-all duration-300 scale-100 group-hover:rotate-90">
+                <Settings size={18} />
+              </span>
+            </button>
           </nav>
         </header>
       )}
@@ -2283,6 +2421,85 @@ export default function App() {
                     </div>
                   </div>
                 )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Settings Modal */}
+      <AnimatePresence>
+        {isSettingsOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+          >
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setIsSettingsOpen(false)} />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-md bg-[#0a0a0a] border border-white/10 rounded-[2rem] shadow-2xl overflow-hidden"
+            >
+              <div className="p-6 md:p-8">
+                <div className="flex items-center justify-between mb-8">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+                      <Settings size={20} className="text-white" />
+                    </div>
+                    <h2 className="text-xl font-bold">Settings</h2>
+                  </div>
+                  <button 
+                    onClick={() => setIsSettingsOpen(false)}
+                    className="p-2 rounded-full hover:bg-white/10 transition-colors"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                <div className="space-y-6">
+                  {/* Custom Cursor Toggle */}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-sm font-bold mb-1">Custom Cursor</h3>
+                      <p className="text-xs text-white/40">Use the stylized dot cursor</p>
+                    </div>
+                    <button 
+                      onClick={() => setHideCustomCursor(!hideCustomCursor)}
+                      className={cn(
+                        "w-12 h-6 rounded-full transition-colors relative",
+                        !hideCustomCursor ? "bg-indigo-500" : "bg-white/10"
+                      )}
+                    >
+                      <div className={cn(
+                        "absolute top-1 w-4 h-4 rounded-full bg-white transition-transform",
+                        !hideCustomCursor ? "left-7" : "left-1"
+                      )} />
+                    </button>
+                  </div>
+
+                  {/* Smooth Scroll Toggle */}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-sm font-bold mb-1">Smooth Scrolling</h3>
+                      <p className="text-xs text-white/40">Enable buttery smooth scroll</p>
+                    </div>
+                    <button 
+                      onClick={() => setEnableSmoothScroll(!enableSmoothScroll)}
+                      className={cn(
+                        "w-12 h-6 rounded-full transition-colors relative",
+                        enableSmoothScroll ? "bg-indigo-500" : "bg-white/10"
+                      )}
+                    >
+                      <div className={cn(
+                        "absolute top-1 w-4 h-4 rounded-full bg-white transition-transform",
+                        enableSmoothScroll ? "left-7" : "left-1"
+                      )} />
+                    </button>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </motion.div>

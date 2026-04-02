@@ -11,7 +11,7 @@
   }
 
   @media (pointer: fine) {
-    * {
+    .hide-native-cursor * {
       cursor: none !important;
     }
   }
