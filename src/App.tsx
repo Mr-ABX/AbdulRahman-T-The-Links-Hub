@@ -61,7 +61,8 @@ import {
   List,
   Lock,
   Play,
-  Settings
+  Settings,
+  ShoppingBag
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -82,7 +83,7 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-type Category = 'Home' | 'Projects' | 'Apps' | 'Automation' | 'Ebooks' | 'Content' | 'About' | 'Reviews' | 'Connect' | 'Success';
+type Category = 'Home' | 'Projects' | 'Apps' | 'Automation' | 'Ebooks' | 'Content' | 'About' | 'Reviews' | 'Connect' | 'Success' | 'Store';
 type ProjectCategory = 'Apps & Dev' | 'Web Development Projects' | 'Interactive Experiences' | 'Video & Motion Graphics' | 'Graphics & Marketing' | 'AI Solutions' | 'My Personal Apps';
 
 interface BentoCardProps {
@@ -175,6 +176,7 @@ const tabs: { name: Category; icon: React.ReactNode }[] = [
   { name: 'Ebooks', icon: <Book size={18} /> },
   { name: 'Content', icon: <Newspaper size={18} /> },
   { name: 'Automation', icon: <Bot size={18} /> },
+  { name: 'Store', icon: <ShoppingBag size={18} /> },
   { name: 'About', icon: <User size={18} /> },
   { name: 'Reviews', icon: <Star size={18} /> },
   { name: 'Connect', icon: <Share2 size={18} /> },
@@ -707,6 +709,47 @@ export default function App() {
                         >
                           <span className="text-white/60">Click to start chatting...</span>
                           <ArrowRight size={16} className="text-indigo-400" />
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Storefront Widget */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                    transition={{ duration: 0.6, type: "spring", stiffness: 100, damping: 15 }}
+                    className="col-span-1 md:col-span-2 row-span-1 relative overflow-hidden rounded-[2rem] p-[2px] group/store-widget cursor-pointer"
+                    onClick={() => window.open('https://abdulrahman-t.web.app/store', '_blank')}
+                  >
+                    <div className="absolute inset-0 bg-emerald-500/20 rounded-[2rem]" />
+                    <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_270deg,#10b981_300deg,#34d399_330deg,#059669_360deg)] animate-border-spin blur-md opacity-70" />
+                    <div className="relative h-full w-full bg-[#050505] rounded-[calc(2rem-2px)] p-6 flex flex-col justify-between overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-teal-600/10" />
+                      <div className="absolute -right-4 -top-4 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl group-hover/store-widget:bg-emerald-500/20 transition-colors" />
+                      <div className="relative z-10 h-full flex flex-col justify-center p-2">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center text-black shadow-lg shadow-emerald-500/20 group-hover/store-widget:scale-110 transition-transform">
+                              <ShoppingBag size={20} />
+                            </div>
+                            <div>
+                              <h3 className="text-lg font-bold text-emerald-400">Premium Storefront</h3>
+                              <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Books, Apps & Resources</p>
+                            </div>
+                          </div>
+                          <div className="hidden sm:flex items-center gap-2">
+                            <span className="px-2 py-1 rounded-md bg-white/5 text-[10px] text-white/60 font-mono">31 Ways</span>
+                            <span className="px-2 py-1 rounded-md bg-white/5 text-[10px] text-white/60 font-mono">Kairos</span>
+                          </div>
+                        </div>
+                        <button 
+                          className="w-full bg-emerald-500/10 border border-emerald-500/20 rounded-xl py-3 px-4 text-sm hover:bg-emerald-500/20 transition-all flex items-center justify-between group-hover/store-widget:border-emerald-500/50"
+                        >
+                          <span className="text-emerald-400 font-bold">Visit My Storefront</span>
+                          <ExternalLink size={16} className="text-emerald-400 group-hover/store-widget:translate-x-1 group-hover/store-widget:-translate-y-1 transition-transform" />
                         </button>
                       </div>
                     </div>
@@ -2219,7 +2262,13 @@ export default function App() {
               <button
                 key={tab.name}
                 data-active={activeTab === tab.name}
-                onClick={() => setActiveTab(tab.name)}
+                onClick={() => {
+                  if (tab.name === 'Store') {
+                    window.open('https://abdulrahman-t.web.app/store', '_blank');
+                  } else {
+                    setActiveTab(tab.name);
+                  }
+                }}
                 className={cn(
                   "relative rounded-full text-[11px] md:text-sm font-semibold transition-all duration-500 flex items-center justify-center whitespace-nowrap outline-none group",
                   activeTab === tab.name 
