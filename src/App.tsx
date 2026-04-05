@@ -171,12 +171,12 @@ const BentoCard = ({ children, className, size = '1x1', delay = 0, onClick, back
 
 const tabs: { name: Category; icon: React.ReactNode }[] = [
   { name: 'Home', icon: <Home size={18} /> },
-  { name: 'Projects', icon: <AppWindow size={18} /> },
+  { name: 'Store', icon: <ShoppingBag size={18} /> },
   { name: 'Apps', icon: <LayoutGrid size={18} /> },
+  { name: 'Projects', icon: <AppWindow size={18} /> },
   { name: 'Ebooks', icon: <Book size={18} /> },
   { name: 'Content', icon: <Newspaper size={18} /> },
   { name: 'Automation', icon: <Bot size={18} /> },
-  { name: 'Store', icon: <ShoppingBag size={18} /> },
   { name: 'About', icon: <User size={18} /> },
   { name: 'Reviews', icon: <Star size={18} /> },
   { name: 'Connect', icon: <Share2 size={18} /> },
@@ -452,7 +452,7 @@ export default function App() {
           setSelectedProject(null);
         }
       } else if (category === 'ebooks') {
-        if (slug === '31-ways-to-ruin-your-life' || slug === '31-ways') {
+        if (slug === '31-ways-to-ruin-your-life-v1' || slug === '31-ways-to-ruin-your-life' || slug === '31-ways') {
           setSelectedEbook({
             title: '31 Ways to Ruin Your Life',
             desc: 'A super professional guide to self-sabotage. Learn what NOT to do to succeed.',
@@ -487,7 +487,7 @@ export default function App() {
   };
 
   const openEbookModal = () => {
-    navigate(`/ebooks/31-ways`);
+    navigate(`/ebooks/31-ways-to-ruin-your-life-v1`);
   };
 
   const closeEbookModal = () => {
@@ -759,7 +759,7 @@ export default function App() {
                       <Book size={12} className="text-purple-400" /> Learn & Connect
                     </h3>
                   )}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-[minmax(180px,auto)]">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-auto">
                     
                     {/* AI Assistant Quick Widget */}
                     <motion.div
@@ -768,7 +768,7 @@ export default function App() {
                       exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
                       whileHover={{ y: -5, transition: { duration: 0.2 } }}
                       transition={{ duration: 0.6, type: "spring", stiffness: 100, damping: 15 }}
-                      className="col-span-1 md:col-span-2 row-span-1 relative overflow-hidden rounded-[2rem] p-[2px] group/ai-widget"
+                      className="col-span-1 md:col-span-2 row-span-1 relative overflow-hidden rounded-[2rem] p-[2px] group/ai-widget min-h-[180px]"
                     >
                       <div className="absolute inset-0 bg-indigo-500/20 rounded-[2rem]" />
                       <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_270deg,#6366f1_300deg,#a855f7_330deg,#ec4899_360deg)] animate-border-spin blur-md opacity-70" />
@@ -808,30 +808,29 @@ export default function App() {
                     >
                       <div className="absolute inset-0 bg-emerald-500/20 rounded-[2rem]" />
                       <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_270deg,#10b981_300deg,#34d399_330deg,#059669_360deg)] animate-border-spin blur-md opacity-70" />
-                      <div className="relative h-full w-full bg-[#050505] rounded-[calc(2rem-2px)] p-6 flex flex-col justify-between overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-teal-600/10" />
+                      <div className="relative h-full w-full bg-[#050505] rounded-[calc(2rem-2px)] p-4 flex items-center justify-between overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent" />
                         <div className="absolute -right-4 -top-4 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl group-hover/store-widget:bg-emerald-500/20 transition-colors" />
-                        <div className="relative z-10 h-full flex flex-col justify-center p-2">
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center text-black shadow-lg shadow-emerald-500/20 group-hover/store-widget:scale-110 transition-transform">
-                                <ShoppingBag size={20} />
-                              </div>
-                              <div>
-                                <h3 className="text-lg font-bold text-emerald-400">Premium Storefront</h3>
-                                <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Books, Apps & Resources</p>
-                              </div>
-                            </div>
-                            <div className="hidden sm:flex items-center gap-2">
-                              <span className="px-2 py-1 rounded-md bg-white/5 text-[10px] text-white/60 font-mono">31 Ways</span>
-                              <span className="px-2 py-1 rounded-md bg-white/5 text-[10px] text-white/60 font-mono">Kairos</span>
-                            </div>
+                        
+                        <div className="relative z-10 flex items-center gap-4">
+                          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shadow-lg shadow-emerald-500/10 group-hover/store-widget:scale-110 group-hover/store-widget:bg-emerald-500 group-hover/store-widget:text-black transition-all duration-300">
+                            <ShoppingBag size={20} />
+                          </div>
+                          <div>
+                            <h3 className="text-base font-bold text-emerald-400">Store Front - # Hash Lab</h3>
+                            <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold mt-0.5">The AI Stash Studio</p>
+                          </div>
+                        </div>
+
+                        <div className="relative z-10 flex items-center gap-4">
+                          <div className="hidden sm:flex items-center gap-2 mr-2">
+                            <span className="px-2 py-1 rounded-md bg-white/5 text-[10px] text-white/60 font-mono">Premium</span>
+                            <span className="px-2 py-1 rounded-md bg-white/5 text-[10px] text-white/60 font-mono">Assets</span>
                           </div>
                           <button 
-                            className="w-full bg-emerald-500/10 border border-emerald-500/20 rounded-xl py-3 px-4 text-sm hover:bg-emerald-500/20 transition-all flex items-center justify-between group-hover/store-widget:border-emerald-500/50"
+                            className="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover/store-widget:bg-emerald-500 group-hover/store-widget:text-black transition-all duration-300 shadow-lg group-hover/store-widget:shadow-emerald-500/25"
                           >
-                            <span className="text-emerald-400 font-bold">Visit My Storefront</span>
-                            <ExternalLink size={16} className="text-emerald-400 group-hover/store-widget:translate-x-1 group-hover/store-widget:-translate-y-1 transition-transform" />
+                            <ArrowRight size={18} className="group-hover/store-widget:translate-x-1 transition-transform" />
                           </button>
                         </div>
                       </div>
@@ -2273,33 +2272,54 @@ export default function App() {
       case 'Store':
         return (
           <div className="flex items-center justify-center min-h-[60vh]">
-            <BentoCard size="2x2" className="max-w-2xl w-full text-center p-12 flex flex-col items-center justify-center relative overflow-hidden bg-white/[0.02] border-emerald-500/20">
+            <BentoCard size="2x2" className="max-w-3xl w-full text-center p-12 flex flex-col items-center justify-center relative overflow-hidden bg-[#050505] border-emerald-500/20">
               {/* Background glow */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/10 blur-[100px] rounded-full pointer-events-none" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none" />
+              <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-teal-500/10 blur-[100px] rounded-full pointer-events-none" />
               
               <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring", bounce: 0.5, duration: 0.8 }}
-                className="w-24 h-24 rounded-full bg-emerald-500/20 flex items-center justify-center mb-8 border border-emerald-500/30 relative z-10"
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ type: "spring", bounce: 0.5, duration: 1 }}
+                className="mb-8 relative z-10 flex items-center justify-center"
               >
-                <ShoppingBag size={48} className="text-emerald-400" />
+                {/* Custom Hash Lab Logo */}
+                <div className="relative w-20 h-20 flex items-center justify-center">
+                  <div className="absolute top-2 left-2 w-6 h-6 bg-emerald-400 rounded-sm transform rotate-45" />
+                  <div className="absolute top-2 right-2 w-6 h-6 bg-emerald-300 rounded-sm transform rotate-45" />
+                  <div className="absolute bottom-2 left-2 w-6 h-6 bg-white/80 rounded-sm transform rotate-45" />
+                  <div className="absolute bottom-2 right-2 w-6 h-6 bg-white/40 rounded-sm transform rotate-45" />
+                  <div className="absolute inset-0 bg-[#050505] w-8 h-8 m-auto transform rotate-45 z-10" />
+                </div>
               </motion.div>
               
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight relative z-10">Premium Storefront</h2>
-              <p className="text-white/60 mb-8 max-w-md mx-auto leading-relaxed font-light relative z-10">
-                Access my exclusive collection of books, applications, and resources designed to elevate your digital journey.
+              <div className="relative z-10 mb-6 flex flex-col items-center">
+                <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-2 flex items-center flex-wrap justify-center gap-3">
+                  <span>Store Front - # Hash Lab</span>
+                </h2>
+                <h3 className="text-2xl md:text-3xl text-emerald-400 font-medium mt-2">
+                  The AI Stash Studio
+                </h3>
+                <div className="h-1 w-20 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mt-6 mb-2" />
+              </div>
+
+              <h3 className="text-xl md:text-2xl text-white/90 font-semibold mb-4 relative z-10">
+                The Intelligent AI Product Engine
+              </h3>
+              
+              <p className="text-white/70 mb-10 max-w-xl mx-auto leading-relaxed text-lg relative z-10">
+                The foundation for your next big launch. Explore a curated stash of premium, cutting-edge digital assets built for the community and ready for your clients.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 w-full justify-center relative z-10">
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => window.open('https://abdulrahman-t.web.app/store', '_blank')}
-                  className="px-8 py-4 rounded-2xl bg-emerald-500 text-black text-sm font-bold hover:bg-emerald-400 transition-all shadow-xl shadow-emerald-500/20 flex items-center justify-center gap-2"
+                  className="px-8 py-4 rounded-2xl bg-emerald-500 text-black text-sm font-bold hover:bg-emerald-400 transition-all shadow-[0_0_40px_rgba(16,185,129,0.3)] flex items-center justify-center gap-3 group"
                 >
-                  Enter Storefront
-                  <ExternalLink size={18} />
+                  Enter The Lab
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </motion.button>
               </div>
             </BentoCard>
@@ -2646,6 +2666,22 @@ export default function App() {
 
                   <div className="space-y-3">
                     <button 
+                      onClick={() => window.open(selectedEbook.polarLink, '_blank')}
+                      className="w-full p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 hover:bg-indigo-500/20 transition-all flex items-center justify-between group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                          <Download size={20} />
+                        </div>
+                        <div className="text-left">
+                          <h4 className="font-bold text-sm text-indigo-400">Direct from My Store</h4>
+                          <p className="text-[10px] text-indigo-400/60">Instant PDF Download</p>
+                        </div>
+                      </div>
+                      <ExternalLink size={16} className="text-indigo-400/50 group-hover:text-indigo-400 transition-colors" />
+                    </button>
+
+                    <button 
                       onClick={() => window.open('https://www.amazon.com', '_blank')}
                       className="w-full p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all flex items-center justify-between group"
                     >
@@ -2682,22 +2718,6 @@ export default function App() {
                       <span className="px-2 py-1 rounded-md bg-white/10 text-white/40 text-[10px] font-bold uppercase tracking-wider">
                         Coming Soon
                       </span>
-                    </button>
-
-                    <button 
-                      onClick={() => window.open(selectedEbook.polarLink, '_blank')}
-                      className="w-full p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 hover:bg-indigo-500/20 transition-all flex items-center justify-between group"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
-                          <Download size={20} />
-                        </div>
-                        <div className="text-left">
-                          <h4 className="font-bold text-sm text-indigo-400">Direct from My Store</h4>
-                          <p className="text-[10px] text-indigo-400/60">Instant PDF Download</p>
-                        </div>
-                      </div>
-                      <ExternalLink size={16} className="text-indigo-400/50 group-hover:text-indigo-400 transition-colors" />
                     </button>
                   </div>
                 </div>
