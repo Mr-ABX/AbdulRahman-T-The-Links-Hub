@@ -2682,7 +2682,7 @@ export default function App() {
                     </button>
 
                     <button 
-                      onClick={() => window.open('https://www.amazon.com', '_blank')}
+                      onClick={() => window.open('https://www.amazon.com/dp/B0DCKCGN9T/ref=sr_1_1?crid=1L0O0K18FFKM6&dib=eyJ2IjoiMSJ9.QB-LOME6feSWELi6KqBqYoM8BFsMvU_kER5B3fW0uBg._E5N430acyLiXLadu4fYYPhzhpDkoT48D9EVJbt_cnA&dib_tag=se&keywords=31+Ways+to+Ruin+Your+Life%3A+Vol.+1%3A+A+Super+Professional+Guide+to+High-Fashion+Failure+%28The+Pro+Ruin+Series+%28Collection+Code+31%29&nsdOptOutParam=true&qid=1775499316&sprefix=31+ways+to+ruin+your+life+vol.+1+a+super+professional+guide+to+high-fashion+failure+the+pro+ruin+series+collection+code+31+%2Caps%2C758&sr=8-1', '_blank')}
                       className="w-full p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all flex items-center justify-between group"
                     >
                       <div className="flex items-center gap-3">
@@ -2695,9 +2695,6 @@ export default function App() {
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className="px-2 py-1 rounded-md bg-orange-500/20 text-orange-400 text-[10px] font-bold uppercase tracking-wider">
-                          72 Hours Remaining
-                        </span>
                         <ExternalLink size={16} className="text-white/30 group-hover:text-white transition-colors" />
                       </div>
                     </button>
