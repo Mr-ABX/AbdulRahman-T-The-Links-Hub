@@ -62,7 +62,11 @@ import {
   Lock,
   Play,
   Settings,
-  ShoppingBag
+  ShoppingBag,
+  Tornado,
+  Menu,
+  ChevronDown,
+  PenLine
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -83,7 +87,7 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-type Category = 'Home' | 'Projects' | 'Apps' | 'Automation' | 'Ebooks' | 'Content' | 'About' | 'Reviews' | 'Connect' | 'Success' | 'Store' | 'Journal';
+type Category = 'Home' | 'Projects' | 'Infinity Lab' | 'Vortex' | 'Journal' | 'Automation' | 'Ebooks' | 'Content' | 'About' | 'Reviews' | 'Connect' | 'Success' | 'Store';
 type ProjectCategory = 'Apps & Dev' | 'Web Development Projects' | 'Interactive Experiences' | 'Video & Motion Graphics' | 'Graphics & Marketing' | 'AI Solutions' | 'My Personal Apps' | 'Pro Business Suite';
 
 interface BentoCardProps {
@@ -169,12 +173,16 @@ const BentoCard = ({ children, className, size = '1x1', delay = 0, onClick, back
   );
 };
 
-const tabs: { name: Category; icon: React.ReactNode }[] = [
+const mainTabs: { name: Category; icon: React.ReactNode }[] = [
   { name: 'Home', icon: <Home size={18} /> },
-  { name: 'Store', icon: <ShoppingBag size={18} /> },
-  { name: 'Apps', icon: <LayoutGrid size={18} /> },
-  { name: 'Journal', icon: <Newspaper size={18} /> },
   { name: 'Projects', icon: <AppWindow size={18} /> },
+  { name: 'Infinity Lab', icon: <LayoutGrid size={18} /> },
+  { name: 'Vortex', icon: <Tornado size={18} /> },
+  { name: 'Journal', icon: <Newspaper size={18} /> },
+];
+
+const subTabs: { name: Category; icon: React.ReactNode }[] = [
+  { name: 'Store', icon: <ShoppingBag size={18} /> },
   { name: 'Ebooks', icon: <Book size={18} /> },
   { name: 'Content', icon: <Newspaper size={18} /> },
   { name: 'Automation', icon: <Bot size={18} /> },
@@ -182,6 +190,8 @@ const tabs: { name: Category; icon: React.ReactNode }[] = [
   { name: 'Reviews', icon: <Star size={18} /> },
   { name: 'Connect', icon: <Share2 size={18} /> },
 ];
+
+const tabs: { name: Category; icon: React.ReactNode }[] = [...mainTabs, ...subTabs];
 
 const projects = [
   { name: "Project X (Unreleased)", mainCategory: 'My Personal Apps', tags: ['Experimental', 'AI'], pricing: 'Private', desc: 'An experimental AI-driven personal assistant with deep system integration.', url: '#', previewUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Lock size={20} />, status: 'Development' },
@@ -394,7 +404,9 @@ export default function App() {
   const activeTab = useMemo<Category>(() => {
     const path = location.pathname;
     if (path.startsWith('/projects')) return 'Projects';
-    if (path.startsWith('/apps')) return 'Apps';
+    if (path.startsWith('/apps')) return 'Infinity Lab';
+    if (path.startsWith('/vortex')) return 'Vortex';
+    if (path.startsWith('/journal')) return 'Journal';
     if (path.startsWith('/automation')) return 'Automation';
     if (path.startsWith('/ebooks')) return 'Ebooks';
     if (path.startsWith('/content')) return 'Content';
@@ -408,10 +420,13 @@ export default function App() {
 
   const setActiveTab = (tab: Category) => {
     if (tab === 'Home') navigate('/');
+    else if (tab === 'Infinity Lab') navigate('/apps');
     else navigate(`/${tab.toLowerCase()}`);
   };
 
   const [projectFilter, setProjectFilter] = useState<string[]>([]);
+  const [navMode, setNavMode] = useState<'full' | 'compact'>('compact');
+  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
   const [activeProjectCategory, setActiveProjectCategory] = useState<ProjectCategory | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
@@ -577,13 +592,13 @@ export default function App() {
   }, [activeTab]);
 
   React.useEffect(() => {
-    if (activeTab !== 'Apps') {
+    if (activeTab !== 'Infinity Lab') {
       setIsInImmersiveMode(false);
     }
   }, [activeTab]);
 
   React.useEffect(() => {
-    if (activeTab === 'Projects' || activeTab === 'Apps') {
+    if (activeTab === 'Projects' || activeTab === 'Infinity Lab') {
       setIsLoading(true);
       const timer = setTimeout(() => setIsLoading(false), 300);
       return () => clearTimeout(timer);
@@ -1058,9 +1073,190 @@ export default function App() {
           </div>
         );
 
-      case 'Apps':
+      case 'Infinity Lab':
+        const labProjects = projects.filter(p => 
+          p.mainCategory === 'My Personal Apps' || 
+          p.mainCategory === 'Interactive Experiences' || 
+          p.mainCategory === 'Apps & Dev' ||
+          p.tags?.includes('Experimental')
+        );
+        return (
+          <div className="space-y-12 pb-20 max-w-[1600px] mx-auto px-4 md:px-8 mt-12">
+            <header className="text-center space-y-6 max-w-4xl mx-auto relative z-10">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-bold uppercase tracking-widest mb-4 mx-auto">
+                <Brain size={14} className="animate-pulse" /> Experimental Space
+              </div>
+              <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-indigo-400 via-purple-400 to-cyan-400 pb-2">
+                Infinity Lab
+              </h1>
+              <p className="text-blue-200/60 text-lg md:text-xl font-light leading-relaxed">
+                A showcase of my applications, personal experiments, cutting-edge AI tools, and full-stack side projects. Built for scale, running in production.
+              </p>
+            </header>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 relative z-10">
+              {labProjects.map((p, i) => (
+                <BentoCard 
+                  key={i} 
+                  size="1x1"
+                  className={cn(
+                    "cursor-pointer transition-all duration-500 group relative overflow-hidden backdrop-blur-3xl",
+                    "border border-white/5 hover:border-indigo-500/30",
+                    "bg-[#0a0a0a]/60 hover:bg-[#1a1a2e]/80"
+                  )}
+                  onClick={() => {
+                    setSelectedProject(p);
+                    setIsInImmersiveMode(true);
+                  }}
+                >
+                  <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-indigo-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                  
+                  <div className="flex flex-col h-full z-10 relative">
+                    <div className="flex justify-between items-start mb-6">
+                      <div className={cn(
+                        "w-12 h-12 rounded-2xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110",
+                        p.bg, p.color
+                      )}>
+                        {p.icon}
+                      </div>
+                      <div className="flex flex-col items-end gap-2">
+                        <span className="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-[9px] font-bold uppercase tracking-wider text-white/50 group-hover:text-white/80 transition-colors">
+                          {p.status}
+                        </span>
+                        {p.pricing === 'Free' ? (
+                          <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest bg-emerald-400/10 px-2 py-0.5 rounded text-right">Free</span>
+                        ) : p.pricing === 'Paid' ? (
+                          <span className="text-[10px] text-amber-400 font-bold uppercase tracking-widest bg-amber-400/10 px-2 py-0.5 rounded text-right">{p.price || 'Pro'}</span>
+                        ) : (
+                          <span className="text-[10px] text-rose-400 font-bold uppercase tracking-widest bg-rose-400/10 px-2 py-0.5 rounded flex items-center gap-1 text-right"><Lock size={10}/> Private</span>
+                        )}
+                      </div>
+                    </div>
+
+                    <h3 className="text-xl font-bold mb-2 group-hover:text-indigo-300 transition-colors">{p.name}</h3>
+                    <p className="text-sm text-white/50 line-clamp-2 leading-relaxed mb-4">{p.desc}</p>
+                    
+                    <div className="mt-auto flex flex-wrap gap-2">
+                      {p.tags?.slice(0, 2).map((tag, i) => (
+                        <span key={i} className="text-[10px] text-white/40 border border-white/10 bg-white/5 px-2 py-1 rounded-md">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </BentoCard>
+              ))}
+            </div>
+
+            {/* Immersive View Modal for Infinity Lab */}
+            <AnimatePresence>
+              {isInImmersiveMode && selectedProject && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8"
+                >
+                  <div className="absolute inset-0 bg-[#020205] backdrop-blur-3xl" onClick={() => setIsInImmersiveMode(false)} />
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: 40 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: 40 }}
+                    className="relative w-full max-w-6xl h-[90vh] bg-[#0a0a0f] border border-indigo-500/20 rounded-[2rem] shadow-2xl overflow-hidden flex flex-col md:flex-row"
+                  >
+                    {/* Immersive content for selected project */}
+                    <div className="flex-1 overflow-y-auto p-8 md:p-12 space-y-8 custom-scrollbar">
+                      <button 
+                        onClick={() => setIsInImmersiveMode(false)}
+                        className="inline-flex items-center gap-2 text-white/40 hover:text-white mb-4 transition-colors"
+                      >
+                        <ArrowLeft size={16} /> Back to Lab
+                      </button>
+                      
+                      <div className="flex items-start gap-6 mb-8">
+                        <div className={cn("w-20 h-20 rounded-3xl flex items-center justify-center shrink-0", selectedProject.bg, selectedProject.color)}>
+                          <div className="scale-[2]">{selectedProject.icon}</div>
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-3 mb-2">
+                            <h2 className="text-3xl md:text-5xl font-black">{selectedProject.name}</h2>
+                            <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold text-white/50 mt-1 md:mt-2">
+                              {selectedProject.status}
+                            </span>
+                          </div>
+                          <p className="text-lg text-white/60 mb-4">{selectedProject.desc}</p>
+                          <div className="flex flex-wrap gap-2">
+                             {selectedProject.tags?.map(t => (
+                               <span key={t} className="px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-bold border border-indigo-500/20">{t}</span>
+                             ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-6">
+                        <h3 className="text-xl font-bold flex items-center gap-2">
+                          <LayoutGrid size={20} className="text-indigo-400" /> Interface Preview
+                        </h3>
+                        <div className="w-full aspect-video bg-[#111116] rounded-2xl border border-white/5 overflow-hidden flex items-center justify-center relative group/preview">
+                           {selectedProject.previewUrl ? (
+                             selectedProject.previewUrl.includes('youtube') ? (
+                               <iframe src={selectedProject.previewUrl} className="w-full h-full" frameBorder={0} allowFullScreen />
+                             ) : (
+                               <iframe src={selectedProject.previewUrl} className="w-full h-full opacity-60 group-hover/preview:opacity-100 transition-opacity" />
+                             )
+                           ) : (
+                             <div className="text-white/20 scale-150">{selectedProject.icon}</div>
+                           )}
+                           <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl pointer-events-none" />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="w-full md:w-80 bg-[#111116] border-l border-white/5 p-8 flex flex-col">
+                      <div className="mb-8">
+                        <h4 className="text-sm font-bold text-white/40 uppercase tracking-widest mb-4">Access</h4>
+                        {selectedProject.pricing === 'Private' ? (
+                          <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center gap-3">
+                            <Lock size={24} />
+                            <div>
+                              <p className="font-bold">Private Access</p>
+                              <p className="text-xs opacity-70">Requires clearance</p>
+                            </div>
+                          </div>
+                        ) : (
+                          <a 
+                            href={selectedProject.url} 
+                            target="_blank" 
+                            className={cn(
+                              "w-full py-4 rounded-xl font-bold text-center flex items-center justify-center gap-2 transition-transform hover:scale-[1.02]",
+                              selectedProject.pricing === 'Free' ? "bg-white text-black" : "bg-indigo-500 text-white"
+                            )}
+                          >
+                            Launch App <ExternalLink size={18} />
+                          </a>
+                        )}
+                      </div>
+                      
+                      {selectedProject.pricing !== 'Private' && selectedProject.url && (
+                        <div className="p-4 rounded-xl bg-white/5 border border-white/5 text-sm mb-6">
+                           <p className="text-white/50 mb-2">Endpoint URL:</p>
+                           <p className="text-indigo-400 break-all select-all font-mono text-xs">{selectedProject.url}</p>
+                        </div>
+                      )}
+
+                      <div className="mt-auto pt-8 border-t border-white/10">
+                        <p className="text-xs text-white/40 text-center">Part of Infinity Enterprises</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        );
+
       case 'Projects': {
-        if (isInImmersiveMode && activeTab === 'Apps') {
+        if (isInImmersiveMode && activeTab === 'Projects') {
           const immersiveCategories = ['All', 'Pro Business Suite', 'AI Solutions', 'Apps & Dev', 'Interactive Experiences', 'My Personal Apps'];
           
           return (
@@ -1396,11 +1592,10 @@ export default function App() {
         }
 
         if (!activeProjectCategory) {
-          if (activeTab === 'Projects') {
-            return (
-              <div className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
-                  <BentoCard size="2x1" onClick={() => setActiveProjectCategory('Pro Business Suite')} className="md:col-span-2 cursor-pointer hover:bg-blue-500/10 transition-colors group relative overflow-hidden">
+          return (
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
+                <BentoCard size="2x1" onClick={() => setActiveProjectCategory('Pro Business Suite')} className="md:col-span-2 cursor-pointer hover:bg-blue-500/10 transition-colors group relative overflow-hidden">
                     <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
                       <Briefcase size={160} />
                     </div>
@@ -1454,126 +1649,6 @@ export default function App() {
                 </div>
               </div>
             );
-          } else {
-            return (
-              <div className="space-y-8">
-                <div className="relative overflow-hidden rounded-[2.5rem] p-[2px] group">
-                  <div className="absolute inset-0 bg-indigo-500/20 rounded-[2.5rem]" />
-                  <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_270deg,#6366f1_300deg,#a855f7_330deg,#ec4899_360deg)] animate-border-spin blur-md opacity-70" />
-                  <div className="relative h-full w-full bg-[#050505] rounded-[calc(2.5rem-2px)] p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between overflow-hidden gap-6">
-                    <div className="absolute inset-0 bg-indigo-500/5" />
-                    <div className="relative z-10">
-                      <h3 className="text-3xl font-bold mb-2">Immersive App Gallery</h3>
-                      <p className="text-white/50 text-base max-w-xl font-light">Experience my apps in a focused, full-screen gallery with advanced search and filtering.</p>
-                    </div>
-                    <button 
-                      onClick={() => setIsInImmersiveMode(true)}
-                      className="relative z-10 px-8 py-4 rounded-2xl bg-indigo-500 text-white font-bold hover:bg-indigo-400 transition-all shadow-xl shadow-indigo-500/20 flex items-center gap-3 group-hover:scale-105 shrink-0"
-                    >
-                      <Rocket size={20} />
-                      <span>Enter Gallery</span>
-                    </button>
-                  </div>
-                </div>
-
-                <div className="bg-amber-500/10 border border-amber-500/20 py-3 px-4 md:px-6 rounded-full flex items-center gap-4 overflow-hidden relative">
-                  <div className="flex items-center gap-2 text-amber-400 shrink-0 z-10 bg-[#050505] pr-2 md:pr-4 py-1 rounded-full">
-                    <Activity size={18} />
-                    <span className="font-bold text-xs md:text-sm whitespace-nowrap">Development Status</span>
-                  </div>
-                  <div className="flex-1 overflow-hidden relative flex items-center [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-                    <div className="flex whitespace-nowrap animate-marquee text-amber-400/70 text-xs md:text-sm">
-                      <span className="mx-4">Some apps are complete and some are still under development.</span>
-                      <span className="mx-4">•</span>
-                      <span className="mx-4">If you face any issues, contact us or wait until the development is finished or the problem is fixed.</span>
-                      <span className="mx-4">•</span>
-                      <span className="mx-4">Some apps are complete and some are still under development.</span>
-                      <span className="mx-4">•</span>
-                      <span className="mx-4">If you face any issues, contact us or wait until the development is finished or the problem is fixed.</span>
-                      <span className="mx-4">•</span>
-                      <span className="mx-4">Some apps are complete and some are still under development.</span>
-                      <span className="mx-4">•</span>
-                      <span className="mx-4">If you face any issues, contact us or wait until the development is finished or the problem is fixed.</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="text-center md:text-left mb-8">
-                  <h2 className="text-3xl font-bold mb-4">Apps & Tools</h2>
-                  <p className="text-white/60 max-w-2xl">
-                    Here I build apps, games, tools, and experiences for you, the community, and my own self too.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
-                  <BentoCard size="2x1" onClick={() => setActiveProjectCategory('Pro Business Suite')} className="md:col-span-2 cursor-pointer hover:bg-blue-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Briefcase size={160} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-blue-500/20 flex items-center justify-center text-blue-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Briefcase size={24} />
-                      </div>
-                      <h3 className="text-3xl font-bold mb-2">Pro Business Suite <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Pro Business Suite' || (p as any).categories?.includes('Pro Business Suite')).length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-md leading-relaxed">Advanced tools for SEO, Ad Campaigns, AI Helpers, and Professional Visualizers. The ultimate admin and advanced work suite.</p>
-                    </div>
-                  </BentoCard>
-
-                  <BentoCard size="1x1" onClick={() => setActiveProjectCategory('AI Solutions')} className="cursor-pointer hover:bg-emerald-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Brain size={120} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Brain size={24} />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2">AI Solutions <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'AI Solutions').length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-[200px]">Enterprise-grade AI Platforms, LLM Tools, and Agents.</p>
-                    </div>
-                  </BentoCard>
-
-                  <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Apps & Dev')} className="cursor-pointer hover:bg-indigo-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Code2 size={120} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Code2 size={24} />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2">Apps & Dev <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Apps & Dev').length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-[200px]">SaaS, Mobile Apps, AI Tools & Open Source Repos.</p>
-                    </div>
-                  </BentoCard>
-
-                  <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Interactive Experiences')} className="cursor-pointer hover:bg-cyan-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Gamepad2 size={120} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Gamepad2 size={24} />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2">Interactive <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Interactive Experiences').length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-[200px]">Games, 3D environments, and interactive storytelling.</p>
-                    </div>
-                  </BentoCard>
-
-                  <BentoCard size="2x1" onClick={() => setActiveProjectCategory('My Personal Apps')} className="md:col-span-2 cursor-pointer hover:bg-rose-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Lock size={160} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-rose-500/20 flex items-center justify-center text-rose-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Lock size={24} />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2">My Personal Apps <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'My Personal Apps').length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-[300px]">Special apps currently not published, giving a glimpse into my personal builds and experiments.</p>
-                    </div>
-                  </BentoCard>
-                </div>
-              </div>
-            );
-          }
         }
 
         const categoryProjects = projects.filter(p => p.mainCategory === activeProjectCategory || (p as any).categories?.includes(activeProjectCategory));
@@ -1994,6 +2069,79 @@ export default function App() {
           </div>
         );
 
+      case 'Vortex':
+        return (
+          <div className="relative min-h-[90vh] pb-20 w-full mt-12 bg-[#020205] text-white flex flex-col items-center justify-center overflow-hidden rounded-[3rem] border border-white/5">
+            {/* Background Effects */}
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-600/20 rounded-full blur-[120px] mix-blend-screen pointer-events-none" />
+            
+            <header className="text-center space-y-6 relative z-10 mx-auto px-4 w-full mb-16">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+              >
+                <h1 className="text-7xl md:text-9xl font-black uppercase tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20 drop-shadow-[0_0_30px_rgba(168,85,247,0.4)]">
+                  Vortex
+                </h1>
+              </motion.div>
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.3 }}
+                className="text-white/40 text-lg md:text-2xl max-w-3xl mx-auto font-light tracking-widest uppercase"
+              >
+                A gateway to hidden dimensions and unreleased experiments.
+              </motion.p>
+            </header>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10 w-full max-w-6xl px-4 md:px-8">
+              {[
+                { title: 'Nexus Protocol', desc: 'Neural Engine Prototype', icon: <Brain size={40} />, color: 'from-purple-500/20 to-pink-500/0', border: 'hover:border-purple-500/50', delay: 0.4 },
+                { title: 'Aperture', desc: 'Spatial OS Mechanics', icon: <AppWindow size={40} />, color: 'from-blue-500/20 to-cyan-500/0', border: 'hover:border-blue-500/50', delay: 0.5 },
+                { title: 'The Void', desc: 'Dark Data Visualization', icon: <Tornado size={40} />, color: 'from-rose-500/20 to-orange-500/0', border: 'hover:border-rose-500/50', delay: 0.6 }
+              ].map((item, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: item.delay }}
+                  className={cn(
+                    "rounded-[2rem] p-10 border border-white/5 flex flex-col items-center justify-center relative overflow-hidden group transition-all cursor-crosshair min-h-[300px]",
+                    "bg-[#0a0a0f]/80 backdrop-blur-3xl",
+                    item.border
+                  )}
+                >
+                   <div className={cn("absolute inset-0 bg-gradient-to-b opacity-0 group-hover:opacity-100 transition-opacity duration-700", item.color)} />
+                   
+                   {/* Scanline effect */}
+                   <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] opacity-0 group-hover:opacity-20 pointer-events-none" />
+
+                   <div className="text-white/30 group-hover:text-white mb-6 group-hover:scale-110 group-hover:-translate-y-2 transition-all duration-500 relative z-10">
+                     {item.icon}
+                   </div>
+                   <h3 className="text-2xl font-bold text-center tracking-wider uppercase mb-2 relative z-10">{item.title}</h3>
+                   <p className="text-white/40 text-center text-sm font-mono relative z-10 uppercase">{item.desc}</p>
+                   
+                   <div className="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0 text-[10px] tracking-[0.3em] uppercase text-white/50">
+                     Initialize
+                   </div>
+                </motion.div>
+              ))}
+            </div>
+            
+            <div className="mt-20 flex justify-center">
+              <button 
+                onClick={() => setNavMode('full')}
+                className="text-xs text-white/20 uppercase tracking-widest hover:text-white/50 transition-colors font-mono"
+              >
+                Awaiting clearance codes... [Connect]
+              </button>
+            </div>
+          </div>
+        );
+
       case 'Automation':
         return (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
@@ -2355,16 +2503,30 @@ export default function App() {
                   </div>
                 </BentoCard>
 
-                {/* Agency Site */}
-                <BentoCard size="1x1" className="bg-white/[0.02] group/agency">
+                {/* Infinity Enterprises */}
+                <BentoCard size="1x1" className="bg-purple-500/[0.05] group/agency">
                   <div className="flex flex-col justify-between h-full">
                     <div className="flex justify-between items-start">
-                      <Layout size={24} className="text-white/40" />
-                      <a href="https://infni-t.com" target="_blank" className="text-white/20 hover:text-white transition-colors"><ExternalLink size={14} /></a>
+                      <Layout size={24} className="text-purple-400" />
+                      <a href="#" target="_blank" className="text-purple-400/50 hover:text-purple-400 transition-colors"><ExternalLink size={14} /></a>
                     </div>
                     <div>
-                      <h3 className="font-bold mb-1">INFNI-T'</h3>
-                      <p className="text-[10px] text-white/30 uppercase tracking-widest">Agency Venture</p>
+                      <h3 className="font-bold mb-1 text-lg">Infinity Enterprises</h3>
+                      <p className="text-[10px] text-white/30 uppercase tracking-widest">Parent Company</p>
+                    </div>
+                  </div>
+                </BentoCard>
+
+                {/* Fusion Nexus */}
+                <BentoCard size="1x1" className="bg-indigo-500/[0.05] group/agency">
+                  <div className="flex flex-col justify-between h-full">
+                    <div className="flex justify-between items-start">
+                      <Layers size={24} className="text-indigo-400" />
+                      <a href="#" target="_blank" className="text-indigo-400/50 hover:text-indigo-400 transition-colors"><ExternalLink size={14} /></a>
+                    </div>
+                    <div>
+                      <h3 className="font-bold mb-1 text-lg">Fusion Nexus</h3>
+                      <p className="text-[10px] text-white/30 uppercase tracking-widest">Child Company</p>
                     </div>
                   </div>
                 </BentoCard>
@@ -2723,7 +2885,7 @@ export default function App() {
         <header className="w-full mb-12 sticky top-6 md:top-8 z-50 px-4 flex justify-center">
           <nav 
             ref={navRef}
-            className="glass rounded-full p-1.5 flex items-center gap-1 overflow-x-auto no-scrollbar shadow-2xl border border-white/10 max-w-full backdrop-blur-2xl"
+            className="glass rounded-full p-1.5 flex items-center gap-1 overflow-visible shadow-2xl border border-white/10 max-w-full backdrop-blur-2xl"
           >
             {/* Animated Logo */}
             <div className="relative w-10 h-10 md:w-12 md:h-12 ml-1 mr-2 group cursor-pointer flex-shrink-0 flex items-center justify-center rounded-full bg-white/5 border border-white/10 overflow-hidden transition-all duration-500 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]">
@@ -2745,7 +2907,7 @@ export default function App() {
             {/* Divider */}
             <div className="w-px h-8 bg-white/10 mx-1 flex-shrink-0" />
 
-            {tabs.map((tab) => (
+            {(navMode === 'full' ? tabs : mainTabs).map((tab) => (
               <button
                 key={tab.name}
                 data-active={activeTab === tab.name}
@@ -2780,6 +2942,59 @@ export default function App() {
                 </span>
               </button>
             ))}
+
+            {navMode === 'compact' && (
+              <div 
+                className="relative group"
+                onMouseEnter={() => setIsMoreMenuOpen(true)}
+                onMouseLeave={() => setIsMoreMenuOpen(false)}
+              >
+                <button
+                  className={cn(
+                    "relative rounded-full text-[11px] md:text-sm font-semibold transition-all duration-500 flex items-center justify-center whitespace-nowrap outline-none px-3 py-2.5 md:px-4 md:py-3 text-white/30 hover:text-white/60 hover:bg-white/5 hover:px-5 hover:md:px-7",
+                    isMoreMenuOpen ? "text-white/60 bg-white/5" : ""
+                  )}
+                >
+                  <span className="relative z-10 transition-all duration-300 scale-100 group-hover:mr-2">
+                    <Menu size={18} />
+                  </span>
+                  <span className="relative z-10 transition-all duration-500 overflow-hidden max-w-0 opacity-0 group-hover:max-w-[100px] group-hover:opacity-100">
+                    More
+                  </span>
+                </button>
+                
+                <AnimatePresence>
+                  {isMoreMenuOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-[48px] right-0 min-w-[200px] py-1 bg-[#0a0a0a]/90 backdrop-blur-3xl border border-white/10 rounded-2xl shadow-2xl flex flex-col z-[100] origin-top-right transform-gpu overflow-hidden"
+                    >
+                      {subTabs.map(tab => (
+                        <button
+                          key={tab.name}
+                          onClick={() => {
+                            setActiveTab(tab.name);
+                            setIsMoreMenuOpen(false);
+                          }}
+                          className={cn(
+                            "flex items-center gap-3 px-4 py-3 text-left transition-colors font-semibold text-sm",
+                            activeTab === tab.name 
+                              ? "bg-white/10 text-white" 
+                              : "text-white/40 hover:text-white hover:bg-white/5"
+                          )}
+                        >
+                          <span className={activeTab === tab.name ? "text-indigo-400" : "text-white/40"}>{tab.icon}</span>
+                          {tab.name}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
 
             {/* Divider */}
             <div className="w-px h-8 bg-white/10 mx-1 flex-shrink-0" />
@@ -3097,6 +3312,26 @@ export default function App() {
                 </div>
 
                 <div className="space-y-6">
+                  {/* Navigation Mode Toggle */}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-sm font-bold mb-1">Navigation Layout</h3>
+                      <p className="text-xs text-white/40">{navMode === 'compact' ? 'Compact' : 'Full'} navigation bar</p>
+                    </div>
+                    <button 
+                      onClick={() => setNavMode(m => m === 'compact' ? 'full' : 'compact')}
+                      className={cn(
+                        "w-12 h-6 rounded-full transition-colors relative",
+                        navMode === 'compact' ? "bg-indigo-500" : "bg-white/10"
+                      )}
+                    >
+                      <div className={cn(
+                        "absolute top-1 w-4 h-4 rounded-full bg-white transition-transform",
+                        navMode === 'compact' ? "left-7" : "left-1"
+                      )} />
+                    </button>
+                  </div>
+
                   {/* Custom Cursor Toggle */}
                   <div className="flex items-center justify-between">
                     <div>

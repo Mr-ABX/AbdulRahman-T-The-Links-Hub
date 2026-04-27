@@ -46,7 +46,7 @@ export const CustomCursor = () => {
   return (
     <div
       ref={cursorRef}
-      className="fixed top-0 left-0 w-8 h-8 pointer-events-none z-[9999] mix-blend-difference hidden md:flex items-center justify-center will-change-transform"
+      className="fixed top-0 left-0 w-8 h-8 pointer-events-none z-[9999] mix-blend-difference flex items-center justify-center will-change-transform"
       style={{ opacity: isVisible ? 1 : 0, transition: 'opacity 0.3s ease' }}
     >
       {/* Hover State: Expanded Circle */}
