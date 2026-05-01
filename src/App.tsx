@@ -7,6 +7,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import confetti from 'canvas-confetti';
+import { GlitchText } from './components/GlitchText';
 import { 
   Home, 
   AppWindow, 
@@ -87,7 +88,7 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-type Category = 'Home' | 'Projects' | 'Infinity Lab' | 'Vortex' | 'Journal' | 'Automation' | 'Ebooks' | 'Content' | 'About' | 'Reviews' | 'Connect' | 'Success' | 'Store';
+type Category = 'Home' | 'Vortex' | 'Services' | 'About' | 'Reviews' | 'Connect' | 'Success';
 type ProjectCategory = 'Apps & Dev' | 'Web Development Projects' | 'Interactive Experiences' | 'Video & Motion Graphics' | 'Graphics & Marketing' | 'AI Solutions' | 'My Personal Apps' | 'Pro Business Suite';
 
 interface BentoCardProps {
@@ -173,22 +174,73 @@ const BentoCard = ({ children, className, size = '1x1', delay = 0, onClick, back
   );
 };
 
+const NetflixRow = ({ title, items, onSelect }: { 
+  title: string, 
+  items: typeof projects, 
+  onSelect: (p: typeof projects[0]) => void 
+}) => {
+  if (items.length === 0) return null;
+  
+  return (
+    <div className="space-y-6 pt-12">
+      <div className="flex items-end justify-between px-4 md:px-12 border-b border-white/5 pb-4">
+        <div className="flex flex-col gap-1">
+          <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter text-white">
+             {title}
+          </h3>
+          <div className="h-1 w-12 bg-indigo-500 rounded-full" />
+        </div>
+        <span className="text-[10px] text-white/20 font-bold tracking-[0.3em] uppercase">{items.length} Modules</span>
+      </div>
+      <div className="flex gap-6 overflow-x-auto py-8 px-4 md:px-12 no-scrollbar scroll-smooth">
+        {items.map((p, i) => (
+          <div 
+            key={i} 
+            className="flex-shrink-0 w-[280px] md:w-[380px] group cursor-pointer"
+            onClick={() => onSelect(p)}
+          >
+            <BentoCard size="1x1" className="h-[240px] hover:border-white/20 transition-all duration-700 relative overflow-hidden backdrop-blur-[20px] bg-[#050505]/40 p-8">
+                <div className="flex flex-col h-full relative z-10">
+                  <div className="flex justify-between items-start mb-6">
+                    <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-6 duration-500", p.bg, p.color)}>
+                      {p.icon}
+                    </div>
+                    <div className="flex flex-col items-end gap-1.5 shadow-2xl">
+                      <span className="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[9px] font-black uppercase tracking-widest text-white/40">{p.status}</span>
+                      <span className={cn(
+                        "text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full",
+                        p.pricing === 'Free' ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"
+                      )}>{p.pricing}</span>
+                    </div>
+                  </div>
+                  <h4 className="text-xl font-bold mb-2 group-hover:text-indigo-400 transition-colors uppercase tracking-tight">{p.name}</h4>
+                  <p className="text-white/30 text-xs line-clamp-2 md:line-clamp-3 mb-4 leading-relaxed font-light">{p.desc}</p>
+                  <div className="mt-auto flex flex-wrap gap-1.5 opacity-40 group-hover:opacity-100 transition-opacity">
+                    {p.tags.slice(0, 3).map((tag, idx) => (
+                      <span key={idx} className="text-[8px] text-white/50 border border-white/10 bg-white/5 px-2 py-0.5 rounded-md uppercase tracking-tighter">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+            </BentoCard>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const mainTabs: { name: Category; icon: React.ReactNode }[] = [
   { name: 'Home', icon: <Home size={18} /> },
-  { name: 'Projects', icon: <AppWindow size={18} /> },
-  { name: 'Infinity Lab', icon: <LayoutGrid size={18} /> },
   { name: 'Vortex', icon: <Tornado size={18} /> },
-  { name: 'Journal', icon: <Newspaper size={18} /> },
+  { name: 'Services', icon: <Briefcase size={18} /> },
+  { name: 'About', icon: <User size={18} /> },
 ];
 
 const subTabs: { name: Category; icon: React.ReactNode }[] = [
-  { name: 'Store', icon: <ShoppingBag size={18} /> },
-  { name: 'Ebooks', icon: <Book size={18} /> },
-  { name: 'Content', icon: <Newspaper size={18} /> },
-  { name: 'Automation', icon: <Bot size={18} /> },
-  { name: 'About', icon: <User size={18} /> },
-  { name: 'Reviews', icon: <Star size={18} /> },
   { name: 'Connect', icon: <Share2 size={18} /> },
+  { name: 'Reviews', icon: <Star size={18} /> },
 ];
 
 const tabs: { name: Category; icon: React.ReactNode }[] = [...mainTabs, ...subTabs];
@@ -224,6 +276,10 @@ const projects = [
   { name: 'Junno Express', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'E-commerce and express delivery platform.', url: 'https://junnoexpress.com/', previewUrl: 'https://junnoexpress.com/', color: 'text-yellow-400', bg: 'bg-yellow-500/10', icon: <Globe size={20} />, status: 'Production' },
   { name: 'Recallers', mainCategory: 'Web Development Projects', tags: ['Web', 'Portfolio'], pricing: 'Free', desc: 'Dog training and recallers platform.', url: 'https://dogsthat.com/recallers/', previewUrl: 'https://dogsthat.com/recallers/', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <Globe size={20} />, status: 'Production' },
   { name: 'Video & Motion Graphics Portfolio', mainCategory: 'Video & Motion Graphics', tags: ['Portfolio', 'Video'], pricing: 'Free', desc: 'A showcase of my video editing, motion graphics, and VFX work.', url: 'https://www.youtube.com/watch?v=0Wh7MhqeHHA&list=PL7BsW-EOVU09CgVg1O4vk3U6fujfm1xw9', color: 'text-pink-400', bg: 'bg-pink-500/10', icon: <Video size={20} />, status: 'Production' },
+  { name: "31 Ways to Ruin Your Life", mainCategory: 'Ebooks', tags: ['Self-Help', 'Business'], pricing: 'Paid', price: '$19.90', desc: 'A super professional guide to self-sabotage. Learn what NOT to do to succeed.', url: '#', previewUrl: '', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: <BookOpen size={20} />, status: 'Published' },
+  { name: "Sell Like a Psychopath", mainCategory: 'Ebooks', tags: ['Sales', 'Psychology'], pricing: 'Paid', desc: 'Advanced selling techniques that leverage deep psychological triggers. (Coming Soon)', url: '#', previewUrl: '', color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: <Lock size={20} />, status: 'Pre-order' },
+  { name: "# Hash Lab Store", mainCategory: 'Marketplace', tags: ['Digital Assets', 'Premium'], pricing: 'Paid', desc: 'A curated stash of premium, cutting-edge digital assets and AI products.', url: 'https://abdulrahman-t.web.app/store', previewUrl: '', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: <ShoppingBag size={20} />, status: 'Live' },
+  { name: "Video Tutorials (YouTube)", mainCategory: 'Content', tags: ['Education', 'AI'], pricing: 'Free', desc: 'Deep dives into AI automation, SaaS architecture, and building in public.', url: 'https://www.youtube.com/@abdulrahman-toor/', previewUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', color: 'text-red-400', bg: 'bg-red-500/10', icon: <Youtube size={20} />, status: 'Streaming' },
 ];
 
 const reviews = [
@@ -403,24 +459,17 @@ export default function App() {
 
   const activeTab = useMemo<Category>(() => {
     const path = location.pathname;
-    if (path.startsWith('/projects')) return 'Projects';
-    if (path.startsWith('/apps')) return 'Infinity Lab';
     if (path.startsWith('/vortex')) return 'Vortex';
-    if (path.startsWith('/journal')) return 'Journal';
-    if (path.startsWith('/automation')) return 'Automation';
-    if (path.startsWith('/ebooks')) return 'Ebooks';
-    if (path.startsWith('/content')) return 'Content';
+    if (path.startsWith('/services')) return 'Services';
     if (path.startsWith('/about')) return 'About';
     if (path.startsWith('/reviews')) return 'Reviews';
     if (path.startsWith('/connect')) return 'Connect';
     if (path.startsWith('/success')) return 'Success';
-    if (path.startsWith('/store')) return 'Store';
     return 'Home';
   }, [location.pathname]);
 
   const setActiveTab = (tab: Category) => {
     if (tab === 'Home') navigate('/');
-    else if (tab === 'Infinity Lab') navigate('/apps');
     else navigate(`/${tab.toLowerCase()}`);
   };
 
@@ -437,7 +486,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [hideCustomCursor, setHideCustomCursor] = useState(false);
+  const [cursorStyle, setCursorStyle] = useState<'system' | 'dot' | 'triangle'>('dot');
   const [enableSmoothScroll, setEnableSmoothScroll] = useState(true);
   const [compactHomeView, setCompactHomeView] = useState(false);
   const [activeHomeSection, setActiveHomeSection] = useState<'Learn' | 'Explore' | 'Work'>('Learn');
@@ -531,7 +580,7 @@ export default function App() {
   }, [enableSmoothScroll]);
 
   useEffect(() => {
-    if (!hideCustomCursor) {
+    if (cursorStyle !== 'system') {
       document.body.classList.add('hide-native-cursor');
     } else {
       document.body.classList.remove('hide-native-cursor');
@@ -540,7 +589,7 @@ export default function App() {
     return () => {
       document.body.classList.remove('hide-native-cursor');
     };
-  }, [hideCustomCursor]);
+  }, [cursorStyle]);
 
   useEffect(() => {
     if (activeTab === 'Success') {
@@ -639,6 +688,32 @@ export default function App() {
     
     return base;
   }, [activeProjectCategory, projectFilter, searchQuery]);
+
+  const labCategories = useMemo(() => ['All', 'My Personal Apps', 'Interactive Experiences', 'Apps & Dev', 'AI Solutions'], []);
+  const labProjects = useMemo(() => projects.filter(p => labCategories.includes(p.mainCategory)), [labCategories]);
+
+  const labDisplayProjects = useMemo(() => {
+    let base = projects;
+    if (activeProjectCategory) {
+      base = base.filter(p => p.mainCategory === activeProjectCategory || (p as any).categories?.includes(activeProjectCategory));
+    }
+    if (projectFilter.length > 0) {
+      base = base.filter(p => projectFilter.every(f => p.tags.includes(f)));
+    }
+    if (searchQuery) {
+      base = base.filter(p => 
+        p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        p.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+    }
+    // Only show lab categories in INFNI-T Lab
+    // If activeProjectCategory is set, it's already filtered above
+    if (!activeProjectCategory) {
+      base = base.filter(p => labCategories.includes(p.mainCategory) || p.tags?.includes('Experimental'));
+    }
+    return base;
+  }, [activeProjectCategory, projectFilter, searchQuery, labCategories]);
 
   const renderContent = () => {
     switch (activeTab) {
@@ -1073,1078 +1148,130 @@ export default function App() {
           </div>
         );
 
-      case 'Infinity Lab':
-        const labProjects = projects.filter(p => 
-          p.mainCategory === 'My Personal Apps' || 
-          p.mainCategory === 'Interactive Experiences' || 
-          p.mainCategory === 'Apps & Dev' ||
-          p.tags?.includes('Experimental')
-        );
+
+      case 'Vortex': {
+        const sections = [
+          { 
+            title: 'INFNI-T Core Modules', 
+            items: projects.filter(p => p.mainCategory === 'Apps & Dev' || p.mainCategory === 'My Personal Apps' || p.tags.includes('Experimental'))
+          },
+          { 
+            title: 'Interactive Dimensions', 
+            items: projects.filter(p => p.mainCategory === 'Interactive Experiences')
+          },
+          { 
+            title: 'Pro Business Suite', 
+            items: projects.filter(p => p.categories?.includes('Pro Business Suite') || p.pricing === 'Paid')
+          },
+          { 
+            title: 'Open Source & Free Tools', 
+            items: projects.filter(p => p.tags.includes('Open Source'))
+          },
+          { 
+            title: 'Digital Ecosystems', 
+            items: projects.filter(p => p.mainCategory === 'Web Development Projects')
+          }
+        ];
+
         return (
-          <div className="space-y-12 pb-20 max-w-[1600px] mx-auto px-4 md:px-8 mt-12">
-            <header className="text-center space-y-6 max-w-4xl mx-auto relative z-10">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-bold uppercase tracking-widest mb-4 mx-auto">
-                <Brain size={14} className="animate-pulse" /> Experimental Space
-              </div>
-              <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-indigo-400 via-purple-400 to-cyan-400 pb-2">
-                Infinity Lab
-              </h1>
-              <p className="text-blue-200/60 text-lg md:text-xl font-light leading-relaxed">
-                A showcase of my applications, personal experiments, cutting-edge AI tools, and full-stack side projects. Built for scale, running in production.
-              </p>
+          <div className="relative min-h-screen pb-40 w-full mt-12 bg-[#020205] text-white flex flex-col overflow-hidden rounded-[4rem] border border-white/[0.03] shadow-[0_0_100px_rgba(0,0,0,0.5)]">
+            {/* Background Effects */}
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] mix-blend-overlay pointer-events-none" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[800px] bg-indigo-600/10 rounded-full blur-[150px] mix-blend-screen pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[120px] mix-blend-screen pointer-events-none" />
+            
+            <header className="text-center space-y-8 relative z-10 mx-auto px-4 w-full mb-12 flex flex-col items-center justify-center pt-32">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className="relative"
+              >
+                <div className="absolute inset-0 blur-[60px] bg-white/20 opacity-30 animate-pulse" />
+                <GlitchText 
+                  text="VORTEX" 
+                  className="text-8xl md:text-[14rem] font-black uppercase tracking-[0.25em] text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/10 relative z-10"
+                />
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.3 }}
+                className="space-y-4"
+              >
+                <p className="text-white/40 text-sm md:text-base max-w-2xl mx-auto font-bold tracking-[0.5em] uppercase px-4 inline-block border-x border-white/20 py-2">
+                  Unified Resource Deployment System
+                </p>
+                <div className="flex items-center justify-center gap-12 mt-8">
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="text-3xl font-black text-white">{projects.length}</span>
+                    <span className="text-[10px] text-white/30 uppercase tracking-widest">Modules Locked</span>
+                  </div>
+                  <div className="w-px h-12 bg-white/10" />
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="text-3xl font-black text-white">5</span>
+                    <span className="text-[10px] text-white/30 uppercase tracking-widest">Active Sectors</span>
+                  </div>
+                </div>
+              </motion.div>
             </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 relative z-10">
-              {labProjects.map((p, i) => (
-                <BentoCard 
-                  key={i} 
-                  size="1x1"
-                  className={cn(
-                    "cursor-pointer transition-all duration-500 group relative overflow-hidden backdrop-blur-3xl",
-                    "border border-white/5 hover:border-indigo-500/30",
-                    "bg-[#0a0a0a]/60 hover:bg-[#1a1a2e]/80"
-                  )}
-                  onClick={() => {
-                    setSelectedProject(p);
-                    setIsInImmersiveMode(true);
-                  }}
+            {/* Netflix-style Rows */}
+            <div className="relative z-10 space-y-12">
+              {sections.map((section, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: idx * 0.1 }}
                 >
-                  <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-indigo-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-                  
-                  <div className="flex flex-col h-full z-10 relative">
-                    <div className="flex justify-between items-start mb-6">
-                      <div className={cn(
-                        "w-12 h-12 rounded-2xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110",
-                        p.bg, p.color
-                      )}>
-                        {p.icon}
-                      </div>
-                      <div className="flex flex-col items-end gap-2">
-                        <span className="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-[9px] font-bold uppercase tracking-wider text-white/50 group-hover:text-white/80 transition-colors">
-                          {p.status}
-                        </span>
-                        {p.pricing === 'Free' ? (
-                          <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest bg-emerald-400/10 px-2 py-0.5 rounded text-right">Free</span>
-                        ) : p.pricing === 'Paid' ? (
-                          <span className="text-[10px] text-amber-400 font-bold uppercase tracking-widest bg-amber-400/10 px-2 py-0.5 rounded text-right">{p.price || 'Pro'}</span>
-                        ) : (
-                          <span className="text-[10px] text-rose-400 font-bold uppercase tracking-widest bg-rose-400/10 px-2 py-0.5 rounded flex items-center gap-1 text-right"><Lock size={10}/> Private</span>
-                        )}
-                      </div>
-                    </div>
-
-                    <h3 className="text-xl font-bold mb-2 group-hover:text-indigo-300 transition-colors">{p.name}</h3>
-                    <p className="text-sm text-white/50 line-clamp-2 leading-relaxed mb-4">{p.desc}</p>
-                    
-                    <div className="mt-auto flex flex-wrap gap-2">
-                      {p.tags?.slice(0, 2).map((tag, i) => (
-                        <span key={i} className="text-[10px] text-white/40 border border-white/10 bg-white/5 px-2 py-1 rounded-md">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </BentoCard>
+                  <NetflixRow 
+                    title={section.title}
+                    items={section.items}
+                    onSelect={(p) => {
+                      setSelectedProject(p);
+                      setIsInImmersiveMode(true);
+                    }}
+                  />
+                </motion.div>
               ))}
             </div>
 
-            {/* Immersive View Modal for Infinity Lab */}
-            <AnimatePresence>
-              {isInImmersiveMode && selectedProject && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8"
-                >
-                  <div className="absolute inset-0 bg-[#020205] backdrop-blur-3xl" onClick={() => setIsInImmersiveMode(false)} />
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95, y: 40 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: 40 }}
-                    className="relative w-full max-w-6xl h-[90vh] bg-[#0a0a0f] border border-indigo-500/20 rounded-[2rem] shadow-2xl overflow-hidden flex flex-col md:flex-row"
-                  >
-                    {/* Immersive content for selected project */}
-                    <div className="flex-1 overflow-y-auto p-8 md:p-12 space-y-8 custom-scrollbar">
-                      <button 
-                        onClick={() => setIsInImmersiveMode(false)}
-                        className="inline-flex items-center gap-2 text-white/40 hover:text-white mb-4 transition-colors"
-                      >
-                        <ArrowLeft size={16} /> Back to Lab
-                      </button>
-                      
-                      <div className="flex items-start gap-6 mb-8">
-                        <div className={cn("w-20 h-20 rounded-3xl flex items-center justify-center shrink-0", selectedProject.bg, selectedProject.color)}>
-                          <div className="scale-[2]">{selectedProject.icon}</div>
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-3 mb-2">
-                            <h2 className="text-3xl md:text-5xl font-black">{selectedProject.name}</h2>
-                            <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold text-white/50 mt-1 md:mt-2">
-                              {selectedProject.status}
-                            </span>
-                          </div>
-                          <p className="text-lg text-white/60 mb-4">{selectedProject.desc}</p>
-                          <div className="flex flex-wrap gap-2">
-                             {selectedProject.tags?.map(t => (
-                               <span key={t} className="px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-bold border border-indigo-500/20">{t}</span>
-                             ))}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="space-y-6">
-                        <h3 className="text-xl font-bold flex items-center gap-2">
-                          <LayoutGrid size={20} className="text-indigo-400" /> Interface Preview
-                        </h3>
-                        <div className="w-full aspect-video bg-[#111116] rounded-2xl border border-white/5 overflow-hidden flex items-center justify-center relative group/preview">
-                           {selectedProject.previewUrl ? (
-                             selectedProject.previewUrl.includes('youtube') ? (
-                               <iframe src={selectedProject.previewUrl} className="w-full h-full" frameBorder={0} allowFullScreen />
-                             ) : (
-                               <iframe src={selectedProject.previewUrl} className="w-full h-full opacity-60 group-hover/preview:opacity-100 transition-opacity" />
-                             )
-                           ) : (
-                             <div className="text-white/20 scale-150">{selectedProject.icon}</div>
-                           )}
-                           <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl pointer-events-none" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="w-full md:w-80 bg-[#111116] border-l border-white/5 p-8 flex flex-col">
-                      <div className="mb-8">
-                        <h4 className="text-sm font-bold text-white/40 uppercase tracking-widest mb-4">Access</h4>
-                        {selectedProject.pricing === 'Private' ? (
-                          <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center gap-3">
-                            <Lock size={24} />
-                            <div>
-                              <p className="font-bold">Private Access</p>
-                              <p className="text-xs opacity-70">Requires clearance</p>
-                            </div>
-                          </div>
-                        ) : (
-                          <a 
-                            href={selectedProject.url} 
-                            target="_blank" 
-                            className={cn(
-                              "w-full py-4 rounded-xl font-bold text-center flex items-center justify-center gap-2 transition-transform hover:scale-[1.02]",
-                              selectedProject.pricing === 'Free' ? "bg-white text-black" : "bg-indigo-500 text-white"
-                            )}
-                          >
-                            Launch App <ExternalLink size={18} />
-                          </a>
-                        )}
-                      </div>
-                      
-                      {selectedProject.pricing !== 'Private' && selectedProject.url && (
-                        <div className="p-4 rounded-xl bg-white/5 border border-white/5 text-sm mb-6">
-                           <p className="text-white/50 mb-2">Endpoint URL:</p>
-                           <p className="text-indigo-400 break-all select-all font-mono text-xs">{selectedProject.url}</p>
-                        </div>
-                      )}
-
-                      <div className="mt-auto pt-8 border-t border-white/10">
-                        <p className="text-xs text-white/40 text-center">Part of Infinity Enterprises</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        );
-
-      case 'Projects': {
-        if (isInImmersiveMode && activeTab === 'Projects') {
-          const immersiveCategories = ['All', 'Pro Business Suite', 'AI Solutions', 'Apps & Dev', 'Interactive Experiences', 'My Personal Apps'];
-          
-          return (
-            <div className="flex flex-col md:flex-row gap-8 min-h-screen pb-20 w-full px-4 md:px-8 mt-8">
-              {/* Floating Sidebar */}
-              <aside className="w-full md:w-64 lg:w-72 shrink-0">
-                <div className="sticky top-8 glass backdrop-blur-3xl border border-white/10 rounded-[2rem] p-6 flex flex-col gap-8 shadow-2xl">
-                  <div className="flex items-center gap-3">
-                    <button 
-                      onClick={() => {
-                        setIsInImmersiveMode(false);
-                        setSearchQuery('');
-                        setProjectFilter([]);
-                      }} 
-                      className="p-2.5 rounded-full bg-white/5 hover:bg-white/10 transition-all border border-white/10 group"
+            {/* Interaction Layer Callout */}
+            <section className="relative z-10 mt-32 px-4 md:px-12">
+               <div className="glass rounded-[3rem] p-12 md:p-24 border border-white/10 relative overflow-hidden flex flex-col items-center text-center">
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-purple-500/10 pointer-events-none" />
+                  <div className="relative z-10 space-y-8 max-w-4xl">
+                    <Brain className="text-indigo-400 mx-auto mb-6 animate-pulse" size={64} />
+                    <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter">Beyond the Edge</h2>
+                    <p className="text-white/40 text-lg md:text-2xl font-light leading-relaxed">
+                      Every project in the Vortex is a manifestation of specialized research into AI, UI dynamics, and cross-platform automation.
+                    </p>
+                    <motion.button 
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => navigate('/services')}
+                      className="px-12 py-5 rounded-full bg-white text-black font-black uppercase tracking-widest text-sm hover:bg-indigo-50 transition-all shadow-[0_20px_50px_rgba(255,255,255,0.1)]"
                     >
-                      <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-                    </button>
-                    <div>
-                      <h2 className="text-xl font-bold tracking-tight">App Gallery</h2>
-                      <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">{activeTab}</p>
-                    </div>
+                      Request Neural Build
+                    </motion.button>
                   </div>
-
-                  <div className="space-y-6">
-                    <div className="relative group">
-                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-indigo-400 transition-colors" size={16} />
-                      <input 
-                        type="text" 
-                        placeholder="Search projects..." 
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-indigo-500/50 transition-all focus:bg-white/10"
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3 px-1">Categories</h3>
-                      <div className="flex flex-col gap-1">
-                        {immersiveCategories.map((cat) => {
-                          const isActive = (cat === 'All' && !activeProjectCategory) || activeProjectCategory === cat;
-                          const catProjects = cat === 'All' ? projects.filter(p => immersiveCategories.includes(p.mainCategory) || (p as any).categories?.some((c: string) => immersiveCategories.includes(c))) : projects.filter(p => p.mainCategory === cat || (p as any).categories?.includes(cat));
-                          const catTags = cat === 'All' ? [] : Array.from(new Set(catProjects.flatMap(p => p.tags)));
-                          
-                          return (
-                            <div key={cat} className="flex flex-col gap-1">
-                              <button
-                                onClick={() => {
-                                  setActiveProjectCategory(cat === 'All' ? null : cat as ProjectCategory);
-                                  setProjectFilter([]);
-                                }}
-                                className={cn(
-                                  "px-4 py-3 rounded-xl text-xs font-bold transition-all text-left border flex items-center justify-between group",
-                                  isActive
-                                    ? "bg-white text-black border-white shadow-lg shadow-white/10" 
-                                    : "bg-transparent text-white/60 border-transparent hover:bg-white/5 hover:text-white"
-                                )}
-                              >
-                                <span>{cat}</span>
-                                <span className={cn(
-                                  "text-[10px] px-2 py-0.5 rounded-full font-bold",
-                                  isActive ? "bg-black/10 text-black" : "bg-white/10 text-white/40 group-hover:bg-white/20 group-hover:text-white"
-                                )}>
-                                  {catProjects.length}
-                                </span>
-                              </button>
-                              
-                              {/* Subcategories (Tags) */}
-                              <AnimatePresence>
-                                {isActive && cat !== 'All' && catTags.length > 0 && (
-                                  <motion.div 
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: 'auto', opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    className="pl-4 py-2 flex flex-col gap-1 border-l border-white/10 ml-2 mt-1 overflow-hidden"
-                                  >
-                                    <button
-                                      onClick={() => setProjectFilter([])}
-                                      className={cn(
-                                        "text-left text-[10px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all flex items-center justify-between", 
-                                        projectFilter.length === 0 ? "bg-white/10 text-white" : "text-white/40 hover:text-white hover:bg-white/5"
-                                      )}
-                                    >
-                                      <span>All {cat}</span>
-                                      <span className="opacity-50">({catProjects.length})</span>
-                                    </button>
-                                    {catTags.map(tag => {
-                                      const tagCount = catProjects.filter(p => p.tags.includes(tag)).length;
-                                      return (
-                                      <button
-                                        key={tag}
-                                        onClick={() => setProjectFilter(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag])}
-                                        className={cn(
-                                          "text-left text-[10px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all flex items-center justify-between",
-                                          projectFilter.includes(tag) ? "bg-white/10 text-white" : "text-white/40 hover:text-white hover:bg-white/5"
-                                        )}
-                                      >
-                                        <span>{tag}</span>
-                                        <span className="opacity-50">({tagCount})</span>
-                                      </button>
-                                    )})}
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    <div className="space-y-2 pt-4 border-t border-white/10">
-                      <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3 px-1">View Mode</h3>
-                      <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10">
-                        <button 
-                          onClick={() => setViewMode('grid')}
-                          className={cn("flex-1 flex justify-center items-center gap-2 py-2 rounded-xl transition-all text-xs font-bold", viewMode === 'grid' ? "bg-white/10 text-white shadow-sm" : "text-white/40 hover:text-white")}
-                        >
-                          <LayoutGrid size={14} /> Grid
-                        </button>
-                        <button 
-                          onClick={() => setViewMode('list')}
-                          className={cn("flex-1 flex justify-center items-center gap-2 py-2 rounded-xl transition-all text-xs font-bold", viewMode === 'list' ? "bg-white/10 text-white shadow-sm" : "text-white/40 hover:text-white")}
-                        >
-                          <List size={14} /> List
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </aside>
-
-              {/* Main Content Area */}
-              <div className="flex-1 min-w-0">
-                {filteredProjects.length === 0 ? (
-                  <div className="py-20 text-center glass rounded-[3rem] border border-white/5">
-                    <div className="w-20 h-20 rounded-3xl bg-white/5 flex items-center justify-center mx-auto mb-6 text-white/10">
-                      <Search size={40} />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-2">No results found</h3>
-                    <p className="text-white/40">Try adjusting your search or filters to find what you're looking for.</p>
-                    <button 
-                      onClick={() => { setSearchQuery(''); setProjectFilter([]); setActiveProjectCategory(null); }}
-                      className="mt-8 px-6 py-3 rounded-xl bg-indigo-500 text-white font-bold hover:bg-indigo-400 transition-all"
-                    >
-                      Clear All Filters
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex flex-col gap-6">
-                    <div className="mb-2">
-                      <h2 className="text-3xl font-bold text-white mb-2">
-                        {projectFilter.length === 0 ? `All ${activeTab}` : projectFilter.join(', ')}
-                      </h2>
-                      <p className="text-white/50 text-sm">
-                        {projectFilter.length === 0 ? categoryDescriptions['All'] : `Explore projects related to ${projectFilter.join(', ')}.`}
-                      </p>
-                    </div>
-                    <div className={cn(
-                      "gap-6",
-                      viewMode === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3" : "grid grid-cols-1 xl:grid-cols-2"
-                    )}>
-                      <AnimatePresence mode="popLayout">
-                      {filteredProjects.map((p, i) => (
-                        <motion.div
-                          key={p.name}
-                          layout
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.9 }}
-                          transition={{ duration: 0.3, delay: i * 0.05 }}
-                        >
-                          <BentoCard 
-                            size="1x1" 
-                            className={cn(
-                              p.bg, 
-                              "border-white/5 cursor-pointer relative overflow-hidden group/project",
-                              viewMode === 'grid' ? "h-[450px] p-0" : "h-auto p-4 flex flex-col sm:flex-row items-start sm:items-center gap-6"
-                            )}
-                            onClick={() => openProjectModal(p)}
-                            background={p.url !== '#' || (p.previewUrl && p.previewUrl.includes('youtube.com/embed/')) ? (
-                              <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[2rem]">
-                                <img 
-                                  src={p.url !== '#' 
-                                    ? `https://image.thum.io/get/width/800/crop/800/noanimate/${p.url}`
-                                    : `https://img.youtube.com/vi/${p.previewUrl.split('/').pop()}/maxresdefault.jpg`
-                                  }
-                                  alt={p.name}
-                                  className="w-full h-full object-cover opacity-60 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
-                                  loading="lazy"
-                                  referrerPolicy="no-referrer"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/90 to-transparent" />
-                              </div>
-                            ) : null}
-                          >
-                            <div className={cn(
-                              "relative z-10 h-full w-full flex flex-col",
-                              viewMode === 'grid' ? "justify-end p-6" : "sm:flex-row items-start sm:items-center gap-4"
-                            )}>
-                              {viewMode === 'grid' ? (
-                                <>
-                                  <div className="flex justify-between items-start mb-auto">
-                                    <div className={cn("p-3 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10", p.color)}>
-                                      {p.icon}
-                                    </div>
-                                    <div className="flex flex-col items-end gap-2">
-                                      <span className={cn("text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider backdrop-blur-md border border-white/10 shadow-lg", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
-                                        {p.pricing}
-                                      </span>
-                                      {p.status && (
-                                        <span className={cn(
-                                          "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter backdrop-blur-md border border-white/10 shadow-lg",
-                                          p.status === 'Development' ? "bg-amber-500/20 text-amber-400" :
-                                          p.status === 'Beta' ? "bg-blue-500/20 text-blue-400" :
-                                          "bg-emerald-500/20 text-emerald-400"
-                                        )}>
-                                          {p.status}
-                                        </span>
-                                      )}
-                                    </div>
-                                  </div>
-
-                                  <div className="mt-4">
-                                    <h3 className="font-bold text-2xl group-hover/project:text-indigo-400 transition-colors mb-2 line-clamp-1">{p.name}</h3>
-                                    <p className="text-sm text-white/70 font-light leading-relaxed line-clamp-2 mb-4">{p.desc}</p>
-                                    
-                                    <div className="flex flex-wrap items-center gap-2 mb-4">
-                                      {p.tags.slice(0, 3).map(tag => (
-                                        <span key={tag} className="px-2 py-1 rounded-md bg-white/5 text-[9px] text-white/50 font-medium uppercase tracking-wider border border-white/5">
-                                          {tag}
-                                        </span>
-                                      ))}
-                                    </div>
-
-                                    <div className="flex items-center justify-between">
-                                      <div className="text-[10px] font-bold text-white/40 group-hover:text-white transition-colors flex items-center gap-2">
-                                        <span>{p.mainCategory === 'My Personal Apps' ? 'Watch Preview' : 'View Project'}</span>
-                                        <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-                                      </div>
-                                      <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center group-hover/project:bg-indigo-500 group-hover/project:text-white transition-all shadow-xl">
-                                        {p.mainCategory === 'My Personal Apps' ? <Play size={16} fill="currentColor" /> : <ArrowRight size={16} />}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </>
-                              ) : (
-                                <>
-                                  <div className="flex items-start gap-4 shrink-0">
-                                    <div className={cn("p-3 rounded-2xl bg-black/20 backdrop-blur-md", p.color)}>
-                                      {p.icon}
-                                    </div>
-                                  </div>
-                                  
-                                  <div className="flex-1">
-                                    <div className="flex items-center gap-2 mb-1">
-                                      <span className="text-[10px] text-white/40 uppercase tracking-widest">{p.mainCategory}</span>
-                                    </div>
-                                    <div className="flex items-center gap-3 mb-2">
-                                      <h3 className="font-bold text-lg group-hover/project:text-indigo-400 transition-colors">{p.name}</h3>
-                                      {p.status && (
-                                        <span className={cn(
-                                          "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter block",
-                                          p.status === 'Development' ? "bg-amber-500/20 text-amber-400" :
-                                          p.status === 'Beta' ? "bg-blue-500/20 text-blue-400" :
-                                          "bg-emerald-500/20 text-emerald-400"
-                                        )}>
-                                          {p.status}
-                                        </span>
-                                      )}
-                                    </div>
-                                    <p className="text-sm text-white/60 font-light leading-relaxed line-clamp-2 mb-2">{p.desc}</p>
-                                    
-                                    <div className="flex items-center gap-2">
-                                      <div className="flex gap-1">
-                                        {p.tags.slice(0, 4).map(tag => (
-                                          <span key={tag} className="px-2 py-0.5 rounded-md bg-white/5 text-[8px] text-white/40 font-bold uppercase tracking-tighter border border-white/5">
-                                            {tag}
-                                          </span>
-                                        ))}
-                                        {p.tags.length > 4 && (
-                                          <span className="px-2 py-0.5 rounded-md bg-white/5 text-[8px] text-white/40 font-bold uppercase tracking-tighter border border-white/5">
-                                            +{p.tags.length - 4}
-                                          </span>
-                                        )}
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div className="flex flex-col items-end gap-2 shrink-0 ml-auto">
-                                    <span className={cn("text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
-                                      {p.pricing}
-                                    </span>
-                                    <div className="mt-auto p-2 rounded-full bg-white/5 text-white/40 group-hover/project:bg-white/10 group-hover/project:text-white transition-all">
-                                      <ArrowRight size={16} className="group-hover/project:-rotate-45 transition-transform" />
-                                    </div>
-                                  </div>
-
-                                  {/* List View Image Preview */}
-                                  <div className="hidden sm:block relative w-40 h-28 rounded-xl overflow-hidden shrink-0 border border-white/10 ml-2">
-                                    {p.url !== '#' || (p.previewUrl && p.previewUrl.includes('youtube.com/embed/')) ? (
-                                      <img 
-                                        src={p.url !== '#' 
-                                          ? `https://image.thum.io/get/width/400/crop/400/noanimate/${p.url}`
-                                          : `https://img.youtube.com/vi/${p.previewUrl.split('/').pop()}/maxresdefault.jpg`
-                                        }
-                                        alt={p.name}
-                                        className="w-full h-full object-cover opacity-60 group-hover/project:opacity-100 transition-all duration-500 group-hover/project:scale-110"
-                                        loading="lazy"
-                                        referrerPolicy="no-referrer"
-                                      />
-                                    ) : (
-                                      <div className="w-full h-full bg-white/5 flex items-center justify-center">
-                                        <div className="opacity-20 scale-150">
-                                          {p.icon}
-                                        </div>
-                                      </div>
-                                    )}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/80 to-transparent opacity-50" />
-                                  </div>
-                                </>
-                              )}
-                            </div>
-                          </BentoCard>
-                        </motion.div>
-                      ))}
-                    </AnimatePresence>
-                  </div>
-                </div>
-                )}
-              </div>
-            </div>
-          );
-        }
-
-        if (!activeProjectCategory) {
-          return (
-            <div className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
-                <BentoCard size="2x1" onClick={() => setActiveProjectCategory('Pro Business Suite')} className="md:col-span-2 cursor-pointer hover:bg-blue-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Briefcase size={160} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-blue-500/20 flex items-center justify-center text-blue-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Briefcase size={24} />
-                      </div>
-                      <h3 className="text-3xl font-bold mb-2">Pro Business Suite <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Pro Business Suite' || (p as any).categories?.includes('Pro Business Suite')).length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-md leading-relaxed">Advanced tools for SEO, Ad Campaigns, AI Helpers, and Professional Visualizers. The ultimate admin and advanced work suite.</p>
-                    </div>
-                  </BentoCard>
-
-                  <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Web Development Projects')} className="cursor-pointer hover:bg-purple-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Globe size={120} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Globe size={24} />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2">Web Development <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Web Development Projects').length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-[200px]">Modern digital experiences and scalable web applications.</p>
-                    </div>
-                  </BentoCard>
-
-                  <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Video & Motion Graphics')} className="cursor-pointer hover:bg-pink-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Video size={120} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-pink-500/20 flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Video size={24} />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2">Video & Motion <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Video & Motion Graphics').length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-[200px]">A showcase of my video editing, motion graphics, and VFX work.</p>
-                    </div>
-                  </BentoCard>
-
-                  <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Graphics & Marketing')} className="cursor-pointer hover:bg-orange-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Palette size={120} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-orange-500/20 flex items-center justify-center text-orange-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Palette size={24} />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2">Graphics & Marketing <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Graphics & Marketing').length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-[200px]">Design assets, marketing campaigns, and brand identities.</p>
-                    </div>
-                  </BentoCard>
-                </div>
-              </div>
-            );
-        }
-
-        const categoryProjects = projects.filter(p => p.mainCategory === activeProjectCategory || (p as any).categories?.includes(activeProjectCategory));
-        const categoryTags = ['All', ...Array.from(new Set(categoryProjects.flatMap(p => p.tags)))];
-
-        return (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
-              <div className="flex items-center gap-4">
-                <button onClick={() => { setActiveProjectCategory(null); setProjectFilter([]); setSearchQuery(''); }} className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors">
-                  <ArrowLeft size={20} />
-                </button>
-                <div>
-                  <h2 className="text-2xl font-bold">{activeProjectCategory} <span className="text-white/30 text-lg">({categoryProjects.length})</span></h2>
-                  <p className="text-sm text-white/50">Explore my work in this category.</p>
-                </div>
-              </div>
-              
-              <div className="relative group w-full sm:w-64">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-indigo-400 transition-colors" size={16} />
-                <input 
-                  type="text" 
-                  placeholder="Search projects..." 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-2 pl-11 pr-4 text-sm focus:outline-none focus:border-indigo-500/50 transition-all focus:bg-white/10"
-                />
-              </div>
-            </div>
-
-            {categoryTags.length > 1 && (
-              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
-                {categoryTags.map((f) => {
-                  const count = f === 'All' ? categoryProjects.length : categoryProjects.filter(p => p.tags.includes(f)).length;
-                  const isSelected = f === 'All' ? projectFilter.length === 0 : projectFilter.includes(f);
-                  return (
-                  <button
-                    key={f}
-                    onClick={() => {
-                      if (f === 'All') {
-                        setProjectFilter([]);
-                      } else {
-                        setProjectFilter(prev => prev.includes(f) ? prev.filter(t => t !== f) : [...prev, f]);
-                      }
-                    }}
-                    className={cn(
-                      "px-4 py-2 rounded-2xl text-xs font-medium transition-all whitespace-nowrap flex items-center gap-1.5",
-                      isSelected ? "bg-white text-black" : "bg-white/5 text-white/40 hover:bg-white/10"
-                    )}
-                  >
-                    <span>{f}</span>
-                    <span className={cn("opacity-50", isSelected ? "text-black/50" : "text-white/30")}>({count})</span>
-                  </button>
-                )})}
-              </div>
-            )}
-
-            {filteredProjects.length === 0 ? (
-              <div className="py-12 text-center border border-white/5 rounded-3xl bg-white/[0.02]">
-                <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4 text-white/20">
-                  <AppWindow size={32} />
-                </div>
-                <h3 className="text-xl font-bold mb-2">No projects yet</h3>
-                <p className="text-white/50">I'm currently working on exciting things for this category.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(180px,auto)]">
-                {isLoading ? (
-                  Array.from({ length: 6 }).map((_, i) => (
-                    <SkeletonCard key={i} size={i === 0 && projectFilter.length === 0 ? "2x1" : "1x1"} />
-                  ))
-                ) : (
-                  <AnimatePresence mode="popLayout">
-                    {filteredProjects.map((p, i) => (
-                      <BentoCard 
-                        key={p.name} 
-                        size={i === 0 && projectFilter.length === 0 ? "2x1" : "1x1"} 
-                        className={cn(p.bg, "border-white/5 cursor-pointer relative overflow-hidden group/project h-[400px] p-0")}
-                        onClick={() => openProjectModal(p)}
-                        background={p.url !== '#' || (p.previewUrl && p.previewUrl.includes('youtube.com/embed/')) ? (
-                          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[2rem]">
-                            <img 
-                              src={p.url !== '#' 
-                                ? `https://image.thum.io/get/width/800/crop/800/noanimate/${p.url}`
-                                : `https://img.youtube.com/vi/${p.previewUrl.split('/').pop()}/maxresdefault.jpg`
-                              }
-                              alt={p.name}
-                              className="w-full h-full object-cover opacity-60 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
-                              loading="lazy"
-                              referrerPolicy="no-referrer"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/90 to-transparent" />
-                          </div>
-                        ) : null}
-                      >
-                        <div className="flex flex-col h-full relative z-10 p-6 justify-end">
-                          <div className="flex justify-between items-start mb-auto">
-                            <div className={cn("p-2 rounded-xl bg-black/40 backdrop-blur-md border border-white/10", p.color)}>
-                              {p.icon}
-                            </div>
-                            <div className="flex flex-col items-end gap-1">
-                              <span className={cn("text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter backdrop-blur-md border border-white/10", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
-                                {p.pricing} {p.price && `(${p.price})`}
-                              </span>
-                              {p.status && (
-                                <span className={cn(
-                                  "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter backdrop-blur-md border border-white/10",
-                                  p.status === 'Development' ? "bg-amber-500/20 text-amber-400" :
-                                  p.status === 'Beta' ? "bg-blue-500/20 text-blue-400" :
-                                  "bg-emerald-500/20 text-emerald-400"
-                                )}>
-                                  {p.status}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                          
-                          <div className="mt-4">
-                            <h3 className="font-bold text-xl mb-1 group-hover/project:text-indigo-400 transition-colors">{p.name}</h3>
-                            <p className="text-xs text-white/70 line-clamp-2 font-light mb-4">{p.desc}</p>
-                            
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2 text-[10px] font-bold text-white/40 group-hover:text-white transition-colors">
-                                <span>{p.mainCategory === 'My Personal Apps' ? 'Watch Preview' : 'View Project'}</span>
-                                <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-                              </div>
-                              <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center group-hover/project:bg-indigo-500 group-hover/project:text-white transition-all shadow-xl">
-                                {p.mainCategory === 'My Personal Apps' ? <Play size={16} fill="currentColor" /> : <ArrowRight size={16} />}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </BentoCard>
-                    ))}
-                  </AnimatePresence>
-                )}
-              </div>
-            )}
+               </div>
+            </section>
           </div>
         );
       }
 
-      case 'Journal':
+      case 'Services':
         return (
-          <div className="space-y-12 pb-20 max-w-7xl mx-auto px-4">
-            <header className="pt-20 text-center space-y-4">
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">The <span className="text-emerald-400">Journal</span></h1>
-              <p className="text-white/50 text-xl max-w-2xl mx-auto font-light">
-                Deep dives into full-stack architecture, AI workflows, and the business of digital creation.
-              </p>
+          <div className="space-y-8">
+            <header className="text-center space-y-4 max-w-2xl mx-auto mb-12">
+              <h2 className="text-4xl md:text-5xl font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Services & Consulting</h2>
+              <p className="text-white/40 text-lg">Custom AI automation, development, and strategic consulting for businesses scaling into the future.</p>
             </header>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Main Feed */}
-              <div className="lg:col-span-2 space-y-8">
-                {[
-                  {
-                    title: "Building the Pro Business Suite: A Technical Deep Dive",
-                    date: "April 10, 2026",
-                    readTime: "12 min read",
-                    category: "Build",
-                    excerpt: "How I architected a suite of professional tools using Gemini 1.5 Pro and a modular React architecture for maximum scalability.",
-                    image: "https://picsum.photos/seed/tech/800/400"
-                  },
-                  {
-                    title: "The Future of AI-Powered Workflows in n8n",
-                    date: "April 05, 2026",
-                    readTime: "8 min read",
-                    category: "Automated",
-                    excerpt: "Exploring the integration of autonomous agents within the n8n ecosystem to handle complex, multi-step business processes.",
-                    image: "https://picsum.photos/seed/automation/800/400"
-                  },
-                  {
-                    title: "Monetizing Your SaaS: Beyond the Subscription Model",
-                    date: "March 28, 2026",
-                    readTime: "15 min read",
-                    category: "Business",
-                    excerpt: "Why usage-based pricing and integrated ad networks are becoming the gold standard for modern full-stack creators.",
-                    image: "https://picsum.photos/seed/business/800/400"
-                  }
-                ].map((post, i) => (
-                  <motion.article 
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    className="glass rounded-3xl overflow-hidden border border-white/10 group cursor-pointer hover:border-emerald-500/30 transition-all"
-                  >
-                    <div className="aspect-video overflow-hidden relative">
-                      <img 
-                        src={post.image} 
-                        alt={post.title} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-[10px] font-bold uppercase tracking-widest text-emerald-400">
-                        {post.category}
-                      </div>
-                    </div>
-                    <div className="p-8 space-y-4">
-                      <div className="flex items-center gap-4 text-xs text-white/40 font-medium">
-                        <span>{post.date}</span>
-                        <span className="w-1 h-1 rounded-full bg-white/20" />
-                        <span>{post.readTime}</span>
-                      </div>
-                      <h2 className="text-3xl font-bold group-hover:text-emerald-400 transition-colors">{post.title}</h2>
-                      <p className="text-white/60 leading-relaxed">{post.excerpt}</p>
-                      <div className="pt-4 flex items-center gap-2 text-emerald-400 font-bold text-sm group-hover:gap-4 transition-all">
-                        Read Full Article <ArrowRight size={16} />
-                      </div>
-                    </div>
-                  </motion.article>
-                ))}
-              </div>
-
-              {/* Sidebar */}
-              <aside className="space-y-8">
-                {/* Newsletter Card */}
-                <div className="glass rounded-3xl p-8 border border-white/10 bg-emerald-500/5 relative overflow-hidden">
-                  <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl" />
-                  <div className="relative z-10 space-y-6">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
-                      <Send size={24} />
-                    </div>
-                    <h3 className="text-2xl font-bold">Weekly Insights</h3>
-                    <p className="text-white/60 text-sm leading-relaxed">
-                      Join 2,500+ creators receiving my weekly deep dives on tech, business, and AI.
-                    </p>
-                    <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
-                      <input 
-                        type="email" 
-                        placeholder="your@email.com" 
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-emerald-500 transition-colors"
-                      />
-                      <button className="w-full py-3 bg-emerald-500 text-black font-bold rounded-xl hover:bg-emerald-400 transition-all">
-                        Subscribe
-                      </button>
-                    </form>
-                  </div>
-                </div>
-
-                {/* Categories */}
-                <div className="glass rounded-3xl p-8 border border-white/10 space-y-6">
-                  <h3 className="text-xl font-bold">Content Pillars</h3>
-                  <div className="flex flex-col gap-3">
-                    {[
-                      { name: 'Build', desc: 'Code & Architecture', icon: <Code size={14}/> },
-                      { name: 'Frontier', desc: 'AI & LLM Workflows', icon: <Brain size={14}/> },
-                      { name: 'Automated', desc: 'No-code & Ops', icon: <Zap size={14}/> },
-                      { name: 'Business', desc: 'SaaS & Monetization', icon: <Briefcase size={14}/> },
-                      { name: 'Process', desc: 'Case Studies & Logs', icon: <PenLine size={14}/> }
-                    ].map(cat => (
-                      <button key={cat.name} className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10 text-left hover:bg-white/10 transition-all group">
-                        <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white/40 group-hover:text-emerald-400 transition-colors">
-                          {cat.icon}
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold">{cat.name}</p>
-                          <p className="text-[10px] text-white/40">{cat.desc}</p>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Social Links */}
-                <div className="glass rounded-3xl p-8 border border-white/10 space-y-6">
-                  <h3 className="text-xl font-bold">Stay Connected</h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    {[
-                      { icon: <Twitter size={18} />, label: 'Twitter', color: 'hover:text-blue-400' },
-                      { icon: <Linkedin size={18} />, label: 'LinkedIn', color: 'hover:text-blue-600' },
-                      { icon: <Github size={18} />, label: 'GitHub', color: 'hover:text-white' },
-                      { icon: <Youtube size={18} />, label: 'YouTube', color: 'hover:text-red-500' }
-                    ].map((social, i) => (
-                      <button key={i} className={`flex items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10 text-xs font-medium transition-all ${social.color}`}>
-                        {social.icon}
-                        {social.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </aside>
-            </div>
-          </div>
-        );
-
-      case 'Journal':
-        return (
-          <div className="space-y-12 pb-20 max-w-7xl mx-auto px-4">
-            <header className="pt-20 text-center space-y-4">
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">The <span className="text-emerald-400">Journal</span></h1>
-              <p className="text-white/50 text-xl max-w-2xl mx-auto font-light">
-                Deep dives into full-stack architecture, AI workflows, and the business of digital creation.
-              </p>
-            </header>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Main Feed */}
-              <div className="lg:col-span-2 space-y-8">
-                {[
-                  {
-                    title: "Building the Pro Business Suite: A Technical Deep Dive",
-                    date: "April 10, 2026",
-                    readTime: "12 min read",
-                    category: "Engineering",
-                    excerpt: "How I architected a suite of professional tools using Gemini 1.5 Pro and a modular React architecture for maximum scalability.",
-                    image: "https://picsum.photos/seed/tech/800/400"
-                  },
-                  {
-                    title: "The Future of AI-Powered Workflows in n8n",
-                    date: "April 05, 2026",
-                    readTime: "8 min read",
-                    category: "Automation",
-                    excerpt: "Exploring the integration of autonomous agents within the n8n ecosystem to handle complex, multi-step business processes.",
-                    image: "https://picsum.photos/seed/automation/800/400"
-                  },
-                  {
-                    title: "Monetizing Your SaaS: Beyond the Subscription Model",
-                    date: "March 28, 2026",
-                    readTime: "15 min read",
-                    category: "Business",
-                    excerpt: "Why usage-based pricing and integrated ad networks are becoming the gold standard for modern full-stack creators.",
-                    image: "https://picsum.photos/seed/business/800/400"
-                  }
-                ].map((post, i) => (
-                  <motion.article 
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    className="glass rounded-3xl overflow-hidden border border-white/10 group cursor-pointer hover:border-emerald-500/30 transition-all"
-                  >
-                    <div className="aspect-video overflow-hidden relative">
-                      <img 
-                        src={post.image} 
-                        alt={post.title} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-[10px] font-bold uppercase tracking-widest text-emerald-400">
-                        {post.category}
-                      </div>
-                    </div>
-                    <div className="p-8 space-y-4">
-                      <div className="flex items-center gap-4 text-xs text-white/40 font-medium">
-                        <span>{post.date}</span>
-                        <span className="w-1 h-1 rounded-full bg-white/20" />
-                        <span>{post.readTime}</span>
-                      </div>
-                      <h2 className="text-3xl font-bold group-hover:text-emerald-400 transition-colors">{post.title}</h2>
-                      <p className="text-white/60 leading-relaxed">{post.excerpt}</p>
-                      <div className="pt-4 flex items-center gap-2 text-emerald-400 font-bold text-sm group-hover:gap-4 transition-all">
-                        Read Full Article <ArrowRight size={16} />
-                      </div>
-                    </div>
-                  </motion.article>
-                ))}
-              </div>
-
-              {/* Sidebar */}
-              <aside className="space-y-8">
-                {/* Newsletter Card */}
-                <div className="glass rounded-3xl p-8 border border-white/10 bg-emerald-500/5 relative overflow-hidden">
-                  <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl" />
-                  <div className="relative z-10 space-y-6">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
-                      <Send size={24} />
-                    </div>
-                    <h3 className="text-2xl font-bold">Weekly Insights</h3>
-                    <p className="text-white/60 text-sm leading-relaxed">
-                      Join 2,500+ creators receiving my weekly deep dives on tech, business, and AI.
-                    </p>
-                    <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
-                      <input 
-                        type="email" 
-                        placeholder="your@email.com" 
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-emerald-500 transition-colors"
-                      />
-                      <button className="w-full py-3 bg-emerald-500 text-black font-bold rounded-xl hover:bg-emerald-400 transition-all">
-                        Subscribe
-                      </button>
-                    </form>
-                  </div>
-                </div>
-
-                {/* Categories */}
-                <div className="glass rounded-3xl p-8 border border-white/10 space-y-6">
-                  <h3 className="text-xl font-bold">Categories</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {['Engineering', 'AI', 'Business', 'Automation', 'Design', 'Productivity'].map(cat => (
-                      <button key={cat} className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-medium hover:bg-white/10 transition-all">
-                        {cat}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Social Links */}
-                <div className="glass rounded-3xl p-8 border border-white/10 space-y-6">
-                  <h3 className="text-xl font-bold">Stay Connected</h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    {[
-                      { icon: <Twitter size={18} />, label: 'Twitter', color: 'hover:text-blue-400' },
-                      { icon: <Linkedin size={18} />, label: 'LinkedIn', color: 'hover:text-blue-600' },
-                      { icon: <Github size={18} />, label: 'GitHub', color: 'hover:text-white' },
-                      { icon: <Youtube size={18} />, label: 'YouTube', color: 'hover:text-red-500' }
-                    ].map((social, i) => (
-                      <button key={i} className={`flex items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10 text-xs font-medium transition-all ${social.color}`}>
-                        {social.icon}
-                        {social.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </aside>
-            </div>
-          </div>
-        );
-
-      case 'Vortex':
-        return (
-          <div className="relative min-h-[90vh] pb-20 w-full mt-12 bg-[#020205] text-white flex flex-col items-center justify-center overflow-hidden rounded-[3rem] border border-white/5">
-            {/* Background Effects */}
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-600/20 rounded-full blur-[120px] mix-blend-screen pointer-events-none" />
-            
-            <header className="text-center space-y-6 relative z-10 mx-auto px-4 w-full mb-16">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1, ease: "easeOut" }}
-              >
-                <h1 className="text-7xl md:text-9xl font-black uppercase tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20 drop-shadow-[0_0_30px_rgba(168,85,247,0.4)]">
-                  Vortex
-                </h1>
-              </motion.div>
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.3 }}
-                className="text-white/40 text-lg md:text-2xl max-w-3xl mx-auto font-light tracking-widest uppercase"
-              >
-                A gateway to hidden dimensions and unreleased experiments.
-              </motion.p>
-            </header>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10 w-full max-w-6xl px-4 md:px-8">
-              {[
-                { title: 'Nexus Protocol', desc: 'Neural Engine Prototype', icon: <Brain size={40} />, color: 'from-purple-500/20 to-pink-500/0', border: 'hover:border-purple-500/50', delay: 0.4 },
-                { title: 'Aperture', desc: 'Spatial OS Mechanics', icon: <AppWindow size={40} />, color: 'from-blue-500/20 to-cyan-500/0', border: 'hover:border-blue-500/50', delay: 0.5 },
-                { title: 'The Void', desc: 'Dark Data Visualization', icon: <Tornado size={40} />, color: 'from-rose-500/20 to-orange-500/0', border: 'hover:border-rose-500/50', delay: 0.6 }
-              ].map((item, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: item.delay }}
-                  className={cn(
-                    "rounded-[2rem] p-10 border border-white/5 flex flex-col items-center justify-center relative overflow-hidden group transition-all cursor-crosshair min-h-[300px]",
-                    "bg-[#0a0a0f]/80 backdrop-blur-3xl",
-                    item.border
-                  )}
-                >
-                   <div className={cn("absolute inset-0 bg-gradient-to-b opacity-0 group-hover:opacity-100 transition-opacity duration-700", item.color)} />
-                   
-                   {/* Scanline effect */}
-                   <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] opacity-0 group-hover:opacity-20 pointer-events-none" />
-
-                   <div className="text-white/30 group-hover:text-white mb-6 group-hover:scale-110 group-hover:-translate-y-2 transition-all duration-500 relative z-10">
-                     {item.icon}
-                   </div>
-                   <h3 className="text-2xl font-bold text-center tracking-wider uppercase mb-2 relative z-10">{item.title}</h3>
-                   <p className="text-white/40 text-center text-sm font-mono relative z-10 uppercase">{item.desc}</p>
-                   
-                   <div className="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0 text-[10px] tracking-[0.3em] uppercase text-white/50">
-                     Initialize
-                   </div>
-                </motion.div>
-              ))}
-            </div>
-            
-            <div className="mt-20 flex justify-center">
-              <button 
-                onClick={() => setNavMode('full')}
-                className="text-xs text-white/20 uppercase tracking-widest hover:text-white/50 transition-colors font-mono"
-              >
-                Awaiting clearance codes... [Connect]
-              </button>
-            </div>
-          </div>
-        );
-
-      case 'Automation':
-        return (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
             <BentoCard size="2x1" className="bg-purple-500/5 border-purple-500/10">
               <div className="flex justify-between items-start">
                 <div>
@@ -2202,168 +1329,9 @@ export default function App() {
               </div>
             </BentoCard>
           </div>
-        );
-
-      case 'Ebooks':
-        return (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(220px,auto)]">
-            <BentoCard size="2x2" className="p-0 overflow-hidden group/book">
-              <div className="relative h-full w-full">
-                <img 
-                  src={bookCover} 
-                  alt="31 Ways to Ruin Your Life" 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover/book:scale-105"
-                  loading="lazy"
-                  referrerPolicy="no-referrer"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-8">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Trophy size={16} className="text-orange-400" />
-                    <span className="text-[10px] text-orange-400 uppercase tracking-[0.2em] font-bold">Best Seller</span>
-                  </div>
-                  <h3 className="text-3xl font-bold mb-2 tracking-tight">31 Ways to Ruin Your Life</h3>
-                  <p className="text-white/60 text-sm mb-6 max-w-sm font-light leading-relaxed">A super professional guide to self-sabotage. Learn what NOT to do to succeed.</p>
-                  <div className="flex gap-3">
-                    <motion.button 
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={openEbookModal}
-                      className="px-6 py-3 rounded-2xl bg-white text-black text-xs font-bold hover:bg-white/90 transition-all shadow-xl shadow-white/10"
-                    >
-                      Get the Book
-                    </motion.button>
-                  </div>
-                </div>
-              </div>
-            </BentoCard>
-
-            <BentoCard size="1x1" className="bg-indigo-500/5 border-indigo-500/10">
-              <div className="flex flex-col h-full justify-between">
-                <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
-                  <BookOpen size={20} />
-                </div>
-                <div>
-                  <p className="text-[10px] text-indigo-400 uppercase tracking-widest mb-1">Coming Soon</p>
-                  <h3 className="font-bold text-lg leading-tight">Sell Like a Psychopath</h3>
-                </div>
-              </div>
-            </BentoCard>
-
-            <BentoCard size="1x1" className="bg-emerald-500/5 border-emerald-500/10">
-              <div className="flex flex-col h-full justify-between">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
-                  <BookOpen size={20} />
-                </div>
-                <div>
-                  <p className="text-[10px] text-emerald-400 uppercase tracking-widest mb-1">Coming Soon</p>
-                  <h3 className="font-bold text-lg leading-tight">Digital Dollar Weekend</h3>
-                </div>
-              </div>
-            </BentoCard>
-
-            <BentoCard size="1x1" className="bg-white/[0.02]">
-              <div className="flex flex-col h-full justify-center text-center p-4">
-                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mx-auto mb-4">
-                  <Star size={24} className="text-white/20" />
-                </div>
-                <h3 className="font-bold mb-1">More Coming Soon</h3>
-                <p className="text-xs text-white/40 font-light italic">The library is expanding...</p>
-              </div>
-            </BentoCard>
           </div>
         );
 
-      case 'Content':
-        return (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
-            <BentoCard size="2x1" className="bg-red-500/5 border-red-500/10">
-              <div className="flex flex-col h-full">
-                <div className="flex justify-between items-start mb-4">
-                  <Youtube size={32} className="text-red-500" />
-                  <div className="px-3 py-1 rounded-full bg-red-500/20 text-red-500 text-[10px] font-bold uppercase tracking-widest">YouTube</div>
-                </div>
-                <h3 className="font-bold text-2xl mb-2">Video Tutorials</h3>
-                <p className="text-white/50 text-sm mb-6 font-light">Deep dives into AI automation, SaaS architecture, and building in public.</p>
-                <a 
-                  href="https://www.youtube.com/@abdulrahman-toor/" 
-                  target="_blank" 
-                  className="mt-auto flex items-center gap-2 text-xs font-bold text-red-500 hover:text-red-400 transition-colors group/yt"
-                >
-                  Watch Now <ArrowRight size={12} className="group-hover/yt:translate-x-1 transition-transform" />
-                </a>
-              </div>
-            </BentoCard>
-
-            <BentoCard size="1x1" className="bg-white/[0.02] group/blog">
-              <div className="flex flex-col justify-between h-full">
-                <div className="flex justify-between items-start">
-                  <Newspaper size={24} className="text-white/40" />
-                  <a href="#" className="text-white/20 hover:text-white transition-colors"><ExternalLink size={14} /></a>
-                </div>
-                <div>
-                  <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] mb-1">Blog</p>
-                  <h3 className="font-bold text-sm leading-tight group-hover:text-indigo-400 transition-colors">AI in 2026: The Shift to Autonomous Agents</h3>
-                </div>
-              </div>
-            </BentoCard>
-
-            <BentoCard size="2x1" className="bg-purple-500/5 border-purple-500/10 p-0 overflow-hidden group/music">
-              <div className="flex flex-col md:flex-row h-full">
-                <div className="p-6 flex flex-col justify-between flex-1">
-                  <div>
-                    <div className="flex items-center gap-2 mb-4">
-                      <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
-                        <Sparkles size={16} />
-                      </div>
-                      <span className="text-[10px] text-purple-400 uppercase tracking-widest font-bold">AI Music</span>
-                    </div>
-                    <h3 className="font-bold text-xl mb-2">My AI Generated Music</h3>
-                    <p className="text-white/50 text-sm font-light">Listen to tracks I've created using advanced AI music generation tools.</p>
-                  </div>
-                </div>
-                <div className="w-full md:w-1/2 min-h-[200px] bg-black/50 relative">
-                  <iframe 
-                    width="100%" 
-                    height="100%" 
-                    src="https://www.youtube.com/embed/VxCV8_2UZIM" 
-                    title="AI Generated Music" 
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowFullScreen
-                    className="absolute inset-0 w-full h-full object-cover"
-                  ></iframe>
-                </div>
-              </div>
-            </BentoCard>
-
-            <BentoCard size="1x1" className="bg-emerald-500/5 border-emerald-500/10 group/newsletter cursor-pointer">
-              <div className="flex flex-col h-full">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover/newsletter:scale-110 transition-transform">
-                    <Send size={20} />
-                  </div>
-                  <span className="text-[8px] text-white/20 uppercase font-bold tracking-widest">Newsletter</span>
-                </div>
-                <h3 className="font-bold text-lg mb-1">Weekly Lab Notes</h3>
-                <p className="text-xs text-white/40 font-light mb-auto">Join 2,500+ creators for AI & SaaS deep dives.</p>
-                <div className="mt-4 flex flex-col gap-2">
-                  <input 
-                    type="email" 
-                    placeholder="your@email.com" 
-                    className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-[10px] focus:border-emerald-500 transition-colors"
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                  <button className="w-full py-2 bg-emerald-500 text-black font-bold rounded-lg text-[10px] hover:bg-emerald-400 transition-all">
-                    Subscribe
-                  </button>
-                </div>
-              </div>
-            </BentoCard>
-          </div>
-        );
 
       case 'About':
         return (
@@ -2586,104 +1554,6 @@ export default function App() {
           </div>
         );
 
-      case 'Reviews':
-        return (
-          <div className="space-y-8 overflow-hidden">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-4">
-              <div>
-                <h2 className="text-3xl font-bold tracking-tight">Client Testimonials</h2>
-                <p className="text-white/50 text-sm mt-1">Real feedback from people I've worked with.</p>
-              </div>
-              <div className="flex items-center gap-4 px-4 py-2 rounded-2xl bg-white/5 border border-white/10">
-                <div className="flex text-amber-400">
-                  {[1, 2, 3, 4, 5].map(i => <Star key={i} size={14} fill="currentColor" />)}
-                </div>
-                <span className="text-sm font-bold">5.0 Average Rating</span>
-              </div>
-            </div>
-
-            {/* Auto-scrolling Reviews Marquee */}
-            <div className="relative flex flex-col gap-6 py-10">
-              <div className="flex gap-6 animate-marquee whitespace-nowrap">
-                {[...reviews, ...reviews].map((review, i) => (
-                  <div key={i} className="inline-block w-[350px] shrink-0">
-                    <BentoCard size="1x1" delay={0} className="bg-white/[0.02] hover:bg-white/[0.04] transition-colors border-white/5 h-full whitespace-normal">
-                      <div className="flex flex-col h-full">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex text-amber-400 gap-0.5">
-                            {[1, 2, 3, 4, 5].map(star => (
-                              <Star key={star} size={10} fill="currentColor" />
-                            ))}
-                          </div>
-                          <div className="px-2 py-0.5 rounded-full bg-white/5 text-[8px] text-white/40 uppercase font-bold tracking-widest">
-                            Verified
-                          </div>
-                        </div>
-                        <p className="text-sm text-white/70 italic leading-relaxed mb-6 font-light">"{review.text}"</p>
-                        <div className="mt-auto flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center text-indigo-400 font-bold border border-white/10">
-                            {review.name.charAt(0)}
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-bold text-white">{review.name}</h4>
-                            <p className="text-[10px] text-white/40">{review.role} • {review.location}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </BentoCard>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="flex gap-6 animate-marquee-reverse whitespace-nowrap">
-                {[...reviews, ...reviews].reverse().map((review, i) => (
-                  <div key={i} className="inline-block w-[350px] shrink-0">
-                    <BentoCard size="1x1" delay={0} className="bg-white/[0.02] hover:bg-white/[0.04] transition-colors border-white/5 h-full whitespace-normal">
-                      <div className="flex flex-col h-full">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex text-amber-400 gap-0.5">
-                            {[1, 2, 3, 4, 5].map(star => (
-                              <Star key={star} size={10} fill="currentColor" />
-                            ))}
-                          </div>
-                          <div className="px-2 py-0.5 rounded-full bg-white/5 text-[8px] text-white/40 uppercase font-bold tracking-widest">
-                            Verified
-                          </div>
-                        </div>
-                        <p className="text-sm text-white/70 italic leading-relaxed mb-6 font-light">"{review.text}"</p>
-                        <div className="mt-auto flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center text-indigo-400 font-bold border border-white/10">
-                            {review.name.charAt(0)}
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-bold text-white">{review.name}</h4>
-                            <p className="text-[10px] text-white/40">{review.role} • {review.location}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </BentoCard>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Call to action */}
-            <div className="px-4">
-              <BentoCard size="3x1" className="bg-indigo-500/10 border-indigo-500/20 text-center py-12">
-                <div className="max-w-xl mx-auto">
-                  <h3 className="text-2xl font-bold mb-3">Ready to start your project?</h3>
-                  <p className="text-white/60 mb-8 text-sm">Join these happy clients and let's build something extraordinary together.</p>
-                  <button 
-                    onClick={() => setActiveTab('Connect')}
-                    className="px-6 py-3 rounded-xl bg-white text-black font-bold hover:bg-white/90 transition-all shadow-xl shadow-white/10 flex items-center gap-2 mx-auto text-sm"
-                  >
-                    <Mail size={16} /> Get a Free Quote
-                  </button>
-                </div>
-              </BentoCard>
-            </div>
-          </div>
-        );
 
       case 'Connect':
         return (
@@ -2771,62 +1641,6 @@ export default function App() {
           </div>
         );
 
-      case 'Store':
-        return (
-          <div className="flex items-center justify-center min-h-[60vh]">
-            <BentoCard size="2x2" className="max-w-3xl w-full text-center p-12 flex flex-col items-center justify-center relative overflow-hidden bg-[#050505] border-emerald-500/20">
-              {/* Background glow */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none" />
-              <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-teal-500/10 blur-[100px] rounded-full pointer-events-none" />
-              
-              <motion.div
-                initial={{ scale: 0, rotate: -180 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ type: "spring", bounce: 0.5, duration: 1 }}
-                className="mb-8 relative z-10 flex items-center justify-center"
-              >
-                {/* Custom Hash Lab Logo */}
-                <div className="relative w-20 h-20 flex items-center justify-center">
-                  <div className="absolute top-2 left-2 w-6 h-6 bg-emerald-400 rounded-sm transform rotate-45" />
-                  <div className="absolute top-2 right-2 w-6 h-6 bg-emerald-300 rounded-sm transform rotate-45" />
-                  <div className="absolute bottom-2 left-2 w-6 h-6 bg-white/80 rounded-sm transform rotate-45" />
-                  <div className="absolute bottom-2 right-2 w-6 h-6 bg-white/40 rounded-sm transform rotate-45" />
-                  <div className="absolute inset-0 bg-[#050505] w-8 h-8 m-auto transform rotate-45 z-10" />
-                </div>
-              </motion.div>
-              
-              <div className="relative z-10 mb-6 flex flex-col items-center">
-                <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-2 flex items-center flex-wrap justify-center gap-3">
-                  <span>Store Front - # Hash Lab</span>
-                </h2>
-                <h3 className="text-2xl md:text-3xl text-emerald-400 font-medium mt-2">
-                  The AI Stash Studio
-                </h3>
-                <div className="h-1 w-20 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mt-6 mb-2" />
-              </div>
-
-              <h3 className="text-xl md:text-2xl text-white/90 font-semibold mb-4 relative z-10">
-                The Intelligent AI Product Engine
-              </h3>
-              
-              <p className="text-white/70 mb-10 max-w-xl mx-auto leading-relaxed text-lg relative z-10">
-                The foundation for your next big launch. Explore a curated stash of premium, cutting-edge digital assets built for the community and ready for your clients.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 w-full justify-center relative z-10">
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => window.open('https://abdulrahman-t.web.app/store', '_blank')}
-                  className="px-8 py-4 rounded-2xl bg-emerald-500 text-black text-sm font-bold hover:bg-emerald-400 transition-all shadow-[0_0_40px_rgba(16,185,129,0.3)] flex items-center justify-center gap-3 group"
-                >
-                  Enter The Lab
-                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                </motion.button>
-              </div>
-            </BentoCard>
-          </div>
-        );
 
       case 'Success':
         return (
@@ -2879,7 +1693,7 @@ export default function App() {
       "min-h-screen mesh-gradient flex flex-col items-center selection:bg-indigo-500/30",
       isInImmersiveMode ? "py-0 px-0" : "py-12 px-4 md:py-20"
     )}>
-      {!hideCustomCursor && <CustomCursor />}
+      {cursorStyle !== 'system' && <CustomCursor type={cursorStyle as 'dot' | 'triangle'} />}
       {/* Header / Navigation */}
       {!isInImmersiveMode && (
         <header className="w-full mb-12 sticky top-6 md:top-8 z-50 px-4 flex justify-center">
@@ -3332,24 +2146,32 @@ export default function App() {
                     </button>
                   </div>
 
-                  {/* Custom Cursor Toggle */}
-                  <div className="flex items-center justify-between">
+                  {/* Custom Cursor Selection */}
+                  <div className="flex flex-col gap-3">
                     <div>
-                      <h3 className="text-sm font-bold mb-1">Custom Cursor</h3>
-                      <p className="text-xs text-white/40">Use the stylized dot cursor</p>
+                      <h3 className="text-sm font-bold mb-1">Cursor Style</h3>
+                      <p className="text-xs text-white/40">Choose your preferred pointer</p>
                     </div>
-                    <button 
-                      onClick={() => setHideCustomCursor(!hideCustomCursor)}
-                      className={cn(
-                        "w-12 h-6 rounded-full transition-colors relative",
-                        !hideCustomCursor ? "bg-indigo-500" : "bg-white/10"
-                      )}
-                    >
-                      <div className={cn(
-                        "absolute top-1 w-4 h-4 rounded-full bg-white transition-transform",
-                        !hideCustomCursor ? "left-7" : "left-1"
-                      )} />
-                    </button>
+                    <div className="flex gap-2 bg-white/5 p-1 rounded-xl">
+                      <button 
+                        onClick={() => setCursorStyle('system')}
+                        className={cn("flex-1 text-xs py-2 rounded-lg transition-colors", cursorStyle === 'system' ? "bg-white/10 text-white font-bold" : "text-white/40 hover:text-white")}
+                      >
+                        System
+                      </button>
+                      <button 
+                        onClick={() => setCursorStyle('dot')}
+                        className={cn("flex-1 text-xs py-2 rounded-lg transition-colors", cursorStyle === 'dot' ? "bg-indigo-500/20 text-indigo-400 font-bold" : "text-white/40 hover:text-white")}
+                      >
+                        Dot
+                      </button>
+                      <button 
+                        onClick={() => setCursorStyle('triangle')}
+                        className={cn("flex-1 text-xs py-2 rounded-lg transition-colors", cursorStyle === 'triangle' ? "bg-rose-500/20 text-rose-400 font-bold" : "text-white/40 hover:text-white")}
+                      >
+                        Arrow
+                      </button>
+                    </div>
                   </div>
 
                   {/* Smooth Scroll Toggle */}
