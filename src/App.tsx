@@ -73,6 +73,7 @@ import { ChatAssistant } from './components/ChatAssistant';
 import { CustomCursor } from './components/CustomCursor';
 import { Home as NewHome } from './components/NewHome';
 import { Links } from './components/Links';
+import { MainHeader } from './components/MainHeader';
 import { Vortex } from './components/Vortex';
 
 import { ASSET_LINKS } from './constants/assets';
@@ -181,7 +182,7 @@ const BentoCard = ({ children, className, size = '1x1', delay = 0, onClick, back
   );
 };
 
-const tabs: { name: Category; icon: React.ReactNode }[] = [
+export const tabs: { name: Category; icon: React.ReactNode }[] = [
   { name: 'Home', icon: <Home size={18} /> },
   { name: 'Links', icon: <LinkIcon size={18} /> },
   { name: 'Store', icon: <ShoppingBag size={18} /> },
@@ -655,272 +656,6 @@ export default function App() {
         return <NewHome projects={projects} setActiveTab={setActiveTab} />;
       case 'Links':
         return <Links setActiveTab={setActiveTab} />;
-
-      case 'Journal':
-        return (
-          <div className="space-y-12 pb-20 max-w-[1400px] mx-auto px-4">
-            <header className="pt-20 text-center space-y-4">
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">The <span className="text-emerald-400">Journal</span></h1>
-              <p className="text-white/50 text-xl max-w-2xl mx-auto font-light">
-                Deep dives into full-stack architecture, AI workflows, and the business of digital creation.
-              </p>
-            </header>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Main Feed */}
-              <div className="lg:col-span-2 space-y-8">
-                {[
-                  {
-                    title: "Building the Pro Business Suite: A Technical Deep Dive",
-                    date: "April 10, 2026",
-                    readTime: "12 min read",
-                    category: "Engineering",
-                    excerpt: "How I architected a suite of professional tools using Gemini 1.5 Pro and a modular React architecture for maximum scalability.",
-                    image: "https://picsum.photos/seed/tech/800/400"
-                  },
-                  {
-                    title: "The Future of AI-Powered Workflows in n8n",
-                    date: "April 05, 2026",
-                    readTime: "8 min read",
-                    category: "Automation",
-                    excerpt: "Exploring the integration of autonomous agents within the n8n ecosystem to handle complex, multi-step business processes.",
-                    image: "https://picsum.photos/seed/automation/800/400"
-                  },
-                  {
-                    title: "Monetizing Your SaaS: Beyond the Subscription Model",
-                    date: "March 28, 2026",
-                    readTime: "15 min read",
-                    category: "Business",
-                    excerpt: "Why usage-based pricing and integrated ad networks are becoming the gold standard for modern full-stack creators.",
-                    image: "https://picsum.photos/seed/business/800/400"
-                  }
-                ].map((post, i) => (
-                  <motion.article 
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    className="glass rounded-3xl overflow-hidden border border-white/10 group cursor-pointer hover:border-emerald-500/30 transition-all"
-                  >
-                    <div className="aspect-video overflow-hidden relative">
-                      <img 
-                        src={post.image} 
-                        alt={post.title} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-[10px] font-bold uppercase tracking-widest text-emerald-400">
-                        {post.category}
-                      </div>
-                    </div>
-                    <div className="p-8 space-y-4">
-                      <div className="flex items-center gap-4 text-xs text-white/40 font-medium">
-                        <span>{post.date}</span>
-                        <span className="w-1 h-1 rounded-full bg-white/20" />
-                        <span>{post.readTime}</span>
-                      </div>
-                      <h2 className="text-3xl font-bold group-hover:text-emerald-400 transition-colors">{post.title}</h2>
-                      <p className="text-white/60 leading-relaxed">{post.excerpt}</p>
-                      <div className="pt-4 flex items-center gap-2 text-emerald-400 font-bold text-sm group-hover:gap-4 transition-all">
-                        Read Full Article <ArrowRight size={16} />
-                      </div>
-                    </div>
-                  </motion.article>
-                ))}
-              </div>
-
-              {/* Sidebar */}
-              <aside className="space-y-8">
-                {/* Newsletter Card */}
-                <div className="glass rounded-3xl p-8 border border-white/10 bg-emerald-500/5 relative overflow-hidden">
-                  <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl" />
-                  <div className="relative z-10 space-y-6">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
-                      <Send size={24} />
-                    </div>
-                    <h3 className="text-2xl font-bold">Weekly Insights</h3>
-                    <p className="text-white/60 text-sm leading-relaxed">
-                      Join 2,500+ creators receiving my weekly deep dives on tech, business, and AI.
-                    </p>
-                    <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
-                      <input 
-                        type="email" 
-                        placeholder="your@email.com" 
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-emerald-500 transition-colors"
-                      />
-                      <button className="w-full py-3 bg-emerald-500 text-black font-bold rounded-xl hover:bg-emerald-400 transition-all">
-                        Subscribe
-                      </button>
-                    </form>
-                  </div>
-                </div>
-
-                {/* Categories */}
-                <div className="glass rounded-3xl p-8 border border-white/10 space-y-6">
-                  <h3 className="text-xl font-bold">Categories</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {['Engineering', 'AI', 'Business', 'Automation', 'Design', 'Productivity'].map(cat => (
-                      <button key={cat} className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-medium hover:bg-white/10 transition-all">
-                        {cat}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Social Links */}
-                <div className="glass rounded-3xl p-8 border border-white/10 space-y-6">
-                  <h3 className="text-xl font-bold">Stay Connected</h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    {[
-                      { icon: <Twitter size={18} />, label: 'Twitter', color: 'hover:text-blue-400' },
-                      { icon: <Linkedin size={18} />, label: 'LinkedIn', color: 'hover:text-blue-600' },
-                      { icon: <Github size={18} />, label: 'GitHub', color: 'hover:text-white' },
-                      { icon: <Youtube size={18} />, label: 'YouTube', color: 'hover:text-red-500' }
-                    ].map((social, i) => (
-                      <button key={i} className={`flex items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10 text-xs font-medium transition-all ${social.color}`}>
-                        {social.icon}
-                        {social.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </aside>
-            </div>
-          </div>
-        );
-
-      case 'Journal':
-        return (
-          <div className="space-y-12 pb-20 max-w-[1400px] mx-auto px-4">
-            <header className="pt-20 text-center space-y-4">
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">The <span className="text-emerald-400">Journal</span></h1>
-              <p className="text-white/50 text-xl max-w-2xl mx-auto font-light">
-                Deep dives into full-stack architecture, AI workflows, and the business of digital creation.
-              </p>
-            </header>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Main Feed */}
-              <div className="lg:col-span-2 space-y-8">
-                {[
-                  {
-                    title: "Building the Pro Business Suite: A Technical Deep Dive",
-                    date: "April 10, 2026",
-                    readTime: "12 min read",
-                    category: "Engineering",
-                    excerpt: "How I architected a suite of professional tools using Gemini 1.5 Pro and a modular React architecture for maximum scalability.",
-                    image: "https://picsum.photos/seed/tech/800/400"
-                  },
-                  {
-                    title: "The Future of AI-Powered Workflows in n8n",
-                    date: "April 05, 2026",
-                    readTime: "8 min read",
-                    category: "Automation",
-                    excerpt: "Exploring the integration of autonomous agents within the n8n ecosystem to handle complex, multi-step business processes.",
-                    image: "https://picsum.photos/seed/automation/800/400"
-                  },
-                  {
-                    title: "Monetizing Your SaaS: Beyond the Subscription Model",
-                    date: "March 28, 2026",
-                    readTime: "15 min read",
-                    category: "Business",
-                    excerpt: "Why usage-based pricing and integrated ad networks are becoming the gold standard for modern full-stack creators.",
-                    image: "https://picsum.photos/seed/business/800/400"
-                  }
-                ].map((post, i) => (
-                  <motion.article 
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    className="glass rounded-3xl overflow-hidden border border-white/10 group cursor-pointer hover:border-emerald-500/30 transition-all"
-                  >
-                    <div className="aspect-video overflow-hidden relative">
-                      <img 
-                        src={post.image} 
-                        alt={post.title} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-[10px] font-bold uppercase tracking-widest text-emerald-400">
-                        {post.category}
-                      </div>
-                    </div>
-                    <div className="p-8 space-y-4">
-                      <div className="flex items-center gap-4 text-xs text-white/40 font-medium">
-                        <span>{post.date}</span>
-                        <span className="w-1 h-1 rounded-full bg-white/20" />
-                        <span>{post.readTime}</span>
-                      </div>
-                      <h2 className="text-3xl font-bold group-hover:text-emerald-400 transition-colors">{post.title}</h2>
-                      <p className="text-white/60 leading-relaxed">{post.excerpt}</p>
-                      <div className="pt-4 flex items-center gap-2 text-emerald-400 font-bold text-sm group-hover:gap-4 transition-all">
-                        Read Full Article <ArrowRight size={16} />
-                      </div>
-                    </div>
-                  </motion.article>
-                ))}
-              </div>
-
-              {/* Sidebar */}
-              <aside className="space-y-8">
-                {/* Newsletter Card */}
-                <div className="glass rounded-3xl p-8 border border-white/10 bg-emerald-500/5 relative overflow-hidden">
-                  <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl" />
-                  <div className="relative z-10 space-y-6">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
-                      <Send size={24} />
-                    </div>
-                    <h3 className="text-2xl font-bold">Weekly Insights</h3>
-                    <p className="text-white/60 text-sm leading-relaxed">
-                      Join 2,500+ creators receiving my weekly deep dives on tech, business, and AI.
-                    </p>
-                    <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
-                      <input 
-                        type="email" 
-                        placeholder="your@email.com" 
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-emerald-500 transition-colors"
-                      />
-                      <button className="w-full py-3 bg-emerald-500 text-black font-bold rounded-xl hover:bg-emerald-400 transition-all">
-                        Subscribe
-                      </button>
-                    </form>
-                  </div>
-                </div>
-
-                {/* Categories */}
-                <div className="glass rounded-3xl p-8 border border-white/10 space-y-6">
-                  <h3 className="text-xl font-bold">Categories</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {['Engineering', 'AI', 'Business', 'Automation', 'Design', 'Productivity'].map(cat => (
-                      <button key={cat} className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-medium hover:bg-white/10 transition-all">
-                        {cat}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Social Links */}
-                <div className="glass rounded-3xl p-8 border border-white/10 space-y-6">
-                  <h3 className="text-xl font-bold">Stay Connected</h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    {[
-                      { icon: <Twitter size={18} />, label: 'Twitter', color: 'hover:text-blue-400' },
-                      { icon: <Linkedin size={18} />, label: 'LinkedIn', color: 'hover:text-blue-600' },
-                      { icon: <Github size={18} />, label: 'GitHub', color: 'hover:text-white' },
-                      { icon: <Youtube size={18} />, label: 'YouTube', color: 'hover:text-red-500' }
-                    ].map((social, i) => (
-                      <button key={i} className={`flex items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10 text-xs font-medium transition-all ${social.color}`}>
-                        {social.icon}
-                        {social.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </aside>
-            </div>
-          </div>
-        );
 
       case 'Journal':
         return (
@@ -1852,47 +1587,12 @@ export default function App() {
       
       {/* 1. Main Minimal Floating Header for normal pages */}
       {!isInImmersiveMode && activeTab !== 'Links' && activeTab !== 'Vortex' && (
-        <header className="w-full mb-12 sticky top-6 md:top-8 z-50 px-4 flex justify-center pointer-events-none">
-          <motion.nav 
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="glass bg-[#050505]/80 backdrop-blur-3xl rounded-2xl border border-white/5 p-1.5 flex items-center shadow-2xl pointer-events-auto max-w-full"
-          >
-            <div className="flex items-center gap-2 pr-3 border-r border-white/10 shrink-0">
-               <button 
-                 onClick={() => setActiveTab('Home')}
-                 className="relative w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
-               >
-                 <img src={logo1} alt="Logo" className="w-5 h-5 object-contain" />
-               </button>
-            </div>
-            
-            <div className="flex items-center gap-1 overflow-x-auto no-scrollbar px-2 max-w-[60vw] md:max-w-[400px]">
-              {tabs.map(tab => (
-                 <button 
-                   key={tab.name}
-                   onClick={() => setActiveTab(tab.name)} 
-                   className={cn(
-                     "px-3 py-1.5 text-[11px] md:text-xs font-semibold rounded-lg transition-all whitespace-nowrap flex items-center gap-1.5", 
-                     activeTab === tab.name ? "bg-white/10 text-white" : "text-white/40 hover:text-white/80 hover:bg-white/5"
-                   )}
-                 >
-                   <span className="opacity-70">{tab.icon}</span>
-                   <span className={cn(activeTab === tab.name ? "block" : "hidden md:block")}>{tab.name}</span>
-                 </button>
-              ))}
-            </div>
-            
-            <div className="pl-3 border-l border-white/10 shrink-0">
-              <button 
-                onClick={() => setIsSettingsOpen(true)} 
-                className="p-1.5 rounded-lg text-white/40 hover:text-white hover:bg-white/5 transition-all"
-              >
-                <Settings size={16} />
-              </button>
-            </div>
-          </motion.nav>
-        </header>
+        <MainHeader 
+          activeTab={activeTab} 
+          setActiveTab={setActiveTab} 
+          setIsSettingsOpen={setIsSettingsOpen} 
+           tabs={tabs} 
+        />
       )}
 
       {/* 2. Links Page Header (Original Glass Pill style but with social icons) */}
