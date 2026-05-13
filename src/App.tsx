@@ -72,6 +72,7 @@ import Lenis from 'lenis';
 import { ChatAssistant } from './components/ChatAssistant';
 import { CustomCursor } from './components/CustomCursor';
 import { Home as NewHome } from './components/NewHome';
+import { Vortex } from './components/Vortex';
 
 import { ASSET_LINKS } from './constants/assets';
 
@@ -2841,24 +2842,7 @@ export default function App() {
           </div>
         );
       case 'Vortex':
-        return (
-          <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="relative"
-            >
-              <div className="absolute inset-0 bg-indigo-500/20 blur-[100px] rounded-full animate-pulse" />
-              <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/20 relative z-10">
-                VORTEX
-              </h1>
-            </motion.div>
-            <p className="text-white/40 text-sm md:text-lg font-medium tracking-widest uppercase mb-12">
-              Welcome to the Vortex
-            </p>
-          </div>
-        );
+        return <Vortex />;
       case 'Services':
         return (
           <div className="space-y-12">
@@ -2932,7 +2916,7 @@ export default function App() {
   return (
     <div className={cn(
       "min-h-screen mesh-gradient flex flex-col items-center selection:bg-indigo-500/30",
-      (isInImmersiveMode || activeTab === 'Home') ? "py-0 px-0 relative top-0" : "py-12 px-4 md:py-20"
+      (isInImmersiveMode || activeTab === 'Home' || activeTab === 'Vortex') ? "py-0 px-0 relative top-0" : "py-12 px-4 md:py-20"
     )}>
       {!hideCustomCursor && <CustomCursor />}
       {/* Header / Navigation */}
@@ -3018,7 +3002,7 @@ export default function App() {
       {/* Main Content */}
       <main className={cn(
         "w-full transition-all duration-500",
-        (isInImmersiveMode || activeTab === 'Home') ? "max-w-full" : "max-w-4xl pt-4"
+        (isInImmersiveMode || activeTab === 'Home' || activeTab === 'Vortex') ? "max-w-full" : "max-w-4xl pt-4"
       )}>
         <AnimatePresence mode="wait">
           <motion.div
@@ -3382,7 +3366,7 @@ export default function App() {
 
       {/* Footer */}
       {!isInImmersiveMode && (
-        <footer className={cn("mt-32 py-12 border-t border-white/5 w-full", activeTab === 'Home' ? "max-w-[1400px] px-8" : "max-w-4xl")}>
+        <footer className={cn("mt-32 py-12 border-t border-white/5 w-full", (activeTab === 'Home' || activeTab === 'Vortex') ? "max-w-[1400px] px-8" : "max-w-4xl")}>
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             <div className="flex flex-col items-center md:items-start gap-2">
               <div className="flex items-center gap-3 mb-3">
