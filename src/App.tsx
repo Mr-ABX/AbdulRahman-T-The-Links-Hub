@@ -441,8 +441,11 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [hideCustomCursor, setHideCustomCursor] = useState(() => localStorage.getItem('abdulrahman_hideCursor') === 'true');
-  const [enableSmoothScroll, setEnableSmoothScroll] = useState(() => localStorage.getItem('abdulrahman_smoothScroll') !== 'false');
+  const [hideCustomCursor, setHideCustomCursor] = useState(() => {
+    const val = localStorage.getItem('abdulrahman_hideCursor');
+    return val !== null ? val === 'true' : true; // true by default (hidden)
+  });
+  const [enableSmoothScroll, setEnableSmoothScroll] = useState(() => localStorage.getItem('abdulrahman_smoothScroll') === 'true'); // false by default
   const [compactHomeView, setCompactHomeView] = useState(() => localStorage.getItem('abdulrahman_compactHome') === 'true');
   const [activeHomeSection, setActiveHomeSection] = useState<'Learn' | 'Explore' | 'Work'>('Learn');
   const navRef = React.useRef<HTMLDivElement>(null);
