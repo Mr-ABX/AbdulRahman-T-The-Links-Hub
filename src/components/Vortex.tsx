@@ -1,5 +1,54 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
+
+const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}|:"<>?~`-=[]\\;,./';
+const generateGibberish = (length: number) => {
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+};
+
+const GlitchText = ({ text, className = '' }: { text: string, className?: string }) => {
+  const [displayText, setDisplayText] = useState(generateGibberish(text.length));
+
+  useEffect(() => {
+    let iteration = 0;
+    let interval: any = null;
+
+    const startAnimation = () => {
+      clearInterval(interval);
+      iteration = 0;
+      interval = setInterval(() => {
+        setDisplayText((prev) => {
+          return text
+            .split("")
+            .map((letter, index) => {
+              if (index < iteration) {
+                return text[index];
+              }
+              if (letter === ' ') return ' ';
+              return characters[Math.floor(Math.random() * characters.length)];
+            })
+            .join("");
+        });
+
+        if (iteration >= text.length) {
+          clearInterval(interval);
+        }
+
+        iteration += 1 / 3;
+      }, 30);
+    };
+    
+    startAnimation();
+    
+    return () => clearInterval(interval);
+  }, [text]);
+
+  return <span className={className}>{displayText}</span>;
+};
 
 const vortexSections = [
   {
@@ -72,8 +121,8 @@ export const Vortex = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <h1 className="text-5xl sm:text-7xl md:text-[6rem] font-black leading-[1.1] tracking-tight text-white mb-8">
-            WELCOME TO <br className="hidden sm:block" />
-            THE VORTEX
+            <GlitchText text="WELCOME TO" /> <br className="hidden sm:block" />
+            <GlitchText text="THE VORTEX" />
           </h1>
         </motion.div>
       </section>

@@ -72,6 +72,7 @@ import Lenis from 'lenis';
 import { ChatAssistant } from './components/ChatAssistant';
 import { CustomCursor } from './components/CustomCursor';
 import { Home as NewHome } from './components/NewHome';
+import { Links } from './components/Links';
 import { Vortex } from './components/Vortex';
 
 import { ASSET_LINKS } from './constants/assets';
@@ -88,6 +89,14 @@ function cn(...inputs: ClassValue[]) {
 
 type Category = 'Home' | 'Links' | 'Projects' | 'Apps' | 'Automation' | 'Ebooks' | 'Content' | 'About' | 'Reviews' | 'Connect' | 'Success' | 'Store' | 'Journal' | 'Vortex' | 'Services';
 type ProjectCategory = 'Apps & Dev' | 'Web Development Projects' | 'Interactive Experiences' | 'Video & Motion Graphics' | 'Graphics & Marketing' | 'AI Solutions' | 'My Personal Apps' | 'Pro Business Suite';
+
+const socialTabs = [
+  { name: 'Twitter', icon: <Twitter size={18} />, url: 'https://x.com/Mr_AbdulrahmanT' },
+  { name: 'LinkedIn', icon: <Linkedin size={18} />, url: '#' },
+  { name: 'Instagram', icon: <Instagram size={18} />, url: '#' },
+  { name: 'GitHub', icon: <Github size={18} />, url: '#' },
+  { name: 'Mail', icon: <Mail size={18} />, url: 'mailto:digital.b3asts@gmail.com' },
+];
 
 interface BentoCardProps {
   children: React.ReactNode;
@@ -431,11 +440,17 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [hideCustomCursor, setHideCustomCursor] = useState(false);
-  const [enableSmoothScroll, setEnableSmoothScroll] = useState(true);
-  const [compactHomeView, setCompactHomeView] = useState(false);
+  const [hideCustomCursor, setHideCustomCursor] = useState(() => localStorage.getItem('abdulrahman_hideCursor') === 'true');
+  const [enableSmoothScroll, setEnableSmoothScroll] = useState(() => localStorage.getItem('abdulrahman_smoothScroll') !== 'false');
+  const [compactHomeView, setCompactHomeView] = useState(() => localStorage.getItem('abdulrahman_compactHome') === 'true');
   const [activeHomeSection, setActiveHomeSection] = useState<'Learn' | 'Explore' | 'Work'>('Learn');
   const navRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    localStorage.setItem('abdulrahman_hideCursor', hideCustomCursor.toString());
+    localStorage.setItem('abdulrahman_smoothScroll', enableSmoothScroll.toString());
+    localStorage.setItem('abdulrahman_compactHome', compactHomeView.toString());
+  }, [hideCustomCursor, enableSmoothScroll, compactHomeView]);
 
   const slugify = (text: string) => {
     return text.toString().toLowerCase()
@@ -639,1097 +654,11 @@ export default function App() {
       case 'Home':
         return <NewHome projects={projects} setActiveTab={setActiveTab} />;
       case 'Links':
-        return (
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-            {/* Left Column - Tall Profile */}
-            <div className="md:col-span-5 flex flex-col">
-              <div className="sticky top-24 space-y-4">
-                <motion.div 
-                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  whileHover={{ y: -5 }}
-                  className="glass rounded-[2.5rem] overflow-hidden group/profile min-h-[600px] md:min-h-[750px] relative border border-white/10 shadow-2xl"
-                >
-                  {/* Background Image */}
-                    <div className="absolute inset-0 z-0 bg-indigo-500/10 flex items-center justify-center text-8xl">
-                      👨🏽‍💻
-                      <img 
-                        src={myPfpFull} 
-                        alt="Abdulrahman Toor" 
-                        className="absolute inset-0 w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover/profile:scale-105"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent pointer-events-none"></div>
-                    </div>
-                  
-                  {/* Social Floating Icons */}
-                  <div className="absolute top-6 right-6 z-20 flex flex-col gap-3">
-                    <a href="https://www.instagram.com/abdulrahman.toor/" target="_blank" className="w-12 h-12 rounded-2xl bg-black/40 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all border border-white/5 shadow-xl"><Instagram size={20} /></a>
-                    <a href="https://www.linkedin.com/in/abdulrahman-t/" target="_blank" className="w-12 h-12 rounded-2xl bg-black/40 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all border border-white/5 shadow-xl"><Linkedin size={20} /></a>
-                    <a href="https://github.com/Mr-ABX/" target="_blank" className="w-12 h-12 rounded-2xl bg-black/40 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all border border-white/5 shadow-xl"><Github size={20} /></a>
-                    <a href="https://x.com/Mr_AbdulrahmanT" target="_blank" className="w-12 h-12 rounded-2xl bg-black/40 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all border border-white/5 shadow-xl"><Twitter size={20} /></a>
-                  </div>
-
-                  {/* Content Area */}
-                  <div className="absolute inset-0 z-10 p-8 flex flex-col justify-end">
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      <div className="inline-flex items-center h-9 px-3 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold border border-emerald-500/20 group/badge-hire transition-all duration-500 cursor-default backdrop-blur-md overflow-hidden hover:pr-4">
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
-                        <span className="max-w-0 overflow-hidden group-hover/badge-hire:max-w-[200px] group-hover/badge-hire:ml-2 transition-all duration-500 whitespace-nowrap opacity-0 group-hover/badge-hire:opacity-100">Available for Projects</span>
-                      </div>
-                      <div className="inline-flex items-center h-9 px-3 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-bold border border-indigo-500/20 group/badge-projects transition-all duration-500 cursor-default backdrop-blur-md overflow-hidden hover:pr-4">
-                        <Trophy size={14} className="shrink-0" />
-                        <span className="max-w-0 overflow-hidden group-hover/badge-projects:max-w-[200px] group-hover/badge-projects:ml-2 transition-all duration-500 whitespace-nowrap opacity-0 group-hover/badge-projects:opacity-100">200+ Delivered</span>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-1 mb-6">
-                      <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white drop-shadow-lg">Abdulrahman Toor</h1>
-                      <h2 className="text-xl text-indigo-400 font-semibold drop-shadow-md">Founder & AI Automation Expert</h2>
-                    </div>
-
-                    <p className="text-white/80 text-sm leading-relaxed mb-8 max-w-md font-medium drop-shadow-sm">
-                      Architecting the future with AI. I build scalable SaaS platforms, high-performance automation systems, and open-source tools that turn complexity into growth.
-                    </p>
-
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <motion.button 
-                        whileHover={{ scale: 1.02, y: -1 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={() => setActiveTab('Connect')} 
-                        className="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 py-2.5 rounded-lg text-sm font-bold hover:shadow-[0_0_20px_rgba(99,102,241,0.3)] transition-all flex items-center justify-center gap-2 group/btn relative overflow-hidden"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                        <Mail size={16} className="group-hover/btn:rotate-12 transition-transform relative z-10" /> 
-                        <span className="relative z-10">Get in Touch</span>
-                      </motion.button>
-                      <motion.button 
-                        whileHover={{ scale: 1.02, y: -1 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={() => setActiveTab('Projects')} 
-                        className="flex-1 bg-white/10 text-white px-4 py-2.5 rounded-lg text-sm font-bold hover:bg-white/20 transition-all backdrop-blur-md border border-white/10 flex items-center justify-center gap-2 group/btn shadow-lg"
-                      >
-                        <span>View My Work</span>
-                        <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
-                      </motion.button>
-                    </div>
-                    <motion.button
-                      whileHover={{ opacity: 1, x: 5 }}
-                      onClick={() => setActiveTab('Journal')}
-                      className="mt-4 text-[10px] text-white/40 hover:text-emerald-400 font-bold uppercase tracking-[0.2em] flex items-center gap-2 transition-all"
-                    >
-                      Latest from the Journal <ArrowRight size={12} />
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ opacity: 1, x: 5 }}
-                      onClick={() => setActiveTab('Journal')}
-                      className="mt-4 text-[10px] text-white/40 hover:text-emerald-400 font-bold uppercase tracking-[0.2em] flex items-center gap-2 transition-all"
-                    >
-                      Latest from the Journal <ArrowRight size={12} />
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ opacity: 1, x: 5 }}
-                      onClick={() => setActiveTab('Journal')}
-                      className="mt-4 text-[10px] text-white/40 hover:text-emerald-400 font-bold uppercase tracking-[0.2em] flex items-center gap-2 transition-all"
-                    >
-                      Latest from the Journal <ArrowRight size={12} />
-                    </motion.button>
-                  </div>
-                </motion.div>
-
-                {/* Interactive Tech Cloud Widget */}
-                <BentoCard size="1x1" className="bg-white/[0.02] overflow-hidden group/cloud">
-                  <div className="flex flex-col h-full">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
-                        <Cpu size={20} />
-                      </div>
-                      <span className="text-[8px] text-white/20 uppercase font-bold tracking-widest">Tech Cloud</span>
-                    </div>
-                    <div className="flex flex-wrap gap-2 relative">
-                      {['React', 'Next.js', 'n8n', 'Python', 'AI', 'SaaS', 'Supabase', 'Docker', 'AWS'].map((tech, i) => (
-                        <motion.span 
-                          key={tech}
-                          animate={{ 
-                            y: [0, -5, 0],
-                            x: [0, i % 2 === 0 ? 5 : -5, 0]
-                          }}
-                          transition={{ 
-                            duration: 3 + i, 
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                          }}
-                          className="px-3 py-1.5 rounded-xl bg-white/5 text-[10px] text-white/60 font-medium hover:bg-indigo-500/20 hover:text-indigo-400 transition-colors cursor-default border border-white/5"
-                        >
-                          {tech}
-                        </motion.span>
-                      ))}
-                    </div>
-                  </div>
-                </BentoCard>
-              </div>
-            </div>
-
-            {/* Right Column - Categorized Shortcuts */}
-            <div className="md:col-span-7 flex flex-col gap-8">
-              
-              {compactHomeView && (
-                <div className="flex gap-1 p-1 bg-white/[0.03] rounded-full overflow-x-auto hide-scrollbar border border-white/5 sticky top-24 z-30 backdrop-blur-xl w-fit mx-auto mb-2 shadow-2xl">
-                  <button onClick={() => setActiveHomeSection('Learn')} className={cn("px-4 py-1.5 rounded-full text-xs font-semibold transition-all whitespace-nowrap", activeHomeSection === 'Learn' ? "bg-white/10 text-white shadow-sm border border-white/10" : "text-white/40 hover:text-white/70 hover:bg-white/5 border border-transparent")}>Learn & Connect</button>
-                  <button onClick={() => setActiveHomeSection('Explore')} className={cn("px-4 py-1.5 rounded-full text-xs font-semibold transition-all whitespace-nowrap", activeHomeSection === 'Explore' ? "bg-white/10 text-white shadow-sm border border-white/10" : "text-white/40 hover:text-white/70 hover:bg-white/5 border border-transparent")}>Explore My Work</button>
-                  <button onClick={() => setActiveHomeSection('Work')} className={cn("px-4 py-1.5 rounded-full text-xs font-semibold transition-all whitespace-nowrap", activeHomeSection === 'Work' ? "bg-white/10 text-white shadow-sm border border-white/10" : "text-white/40 hover:text-white/70 hover:bg-white/5 border border-transparent")}>Work With Me</button>
-                </div>
-              )}
-
-              {/* Category 1: Learn & Connect */}
-              {(!compactHomeView || activeHomeSection === 'Learn') && (
-                <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{duration: 0.4}}>
-                  {!compactHomeView && (
-                    <h3 className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-                      <Book size={12} className="text-purple-400" /> Learn & Connect
-                    </h3>
-                  )}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-auto">
-                    
-                    {/* AI Assistant Quick Widget */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-                      whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                      transition={{ duration: 0.6, type: "spring", stiffness: 100, damping: 15 }}
-                      className="col-span-1 md:col-span-2 row-span-1 relative overflow-hidden rounded-[2rem] p-[2px] group/ai-widget min-h-[180px]"
-                    >
-                      <div className="absolute inset-0 bg-indigo-500/20 rounded-[2rem]" />
-                      <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_270deg,#6366f1_300deg,#a855f7_330deg,#ec4899_360deg)] animate-border-spin blur-md opacity-70" />
-                      <div className="relative h-full w-full bg-[#050505] rounded-[calc(2rem-2px)] p-6 flex flex-col justify-between overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-600/10" />
-                        <div className="absolute -right-4 -top-4 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl group-hover/ai-widget:bg-indigo-500/20 transition-colors" />
-                        <div className="relative z-10 h-full flex flex-col justify-center p-2">
-                          <div className="flex items-center gap-3 mb-4">
-                            <div className="w-10 h-10 rounded-xl bg-indigo-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 group-hover/ai-widget:scale-110 transition-transform">
-                              <Bot size={20} />
-                            </div>
-                            <div>
-                              <h3 className="text-lg font-bold">Ask My AI Assistant</h3>
-                              <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Powered by Gemini 3 Flash</p>
-                            </div>
-                          </div>
-                          <button 
-                            onClick={() => openChatWithSearch('')}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm hover:bg-white/10 transition-all flex items-center justify-between group-hover/ai-widget:border-indigo-500/50"
-                          >
-                            <span className="text-white/60">Click to start chatting...</span>
-                            <ArrowRight size={16} className="text-indigo-400" />
-                          </button>
-                        </div>
-                      </div>
-                    </motion.div>
-
-                    {/* Storefront Widget */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-                      whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                      transition={{ duration: 0.6, type: "spring", stiffness: 100, damping: 15 }}
-                      className="col-span-1 md:col-span-2 row-span-1 relative overflow-hidden rounded-[2rem] p-[2px] group/store-widget cursor-pointer"
-                      onClick={() => setActiveTab('Store')}
-                    >
-                      <div className="absolute inset-0 bg-emerald-500/20 rounded-[2rem]" />
-                      <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_270deg,#10b981_300deg,#34d399_330deg,#059669_360deg)] animate-border-spin blur-md opacity-70" />
-                      <div className="relative h-full w-full bg-[#050505] rounded-[calc(2rem-2px)] p-4 flex items-center justify-between overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent" />
-                        <div className="absolute -right-4 -top-4 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl group-hover/store-widget:bg-emerald-500/20 transition-colors" />
-                        
-                        <div className="relative z-10 flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shadow-lg shadow-emerald-500/10 group-hover/store-widget:scale-110 group-hover/store-widget:bg-emerald-500 group-hover/store-widget:text-black transition-all duration-300">
-                            <ShoppingBag size={20} />
-                          </div>
-                          <div>
-                            <h3 className="text-base font-bold text-emerald-400">Store Front - # Hash Lab</h3>
-                            <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold mt-0.5">The AI Stash Studio</p>
-                          </div>
-                        </div>
-
-                        <div className="relative z-10 flex items-center gap-4">
-                          <div className="hidden sm:flex items-center gap-2 mr-2">
-                            <span className="px-2 py-1 rounded-md bg-white/5 text-[10px] text-white/60 font-mono">Premium</span>
-                            <span className="px-2 py-1 rounded-md bg-white/5 text-[10px] text-white/60 font-mono">Assets</span>
-                          </div>
-                          <button 
-                            className="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover/store-widget:bg-emerald-500 group-hover/store-widget:text-black transition-all duration-300 shadow-lg group-hover/store-widget:shadow-emerald-500/25"
-                          >
-                            <ArrowRight size={18} className="group-hover/store-widget:translate-x-1 transition-transform" />
-                          </button>
-                        </div>
-                      </div>
-                    </motion.div>
-
-                    {/* Ebooks Shortcut */}
-                    <BentoCard size="1x1" className="group cursor-pointer hover:bg-white/[0.04] transition-colors relative overflow-hidden" onClick={() => setActiveTab('Ebooks')}>
-                      <div className="absolute right-0 bottom-0 p-4 opacity-20 group-hover:opacity-30 transition-opacity translate-x-4 translate-y-4">
-                        <Book size={60} />
-                      </div>
-                      <div className="relative z-10 h-full flex flex-col justify-center">
-                        <h3 className="text-lg font-bold mb-2">Learn My Systems</h3>
-                        <p className="text-white/50 text-xs max-w-[150px] mb-4">Actionable guides on AI, automation, and SaaS.</p>
-                        <div className="flex items-center gap-2 text-purple-400 text-[10px] font-bold uppercase tracking-widest group-hover:gap-3 transition-all">
-                          <span>Browse Library</span>
-                          <ArrowRight size={14} />
-                        </div>
-                      </div>
-                    </BentoCard>
-
-                    {/* Newsletter Widget */}
-                    <BentoCard size="1x1" className="bg-indigo-500/5 border-indigo-500/10 group">
-                      <div className="flex flex-col h-full">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
-                            <Newspaper size={20} />
-                          </div>
-                          <span className="text-[8px] text-white/20 uppercase font-bold tracking-widest">Newsletter</span>
-                        </div>
-                        <h3 className="text-sm font-bold mb-1">Join My Newsletter</h3>
-                        <p className="text-white/50 text-[10px] mb-auto">Weekly insights on AI trends.</p>
-                        <div className="relative mt-auto">
-                          <button className="w-full bg-indigo-500 hover:bg-indigo-400 text-white rounded-xl py-2 px-3 text-xs font-bold transition-colors flex items-center justify-center gap-2">
-                            <span>Subscribe Now</span>
-                            <ArrowRight size={14} />
-                          </button>
-                        </div>
-                      </div>
-                    </BentoCard>
-
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Category 2: Explore My Work (Apps & Projects) */}
-              {(!compactHomeView || activeHomeSection === 'Explore') && (
-                <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{duration: 0.4}}>
-                  {!compactHomeView && (
-                    <h3 className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-                      <AppWindow size={12} className="text-indigo-400" /> Explore My Work
-                    </h3>
-                  )}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-[minmax(180px,auto)]">
-
-                    {/* Featured Carousel Widget */}
-                    <FeaturedCarousel projects={projects} onSelect={openProjectModal} />
-
-                    {/* Get My Apps Widget (NEW) */}
-                    <BentoCard size="2x1" className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border-blue-500/20 group/apps cursor-pointer" onClick={() => setActiveTab('Projects')}>
-                      <div className="absolute right-0 bottom-0 p-4 opacity-10 group-hover/apps:opacity-20 transition-opacity translate-x-4 translate-y-4">
-                        <Download size={80} />
-                      </div>
-                      <div className="relative z-10 h-full flex flex-col justify-center">
-                        <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-blue-500/20 text-blue-400 text-[10px] font-bold uppercase tracking-wider mb-3 w-fit">
-                          Products
-                        </div>
-                        <h3 className="text-xl font-bold mb-2">Download & Use My Apps</h3>
-                        <p className="text-white/50 text-sm max-w-[250px] mb-4">Get access to my premium SaaS tools, free apps, and open-source models.</p>
-                        <div className="flex items-center gap-2 text-blue-400 text-xs font-bold group-hover/apps:gap-3 transition-all">
-                          <span>Browse Products</span>
-                          <ArrowRight size={14} />
-                        </div>
-                      </div>
-                    </BentoCard>
-                    
-                    {/* Projects Shortcut */}
-                    <BentoCard size="2x1" className="group cursor-pointer hover:bg-white/[0.04] transition-colors relative overflow-hidden" onClick={() => { setActiveTab('Projects'); setActiveProjectCategory(null); }}>
-                      <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <AppWindow size={100} />
-                      </div>
-                      <div className="relative z-10 h-full flex flex-col">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
-                              <AppWindow size={20} />
-                            </div>
-                            <h3 className="text-xl font-bold">View My Portfolio</h3>
-                          </div>
-                          <ArrowRight size={20} className="text-white/30 group-hover:text-white transition-colors group-hover:translate-x-1" />
-                        </div>
-                        <p className="text-white/50 text-sm mb-auto max-w-sm">Explore SaaS platforms, mobile apps, games, and open-source AI tools I've built.</p>
-                        
-                        <div className="flex gap-2 mt-4">
-                          <button onClick={(e) => { e.stopPropagation(); setActiveTab('Projects'); setActiveProjectCategory('Apps & Dev'); }} className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-medium flex items-center gap-1.5 transition-colors"><Code2 size={14}/> Apps</button>
-                          <button onClick={(e) => { e.stopPropagation(); setActiveTab('Projects'); setActiveProjectCategory('Interactive Experiences'); }} className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-medium flex items-center gap-1.5 transition-colors"><Gamepad2 size={14}/> Games</button>
-                          <button onClick={(e) => { e.stopPropagation(); setActiveTab('Projects'); setActiveProjectCategory('Web Development Projects'); }} className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-medium flex items-center gap-1.5 transition-colors"><Globe size={14}/> Web</button>
-                        </div>
-                      </div>
-                    </BentoCard>
-
-                    {/* Live Automation Feed */}
-                    <LiveAutomationFeed />
-
-                    {/* Stats Widget */}
-                    <BentoCard size="1x1" className="bg-indigo-500/5 border-indigo-500/10">
-                      <div className="flex flex-col h-full justify-between">
-                        <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
-                          <Users size={20} />
-                        </div>
-                        <div>
-                          <h3 className="text-3xl font-bold tracking-tighter">100+</h3>
-                          <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Happy Clients</p>
-                        </div>
-                        <div className="flex -space-x-2">
-                          {[1, 2, 3, 4].map(i => (
-                            <div key={i} className="w-6 h-6 rounded-full border-2 border-[#050505] bg-white/10 flex items-center justify-center text-[8px] font-bold">
-                              {String.fromCharCode(64 + i)}
-                            </div>
-                          ))}
-                          <div className="w-6 h-6 rounded-full border-2 border-[#050505] bg-indigo-500 flex items-center justify-center text-[8px] font-bold">
-                            +
-                          </div>
-                        </div>
-                      </div>
-                    </BentoCard>
-
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Category 3: Work With Me (Hire & Consult) */}
-              {(!compactHomeView || activeHomeSection === 'Work') && (
-                <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{duration: 0.4}}>
-                  {!compactHomeView && (
-                    <h3 className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-                      <Briefcase size={12} className="text-emerald-400" /> Work With Me
-                    </h3>
-                  )}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-[minmax(180px,auto)]">
-                    
-                    {/* Calendar / Consultation Widget */}
-                    <BentoCard size="1x1" className="bg-amber-500/5 border-amber-500/10 group/cal cursor-pointer" onClick={() => window.open('https://calendly.com/digital-b3asts/quick-free-consultation', '_blank')}>
-                      <div className="flex flex-col h-full">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 group-hover/cal:scale-110 transition-transform">
-                            <Zap size={20} />
-                          </div>
-                          <span className="text-[8px] text-white/20 uppercase font-bold tracking-widest">Consulting</span>
-                        </div>
-                        <h3 className="font-bold text-lg mb-1">Book a Strategy Call</h3>
-                        <p className="text-xs text-white/40 font-light mb-auto">Need expert advice? Let's discuss your automation or SaaS needs.</p>
-                        <div className="flex items-center gap-2 text-amber-400 text-[10px] font-bold uppercase tracking-widest mt-4 group-hover/cal:gap-3 transition-all">
-                          <span>Schedule 15-Min Call</span>
-                          <ArrowRight size={14} />
-                        </div>
-                      </div>
-                    </BentoCard>
-
-                    {/* Hire Me Widget */}
-                    <BentoCard size="1x1" className="bg-emerald-500/5 border-emerald-500/10 group/hire cursor-pointer" onClick={() => setActiveTab('Connect')}>
-                      <div className="flex flex-col h-full">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover/hire:scale-110 transition-transform">
-                            <Briefcase size={20} />
-                          </div>
-                          <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-emerald-500/20 text-[8px] text-emerald-400 font-bold uppercase tracking-widest">
-                            <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-                            Available
-                          </div>
-                        </div>
-                        <h3 className="font-bold text-lg mb-1">Start a Project</h3>
-                        <p className="text-xs text-white/40 font-light mb-auto">Looking for a dedicated developer to build your next big idea?</p>
-                        <div className="flex items-center gap-2 text-emerald-400 text-[10px] font-bold uppercase tracking-widest mt-4 group-hover/hire:gap-3 transition-all">
-                          <span>Request a Proposal</span>
-                          <ArrowRight size={14} />
-                        </div>
-                      </div>
-                    </BentoCard>
-
-                    {/* Automation Shortcut */}
-                    <BentoCard size="2x1" className="group cursor-pointer hover:bg-white/[0.04] transition-colors relative overflow-hidden" onClick={() => setActiveTab('Automation')}>
-                      <div className="absolute right-0 bottom-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity translate-x-4 translate-y-4">
-                        <Bot size={80} />
-                      </div>
-                      <div className="relative z-10 h-full flex flex-col justify-center">
-                        <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider mb-3 w-fit">
-                          Services
-                        </div>
-                        <h3 className="text-xl font-bold mb-2">Automate Your Business</h3>
-                        <p className="text-white/50 text-sm max-w-[250px] mb-4">Save 100+ hours/month with custom n8n workflows and AI systems.</p>
-                        <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold group-hover:gap-3 transition-all">
-                          <span>View Automation Services</span>
-                          <ArrowRight size={14} />
-                        </div>
-                      </div>
-                    </BentoCard>
-
-                  </div>
-                </motion.div>
-              )}
-
-            </div>
-          </div>
-        );
-
-      case 'Apps':
-      case 'Projects': {
-        if (isInImmersiveMode && activeTab === 'Apps') {
-          const immersiveCategories = ['All', 'Pro Business Suite', 'AI Solutions', 'Apps & Dev', 'Interactive Experiences', 'My Personal Apps'];
-          
-          return (
-            <div className="flex flex-col md:flex-row gap-8 min-h-screen pb-20 w-full px-4 md:px-8 mt-8">
-              {/* Floating Sidebar */}
-              <aside className="w-full md:w-64 lg:w-72 shrink-0">
-                <div className="sticky top-8 glass backdrop-blur-3xl border border-white/10 rounded-[2rem] p-6 flex flex-col gap-8 shadow-2xl">
-                  <div className="flex items-center gap-3">
-                    <button 
-                      onClick={() => {
-                        setIsInImmersiveMode(false);
-                        setSearchQuery('');
-                        setProjectFilter([]);
-                      }} 
-                      className="p-2.5 rounded-full bg-white/5 hover:bg-white/10 transition-all border border-white/10 group"
-                    >
-                      <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-                    </button>
-                    <div>
-                      <h2 className="text-xl font-bold tracking-tight">App Gallery</h2>
-                      <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">{activeTab}</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-6">
-                    <div className="relative group">
-                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-indigo-400 transition-colors" size={16} />
-                      <input 
-                        type="text" 
-                        placeholder="Search projects..." 
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-indigo-500/50 transition-all focus:bg-white/10"
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3 px-1">Categories</h3>
-                      <div className="flex flex-col gap-1">
-                        {immersiveCategories.map((cat) => {
-                          const isActive = (cat === 'All' && !activeProjectCategory) || activeProjectCategory === cat;
-                          const catProjects = cat === 'All' ? projects.filter(p => immersiveCategories.includes(p.mainCategory) || (p as any).categories?.some((c: string) => immersiveCategories.includes(c))) : projects.filter(p => p.mainCategory === cat || (p as any).categories?.includes(cat));
-                          const catTags = cat === 'All' ? [] : Array.from(new Set(catProjects.flatMap(p => p.tags)));
-                          
-                          return (
-                            <div key={cat} className="flex flex-col gap-1">
-                              <button
-                                onClick={() => {
-                                  setActiveProjectCategory(cat === 'All' ? null : cat as ProjectCategory);
-                                  setProjectFilter([]);
-                                }}
-                                className={cn(
-                                  "px-4 py-3 rounded-xl text-xs font-bold transition-all text-left border flex items-center justify-between group",
-                                  isActive
-                                    ? "bg-white text-black border-white shadow-lg shadow-white/10" 
-                                    : "bg-transparent text-white/60 border-transparent hover:bg-white/5 hover:text-white"
-                                )}
-                              >
-                                <span>{cat}</span>
-                                <span className={cn(
-                                  "text-[10px] px-2 py-0.5 rounded-full font-bold",
-                                  isActive ? "bg-black/10 text-black" : "bg-white/10 text-white/40 group-hover:bg-white/20 group-hover:text-white"
-                                )}>
-                                  {catProjects.length}
-                                </span>
-                              </button>
-                              
-                              {/* Subcategories (Tags) */}
-                              <AnimatePresence>
-                                {isActive && cat !== 'All' && catTags.length > 0 && (
-                                  <motion.div 
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: 'auto', opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    className="pl-4 py-2 flex flex-col gap-1 border-l border-white/10 ml-2 mt-1 overflow-hidden"
-                                  >
-                                    <button
-                                      onClick={() => setProjectFilter([])}
-                                      className={cn(
-                                        "text-left text-[10px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all flex items-center justify-between", 
-                                        projectFilter.length === 0 ? "bg-white/10 text-white" : "text-white/40 hover:text-white hover:bg-white/5"
-                                      )}
-                                    >
-                                      <span>All {cat}</span>
-                                      <span className="opacity-50">({catProjects.length})</span>
-                                    </button>
-                                    {catTags.map(tag => {
-                                      const tagCount = catProjects.filter(p => p.tags.includes(tag)).length;
-                                      return (
-                                      <button
-                                        key={tag}
-                                        onClick={() => setProjectFilter(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag])}
-                                        className={cn(
-                                          "text-left text-[10px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all flex items-center justify-between",
-                                          projectFilter.includes(tag) ? "bg-white/10 text-white" : "text-white/40 hover:text-white hover:bg-white/5"
-                                        )}
-                                      >
-                                        <span>{tag}</span>
-                                        <span className="opacity-50">({tagCount})</span>
-                                      </button>
-                                    )})}
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    <div className="space-y-2 pt-4 border-t border-white/10">
-                      <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3 px-1">View Mode</h3>
-                      <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10">
-                        <button 
-                          onClick={() => setViewMode('grid')}
-                          className={cn("flex-1 flex justify-center items-center gap-2 py-2 rounded-xl transition-all text-xs font-bold", viewMode === 'grid' ? "bg-white/10 text-white shadow-sm" : "text-white/40 hover:text-white")}
-                        >
-                          <LayoutGrid size={14} /> Grid
-                        </button>
-                        <button 
-                          onClick={() => setViewMode('list')}
-                          className={cn("flex-1 flex justify-center items-center gap-2 py-2 rounded-xl transition-all text-xs font-bold", viewMode === 'list' ? "bg-white/10 text-white shadow-sm" : "text-white/40 hover:text-white")}
-                        >
-                          <List size={14} /> List
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </aside>
-
-              {/* Main Content Area */}
-              <div className="flex-1 min-w-0">
-                {filteredProjects.length === 0 ? (
-                  <div className="py-20 text-center glass rounded-[3rem] border border-white/5">
-                    <div className="w-20 h-20 rounded-3xl bg-white/5 flex items-center justify-center mx-auto mb-6 text-white/10">
-                      <Search size={40} />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-2">No results found</h3>
-                    <p className="text-white/40">Try adjusting your search or filters to find what you're looking for.</p>
-                    <button 
-                      onClick={() => { setSearchQuery(''); setProjectFilter([]); setActiveProjectCategory(null); }}
-                      className="mt-8 px-6 py-3 rounded-xl bg-indigo-500 text-white font-bold hover:bg-indigo-400 transition-all"
-                    >
-                      Clear All Filters
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex flex-col gap-6">
-                    <div className="mb-2">
-                      <h2 className="text-3xl font-bold text-white mb-2">
-                        {projectFilter.length === 0 ? `All ${activeTab}` : projectFilter.join(', ')}
-                      </h2>
-                      <p className="text-white/50 text-sm">
-                        {projectFilter.length === 0 ? categoryDescriptions['All'] : `Explore projects related to ${projectFilter.join(', ')}.`}
-                      </p>
-                    </div>
-                    <div className={cn(
-                      "gap-6",
-                      viewMode === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3" : "grid grid-cols-1 xl:grid-cols-2"
-                    )}>
-                      <AnimatePresence mode="popLayout">
-                      {filteredProjects.map((p, i) => (
-                        <motion.div
-                          key={p.name}
-                          layout
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.9 }}
-                          transition={{ duration: 0.3, delay: i * 0.05 }}
-                        >
-                          <BentoCard 
-                            size="1x1" 
-                            className={cn(
-                              p.bg, 
-                              "border-white/5 cursor-pointer relative overflow-hidden group/project",
-                              viewMode === 'grid' ? "h-[450px] p-0" : "h-auto p-4 flex flex-col sm:flex-row items-start sm:items-center gap-6"
-                            )}
-                            onClick={() => openProjectModal(p)}
-                            background={p.url !== '#' || (p.previewUrl && p.previewUrl.includes('youtube.com/embed/')) ? (
-                              <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[2rem]">
-                                <img 
-                                  src={p.url !== '#' 
-                                    ? `https://image.thum.io/get/width/800/crop/800/noanimate/${p.url}`
-                                    : `https://img.youtube.com/vi/${p.previewUrl.split('/').pop()}/maxresdefault.jpg`
-                                  }
-                                  alt={p.name}
-                                  className="w-full h-full object-cover opacity-60 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
-                                  loading="lazy"
-                                  referrerPolicy="no-referrer"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/90 to-transparent" />
-                              </div>
-                            ) : null}
-                          >
-                            <div className={cn(
-                              "relative z-10 h-full w-full flex flex-col",
-                              viewMode === 'grid' ? "justify-end p-6" : "sm:flex-row items-start sm:items-center gap-4"
-                            )}>
-                              {viewMode === 'grid' ? (
-                                <>
-                                  <div className="flex justify-between items-start mb-auto">
-                                    <div className={cn("p-3 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10", p.color)}>
-                                      {p.icon}
-                                    </div>
-                                    <div className="flex flex-col items-end gap-2">
-                                      <span className={cn("text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider backdrop-blur-md border border-white/10 shadow-lg", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
-                                        {p.pricing}
-                                      </span>
-                                      {p.status && (
-                                        <span className={cn(
-                                          "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter backdrop-blur-md border border-white/10 shadow-lg",
-                                          p.status === 'Development' ? "bg-amber-500/20 text-amber-400" :
-                                          p.status === 'Beta' ? "bg-blue-500/20 text-blue-400" :
-                                          "bg-emerald-500/20 text-emerald-400"
-                                        )}>
-                                          {p.status}
-                                        </span>
-                                      )}
-                                    </div>
-                                  </div>
-
-                                  <div className="mt-4">
-                                    <h3 className="font-bold text-2xl group-hover/project:text-indigo-400 transition-colors mb-2 line-clamp-1">{p.name}</h3>
-                                    <p className="text-sm text-white/70 font-light leading-relaxed line-clamp-2 mb-4">{p.desc}</p>
-                                    
-                                    <div className="flex flex-wrap items-center gap-2 mb-4">
-                                      {p.tags.slice(0, 3).map(tag => (
-                                        <span key={tag} className="px-2 py-1 rounded-md bg-white/5 text-[9px] text-white/50 font-medium uppercase tracking-wider border border-white/5">
-                                          {tag}
-                                        </span>
-                                      ))}
-                                    </div>
-
-                                    <div className="flex items-center justify-between">
-                                      <div className="text-[10px] font-bold text-white/40 group-hover:text-white transition-colors flex items-center gap-2">
-                                        <span>{p.mainCategory === 'My Personal Apps' ? 'Watch Preview' : 'View Project'}</span>
-                                        <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-                                      </div>
-                                      <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center group-hover/project:bg-indigo-500 group-hover/project:text-white transition-all shadow-xl">
-                                        {p.mainCategory === 'My Personal Apps' ? <Play size={16} fill="currentColor" /> : <ArrowRight size={16} />}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </>
-                              ) : (
-                                <>
-                                  <div className="flex items-start gap-4 shrink-0">
-                                    <div className={cn("p-3 rounded-2xl bg-black/20 backdrop-blur-md", p.color)}>
-                                      {p.icon}
-                                    </div>
-                                  </div>
-                                  
-                                  <div className="flex-1">
-                                    <div className="flex items-center gap-2 mb-1">
-                                      <span className="text-[10px] text-white/40 uppercase tracking-widest">{p.mainCategory}</span>
-                                    </div>
-                                    <div className="flex items-center gap-3 mb-2">
-                                      <h3 className="font-bold text-lg group-hover/project:text-indigo-400 transition-colors">{p.name}</h3>
-                                      {p.status && (
-                                        <span className={cn(
-                                          "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter block",
-                                          p.status === 'Development' ? "bg-amber-500/20 text-amber-400" :
-                                          p.status === 'Beta' ? "bg-blue-500/20 text-blue-400" :
-                                          "bg-emerald-500/20 text-emerald-400"
-                                        )}>
-                                          {p.status}
-                                        </span>
-                                      )}
-                                    </div>
-                                    <p className="text-sm text-white/60 font-light leading-relaxed line-clamp-2 mb-2">{p.desc}</p>
-                                    
-                                    <div className="flex items-center gap-2">
-                                      <div className="flex gap-1">
-                                        {p.tags.slice(0, 4).map(tag => (
-                                          <span key={tag} className="px-2 py-0.5 rounded-md bg-white/5 text-[8px] text-white/40 font-bold uppercase tracking-tighter border border-white/5">
-                                            {tag}
-                                          </span>
-                                        ))}
-                                        {p.tags.length > 4 && (
-                                          <span className="px-2 py-0.5 rounded-md bg-white/5 text-[8px] text-white/40 font-bold uppercase tracking-tighter border border-white/5">
-                                            +{p.tags.length - 4}
-                                          </span>
-                                        )}
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div className="flex flex-col items-end gap-2 shrink-0 ml-auto">
-                                    <span className={cn("text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
-                                      {p.pricing}
-                                    </span>
-                                    <div className="mt-auto p-2 rounded-full bg-white/5 text-white/40 group-hover/project:bg-white/10 group-hover/project:text-white transition-all">
-                                      <ArrowRight size={16} className="group-hover/project:-rotate-45 transition-transform" />
-                                    </div>
-                                  </div>
-
-                                  {/* List View Image Preview */}
-                                  <div className="hidden sm:block relative w-40 h-28 rounded-xl overflow-hidden shrink-0 border border-white/10 ml-2">
-                                    {p.url !== '#' || (p.previewUrl && p.previewUrl.includes('youtube.com/embed/')) ? (
-                                      <img 
-                                        src={p.url !== '#' 
-                                          ? `https://image.thum.io/get/width/400/crop/400/noanimate/${p.url}`
-                                          : `https://img.youtube.com/vi/${p.previewUrl.split('/').pop()}/maxresdefault.jpg`
-                                        }
-                                        alt={p.name}
-                                        className="w-full h-full object-cover opacity-60 group-hover/project:opacity-100 transition-all duration-500 group-hover/project:scale-110"
-                                        loading="lazy"
-                                        referrerPolicy="no-referrer"
-                                      />
-                                    ) : (
-                                      <div className="w-full h-full bg-white/5 flex items-center justify-center">
-                                        <div className="opacity-20 scale-150">
-                                          {p.icon}
-                                        </div>
-                                      </div>
-                                    )}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/80 to-transparent opacity-50" />
-                                  </div>
-                                </>
-                              )}
-                            </div>
-                          </BentoCard>
-                        </motion.div>
-                      ))}
-                    </AnimatePresence>
-                  </div>
-                </div>
-                )}
-              </div>
-            </div>
-          );
-        }
-
-        if (!activeProjectCategory) {
-          if (activeTab === 'Projects') {
-            return (
-              <div className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
-                  <BentoCard size="2x1" onClick={() => setActiveProjectCategory('Pro Business Suite')} className="md:col-span-2 cursor-pointer hover:bg-blue-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Briefcase size={160} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-blue-500/20 flex items-center justify-center text-blue-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Briefcase size={24} />
-                      </div>
-                      <h3 className="text-3xl font-bold mb-2">Pro Business Suite <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Pro Business Suite' || (p as any).categories?.includes('Pro Business Suite')).length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-md leading-relaxed">Advanced tools for SEO, Ad Campaigns, AI Helpers, and Professional Visualizers. The ultimate admin and advanced work suite.</p>
-                    </div>
-                  </BentoCard>
-
-                  <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Web Development Projects')} className="cursor-pointer hover:bg-purple-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Globe size={120} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Globe size={24} />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2">Web Development <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Web Development Projects').length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-[200px]">Modern digital experiences and scalable web applications.</p>
-                    </div>
-                  </BentoCard>
-
-                  <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Video & Motion Graphics')} className="cursor-pointer hover:bg-pink-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Video size={120} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-pink-500/20 flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Video size={24} />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2">Video & Motion <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Video & Motion Graphics').length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-[200px]">A showcase of my video editing, motion graphics, and VFX work.</p>
-                    </div>
-                  </BentoCard>
-
-                  <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Graphics & Marketing')} className="cursor-pointer hover:bg-orange-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Palette size={120} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-orange-500/20 flex items-center justify-center text-orange-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Palette size={24} />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2">Graphics & Marketing <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Graphics & Marketing').length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-[200px]">Design assets, marketing campaigns, and brand identities.</p>
-                    </div>
-                  </BentoCard>
-                </div>
-              </div>
-            );
-          } else {
-            return (
-              <div className="space-y-8">
-                <div className="relative overflow-hidden rounded-[2.5rem] p-[2px] group">
-                  <div className="absolute inset-0 bg-indigo-500/20 rounded-[2.5rem]" />
-                  <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_270deg,#6366f1_300deg,#a855f7_330deg,#ec4899_360deg)] animate-border-spin blur-md opacity-70" />
-                  <div className="relative h-full w-full bg-[#050505] rounded-[calc(2.5rem-2px)] p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between overflow-hidden gap-6">
-                    <div className="absolute inset-0 bg-indigo-500/5" />
-                    <div className="relative z-10">
-                      <h3 className="text-3xl font-bold mb-2">Immersive App Gallery</h3>
-                      <p className="text-white/50 text-base max-w-xl font-light">Experience my apps in a focused, full-screen gallery with advanced search and filtering.</p>
-                    </div>
-                    <button 
-                      onClick={() => setIsInImmersiveMode(true)}
-                      className="relative z-10 px-8 py-4 rounded-2xl bg-indigo-500 text-white font-bold hover:bg-indigo-400 transition-all shadow-xl shadow-indigo-500/20 flex items-center gap-3 group-hover:scale-105 shrink-0"
-                    >
-                      <Rocket size={20} />
-                      <span>Enter Gallery</span>
-                    </button>
-                  </div>
-                </div>
-
-                <div className="bg-amber-500/10 border border-amber-500/20 py-3 px-4 md:px-6 rounded-full flex items-center gap-4 overflow-hidden relative">
-                  <div className="flex items-center gap-2 text-amber-400 shrink-0 z-10 bg-[#050505] pr-2 md:pr-4 py-1 rounded-full">
-                    <Activity size={18} />
-                    <span className="font-bold text-xs md:text-sm whitespace-nowrap">Development Status</span>
-                  </div>
-                  <div className="flex-1 overflow-hidden relative flex items-center [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-                    <div className="flex whitespace-nowrap animate-marquee text-amber-400/70 text-xs md:text-sm">
-                      <span className="mx-4">Some apps are complete and some are still under development.</span>
-                      <span className="mx-4">•</span>
-                      <span className="mx-4">If you face any issues, contact us or wait until the development is finished or the problem is fixed.</span>
-                      <span className="mx-4">•</span>
-                      <span className="mx-4">Some apps are complete and some are still under development.</span>
-                      <span className="mx-4">•</span>
-                      <span className="mx-4">If you face any issues, contact us or wait until the development is finished or the problem is fixed.</span>
-                      <span className="mx-4">•</span>
-                      <span className="mx-4">Some apps are complete and some are still under development.</span>
-                      <span className="mx-4">•</span>
-                      <span className="mx-4">If you face any issues, contact us or wait until the development is finished or the problem is fixed.</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="text-center md:text-left mb-8">
-                  <h2 className="text-3xl font-bold mb-4">Apps & Tools</h2>
-                  <p className="text-white/60 max-w-2xl">
-                    Here I build apps, games, tools, and experiences for you, the community, and my own self too.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
-                  <BentoCard size="2x1" onClick={() => setActiveProjectCategory('Pro Business Suite')} className="md:col-span-2 cursor-pointer hover:bg-blue-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Briefcase size={160} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-blue-500/20 flex items-center justify-center text-blue-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Briefcase size={24} />
-                      </div>
-                      <h3 className="text-3xl font-bold mb-2">Pro Business Suite <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Pro Business Suite' || (p as any).categories?.includes('Pro Business Suite')).length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-md leading-relaxed">Advanced tools for SEO, Ad Campaigns, AI Helpers, and Professional Visualizers. The ultimate admin and advanced work suite.</p>
-                    </div>
-                  </BentoCard>
-
-                  <BentoCard size="1x1" onClick={() => setActiveProjectCategory('AI Solutions')} className="cursor-pointer hover:bg-emerald-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Brain size={120} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Brain size={24} />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2">AI Solutions <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'AI Solutions').length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-[200px]">Enterprise-grade AI Platforms, LLM Tools, and Agents.</p>
-                    </div>
-                  </BentoCard>
-
-                  <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Apps & Dev')} className="cursor-pointer hover:bg-indigo-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Code2 size={120} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Code2 size={24} />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2">Apps & Dev <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Apps & Dev').length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-[200px]">SaaS, Mobile Apps, AI Tools & Open Source Repos.</p>
-                    </div>
-                  </BentoCard>
-
-                  <BentoCard size="1x1" onClick={() => setActiveProjectCategory('Interactive Experiences')} className="cursor-pointer hover:bg-cyan-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Gamepad2 size={120} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Gamepad2 size={24} />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2">Interactive <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'Interactive Experiences').length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-[200px]">Games, 3D environments, and interactive storytelling.</p>
-                    </div>
-                  </BentoCard>
-
-                  <BentoCard size="2x1" onClick={() => setActiveProjectCategory('My Personal Apps')} className="md:col-span-2 cursor-pointer hover:bg-rose-500/10 transition-colors group relative overflow-hidden">
-                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Lock size={160} />
-                    </div>
-                    <div className="relative z-10 flex flex-col h-full justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-rose-500/20 flex items-center justify-center text-rose-400 mb-4 group-hover:scale-110 transition-transform">
-                        <Lock size={24} />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2">My Personal Apps <span className="text-white/30 text-lg">({projects.filter(p => p.mainCategory === 'My Personal Apps').length})</span></h3>
-                      <p className="text-white/50 text-sm max-w-[300px]">Special apps currently not published, giving a glimpse into my personal builds and experiments.</p>
-                    </div>
-                  </BentoCard>
-                </div>
-              </div>
-            );
-          }
-        }
-
-        const categoryProjects = projects.filter(p => p.mainCategory === activeProjectCategory || (p as any).categories?.includes(activeProjectCategory));
-        const categoryTags = ['All', ...Array.from(new Set(categoryProjects.flatMap(p => p.tags)))];
-
-        return (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
-              <div className="flex items-center gap-4">
-                <button onClick={() => { setActiveProjectCategory(null); setProjectFilter([]); setSearchQuery(''); }} className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors">
-                  <ArrowLeft size={20} />
-                </button>
-                <div>
-                  <h2 className="text-2xl font-bold">{activeProjectCategory} <span className="text-white/30 text-lg">({categoryProjects.length})</span></h2>
-                  <p className="text-sm text-white/50">Explore my work in this category.</p>
-                </div>
-              </div>
-              
-              <div className="relative group w-full sm:w-64">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-indigo-400 transition-colors" size={16} />
-                <input 
-                  type="text" 
-                  placeholder="Search projects..." 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-2 pl-11 pr-4 text-sm focus:outline-none focus:border-indigo-500/50 transition-all focus:bg-white/10"
-                />
-              </div>
-            </div>
-
-            {categoryTags.length > 1 && (
-              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
-                {categoryTags.map((f) => {
-                  const count = f === 'All' ? categoryProjects.length : categoryProjects.filter(p => p.tags.includes(f)).length;
-                  const isSelected = f === 'All' ? projectFilter.length === 0 : projectFilter.includes(f);
-                  return (
-                  <button
-                    key={f}
-                    onClick={() => {
-                      if (f === 'All') {
-                        setProjectFilter([]);
-                      } else {
-                        setProjectFilter(prev => prev.includes(f) ? prev.filter(t => t !== f) : [...prev, f]);
-                      }
-                    }}
-                    className={cn(
-                      "px-4 py-2 rounded-2xl text-xs font-medium transition-all whitespace-nowrap flex items-center gap-1.5",
-                      isSelected ? "bg-white text-black" : "bg-white/5 text-white/40 hover:bg-white/10"
-                    )}
-                  >
-                    <span>{f}</span>
-                    <span className={cn("opacity-50", isSelected ? "text-black/50" : "text-white/30")}>({count})</span>
-                  </button>
-                )})}
-              </div>
-            )}
-
-            {filteredProjects.length === 0 ? (
-              <div className="py-12 text-center border border-white/5 rounded-3xl bg-white/[0.02]">
-                <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4 text-white/20">
-                  <AppWindow size={32} />
-                </div>
-                <h3 className="text-xl font-bold mb-2">No projects yet</h3>
-                <p className="text-white/50">I'm currently working on exciting things for this category.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(180px,auto)]">
-                {isLoading ? (
-                  Array.from({ length: 6 }).map((_, i) => (
-                    <SkeletonCard key={i} size={i === 0 && projectFilter.length === 0 ? "2x1" : "1x1"} />
-                  ))
-                ) : (
-                  <AnimatePresence mode="popLayout">
-                    {filteredProjects.map((p, i) => (
-                      <BentoCard 
-                        key={p.name} 
-                        size={i === 0 && projectFilter.length === 0 ? "2x1" : "1x1"} 
-                        className={cn(p.bg, "border-white/5 cursor-pointer relative overflow-hidden group/project h-[400px] p-0")}
-                        onClick={() => openProjectModal(p)}
-                        background={p.url !== '#' || (p.previewUrl && p.previewUrl.includes('youtube.com/embed/')) ? (
-                          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[2rem]">
-                            <img 
-                              src={p.url !== '#' 
-                                ? `https://image.thum.io/get/width/800/crop/800/noanimate/${p.url}`
-                                : `https://img.youtube.com/vi/${p.previewUrl.split('/').pop()}/maxresdefault.jpg`
-                              }
-                              alt={p.name}
-                              className="w-full h-full object-cover opacity-60 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
-                              loading="lazy"
-                              referrerPolicy="no-referrer"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/90 to-transparent" />
-                          </div>
-                        ) : null}
-                      >
-                        <div className="flex flex-col h-full relative z-10 p-6 justify-end">
-                          <div className="flex justify-between items-start mb-auto">
-                            <div className={cn("p-2 rounded-xl bg-black/40 backdrop-blur-md border border-white/10", p.color)}>
-                              {p.icon}
-                            </div>
-                            <div className="flex flex-col items-end gap-1">
-                              <span className={cn("text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter backdrop-blur-md border border-white/10", p.pricing === 'Paid' ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400")}>
-                                {p.pricing} {p.price && `(${p.price})`}
-                              </span>
-                              {p.status && (
-                                <span className={cn(
-                                  "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter backdrop-blur-md border border-white/10",
-                                  p.status === 'Development' ? "bg-amber-500/20 text-amber-400" :
-                                  p.status === 'Beta' ? "bg-blue-500/20 text-blue-400" :
-                                  "bg-emerald-500/20 text-emerald-400"
-                                )}>
-                                  {p.status}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                          
-                          <div className="mt-4">
-                            <h3 className="font-bold text-xl mb-1 group-hover/project:text-indigo-400 transition-colors">{p.name}</h3>
-                            <p className="text-xs text-white/70 line-clamp-2 font-light mb-4">{p.desc}</p>
-                            
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2 text-[10px] font-bold text-white/40 group-hover:text-white transition-colors">
-                                <span>{p.mainCategory === 'My Personal Apps' ? 'Watch Preview' : 'View Project'}</span>
-                                <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-                              </div>
-                              <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center group-hover/project:bg-indigo-500 group-hover/project:text-white transition-all shadow-xl">
-                                {p.mainCategory === 'My Personal Apps' ? <Play size={16} fill="currentColor" /> : <ArrowRight size={16} />}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </BentoCard>
-                    ))}
-                  </AnimatePresence>
-                )}
-              </div>
-            )}
-          </div>
-        );
-      }
+        return <Links setActiveTab={setActiveTab} />;
 
       case 'Journal':
         return (
-          <div className="space-y-12 pb-20 max-w-7xl mx-auto px-4">
+          <div className="space-y-12 pb-20 max-w-[1400px] mx-auto px-4">
             <header className="pt-20 text-center space-y-4">
               <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">The <span className="text-emerald-400">Journal</span></h1>
               <p className="text-white/50 text-xl max-w-2xl mx-auto font-light">
@@ -1862,7 +791,7 @@ export default function App() {
 
       case 'Journal':
         return (
-          <div className="space-y-12 pb-20 max-w-7xl mx-auto px-4">
+          <div className="space-y-12 pb-20 max-w-[1400px] mx-auto px-4">
             <header className="pt-20 text-center space-y-4">
               <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">The <span className="text-emerald-400">Journal</span></h1>
               <p className="text-white/50 text-xl max-w-2xl mx-auto font-light">
@@ -1995,7 +924,7 @@ export default function App() {
 
       case 'Journal':
         return (
-          <div className="space-y-12 pb-20 max-w-7xl mx-auto px-4">
+          <div className="space-y-12 pb-20 max-w-[1400px] mx-auto px-4">
             <header className="pt-20 text-center space-y-4">
               <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">The <span className="text-emerald-400">Journal</span></h1>
               <p className="text-white/50 text-xl max-w-2xl mx-auto font-light">
@@ -2919,84 +1848,103 @@ export default function App() {
       (isInImmersiveMode || activeTab === 'Home' || activeTab === 'Vortex') ? "py-0 px-0 relative top-0" : "py-12 px-4 md:py-20"
     )}>
       {!hideCustomCursor && <CustomCursor />}
-      {/* Header / Navigation */}
-      {!isInImmersiveMode && (
-        <header className="w-full mb-12 sticky top-6 md:top-8 z-50 px-4 flex justify-center">
-          <nav 
-            ref={navRef}
-            className="glass rounded-full p-1.5 flex items-center gap-1 overflow-x-auto no-scrollbar shadow-2xl border border-white/10 max-w-full backdrop-blur-2xl"
+      {/* Headers / Navigation */}
+      
+      {/* 1. Main Minimal Floating Header for normal pages */}
+      {!isInImmersiveMode && activeTab !== 'Links' && activeTab !== 'Vortex' && (
+        <header className="w-full mb-12 sticky top-6 md:top-8 z-50 px-4 flex justify-center pointer-events-none">
+          <motion.nav 
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="glass bg-[#050505]/80 backdrop-blur-3xl rounded-2xl border border-white/5 p-1.5 flex items-center shadow-2xl pointer-events-auto max-w-full"
           >
-            {/* Animated Logo */}
-            <div className="relative w-10 h-10 md:w-12 md:h-12 ml-1 mr-2 group cursor-pointer flex-shrink-0 flex items-center justify-center rounded-full bg-white/5 border border-white/10 overflow-hidden transition-all duration-500 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]">
-              {/* Outer rotating ring for tech feel */}
-              <div className="absolute inset-0 border-2 border-dashed border-white/20 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-[spin_4s_linear_infinite] transition-opacity duration-500" />
-              
-              <img 
-                src={logo1} 
-                alt="Logo" 
-                className="absolute inset-0 w-full h-full p-2 md:p-2.5 object-contain transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-50 group-hover:opacity-0 group-hover:-rotate-90"
-              />
-              <img 
-                src={logo2} 
-                alt="Logo Hover" 
-                className="absolute inset-0 w-full h-full p-2 md:p-2.5 object-contain opacity-0 scale-150 rotate-90 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-100 group-hover:opacity-100 group-hover:rotate-0"
-              />
+            <div className="flex items-center gap-2 pr-3 border-r border-white/10 shrink-0">
+               <button 
+                 onClick={() => setActiveTab('Home')}
+                 className="relative w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
+               >
+                 <img src={logo1} alt="Logo" className="w-5 h-5 object-contain" />
+               </button>
             </div>
             
-            {/* Divider */}
-            <div className="w-px h-8 bg-white/10 mx-1 flex-shrink-0" />
-
-            {tabs.map((tab) => (
-              <button
-                key={tab.name}
-                data-active={activeTab === tab.name}
-                onClick={() => {
-                  setActiveTab(tab.name);
-                }}
-                className={cn(
-                  "relative rounded-full text-[11px] md:text-sm font-semibold transition-all duration-500 flex items-center justify-center whitespace-nowrap outline-none group",
-                  activeTab === tab.name 
-                    ? "px-5 py-2.5 md:px-7 md:py-3 text-white" 
-                    : "px-3 py-2.5 md:px-4 md:py-3 text-white/30 hover:text-white/60 hover:bg-white/5 hover:px-5 hover:md:px-7"
-                )}
+            <div className="flex items-center gap-1 overflow-x-auto no-scrollbar px-2 max-w-[60vw] md:max-w-[400px]">
+              {tabs.map(tab => (
+                 <button 
+                   key={tab.name}
+                   onClick={() => setActiveTab(tab.name)} 
+                   className={cn(
+                     "px-3 py-1.5 text-[11px] md:text-xs font-semibold rounded-lg transition-all whitespace-nowrap flex items-center gap-1.5", 
+                     activeTab === tab.name ? "bg-white/10 text-white" : "text-white/40 hover:text-white/80 hover:bg-white/5"
+                   )}
+                 >
+                   <span className="opacity-70">{tab.icon}</span>
+                   <span className={cn(activeTab === tab.name ? "block" : "hidden md:block")}>{tab.name}</span>
+                 </button>
+              ))}
+            </div>
+            
+            <div className="pl-3 border-l border-white/10 shrink-0">
+              <button 
+                onClick={() => setIsSettingsOpen(true)} 
+                className="p-1.5 rounded-lg text-white/40 hover:text-white hover:bg-white/5 transition-all"
               >
-                {activeTab === tab.name && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute inset-0 bg-white/10 rounded-full shadow-[0_0_20px_rgba(255,255,255,0.05)]"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-                <span className={cn(
-                  "relative z-10 transition-all duration-300", 
-                  activeTab === tab.name ? "scale-110 mr-2" : "scale-100 group-hover:mr-2"
-                )}>
+                <Settings size={16} />
+              </button>
+            </div>
+          </motion.nav>
+        </header>
+      )}
+
+      {/* 2. Links Page Header (Original Glass Pill style but with social icons) */}
+      {!isInImmersiveMode && activeTab === 'Links' && (
+        <header className="w-full mb-12 sticky top-6 md:top-8 z-50 px-4 flex justify-center">
+          <nav className="glass rounded-full p-1.5 flex items-center gap-1 overflow-x-auto no-scrollbar shadow-2xl border border-white/10 max-w-full backdrop-blur-2xl">
+            <div className="relative w-10 h-10 md:w-12 md:h-12 ml-1 mr-2 flex-shrink-0 flex items-center justify-center rounded-full bg-white/5 border border-white/10">
+              <img src={logo1} alt="Logo" className="absolute inset-0 w-full h-full p-2 md:p-2.5 object-contain" />
+            </div>
+            
+            <div className="w-px h-8 bg-white/10 mx-1 flex-shrink-0" />
+            
+            {socialTabs.map(tab => (
+              <a 
+                key={tab.name}
+                href={tab.url}
+                target="_blank"
+                rel="noreferrer"
+                className="relative rounded-full text-[11px] md:text-sm font-semibold transition-all duration-300 flex items-center justify-center whitespace-nowrap outline-none group px-3 py-2.5 md:px-4 md:py-3 text-white/30 hover:text-white/80 hover:bg-white/5 hover:px-5 hover:md:px-6"
+              >
+                <span className="relative z-10 transition-transform duration-300 scale-100 group-hover:scale-110 group-hover:mr-2 flex items-center gap-2">
                   {tab.icon}
                 </span>
-                <span className={cn(
-                  "relative z-10 transition-all duration-500 overflow-hidden",
-                  activeTab === tab.name ? "max-w-[100px] opacity-100" : "max-w-0 opacity-0 group-hover:max-w-[100px] group-hover:opacity-100"
-                )}>
+                <span className="relative z-10 transition-all duration-300 overflow-hidden max-w-0 opacity-0 group-hover:max-w-[100px] group-hover:opacity-100">
                   {tab.name}
                 </span>
-              </button>
+              </a>
             ))}
 
-            {/* Divider */}
             <div className="w-px h-8 bg-white/10 mx-1 flex-shrink-0" />
-
-            {/* Settings Button */}
+            
             <button
-              onClick={() => setIsSettingsOpen(true)}
-              className="relative rounded-full text-[11px] md:text-sm font-semibold transition-all duration-500 flex items-center justify-center whitespace-nowrap outline-none group px-3 py-2.5 md:px-4 md:py-3 text-white/30 hover:text-white/60 hover:bg-white/5 hover:px-5 hover:md:px-7"
-              title="Settings"
+              onClick={() => setActiveTab('Home')}
+              className="relative rounded-full text-[11px] md:text-sm font-semibold transition-all duration-300 flex items-center justify-center group px-3 py-2.5 md:px-4 md:py-3 text-white/30 hover:text-white/80 hover:bg-white/5"
+              title="Home"
             >
-              <span className="relative z-10 transition-all duration-300 scale-100 group-hover:rotate-90">
-                <Settings size={18} />
-              </span>
+              <Home size={18} />
             </button>
           </nav>
         </header>
+      )}
+
+      {/* 3. Vortex Header: floating "Go Back" button */}
+      {activeTab === 'Vortex' && (
+        <div className="fixed top-6 left-6 z-50">
+          <button 
+            onClick={() => setActiveTab('Home')} 
+            className="px-5 py-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl text-white/60 hover:text-white hover:bg-white/10 hover:border-white/30 transition-all font-bold tracking-widest text-xs uppercase flex items-center gap-3 shadow-2xl"
+          >
+            <ArrowLeft size={16} /> <span className="hidden md:inline">Go Back</span>
+          </button>
+        </div>
       )}
 
       {/* Main Content */}
