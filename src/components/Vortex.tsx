@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
 
 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}|:"<>?~`-=[]\\;,./';
 const generateGibberish = (length: number) => {
@@ -102,33 +102,44 @@ const vortexSections = [
 ];
 
 export const Vortex = () => {
+  const { scrollY } = useScroll();
+  const opacity = useTransform(scrollY, [0, 500], [1, 0]);
+  const blur = useTransform(scrollY, [0, 500], ['blur(0px)', 'blur(20px)']);
+  const scale = useTransform(scrollY, [0, 500], [1, 0.9]);
+
   return (
-    <div className="w-full relative bg-[#050505] min-h-screen text-white overflow-hidden pb-40">
+    <div className="w-full relative bg-[#050505] min-h-screen text-white pb-40">
       
       {/* Background grain/texture effect overlay */}
       <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none z-0" 
+        className="absolute inset-0 opacity-[0.03] pointer-events-none z-0 fixed" 
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
         }}
       />
 
       {/* 1. Header Section */}
-      <section className="pt-32 pb-24 flex flex-col items-center text-center max-w-[1200px] mx-auto px-4 md:px-8 relative z-10">
+      <motion.section 
+        style={{ opacity, filter: blur, scale }}
+        className="sticky top-0 h-screen flex flex-col items-center justify-center text-center max-w-[1400px] mx-auto px-4 md:px-8 z-0"
+      >
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
         >
-          <h1 className="text-5xl sm:text-7xl md:text-[6rem] font-black leading-[1.1] tracking-tight text-white mb-8">
-            <GlitchText text="WELCOME TO" /> <br className="hidden sm:block" />
-            <GlitchText text="THE VORTEX" />
+          <h1 className="text-[12vw] md:text-[12rem] font-black leading-[0.85] tracking-tighter text-white/90 mix-blend-plus-lighter">
+            <GlitchText text="WELCOME" /> <br />
+            <GlitchText text="TO" /> <br />
+            <GlitchText text="VORTEX" />
           </h1>
         </motion.div>
-      </section>
+      </motion.section>
 
       {/* 2. Vortex Hubs List */}
-      <section className="max-w-[1000px] mx-auto px-4 md:px-8 space-y-12 relative z-10">
+      <div className="relative z-20 bg-[#050505] pt-32 pb-40 border-t border-white/5 shadow-[0_-40px_60px_rgba(0,0,0,1)] text-white min-h-screen">
+        <div className="absolute inset-0 bg-[#050505] -z-10" />
+        <section className="max-w-[1000px] mx-auto px-4 md:px-8 space-y-12">
         {vortexSections.map((section, idx) => (
           <motion.div
             key={section.title}
@@ -170,7 +181,8 @@ export const Vortex = () => {
             </div>
           </motion.div>
         ))}
-      </section>
+        </section>
+      </div>
 
     </div>
   );
