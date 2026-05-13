@@ -73,4 +73,9 @@
   .animate-border-spin {
     animation: border-spin 15s linear infinite;
   }
+
+  .text-outline-indigo {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(99, 102, 241, 0.5);
+  }
 }

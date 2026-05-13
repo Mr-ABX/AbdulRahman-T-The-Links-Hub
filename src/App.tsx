@@ -62,7 +62,8 @@ import {
   Lock,
   Play,
   Settings,
-  ShoppingBag
+  ShoppingBag,
+  Link as LinkIcon
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -70,6 +71,7 @@ import Lenis from 'lenis';
 
 import { ChatAssistant } from './components/ChatAssistant';
 import { CustomCursor } from './components/CustomCursor';
+import { Home as NewHome } from './components/NewHome';
 
 import { ASSET_LINKS } from './constants/assets';
 
@@ -83,7 +85,7 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-type Category = 'Home' | 'Projects' | 'Apps' | 'Automation' | 'Ebooks' | 'Content' | 'About' | 'Reviews' | 'Connect' | 'Success' | 'Store' | 'Journal' | 'Vortex' | 'Services';
+type Category = 'Home' | 'Links' | 'Projects' | 'Apps' | 'Automation' | 'Ebooks' | 'Content' | 'About' | 'Reviews' | 'Connect' | 'Success' | 'Store' | 'Journal' | 'Vortex' | 'Services';
 type ProjectCategory = 'Apps & Dev' | 'Web Development Projects' | 'Interactive Experiences' | 'Video & Motion Graphics' | 'Graphics & Marketing' | 'AI Solutions' | 'My Personal Apps' | 'Pro Business Suite';
 
 interface BentoCardProps {
@@ -171,6 +173,7 @@ const BentoCard = ({ children, className, size = '1x1', delay = 0, onClick, back
 
 const tabs: { name: Category; icon: React.ReactNode }[] = [
   { name: 'Home', icon: <Home size={18} /> },
+  { name: 'Links', icon: <LinkIcon size={18} /> },
   { name: 'Store', icon: <ShoppingBag size={18} /> },
   { name: 'Apps', icon: <LayoutGrid size={18} /> },
   { name: 'Journal', icon: <Newspaper size={18} /> },
@@ -407,6 +410,7 @@ export default function App() {
     if (path.startsWith('/store')) return 'Store';
     if (path.startsWith('/vortex')) return 'Vortex';
     if (path.startsWith('/services')) return 'Services';
+    if (path.startsWith('/links')) return 'Links';
     return 'Home';
   }, [location.pathname]);
 
@@ -632,6 +636,8 @@ export default function App() {
   const renderContent = () => {
     switch (activeTab) {
       case 'Home':
+        return <NewHome projects={projects} setActiveTab={setActiveTab} />;
+      case 'Links':
         return (
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             {/* Left Column - Tall Profile */}
@@ -2926,7 +2932,7 @@ export default function App() {
   return (
     <div className={cn(
       "min-h-screen mesh-gradient flex flex-col items-center selection:bg-indigo-500/30",
-      isInImmersiveMode ? "py-0 px-0" : "py-12 px-4 md:py-20"
+      (isInImmersiveMode || activeTab === 'Home') ? "py-0 px-0 relative top-0" : "py-12 px-4 md:py-20"
     )}>
       {!hideCustomCursor && <CustomCursor />}
       {/* Header / Navigation */}
@@ -3011,8 +3017,8 @@ export default function App() {
 
       {/* Main Content */}
       <main className={cn(
-        "w-full pt-4 transition-all duration-500",
-        isInImmersiveMode ? "max-w-full" : "max-w-4xl"
+        "w-full transition-all duration-500",
+        (isInImmersiveMode || activeTab === 'Home') ? "max-w-full" : "max-w-4xl pt-4"
       )}>
         <AnimatePresence mode="wait">
           <motion.div
@@ -3376,7 +3382,7 @@ export default function App() {
 
       {/* Footer */}
       {!isInImmersiveMode && (
-        <footer className="mt-32 py-12 border-t border-white/5">
+        <footer className={cn("mt-32 py-12 border-t border-white/5 w-full", activeTab === 'Home' ? "max-w-[1400px] px-8" : "max-w-4xl")}>
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             <div className="flex flex-col items-center md:items-start gap-2">
               <div className="flex items-center gap-3 mb-3">
