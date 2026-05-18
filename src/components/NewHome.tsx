@@ -13,15 +13,15 @@ export const Home = ({ projects, setActiveTab }: { projects: any[], setActiveTab
       <div className="absolute top-[60%] right-[-10%] w-[50%] h-[50%] bg-[#ec4899] opacity-[0.02] blur-[150px] rounded-full pointer-events-none" />
 
       {/* 1. Hero Section */}
-      <section className="min-h-screen pt-40 pb-20 flex flex-col items-center justify-center text-center max-w-[1400px] mx-auto px-4 md:px-8">
+      <section className="h-screen pt-24 pb-12 flex flex-col items-center justify-center text-center max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-          className="mb-12 relative w-full max-w-[1000px]"
+          className="mb-8 relative w-full max-w-[900px]"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent blur-2xl" />
-          <h1 className="text-6xl sm:text-7xl md:text-[8.5vw] lg:text-[9rem] font-black leading-[0.85] tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70 relative z-10 w-full mx-auto">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent blur-3xl -z-10" />
+          <h1 className="text-[12vw] sm:text-[10vw] md:text-[8rem] lg:text-[10rem] font-black leading-[0.8] tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 drop-shadow-2xl">
             UNMEASURED<br />IMAGINATION
           </h1>
         </motion.div>
