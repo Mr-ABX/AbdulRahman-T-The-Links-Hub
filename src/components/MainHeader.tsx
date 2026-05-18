@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'motion/react';
 import { ChevronDown, Menu, X, Settings } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { ASSET_LINKS } from '../constants/assets';
@@ -19,6 +19,12 @@ export const MainHeader = ({
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const { scrollY } = useScroll();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setIsScrolled(latest > 50);
+  });
 
   const navGroups = [
     { label: 'Home', tab: 'Home' },
@@ -36,11 +42,16 @@ export const MainHeader = ({
 
   return (
     <>
-      <header className="w-full fixed top-6 md:top-8 left-0 z-[100] px-4 flex justify-center pointer-events-none">
+      <header className="w-full fixed top-0 left-0 z-[100] px-4 md:px-8 py-6 flex justify-center pointer-events-none transition-all duration-500">
         <motion.nav 
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="glass bg-[#050505]/80 backdrop-blur-3xl rounded-[2rem] border border-white/10 p-2.5 flex items-center shadow-2xl pointer-events-auto max-w-full md:max-w-5xl w-full justify-between"
+          className={cn(
+            "flex items-center justify-between pointer-events-auto transition-all duration-500",
+            isScrolled 
+              ? "glass bg-[#050505]/80 backdrop-blur-3xl rounded-[2rem] border border-white/10 p-2.5 shadow-2xl max-w-full md:max-w-5xl w-full mx-auto mt-2" 
+              : "w-full max-w-[1400px] mx-auto bg-transparent border-transparent p-0 mt-0"
+          )}
         >
           {/* Logo */}
           <div className="flex items-center gap-4 pl-3 pr-4 shrink-0">

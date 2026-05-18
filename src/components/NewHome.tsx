@@ -22,7 +22,7 @@ export const Home = ({ projects, setActiveTab }: { projects: any[], setActiveTab
         >
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent blur-3xl -z-10" />
           <h1 className="text-[12vw] sm:text-[10vw] md:text-[8rem] lg:text-[10rem] font-black leading-[0.8] tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 drop-shadow-2xl">
-            UNMEASURED<br />IMAGINATION
+            UNLEASH YOUR<br />IMAGINATION
           </h1>
         </motion.div>
         
