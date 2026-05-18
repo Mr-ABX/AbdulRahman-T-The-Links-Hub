@@ -13,16 +13,16 @@ export const Home = ({ projects, setActiveTab }: { projects: any[], setActiveTab
       <div className="absolute top-[60%] right-[-10%] w-[50%] h-[50%] bg-[#ec4899] opacity-[0.02] blur-[150px] rounded-full pointer-events-none" />
 
       {/* 1. Hero Section */}
-      <section className="pt-20 pb-32 flex flex-col items-center text-center max-w-[1400px] mx-auto px-4 md:px-8">
+      <section className="min-h-screen pt-40 pb-20 flex flex-col items-center justify-center text-center max-w-[1400px] mx-auto px-4 md:px-8">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-          className="mb-8 relative"
+          className="mb-12 relative w-full max-w-[1000px]"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent blur-2xl" />
-          <h1 className="text-6xl sm:text-7xl md:text-[7vw] font-black leading-[0.9] tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70 relative z-10">
-            UNLEASH YOUR<br />IMAGINATION
+          <h1 className="text-6xl sm:text-7xl md:text-[8.5vw] lg:text-[9rem] font-black leading-[0.85] tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70 relative z-10 w-full mx-auto">
+            UNMEASURED<br />IMAGINATION
           </h1>
         </motion.div>
         
@@ -50,12 +50,12 @@ export const Home = ({ projects, setActiveTab }: { projects: any[], setActiveTab
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
-          className="w-full flex justify-center items-center gap-12 mt-32 flex-wrap opacity-40 grayscale hover:grayscale-0 transition-all duration-1000"
+          className="w-full flex justify-center items-center gap-6 md:gap-12 mt-24 flex-wrap opacity-40 grayscale hover:grayscale-0 transition-all duration-1000"
         >
           {['Plotnao', 'Jangle', 'Junno', 'Innovative', 'Cherry'].map((logo, i) => (
-            <div key={i} className="text-xl font-black tracking-widest uppercase flex items-center gap-2">
-              <div className="w-6 h-6 rounded-md bg-white/20 flex items-center justify-center">
-                <div className="w-2 h-2 bg-white rounded-full" />
+            <div key={i} className="text-lg md:text-xl font-black tracking-widest uppercase flex items-center gap-2">
+              <div className="w-5 h-5 md:w-6 md:h-6 rounded-md bg-white/20 flex items-center justify-center">
+                <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full" />
               </div>
               {logo}
             </div>

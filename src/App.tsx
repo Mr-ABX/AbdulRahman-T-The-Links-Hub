@@ -1583,7 +1583,7 @@ export default function App() {
   return (
     <div className={cn(
       "min-h-screen mesh-gradient flex flex-col items-center selection:bg-indigo-500/30",
-      (isInImmersiveMode || activeTab === 'Home' || activeTab === 'Vortex') ? "py-0 px-0 relative top-0" : "py-12 px-4 md:py-20"
+      (isInImmersiveMode || activeTab === 'Home' || activeTab === 'Vortex') ? "py-0 px-0 relative top-0" : "pt-32 pb-12 px-4 md:pt-40 md:pb-20"
     )}>
       {!hideCustomCursor && <CustomCursor />}
       {/* Headers / Navigation */}

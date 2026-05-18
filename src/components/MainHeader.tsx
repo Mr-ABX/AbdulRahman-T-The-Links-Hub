@@ -36,37 +36,37 @@ export const MainHeader = ({
 
   return (
     <>
-      <header className="w-full mb-12 sticky top-6 md:top-8 z-50 px-4 flex justify-center pointer-events-none">
+      <header className="w-full fixed top-6 md:top-8 left-0 z-[100] px-4 flex justify-center pointer-events-none">
         <motion.nav 
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="glass bg-[#050505]/80 backdrop-blur-3xl rounded-[2rem] border border-white/10 p-2 flex items-center shadow-2xl pointer-events-auto max-w-full md:max-w-4xl w-full justify-between"
+          className="glass bg-[#050505]/80 backdrop-blur-3xl rounded-[2rem] border border-white/10 p-2.5 flex items-center shadow-2xl pointer-events-auto max-w-full md:max-w-5xl w-full justify-between"
         >
           {/* Logo */}
-          <div className="flex items-center gap-3 pl-2 pr-4 shrink-0">
+          <div className="flex items-center gap-4 pl-3 pr-4 shrink-0">
              <button 
                onClick={() => handleTabClick('Home')}
-               className="relative w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors group"
+               className="relative w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors group"
              >
-               <img src={logo1} alt="Logo" className="w-5 h-5 object-contain group-hover:scale-110 transition-transform" />
+               <img src={logo1} alt="Logo" className="w-6 h-6 object-contain group-hover:scale-110 transition-transform" />
              </button>
-             <span className="font-bold tracking-widest text-xs uppercase text-white/90 hidden sm:block">
+             <span className="font-black tracking-[0.25em] text-sm uppercase text-white hidden sm:block">
                Toor
              </span>
           </div>
           
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-2">
             {navGroups.map((group) => (
                group.tab ? (
                  <button 
                    key={group.label}
                    onClick={() => handleTabClick(group.tab)} 
                    className={cn(
-                     "px-4 py-2 text-xs font-semibold rounded-xl transition-all", 
+                     "px-5 py-2.5 text-sm font-extrabold tracking-wide rounded-xl transition-all", 
                      activeTab === group.tab 
-                      ? "bg-white/10 text-white shadow-lg" 
-                      : "text-white/60 hover:text-white hover:bg-white/5"
+                      ? "bg-white/15 text-white shadow-lg" 
+                      : "text-white/60 hover:text-white hover:bg-white/10"
                    )}
                  >
                    {group.label}
@@ -80,14 +80,14 @@ export const MainHeader = ({
                  >
                    <button 
                      className={cn(
-                       "px-4 py-2 text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5", 
+                       "px-5 py-2.5 text-sm font-extrabold tracking-wide rounded-xl transition-all flex items-center gap-2", 
                        group.items.includes(activeTab) 
-                        ? "bg-white/5 text-white" 
-                        : "text-white/60 hover:text-white hover:bg-white/5"
+                        ? "bg-white/10 text-white" 
+                        : "text-white/60 hover:text-white hover:bg-white/10"
                      )}
                    >
                      {group.label}
-                     <ChevronDown size={14} className={cn("transition-transform duration-300 opacity-50", activeDropdown === group.label ? "rotate-180" : "")} />
+                     <ChevronDown size={16} className={cn("transition-transform duration-300 opacity-50", activeDropdown === group.label ? "rotate-180" : "")} />
                    </button>
 
                    <AnimatePresence>
@@ -108,7 +108,7 @@ export const MainHeader = ({
                                  key={item}
                                  onClick={() => handleTabClick(item)}
                                  className={cn(
-                                   "w-full flex items-center gap-3 px-3 py-2.5 text-xs font-semibold rounded-xl transition-all text-left group/btn",
+                                   "w-full flex items-center gap-3 px-3 py-2.5 text-sm font-bold tracking-wide rounded-xl transition-all text-left group/btn",
                                    isActive ? "bg-white/10 text-white" : "text-white/60 hover:text-white hover:bg-white/5"
                                  )}
                                >
@@ -135,7 +135,7 @@ export const MainHeader = ({
           <div className="flex items-center gap-2 pl-4 shrink-0 border-l border-white/10">
             <button 
               onClick={() => handleTabClick('Connect')}
-              className="hidden sm:block px-5 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-400 hover:to-purple-400 text-white text-[10px] sm:text-xs font-bold uppercase tracking-widest rounded-xl transition-all shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:shadow-[0_0_30px_rgba(99,102,241,0.5)] border border-white/10"
+              className="hidden sm:block px-6 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-400 hover:to-purple-400 text-white text-xs font-black uppercase tracking-[0.1em] rounded-xl transition-all shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:shadow-[0_0_30px_rgba(99,102,241,0.5)] border border-white/10"
             >
               Hire Me
             </button>
