@@ -17,6 +17,31 @@ import {
 const myArea51Image =
   "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
 
+const HeroTitleLine = ({ 
+  text, 
+  variant = "black", 
+  className 
+}: { 
+  text: string; 
+  variant?: "black" | "normal"; 
+  className?: string;
+}) => (
+  <span 
+    className={`
+      block w-full text-center 
+      text-[clamp(1.5rem,11vw,150px)] 
+      ${variant === "black" ? "font-[900]" : "font-[400]"} 
+      leading-[0.8] tracking-[-0.04em] 
+      bg-gradient-to-b from-white to-white/60 
+      bg-clip-text text-transparent 
+      overflow-visible py-2
+      ${className}
+    `}
+  >
+    {text}
+  </span>
+);
+
 export const Home = ({
   projects,
   setActiveTab,
@@ -31,21 +56,27 @@ export const Home = ({
       <div className="absolute top-[60%] right-[-10%] w-[50%] h-[50%] bg-[#ec4899] opacity-[0.02] blur-[150px] rounded-full pointer-events-none" />
 
       {/* 1. Hero Section */}
-      <section className="h-screen pt-24 pb-12 flex flex-col items-center justify-center text-center max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
+      <section className="min-h-screen pt-24 pb-12 flex flex-col items-center justify-center text-center max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
+        {/* Medusa Integration in Hero */}
+        <motion.div
+           initial={{ opacity: 0, scale: 0.8 }}
+           animate={{ opacity: 1, scale: 1 }}
+           transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
+           className="w-full max-w-[500px] aspect-square relative mb-[-40px] z-20 pointer-events-auto"
+        >
+          <MedusaImage />
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-          className="mb-8 relative w-full max-w-[1100px]"
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
+          className="mb-8 relative w-full max-w-[1200px]"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent blur-3xl -z-10" />
-          <h1 className="flex w-full flex-col items-center justify-center tracking-tighter p-4">
-            <span className="block w-full text-center whitespace-nowrap text-[12vw] sm:text-[10vw] md:text-[150px] font-black leading-none pb-6 bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent px-8">
-              UNLEASH YOUR
-            </span>
-            <span className="block w-full text-center whitespace-nowrap text-[12vw] sm:text-[10vw] md:text-[150px] font-normal leading-none pb-6 bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent px-8">
-              IMAGINATION
-            </span>
+          <h1 className="flex w-full flex-col items-center justify-center">
+            <HeroTitleLine text="UNLEASH YOUR" variant="black" />
+            <HeroTitleLine text="IMAGINATION" variant="normal" className="-mt-1 md:-mt-4" />
           </h1>
         </motion.div>
 
@@ -344,8 +375,8 @@ export const Home = ({
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent pointer-events-none" />
 
           {/* Medusa / Visual */}
-          <div className="w-full md:w-1/2 relative hidden md:block perspective-[1000px]">
-            <div className="aspect-[3/4] rounded-[2rem] flex items-center justify-center relative z-10 w-full h-[500px]">
+          <div className="w-full md:w-1/2 relative perspective-[1000px]">
+            <div className="aspect-square md:aspect-[3/4] rounded-[2rem] flex items-center justify-center relative z-10 w-full h-[350px] md:h-[500px]">
               <MedusaImage />
             </div>
           </div>

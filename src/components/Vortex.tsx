@@ -118,13 +118,13 @@ const vortexSections = [
   },
 ];
 
-const VortexCard = ({
-  section,
-  idx,
-}: {
+interface VortexCardProps {
   section: (typeof vortexSections)[0];
   idx: number;
-}) => {
+  key?: string | number;
+}
+
+const VortexCard = ({ section, idx }: VortexCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: cardRef,

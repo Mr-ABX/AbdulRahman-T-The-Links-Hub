@@ -2143,7 +2143,7 @@ export default function App() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[minmax(140px,auto)]">
             {/* 3D Interactive Medusa Image Card */}
             <BentoCard
-              size="4x2"
+              size="4x1"
               className="bg-transparent border-transparent relative overflow-visible md:col-span-4 perspective-[1000px]"
             >
               <div className="absolute inset-0 bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10" />
