@@ -57,20 +57,10 @@ export const Home = ({
 
       {/* 1. Hero Section */}
       <section className="min-h-screen pt-24 pb-12 flex flex-col items-center justify-center text-center max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
-        {/* Medusa Integration in Hero */}
-        <motion.div
-           initial={{ opacity: 0, scale: 0.8 }}
-           animate={{ opacity: 1, scale: 1 }}
-           transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
-           className="w-full max-w-[500px] aspect-square relative mb-[-40px] z-20 pointer-events-auto"
-        >
-          <MedusaImage />
-        </motion.div>
-
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
+          transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
           className="mb-8 relative w-full max-w-[1200px]"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent blur-3xl -z-10" />
