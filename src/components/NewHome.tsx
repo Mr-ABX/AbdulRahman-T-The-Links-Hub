@@ -48,7 +48,7 @@ export const Home = ({
   setActiveTab: (tab: string) => void;
 }) => {
   return (
-    <div className="w-full relative bg-[#050505] min-h-screen text-white overflow-hidden pb-0">
+    <div className="w-full relative min-h-screen text-white overflow-hidden pb-0 bg-transparent">
       {/* Background decorations */}
       <div className="absolute top-[20%] left-[-10%] w-[50%] h-[50%] bg-[#6366f1] opacity-[0.03] blur-[150px] rounded-full pointer-events-none" />
       <div className="absolute top-[60%] right-[-10%] w-[50%] h-[50%] bg-[#ec4899] opacity-[0.02] blur-[150px] rounded-full pointer-events-none" />
@@ -423,7 +423,7 @@ export const Home = ({
       </section>
 
       {/* Footer Title */}
-      <div className="text-center py-20 overflow-hidden relative border-t border-white/10 mt-12">
+      <div className="text-center pt-20 pb-8 overflow-hidden relative border-t border-white/10 mt-12">
         <h2 className="text-[5vw] whitespace-nowrap font-black uppercase tracking-tight opacity-90 px-4 flex items-center justify-center gap-4">
           BRINGS YOUR SITE TO LIFE WITH
           <span className="text-transparent text-outline-indigo italic">
