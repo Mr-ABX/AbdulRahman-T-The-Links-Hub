@@ -54,7 +54,7 @@ export const MedusaImage = () => {
       className="relative w-full h-full min-h-[300px] rounded-3xl flex items-center justify-center overflow-visible"
     >
       <motion.img
-        src="/medusa.png"
+        src="/medusa.webp"
         alt="Medusa 3D Interactive"
         style={{
           transform: "translateZ(50px)",

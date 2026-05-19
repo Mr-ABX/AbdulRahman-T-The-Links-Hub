@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
+import { MedusaImage } from "./MedusaImage";
 import {
   ArrowRight,
   Monitor,
@@ -38,9 +39,13 @@ export const Home = ({
           className="mb-8 relative w-full max-w-[1100px]"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent blur-3xl -z-10" />
-          <h1 className="text-[14vw] sm:text-[11vw] md:text-[7.5rem] lg:text-[9rem] xl:text-[10rem] font-black leading-[0.85] tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 drop-shadow-2xl flex flex-col items-center w-full">
-            <span className="w-full whitespace-nowrap">UNLEASH YOUR</span>
-            <span className="w-full whitespace-nowrap">IMAGINATION</span>
+          <h1 className="flex w-full flex-col items-center justify-center tracking-tighter p-4">
+            <span className="block w-full text-center whitespace-nowrap text-[12vw] sm:text-[10vw] md:text-[150px] font-black leading-none pb-6 bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent px-8">
+              UNLEASH YOUR
+            </span>
+            <span className="block w-full text-center whitespace-nowrap text-[12vw] sm:text-[10vw] md:text-[150px] font-normal leading-none pb-6 bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent px-8">
+              IMAGINATION
+            </span>
           </h1>
         </motion.div>
 
@@ -338,14 +343,10 @@ export const Home = ({
         <div className="bg-[#050505] rounded-[3rem] border border-white/10 p-8 md:p-16 flex flex-col md:flex-row gap-16 relative overflow-hidden items-center shadow-2xl">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent pointer-events-none" />
 
-          {/* Statue / Visual */}
-          <div className="w-full md:w-1/2 relative hidden md:block">
-            <div className="aspect-[3/4] bg-white/5 rounded-[2rem] border border-white/10 flex items-center justify-center overflow-hidden mix-blend-luminosity grayscale group hover:grayscale-0 hover:mix-blend-normal transition-all duration-700">
-              <img
-                src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
-                alt="Statue"
-              />
+          {/* Medusa / Visual */}
+          <div className="w-full md:w-1/2 relative hidden md:block perspective-[1000px]">
+            <div className="aspect-[3/4] rounded-[2rem] flex items-center justify-center relative z-10 w-full h-[500px]">
+              <MedusaImage />
             </div>
           </div>
 
