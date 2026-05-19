@@ -3066,7 +3066,7 @@ export default function App() {
       {!isInImmersiveMode && (
         <footer
           className={cn(
-            "mt-32 py-12 border-t border-white/5 w-full",
+            "mt-12 py-12 border-t border-white/5 w-full",
             activeTab === "Home" || activeTab === "Vortex"
               ? "max-w-[1400px] px-8"
               : "max-w-4xl",

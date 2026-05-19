@@ -29,11 +29,9 @@ const HeroTitleLine = ({
   <span 
     className={`
       block w-full text-center 
-      text-[clamp(1.5rem,11vw,150px)] 
+      text-[clamp(2.5rem,11vw,150px)] 
       ${variant === "black" ? "font-[900]" : "font-[400]"} 
       leading-[0.8] tracking-[-0.04em] 
-      bg-gradient-to-b from-white to-white/60 
-      bg-clip-text text-transparent 
       overflow-visible py-2
       ${className}
     `}
@@ -50,7 +48,7 @@ export const Home = ({
   setActiveTab: (tab: string) => void;
 }) => {
   return (
-    <div className="w-full relative bg-[#050505] min-h-screen text-white overflow-hidden pb-40">
+    <div className="w-full relative bg-[#050505] min-h-screen text-white overflow-hidden pb-0">
       {/* Background decorations */}
       <div className="absolute top-[20%] left-[-10%] w-[50%] h-[50%] bg-[#6366f1] opacity-[0.03] blur-[150px] rounded-full pointer-events-none" />
       <div className="absolute top-[60%] right-[-10%] w-[50%] h-[50%] bg-[#ec4899] opacity-[0.02] blur-[150px] rounded-full pointer-events-none" />
@@ -64,9 +62,9 @@ export const Home = ({
           className="mb-8 relative w-full max-w-[1200px]"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent blur-3xl -z-10" />
-          <h1 className="flex w-full flex-col items-center justify-center">
+          <h1 className="flex w-full flex-col items-center justify-center bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent">
             <HeroTitleLine text="UNLEASH YOUR" variant="black" />
-            <HeroTitleLine text="IMAGINATION" variant="normal" className="-mt-1 md:-mt-4" />
+            <HeroTitleLine text="IMAGINATION" variant="normal" className="-mt-2 md:-mt-4" />
           </h1>
         </motion.div>
 
