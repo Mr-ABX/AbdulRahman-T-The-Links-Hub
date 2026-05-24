@@ -410,11 +410,20 @@ export default function App() {
       case "Projects":
         return (
           <ProjectsPage
-            activeTab={activeTab}
             activeProjectCategory={activeProjectCategory}
             setActiveProjectCategory={setActiveProjectCategory}
-            filteredProjects={filteredProjects}
+            projectFilter={projectFilter}
+            setProjectFilter={setProjectFilter}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            viewMode={viewMode}
+            setViewMode={setViewMode}
+            isInImmersiveMode={isInImmersiveMode}
+            setIsInImmersiveMode={setIsInImmersiveMode}
             setSelectedProject={setSelectedProject}
+            isLoading={isLoading}
+            filteredProjects={filteredProjects}
+            openProjectModal={openProjectModal}
           />
         );
       case "Apps":
