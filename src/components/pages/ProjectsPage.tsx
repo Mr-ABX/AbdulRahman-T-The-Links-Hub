@@ -114,7 +114,7 @@ export const ProjectsPage = ({
   // Immersive Mode Render for Projects
   if (isInImmersiveMode) {
     return (
-      <div className="flex flex-col md:flex-row gap-8 min-h-screen pb-20 w-full px-4 md:px-8 mt-8">
+      <div className="flex flex-col md:flex-row gap-8 min-h-screen pb-20 w-full max-w-7xl mx-auto px-4 md:px-6 mt-8">
         {/* Floating Sidebar */}
         <aside className="w-full md:w-64 lg:w-72 shrink-0">
           <div className="sticky top-8 glass backdrop-blur-3xl border border-white/10 rounded-[2rem] p-6 flex flex-col gap-8 shadow-2xl">
@@ -122,6 +122,7 @@ export const ProjectsPage = ({
               <button
                 onClick={() => {
                   setIsInImmersiveMode(false);
+                  setActiveProjectCategory(null);
                   setSearchQuery("");
                   setProjectFilter([]);
                 }}
@@ -141,20 +142,6 @@ export const ProjectsPage = ({
             </div>
 
             <div className="space-y-6">
-              <div className="relative group">
-                <Search
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-indigo-400 transition-colors"
-                  size={16}
-                />
-                <input
-                  type="text"
-                  placeholder="Search projects..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-indigo-500/50 transition-all focus:bg-white/10 font-sans"
-                />
-              </div>
-
               <div className="space-y-2">
                 <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3 px-1 font-mono">
                   Portfolios
@@ -569,28 +556,6 @@ export const ProjectsPage = ({
   if (!activeProjectCategory) {
     return (
       <div className="space-y-8 pb-12 w-full pt-4 max-w-7xl mx-auto px-4">
-        {/* Immersive Gallery Access Card */}
-        <div className="relative overflow-hidden rounded-[2.5rem] p-[2px] group mb-8">
-          <div className="absolute inset-0 bg-indigo-500/20 rounded-[2.5rem]" />
-          <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_270deg,#6366f1_300deg,#a855f7_330deg,#ec4899_360deg)] animate-border-spin blur-md opacity-70" />
-          <div className="relative h-full w-full bg-[#050505] rounded-[calc(2.5rem-2px)] p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between overflow-hidden gap-6">
-            <div className="absolute inset-0 bg-indigo-500/5" />
-            <div className="relative z-10">
-              <h3 className="text-3xl font-bold mb-2 font-sans text-white">Immersive Portfolio</h3>
-              <p className="text-white/50 text-base max-w-xl font-light font-sans animate-fade-in">
-                Step into a unified, rich project visualizer with tag filtering, advanced search, and optimized grid setups.
-              </p>
-            </div>
-            <button
-              onClick={() => setIsInImmersiveMode(true)}
-              className="relative z-10 px-8 py-4 rounded-2xl bg-indigo-500 text-white font-bold hover:bg-indigo-400 transition-all shadow-xl shadow-indigo-500/20 flex items-center gap-3 group-hover:scale-105 shrink-0 cursor-pointer font-sans"
-            >
-              <Rocket size={20} />
-              <span>Launch Showcase</span>
-            </button>
-          </div>
-        </div>
-
         {/* Development Status Marquee */}
         <div className="bg-emerald-500/10 border border-emerald-500/20 py-3 px-4 md:px-6 rounded-full flex items-center gap-4 overflow-hidden relative mb-8">
           <div className="flex items-center gap-2 text-emerald-400 shrink-0 z-10 bg-[#050505] pr-2 md:pr-4 py-1 rounded-full">
@@ -627,7 +592,10 @@ export const ProjectsPage = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[minmax(200px,auto)]">
           <BentoCard
             size="2x1"
-            onClick={() => setActiveProjectCategory("Web Development Projects" as ProjectCategory)}
+            onClick={() => {
+              setActiveProjectCategory("Web Development Projects" as ProjectCategory);
+              setIsInImmersiveMode(true);
+            }}
             className="md:col-span-2 cursor-pointer hover:bg-indigo-500/10 transition-colors group relative overflow-hidden"
           >
             <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
@@ -659,7 +627,10 @@ export const ProjectsPage = ({
 
           <BentoCard
             size="1x1"
-            onClick={() => setActiveProjectCategory("Video & Motion Graphics" as ProjectCategory)}
+            onClick={() => {
+              setActiveProjectCategory("Video & Motion Graphics" as ProjectCategory);
+              setIsInImmersiveMode(true);
+            }}
             className="cursor-pointer hover:bg-pink-500/10 transition-colors group relative overflow-hidden"
           >
             <div className="absolute -right-x -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
@@ -683,7 +654,10 @@ export const ProjectsPage = ({
 
           <BentoCard
             size="1x1"
-            onClick={() => setActiveProjectCategory("Graphics & Marketing" as ProjectCategory)}
+            onClick={() => {
+              setActiveProjectCategory("Graphics & Marketing" as ProjectCategory);
+              setIsInImmersiveMode(true);
+            }}
             className="cursor-pointer hover:bg-amber-500/10 transition-colors group relative overflow-hidden md:col-span-1 lg:col-span-1"
           >
             <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">

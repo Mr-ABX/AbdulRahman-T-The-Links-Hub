@@ -367,6 +367,25 @@ export default function App() {
 
   const filteredProjects = useMemo(() => {
     let base = projects;
+
+    if (activeTab === "Projects") {
+      base = base.filter(
+        (p) =>
+          p.mainCategory === "Web Development Projects" ||
+          p.mainCategory === "Video & Motion Graphics" ||
+          p.mainCategory === "Graphics & Marketing",
+      );
+    } else if (activeTab === "Apps") {
+      base = base.filter(
+        (p) =>
+          p.mainCategory === "Pro Business Suite" ||
+          p.mainCategory === "AI Solutions" ||
+          p.mainCategory === "Apps & Dev" ||
+          p.mainCategory === "Interactive Experiences" ||
+          p.mainCategory === "My Personal Apps",
+      );
+    }
+
     if (activeProjectCategory) {
       base = base.filter(
         (p) =>
@@ -390,7 +409,7 @@ export default function App() {
     }
 
     return base;
-  }, [activeProjectCategory, projectFilter, searchQuery]);
+  }, [activeTab, activeProjectCategory, projectFilter, searchQuery]);
 
   const renderContent = () => {
     switch (activeTab) {

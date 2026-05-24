@@ -88,7 +88,7 @@ export const AppsPage = ({
   // Immersive Mode Render
   if (isInImmersiveMode) {
     return (
-      <div className="flex flex-col md:flex-row gap-8 min-h-screen pb-20 w-full px-4 md:px-8 mt-8">
+      <div className="flex flex-col md:flex-row gap-8 min-h-screen pb-20 w-full max-w-7xl mx-auto px-4 md:px-6 mt-8">
         {/* Floating Sidebar */}
         <aside className="w-full md:w-64 lg:w-72 shrink-0">
           <div className="sticky top-8 glass backdrop-blur-3xl border border-white/10 rounded-[2rem] p-6 flex flex-col gap-8 shadow-2xl">
@@ -96,6 +96,7 @@ export const AppsPage = ({
               <button
                 onClick={() => {
                   setIsInImmersiveMode(false);
+                  setActiveProjectCategory(null);
                   setSearchQuery("");
                   setProjectFilter([]);
                 }}
@@ -115,20 +116,6 @@ export const AppsPage = ({
             </div>
 
             <div className="space-y-6">
-              <div className="relative group">
-                <Search
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-indigo-400 transition-colors"
-                  size={16}
-                />
-                <input
-                  type="text"
-                  placeholder="Search projects..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-indigo-500/50 transition-all focus:bg-white/10"
-                />
-              </div>
-
               <div className="space-y-2">
                 <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3 px-1">
                   Categories
@@ -605,7 +592,10 @@ export const AppsPage = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[minmax(200px,auto)]">
           <BentoCard
             size="2x1"
-            onClick={() => setActiveProjectCategory("Pro Business Suite" as ProjectCategory)}
+            onClick={() => {
+              setActiveProjectCategory("Pro Business Suite" as ProjectCategory);
+              setIsInImmersiveMode(true);
+            }}
             className="md:col-span-2 cursor-pointer hover:bg-blue-500/10 transition-colors group relative overflow-hidden"
           >
             <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
@@ -637,7 +627,10 @@ export const AppsPage = ({
 
           <BentoCard
             size="1x1"
-            onClick={() => setActiveProjectCategory("AI Solutions" as ProjectCategory)}
+            onClick={() => {
+              setActiveProjectCategory("AI Solutions" as ProjectCategory);
+              setIsInImmersiveMode(true);
+            }}
             className="cursor-pointer hover:bg-emerald-500/10 transition-colors group relative overflow-hidden"
           >
             <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
@@ -661,7 +654,10 @@ export const AppsPage = ({
 
           <BentoCard
             size="1x1"
-            onClick={() => setActiveProjectCategory("Apps & Dev" as ProjectCategory)}
+            onClick={() => {
+              setActiveProjectCategory("Apps & Dev" as ProjectCategory);
+              setIsInImmersiveMode(true);
+            }}
             className="cursor-pointer hover:bg-indigo-500/10 transition-colors group relative overflow-hidden"
           >
             <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
@@ -685,7 +681,10 @@ export const AppsPage = ({
 
           <BentoCard
             size="1x1"
-            onClick={() => setActiveProjectCategory("Interactive Experiences" as ProjectCategory)}
+            onClick={() => {
+              setActiveProjectCategory("Interactive Experiences" as ProjectCategory);
+              setIsInImmersiveMode(true);
+            }}
             className="cursor-pointer hover:bg-cyan-500/10 transition-colors group relative overflow-hidden"
           >
             <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
@@ -717,7 +716,10 @@ export const AppsPage = ({
 
           <BentoCard
             size="2x1"
-            onClick={() => setActiveProjectCategory("My Personal Apps" as ProjectCategory)}
+            onClick={() => {
+              setActiveProjectCategory("My Personal Apps" as ProjectCategory);
+              setIsInImmersiveMode(true);
+            }}
             className="md:col-span-2 cursor-pointer hover:bg-rose-500/10 transition-colors group relative overflow-hidden"
           >
             <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
