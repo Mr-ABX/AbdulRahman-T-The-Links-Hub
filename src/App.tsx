@@ -79,6 +79,7 @@ import { MedusaImage } from "./components/MedusaImage";
 
 import { LinksPage } from "./components/pages/LinksPage";
 import { ProjectsPage } from "./components/pages/ProjectsPage";
+import { AppsPage } from "./components/pages/AppsPage";
 import { JournalPage } from "./components/pages/JournalPage";
 import { AutomationPage } from "./components/pages/AutomationPage";
 import { EbooksPage } from "./components/pages/EbooksPage";
@@ -407,7 +408,6 @@ export default function App() {
           />
         );
       case "Projects":
-      case "Apps":
         return (
           <ProjectsPage
             activeTab={activeTab}
@@ -415,6 +415,25 @@ export default function App() {
             setActiveProjectCategory={setActiveProjectCategory}
             filteredProjects={filteredProjects}
             setSelectedProject={setSelectedProject}
+          />
+        );
+      case "Apps":
+        return (
+          <AppsPage
+            activeProjectCategory={activeProjectCategory}
+            setActiveProjectCategory={setActiveProjectCategory}
+            projectFilter={projectFilter}
+            setProjectFilter={setProjectFilter}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            viewMode={viewMode}
+            setViewMode={setViewMode}
+            isInImmersiveMode={isInImmersiveMode}
+            setIsInImmersiveMode={setIsInImmersiveMode}
+            setSelectedProject={setSelectedProject}
+            isLoading={isLoading}
+            filteredProjects={filteredProjects}
+            openProjectModal={openProjectModal}
           />
         );
       case "Journal":
