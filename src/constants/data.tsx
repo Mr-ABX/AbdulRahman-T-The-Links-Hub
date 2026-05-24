@@ -32,6 +32,9 @@ import {
   Star,
   Share2,
   Users,
+  GraduationCap,
+  Music,
+  Radio,
 } from "lucide-react";
 import { ProjectType } from "../types";
 
@@ -52,7 +55,11 @@ type Category =
   | "Vortex"
   | "Services"
   | "Prompts"
-  | "Community";
+  | "Community"
+  | "Academy"
+  | "Music"
+  | "Blog"
+  | "Feed";
 
 export const categoryDescriptions: Record<string, string> = {
   All: "Explore my complete portfolio of projects, apps, and experiments.",
@@ -74,7 +81,6 @@ export const tabs: { name: Category; icon: React.ReactNode }[] = [
   { name: "Journal", icon: <Newspaper size={18} /> },
   { name: "Projects", icon: <AppWindow size={18} /> },
   { name: "Ebooks", icon: <Book size={18} /> },
-  { name: "Content", icon: <Newspaper size={18} /> },
   { name: "Automation", icon: <Bot size={18} /> },
   { name: "About", icon: <User size={18} /> },
   { name: "Reviews", icon: <Star size={18} /> },
@@ -83,6 +89,10 @@ export const tabs: { name: Category; icon: React.ReactNode }[] = [
   { name: "Services", icon: <Zap size={18} /> },
   { name: "Prompts", icon: <Terminal size={18} /> },
   { name: "Community", icon: <Users size={18} /> },
+  { name: "Academy", icon: <GraduationCap size={18} /> },
+  { name: "Music", icon: <Music size={18} /> },
+  { name: "Blog", icon: <Newspaper size={18} /> },
+  { name: "Feed", icon: <Radio size={18} /> },
 ];
 
 export const socialTabs = [

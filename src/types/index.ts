@@ -17,7 +17,11 @@ export type Category =
   | "Vortex"
   | "Services"
   | "Prompts"
-  | "Community";
+  | "Community"
+  | "Academy"
+  | "Music"
+  | "Blog"
+  | "Feed";
 
 export type ProjectCategory =
   | "Apps & Dev"

@@ -84,7 +84,10 @@ import { JournalPage } from "./components/pages/JournalPage";
 import { AutomationPage } from "./components/pages/AutomationPage";
 import { EbooksPage } from "./components/pages/EbooksPage";
 import { StorePage } from "./components/pages/StorePage";
-import { ContentPage } from "./components/pages/ContentPage";
+import { AcademyPage } from "./components/pages/AcademyPage";
+import { MusicPage } from "./components/pages/MusicPage";
+import { BlogPage } from "./components/pages/BlogPage";
+import { FeedPage } from "./components/pages/FeedPage";
 import { AboutPage } from "./components/pages/AboutPage";
 import { ReviewsPage } from "./components/pages/ReviewsPage";
 import { ConnectPage } from "./components/pages/ConnectPage";
@@ -92,6 +95,8 @@ import { SuccessPage } from "./components/pages/SuccessPage";
 import { ServicesPage } from "./components/pages/ServicesPage";
 import { PromptsPage } from "./components/pages/PromptsPage";
 import { CommunityPage } from "./components/pages/CommunityPage";
+import { SettingsPanel } from "./components/SettingsPanel";
+import { VerticalHeader } from "./components/VerticalHeader";
 
 import { MainFooter } from "./components/layout/MainFooter";
 
@@ -126,7 +131,6 @@ export default function App() {
     if (path.startsWith("/apps")) return "Apps";
     if (path.startsWith("/automation")) return "Automation";
     if (path.startsWith("/ebooks")) return "Ebooks";
-    if (path.startsWith("/content")) return "Content";
     if (path.startsWith("/about")) return "About";
     if (path.startsWith("/reviews")) return "Reviews";
     if (path.startsWith("/connect")) return "Connect";
@@ -137,6 +141,10 @@ export default function App() {
     if (path.startsWith("/links")) return "Links";
     if (path.startsWith("/prompts")) return "Prompts";
     if (path.startsWith("/community")) return "Community";
+    if (path.startsWith("/academy")) return "Academy";
+    if (path.startsWith("/music")) return "Music";
+    if (path.startsWith("/blog")) return "Blog";
+    if (path.startsWith("/feed")) return "Feed";
     return "Home";
   }, [location.pathname]);
 
@@ -169,6 +177,12 @@ export default function App() {
   const [compactHomeView, setCompactHomeView] = useState(
     () => localStorage.getItem("abdulrahman_compactHome") === "true",
   );
+  const [headerLayout, setHeaderLayout] = useState<"horizontal" | "vertical">(
+    () => {
+      const val = localStorage.getItem("abdulrahman_header_layout");
+      return val === "vertical" ? "vertical" : "horizontal";
+    }
+  );
   const [activeHomeSection, setActiveHomeSection] = useState<
     "Learn" | "Explore" | "Work"
   >("Learn");
@@ -181,7 +195,8 @@ export default function App() {
       enableSmoothScroll.toString(),
     );
     localStorage.setItem("abdulrahman_compactHome", compactHomeView.toString());
-  }, [hideCustomCursor, enableSmoothScroll, compactHomeView]);
+    localStorage.setItem("abdulrahman_header_layout", headerLayout);
+  }, [hideCustomCursor, enableSmoothScroll, compactHomeView, headerLayout]);
 
   const slugify = (text: string) => {
     return text
@@ -477,8 +492,14 @@ export default function App() {
         return <EbooksPage openEbookModal={openEbookModal} />;
       case "Store":
         return <StorePage />;
-      case "Content":
-        return <ContentPage />;
+      case "Academy":
+        return <AcademyPage />;
+      case "Music":
+        return <MusicPage />;
+      case "Blog":
+        return <BlogPage />;
+      case "Feed":
+        return <FeedPage />;
       case "About":
         return <AboutPage />;
       case "Reviews":
@@ -501,7 +522,10 @@ export default function App() {
   return (
     <div
       className={cn(
-        "min-h-screen mesh-gradient flex flex-col items-center selection:bg-indigo-500/30",
+        "min-h-screen mesh-gradient flex flex-col items-center selection:bg-indigo-500/30 transition-all duration-300",
+        headerLayout === "vertical" && !isInImmersiveMode && activeTab !== "Links" && activeTab !== "Vortex"
+          ? "md:pl-64"
+          : "",
         isInImmersiveMode || activeTab === "Home" || activeTab === "Vortex"
           ? "py-0 px-0 relative top-0"
           : "pt-32 pb-12 px-4 md:pt-40 md:pb-20",
@@ -514,12 +538,37 @@ export default function App() {
       {!isInImmersiveMode &&
         activeTab !== "Links" &&
         activeTab !== "Vortex" && (
-          <MainHeader
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            setIsSettingsOpen={setIsSettingsOpen}
-            tabs={tabs}
-          />
+          <>
+            {headerLayout === "horizontal" ? (
+              <MainHeader
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                setIsSettingsOpen={setIsSettingsOpen}
+                tabs={tabs}
+              />
+            ) : (
+              <>
+                {/* Mobile: Horizontal Header */}
+                <div className="block md:hidden w-full">
+                  <MainHeader
+                    activeTab={activeTab}
+                    setActiveTab={setActiveTab}
+                    setIsSettingsOpen={setIsSettingsOpen}
+                    tabs={tabs}
+                  />
+                </div>
+                {/* Desktop: Vertical Header Sidebar */}
+                <div className="hidden md:block">
+                  <VerticalHeader
+                    activeTab={activeTab}
+                    setActiveTab={setActiveTab}
+                    setIsSettingsOpen={setIsSettingsOpen}
+                    tabs={tabs}
+                  />
+                </div>
+              </>
+            )}
+          </>
         )}
 
       {/* 2. Links Page Header (Original Glass Pill style but with social icons) */}
@@ -611,6 +660,18 @@ export default function App() {
 
       <ProjectModal selectedProject={selectedProject} closeProjectModal={closeProjectModal} />
       <EbookModal selectedEbook={selectedEbook} closeEbookModal={closeEbookModal} />
+      <SettingsPanel
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        hideCustomCursor={hideCustomCursor}
+        setHideCustomCursor={setHideCustomCursor}
+        enableSmoothScroll={enableSmoothScroll}
+        setEnableSmoothScroll={setEnableSmoothScroll}
+        compactHomeView={compactHomeView}
+        setCompactHomeView={setCompactHomeView}
+        headerLayout={headerLayout}
+        setHeaderLayout={setHeaderLayout}
+      />
       
       <MainFooter
         activeTab={activeTab}

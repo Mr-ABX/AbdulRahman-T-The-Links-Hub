@@ -108,9 +108,9 @@ export const AppsPage = ({
                 />
               </button>
               <div>
-                <h2 className="text-xl font-bold tracking-tight text-white mb-0.5 font-sans">App Gallery</h2>
+                <h2 className="text-xl font-bold tracking-tight text-white mb-0.5 font-sans">INFNI-T' LABZ</h2>
                 <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold font-mono">
-                  Apps
+                  PLATFORM LABS
                 </p>
               </div>
             </div>
@@ -561,10 +561,9 @@ export const AppsPage = ({
           <div className="relative h-full w-full bg-[#050505] rounded-[calc(2.5rem-2px)] p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between overflow-hidden gap-6">
             <div className="absolute inset-0 bg-indigo-500/5" />
             <div className="relative z-10">
-              <h3 className="text-3xl font-bold mb-2 font-sans">Immersive App Gallery</h3>
+              <h3 className="text-3xl font-bold mb-2 font-sans">INFNI-T' LABZ</h3>
               <p className="text-white/50 text-base max-w-xl font-light font-sans">
-                Experience my apps in a focused, full-screen gallery with advanced search and
-                filtering.
+                Experience my public tools, automation hubs, SaaS boilers, and advanced experimental models in a dedicated workspace.
               </p>
             </div>
             <button
