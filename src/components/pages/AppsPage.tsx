@@ -108,11 +108,26 @@ export const AppsPage = ({
                 />
               </button>
               <div>
-                <h2 className="text-xl font-bold tracking-tight">App Gallery</h2>
-                <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">
+                <h2 className="text-xl font-bold tracking-tight text-white mb-0.5 font-sans">App Gallery</h2>
+                <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold font-mono">
                   Apps
                 </p>
               </div>
+            </div>
+
+            {/* Quick Search inside Sidebar */}
+            <div className="relative group">
+              <Search
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-indigo-400 transition-colors"
+                size={16}
+              />
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-indigo-500/50 transition-all focus:bg-white/10 font-sans"
+              />
             </div>
 
             <div className="space-y-6">
@@ -293,111 +308,115 @@ export const AppsPage = ({
                 )}
               >
                 <AnimatePresence mode="popLayout">
-                  {filteredProjects.map((p, i) => (
-                    <motion.div
-                      key={p.name}
-                      layout
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.3, delay: i * 0.05 }}
-                    >
-                      <BentoCard
-                        size="1x1"
-                        className={cn(
-                          p.bg,
-                          "border-white/5 cursor-pointer relative overflow-hidden group/project",
-                          viewMode === "grid"
-                            ? "h-[450px] p-0"
-                            : "h-auto p-4 flex flex-col sm:flex-row items-start sm:items-center gap-6"
-                        )}
-                        onClick={() => openProjectModal(p)}
-                        background={
-                          p.url !== "#" || (p.previewUrl && p.previewUrl.includes("youtube.com/embed/")) ? (
-                            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[2rem]">
-                              <img
-                                src={
-                                  p.url !== "#"
-                                    ? `https://image.thum.io/get/width/800/crop/800/noanimate/${p.url}`
-                                    : `https://img.youtube.com/vi/${p.previewUrl.split("/").pop()}/maxresdefault.jpg`
-                                }
-                                alt={p.name}
-                                className="w-full h-full object-cover opacity-60 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
-                                loading="lazy"
-                                referrerPolicy="no-referrer"
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/90 to-transparent" />
-                            </div>
-                          ) : null
-                        }
+                  {filteredProjects.map((p, i) => {
+                    const isUrlValid = p.url !== "#" || (p.previewUrl && p.previewUrl.includes("youtube.com/embed/"));
+                    const imgUrl = p.url !== "#"
+                      ? `https://image.thum.io/get/width/800/crop/800/noanimate/${p.url}`
+                      : p.previewUrl
+                      ? `https://img.youtube.com/vi/${p.previewUrl.split("/").pop()}/maxresdefault.jpg`
+                      : null;
+
+                    return (
+                      <motion.div
+                        key={p.name}
+                        layout
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ duration: 0.3, delay: i * 0.05 }}
                       >
-                        <div
+                        <BentoCard
+                          size="1x1"
                           className={cn(
-                            "relative z-10 h-full w-full flex flex-col",
-                            viewMode === "grid"
-                              ? "justify-end p-6"
-                              : "sm:flex-row items-start sm:items-center gap-4"
+                            p.bg,
+                            "border-white/5 cursor-pointer relative overflow-hidden group/project flex flex-col p-0 shadow-lg transition-all duration-300",
+                            viewMode === "grid" ? "h-[450px]" : "h-auto md:h-44"
                           )}
+                          onClick={() => openProjectModal(p)}
+                          background={null}
                         >
                           {viewMode === "grid" ? (
-                            <>
-                              <div className="flex justify-between items-start mb-auto">
-                                <div
-                                  className={cn(
-                                    "p-3 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10",
-                                    p.color
-                                  )}
-                                >
-                                  {p.icon}
-                                </div>
-                                <div className="flex flex-col items-end gap-2">
-                                  <span
+                            <div className="flex flex-col h-full w-full">
+                              {/* Top Image Area */}
+                              <div className="relative w-full h-[190px] shrink-0 overflow-hidden bg-black/40 border-b border-white/5">
+                                {isUrlValid && imgUrl ? (
+                                  <img
+                                    src={imgUrl}
+                                    alt={p.name}
+                                    className="w-full h-full object-cover opacity-80 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer"
+                                  />
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center text-white/10 scale-150">
+                                    {p.icon}
+                                  </div>
+                                )}
+                                {/* Cover overlay gradient to transition nicely */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/20 to-transparent" />
+
+                                {/* Absolute Overlays inside Thumbnail area */}
+                                <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
+                                  <div
                                     className={cn(
-                                      "text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider backdrop-blur-md border border-white/10 shadow-lg font-mono",
-                                      p.pricing === "Paid"
-                                        ? "bg-amber-500/20 text-amber-400"
-                                        : "bg-emerald-500/20 text-emerald-400"
+                                      "p-2.5 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 shadow-lg text-white",
+                                      p.color
                                     )}
                                   >
-                                    {p.pricing}
-                                  </span>
-                                  {p.status && (
+                                    {p.icon}
+                                  </div>
+                                  <div className="flex flex-col items-end gap-1.5">
                                     <span
                                       className={cn(
-                                        "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter backdrop-blur-md border border-white/10 shadow-lg font-mono",
-                                        p.status === "Development"
+                                        "text-[8px] md:text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider backdrop-blur-md border border-white/10 shadow-lg font-mono text-white",
+                                        p.pricing === "Paid"
                                           ? "bg-amber-500/20 text-amber-400"
-                                          : p.status === "Beta"
-                                          ? "bg-blue-500/20 text-blue-400"
                                           : "bg-emerald-500/20 text-emerald-400"
                                       )}
                                     >
-                                      {p.status}
+                                      {p.pricing}
                                     </span>
-                                  )}
+                                    {p.status && (
+                                      <span
+                                        className={cn(
+                                          "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter backdrop-blur-md border border-white/10 font-mono text-white",
+                                          p.status === "Development"
+                                            ? "bg-amber-500/20 text-amber-400"
+                                            : p.status === "Beta"
+                                            ? "bg-blue-500/20 text-blue-400"
+                                            : "bg-emerald-500/20 text-emerald-400"
+                                        )}
+                                      >
+                                        {p.status}
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
 
-                              <div className="mt-4">
-                                <h3 className="font-bold text-2xl group-hover/project:text-indigo-400 transition-colors mb-2 line-clamp-1 font-sans">
-                                  {p.name}
-                                </h3>
-                                <p className="text-sm text-white/70 font-light leading-relaxed line-clamp-2 mb-4 font-sans">
-                                  {p.desc}
-                                </p>
+                              {/* Bottom Content Area */}
+                              <div className="flex-1 p-5 flex flex-col justify-between bg-[#050505]/40">
+                                <div className="space-y-2">
+                                  <h3 className="font-bold text-xl group-hover/project:text-indigo-400 transition-colors line-clamp-1 font-sans text-white">
+                                    {p.name}
+                                  </h3>
+                                  <p className="text-xs text-white/60 font-light leading-relaxed line-clamp-2 font-sans">
+                                    {p.desc}
+                                  </p>
 
-                                <div className="flex flex-wrap items-center gap-2 mb-4">
-                                  {p.tags.slice(0, 3).map((tag) => (
-                                    <span
-                                      key={tag}
-                                      className="px-2 py-1 rounded-md bg-white/5 text-[9px] text-white/50 font-medium uppercase tracking-wider border border-white/5 font-mono"
-                                    >
-                                      {tag}
-                                    </span>
-                                  ))}
+                                  <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                                    {p.tags.slice(0, 3).map((tag) => (
+                                      <span
+                                        key={tag}
+                                        className="px-2 py-0.5 rounded-md bg-white/5 text-[8px] md:text-[9px] text-white/40 font-bold uppercase tracking-tighter border border-white/5 font-mono"
+                                      >
+                                        {tag}
+                                      </span>
+                                    ))}
+                                  </div>
                                 </div>
 
-                                <div className="flex items-center justify-between">
+                                <div className="flex items-center justify-between pt-3 border-t border-white/5 mt-3">
                                   <div className="text-[10px] font-bold text-white/40 group-hover:text-white transition-colors flex items-center gap-2 font-mono">
                                     <span>
                                       {p.mainCategory === "My Personal Apps"
@@ -409,32 +428,34 @@ export const AppsPage = ({
                                       className="group-hover:translate-x-1 transition-transform"
                                     />
                                   </div>
-                                  <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center group-hover/project:bg-indigo-500 group-hover/project:text-white transition-all shadow-xl">
+                                  <div className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover/project:bg-indigo-500 group-hover/project:text-white transition-all shadow-xl text-white">
                                     {p.mainCategory === "My Personal Apps" ? (
-                                      <Play size={16} fill="currentColor" />
+                                      <Play size={14} fill="currentColor" />
                                     ) : (
-                                      <ArrowRight size={16} />
+                                      <ArrowRight size={14} />
                                     )}
                                   </div>
                                 </div>
                               </div>
-                            </>
+                            </div>
                           ) : (
-                            <>
-                              <div className="flex items-start gap-4 shrink-0">
-                                <div className={cn("p-3 rounded-2xl bg-black/20 backdrop-blur-md", p.color)}>
+                            <div className="flex flex-row items-center w-full h-full p-4 gap-4 bg-[#050505]/45">
+                              {/* Left Icon */}
+                              <div className="flex items-start shrink-0">
+                                <div className={cn("p-3 rounded-2xl bg-black/40 border border-white/10", p.color)}>
                                   {p.icon}
                                 </div>
                               </div>
 
-                              <div className="flex-1">
+                              {/* Mid Content */}
+                              <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2 mb-1">
                                   <span className="text-[10px] text-white/40 uppercase tracking-widest font-mono">
                                     {p.mainCategory}
                                   </span>
                                 </div>
-                                <div className="flex items-center gap-3 mb-2">
-                                  <h3 className="font-bold text-lg group-hover/project:text-indigo-400 transition-colors font-sans">
+                                <div className="flex items-center gap-3 mb-1.5">
+                                  <h3 className="font-bold text-lg group-hover/project:text-indigo-400 transition-colors font-sans text-white truncate">
                                     {p.name}
                                   </h3>
                                   {p.status && (
@@ -452,12 +473,12 @@ export const AppsPage = ({
                                     </span>
                                   )}
                                 </div>
-                                <p className="text-sm text-white/60 font-light leading-relaxed line-clamp-2 mb-2 font-sans">
+                                <p className="text-xs text-white/50 font-light leading-relaxed line-clamp-1 md:line-clamp-2 mb-2 font-sans">
                                   {p.desc}
                                 </p>
 
                                 <div className="flex items-center gap-2">
-                                  <div className="flex gap-1">
+                                  <div className="flex gap-1.5">
                                     {p.tags.slice(0, 4).map((tag) => (
                                       <span
                                         key={tag}
@@ -475,7 +496,8 @@ export const AppsPage = ({
                                 </div>
                               </div>
 
-                              <div className="flex flex-col items-end gap-2 shrink-0 ml-auto leading-none">
+                              {/* Right Pricing Badge / Arrow */}
+                              <div className="flex flex-col items-end gap-2 shrink-0 ml-auto self-stretch justify-between py-1 leading-none">
                                 <span
                                   className={cn(
                                     "text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider font-mono",
@@ -486,7 +508,7 @@ export const AppsPage = ({
                                 >
                                   {p.pricing}
                                 </span>
-                                <div className="mt-auto p-2 rounded-full bg-white/5 text-white/40 group-hover/project:bg-white/10 group-hover/project:text-white transition-all">
+                                <div className="p-2 rounded-full bg-white/5 text-white/40 border border-white/5 group-hover/project:bg-white/10 group-hover/project:text-white transition-all">
                                   <ArrowRight
                                     size={16}
                                     className="group-hover/project:-rotate-45 transition-transform"
@@ -494,9 +516,9 @@ export const AppsPage = ({
                                 </div>
                               </div>
 
-                              {/* List View Image Preview */}
-                              <div className="hidden sm:block relative w-40 h-28 rounded-xl overflow-hidden shrink-0 border border-white/10 ml-2">
-                                {p.url !== "#" || (p.previewUrl && p.previewUrl.includes("youtube.com/embed/")) ? (
+                              {/* Thumbnail preview - kept only on the right as a standard preview block */}
+                              <div className="hidden sm:block relative w-36 h-28 rounded-xl overflow-hidden shrink-0 border border-white/10">
+                                {isUrlValid && imgUrl ? (
                                   <img
                                     src={
                                       p.url !== "#"
@@ -504,23 +526,22 @@ export const AppsPage = ({
                                         : `https://img.youtube.com/vi/${p.previewUrl.split("/").pop()}/maxresdefault.jpg`
                                     }
                                     alt={p.name}
-                                    className="w-full h-full object-cover opacity-60 group-hover/project:opacity-100 transition-all duration-500 group-hover/project:scale-110"
+                                    className="w-full h-full object-cover opacity-80 group-hover/project:opacity-100 transition-all duration-500 group-hover/project:scale-110"
                                     loading="lazy"
                                     referrerPolicy="no-referrer"
                                   />
                                 ) : (
                                   <div className="w-full h-full bg-white/5 flex items-center justify-center">
-                                    <div className="opacity-20 scale-150">{p.icon}</div>
+                                    <div className="opacity-20 scale-150 text-white">{p.icon}</div>
                                   </div>
                                 )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/80 to-transparent opacity-50" />
                               </div>
-                            </>
+                            </div>
                           )}
-                        </div>
-                      </BentoCard>
-                    </motion.div>
-                  ))}
+                        </BentoCard>
+                      </motion.div>
+                    );
+                  })}
                 </AnimatePresence>
               </div>
             </div>
@@ -841,102 +862,116 @@ export const AppsPage = ({
             ))
           ) : (
             <AnimatePresence mode="popLayout">
-              {filteredProjects.map((p, i) => (
-                <BentoCard
-                  key={p.name}
-                  size={i === 0 && projectFilter.length === 0 ? "2x1" : "1x1"}
-                  className={cn(
-                    p.bg,
-                    "border-white/5 cursor-pointer relative overflow-hidden group/project h-[400px] p-0"
-                  )}
-                  onClick={() => openProjectModal(p)}
-                  background={
-                    p.url !== "#" || (p.previewUrl && p.previewUrl.includes("youtube.com/embed/")) ? (
-                      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[2rem]">
-                        <img
-                          src={
-                            p.url !== "#"
-                              ? `https://image.thum.io/get/width/800/crop/800/noanimate/${p.url}`
-                              : `https://img.youtube.com/vi/${p.previewUrl.split("/").pop()}/maxresdefault.jpg`
-                          }
-                          alt={p.name}
-                          className="w-full h-full object-cover opacity-60 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
-                          loading="lazy"
-                          referrerPolicy="no-referrer"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/90 to-transparent" />
-                      </div>
-                    ) : null
-                  }
-                >
-                  <div className="flex flex-col h-full relative z-10 p-6 justify-end">
-                    <div className="flex justify-between items-start mb-auto">
-                      <div
-                        className={cn(
-                          "p-2 rounded-xl bg-black/40 backdrop-blur-md border border-white/10",
-                          p.color
+              {filteredProjects.map((p, i) => {
+                const isFirstCardExpand = i === 0 && projectFilter.length === 0;
+                const isUrlValid = p.url !== "#" || (p.previewUrl && p.previewUrl.includes("youtube.com/embed/"));
+                const imgUrl = p.url !== "#"
+                  ? `https://image.thum.io/get/width/800/crop/800/noanimate/${p.url}`
+                  : p.previewUrl
+                  ? `https://img.youtube.com/vi/${p.previewUrl.split("/").pop()}/maxresdefault.jpg`
+                  : null;
+
+                return (
+                  <BentoCard
+                    key={p.name}
+                    size={isFirstCardExpand ? "2x1" : "1x1"}
+                    className={cn(
+                      p.bg,
+                      "border-white/5 cursor-pointer relative overflow-hidden group/project h-[450px] p-0 shadow-lg flex flex-col transition-all duration-300",
+                      isFirstCardExpand ? "md:col-span-2" : ""
+                    )}
+                    onClick={() => openProjectModal(p)}
+                    background={null}
+                  >
+                    <div className="flex flex-col h-full w-full">
+                      {/* Top Image Area */}
+                      <div className="relative w-full h-[190px] shrink-0 overflow-hidden bg-black/40 border-b border-white/5">
+                        {isUrlValid && imgUrl ? (
+                          <img
+                            src={imgUrl}
+                            alt={p.name}
+                            className="w-full h-full object-cover opacity-80 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
+                            loading="lazy"
+                            referrerPolicy="no-referrer"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-white/10 scale-150">
+                            {p.icon}
+                          </div>
                         )}
-                      >
-                        {p.icon}
-                      </div>
-                      <div className="flex flex-col items-end gap-1">
-                        <span
-                          className={cn(
-                            "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter backdrop-blur-md border border-white/10 font-mono",
-                            p.pricing === "Paid"
-                              ? "bg-amber-500/20 text-amber-400"
-                              : "bg-emerald-500/20 text-emerald-400"
-                          )}
-                        >
-                          {p.pricing} {p.price && `(${p.price})`}
-                        </span>
-                        {p.status && (
-                          <span
+                        {/* Cover overlay gradient to transition nicely */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/20 to-transparent" />
+
+                        {/* Absolute Overlays inside Thumbnail area */}
+                        <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
+                          <div
                             className={cn(
-                              "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter backdrop-blur-md border border-white/10 font-mono",
-                              p.status === "Development"
-                                ? "bg-amber-500/20 text-amber-400"
-                                : p.status === "Beta"
-                                ? "bg-blue-500/20 text-blue-400"
-                                : "bg-emerald-500/20 text-emerald-400"
+                              "p-2.5 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 shadow-lg text-white",
+                              p.color
                             )}
                           >
-                            {p.status}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="mt-4">
-                      <h3 className="font-bold text-xl mb-1 group-hover/project:text-indigo-400 transition-colors font-sans text-white">
-                        {p.name}
-                      </h3>
-                      <p className="text-xs text-white/70 line-clamp-2 font-light mb-4 font-sans">
-                        {p.desc}
-                      </p>
-
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-[10px] font-bold text-white/40 group-hover:text-white transition-colors font-mono">
-                          <span>
-                            {p.mainCategory === "My Personal Apps" ? "Watch Preview" : "View Project"}
-                          </span>
-                          <ArrowRight
-                            size={12}
-                            className="group-hover:translate-x-1 transition-transform"
-                          />
-                        </div>
-                        <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center group-hover/project:bg-indigo-500 group-hover/project:text-white transition-all shadow-xl">
-                          {p.mainCategory === "My Personal Apps" ? (
-                            <Play size={16} fill="currentColor" />
-                          ) : (
-                            <ArrowRight size={16} />
-                          )}
+                            {p.icon}
+                          </div>
+                          <div className="flex flex-col items-end gap-1.5">
+                            <span
+                              className={cn(
+                                "text-[8px] md:text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider backdrop-blur-md border border-white/10 shadow-lg font-mono text-white",
+                                p.pricing === "Paid"
+                                  ? "bg-amber-500/20 text-amber-400"
+                                  : "bg-emerald-500/20 text-emerald-400"
+                              )}
+                            >
+                              {p.pricing} {p.price && `(${p.price})`}
+                            </span>
+                            {p.status && (
+                              <span
+                                className={cn(
+                                  "text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter backdrop-blur-md border border-white/10 font-mono text-white",
+                                  p.status === "Development"
+                                    ? "bg-amber-500/20 text-amber-400"
+                                    : p.status === "Beta"
+                                    ? "bg-blue-500/20 text-blue-400"
+                                    : "bg-emerald-500/20 text-emerald-400"
+                                )}
+                              >
+                                {p.status}
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
+
+                      {/* Bottom Content Area */}
+                      <div className="flex-1 p-5 flex flex-col justify-between bg-[#050505]/40">
+                        <div className="space-y-2">
+                          <h3 className="font-bold text-xl group-hover/project:text-indigo-400 transition-colors line-clamp-1 font-sans text-white">
+                            {p.name}
+                          </h3>
+                          <p className="text-xs text-white/60 font-light leading-relaxed mb-4 line-clamp-2">
+                            {p.desc}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-2 border-t border-white/5">
+                          <span className="text-[9px] font-bold text-white/40 group-hover:text-white transition-colors flex items-center gap-1.5 font-mono">
+                            <span>
+                              {p.mainCategory === "My Personal Apps" ? "Watch Preview" : "View Project"}
+                            </span>
+                            <ArrowRight size={10} />
+                          </span>
+                          <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-white/60 group-hover/project:bg-indigo-500 group-hover/project:text-white transition-all shadow-md">
+                            {p.mainCategory === "My Personal Apps" ? (
+                              <Play size={12} fill="currentColor" />
+                            ) : (
+                              <ArrowRight size={12} />
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </BentoCard>
-              ))}
+                  </BentoCard>
+                );
+              })}
             </AnimatePresence>
           )}
         </div>
