@@ -15,7 +15,9 @@ export type Category =
   | "Store"
   | "Journal"
   | "Vortex"
-  | "Services";
+  | "Services"
+  | "Prompts"
+  | "Community";
 
 export type ProjectCategory =
   | "Apps & Dev"

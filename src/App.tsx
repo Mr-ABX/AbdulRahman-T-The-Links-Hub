@@ -90,6 +90,8 @@ import { ReviewsPage } from "./components/pages/ReviewsPage";
 import { ConnectPage } from "./components/pages/ConnectPage";
 import { SuccessPage } from "./components/pages/SuccessPage";
 import { ServicesPage } from "./components/pages/ServicesPage";
+import { PromptsPage } from "./components/pages/PromptsPage";
+import { CommunityPage } from "./components/pages/CommunityPage";
 
 import { MainFooter } from "./components/layout/MainFooter";
 
@@ -133,6 +135,8 @@ export default function App() {
     if (path.startsWith("/vortex")) return "Vortex";
     if (path.startsWith("/services")) return "Services";
     if (path.startsWith("/links")) return "Links";
+    if (path.startsWith("/prompts")) return "Prompts";
+    if (path.startsWith("/community")) return "Community";
     return "Home";
   }, [location.pathname]);
 
@@ -487,6 +491,10 @@ export default function App() {
         return <Vortex />;
       case "Services":
         return <ServicesPage />;
+      case "Prompts":
+        return <PromptsPage />;
+      case "Community":
+        return <CommunityPage />;
     }
   };
 

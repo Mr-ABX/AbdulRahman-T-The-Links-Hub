@@ -33,10 +33,10 @@ export const MainHeader = ({
 
   const navGroups = [
     { label: "Home", tab: "Home" },
-    { label: "Platform", items: ["Vortex", "Store", "Links"] },
+    { label: "Platform", items: ["Vortex", "Store", "Links", "Prompts"] },
     { label: "Work", items: ["Apps", "Projects", "Services", "Automation"] },
     { label: "Insights", items: ["Journal", "Content", "Ebooks"] },
-    { label: "About", items: ["About", "Reviews", "Connect"] },
+    { label: "About", items: ["About", "Reviews", "Connect", "Community"] },
   ];
 
   const handleTabClick = (tab: string) => {

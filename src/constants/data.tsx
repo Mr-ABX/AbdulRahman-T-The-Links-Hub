@@ -31,6 +31,7 @@ import {
   User,
   Star,
   Share2,
+  Users,
 } from "lucide-react";
 import { ProjectType } from "../types";
 
@@ -49,7 +50,9 @@ type Category =
   | "Store"
   | "Journal"
   | "Vortex"
-  | "Services";
+  | "Services"
+  | "Prompts"
+  | "Community";
 
 export const categoryDescriptions: Record<string, string> = {
   All: "Explore my complete portfolio of projects, apps, and experiments.",
@@ -78,6 +81,8 @@ export const tabs: { name: Category; icon: React.ReactNode }[] = [
   { name: "Connect", icon: <Share2 size={18} /> },
   { name: "Vortex", icon: <Sparkles size={18} /> },
   { name: "Services", icon: <Zap size={18} /> },
+  { name: "Prompts", icon: <Terminal size={18} /> },
+  { name: "Community", icon: <Users size={18} /> },
 ];
 
 export const socialTabs = [
