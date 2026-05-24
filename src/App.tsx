@@ -400,6 +400,10 @@ export default function App() {
           <LinksPage
             setActiveTab={setActiveTab}
             openProjectModal={openProjectModal}
+            openChatWithSearch={openChatWithSearch}
+            compactHomeView={compactHomeView}
+            activeHomeSection={activeHomeSection}
+            setActiveHomeSection={setActiveHomeSection}
           />
         );
       case "Projects":
