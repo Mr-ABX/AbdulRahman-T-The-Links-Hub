@@ -28,7 +28,7 @@ export const VerticalHeader = ({
     { label: "Home", tab: "Home" },
     { label: "Platform", items: ["Vortex", "Store", "Links", "Prompts", "Apps"] },
     { label: "Work", items: ["Projects", "Services", "Automation"] },
-    { label: "Insights", items: ["Journal", "Academy", "AI Music", "My Blog", "Feed", "Ebooks"] },
+    { label: "Insights", items: ["Journal", "Academy", "Music", "Blog", "Feed", "Ebooks"] },
     { label: "About", items: ["About", "Reviews", "Connect", "Community"] },
   ];
 
@@ -111,7 +111,12 @@ export const VerticalHeader = ({
                       {group.items.map((item) => {
                         const tabInfo = tabs.find((t) => t.name === item);
                         // Fallback handling if custom tabs name aren't found
-                        const displayName = item === "Apps" ? "INFNI-T' LABZ" : item;
+                        const displayName = 
+                          item === "Apps" ? "INFNI-T' LABZ" : 
+                          item === "Music" ? "AI Music" : 
+                          item === "Blog" ? "My Blog" : 
+                          item === "Feed" ? "Release Feed" : 
+                          tabInfo?.name || item;
                         const icon = tabInfo?.icon || <Layout size={14} />;
                         const isActive = activeTab === item;
 
