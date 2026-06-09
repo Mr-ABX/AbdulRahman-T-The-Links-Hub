@@ -190,6 +190,10 @@ export default function App() {
   >("Learn");
   const navRef = React.useRef<HTMLDivElement>(null);
 
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(
+    () => localStorage.getItem("abdulrahman_sidebar_collapsed") === "true"
+  );
+
   useEffect(() => {
     localStorage.setItem("abdulrahman_hideCursor", hideCustomCursor.toString());
     localStorage.setItem(
@@ -198,7 +202,8 @@ export default function App() {
     );
     localStorage.setItem("abdulrahman_compactHome", compactHomeView.toString());
     localStorage.setItem("abdulrahman_header_layout", headerLayout);
-  }, [hideCustomCursor, enableSmoothScroll, compactHomeView, headerLayout]);
+    localStorage.setItem("abdulrahman_sidebar_collapsed", isSidebarCollapsed.toString());
+  }, [hideCustomCursor, enableSmoothScroll, compactHomeView, headerLayout, isSidebarCollapsed]);
 
   const slugify = (text: string) => {
     return text
@@ -528,7 +533,7 @@ export default function App() {
       className={cn(
         "min-h-screen mesh-gradient flex flex-col items-center selection:bg-indigo-500/30 transition-all duration-300",
         headerLayout === "vertical" && !isInImmersiveMode && activeTab !== "Links" && activeTab !== "Vortex"
-          ? "md:pl-64"
+          ? isSidebarCollapsed ? "md:pl-20" : "md:pl-64"
           : "",
         isInImmersiveMode || activeTab === "Home" || activeTab === "Vortex"
           ? "py-0 px-0 relative top-0"
@@ -568,6 +573,8 @@ export default function App() {
                     setActiveTab={setActiveTab}
                     setIsSettingsOpen={setIsSettingsOpen}
                     tabs={tabs}
+                    isCollapsed={isSidebarCollapsed}
+                    setIsCollapsed={setIsSidebarCollapsed}
                   />
                 </div>
               </>

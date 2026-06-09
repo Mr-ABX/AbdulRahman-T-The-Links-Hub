@@ -106,4 +106,27 @@
     mask-image: linear-gradient(to right, transparent, black 15px, black calc(100% - 15px), transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 15px, black calc(100% - 15px), transparent);
   }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  /* Custom scroll area that shows scrollbar ONLY on hover */
+  .custom-scroll-area::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scroll-area::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 99px;
+  }
+  .custom-scroll-area:hover::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  .custom-scroll-area::-webkit-scrollbar-track {
+    background: transparent;
+  }
 }
