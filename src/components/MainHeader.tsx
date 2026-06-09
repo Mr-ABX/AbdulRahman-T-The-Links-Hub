@@ -33,7 +33,7 @@ export const MainHeader = ({
 
   const navGroups = [
     { label: "Home", tab: "Home" },
-    { label: "Platform", items: ["Vortex", "Store", "Links", "Prompts", "Apps"] },
+    { label: "Platform", items: ["Vortex", "Store", "Links", "Prompts", "Apps", "Toolspedia"] },
     { label: "Work", items: ["Projects", "Services", "Automation"] },
     { label: "Insights", items: ["Journal", "Academy", "Music", "Blog", "Feed", "Ebooks"] },
     { label: "About", items: ["About", "Reviews", "Connect", "Community"] },
@@ -159,7 +159,7 @@ export const MainHeader = ({
                                 >
                                   {tabInfo?.icon}
                                 </span>
-                                {item === "Apps" ? "INFNI-T' LABZ" : item === "Music" ? "AI Music" : item === "Blog" ? "My Blog" : item === "Feed" ? "Release Feed" : tabInfo?.name || item}
+                                {item === "Apps" ? "INFNI-T' LABZ" : item === "Music" ? "AI Music" : item === "Blog" ? "My Blog" : item === "Feed" ? "Release Feed" : item === "Toolspedia" ? "Tools Pedia" : tabInfo?.name || item}
                               </button>
                             );
                           })}
@@ -255,7 +255,7 @@ export const MainHeader = ({
                             )}
                           >
                             {tabInfo?.icon}
-                            {item === "Apps" ? "INFNI-T' LABZ" : item === "Music" ? "AI Music" : item === "Blog" ? "My Blog" : item === "Feed" ? "Release Feed" : tabInfo?.name || item}
+                            {item === "Apps" ? "INFNI-T' LABZ" : item === "Music" ? "AI Music" : item === "Blog" ? "My Blog" : item === "Feed" ? "Release Feed" : item === "Toolspedia" ? "Tools Pedia" : tabInfo?.name || item}
                           </button>
                         );
                       })

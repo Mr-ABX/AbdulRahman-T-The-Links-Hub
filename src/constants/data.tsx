@@ -35,6 +35,7 @@ import {
   GraduationCap,
   Music,
   Radio,
+  Wrench,
 } from "lucide-react";
 import { ProjectType } from "../types";
 
@@ -59,7 +60,8 @@ type Category =
   | "Academy"
   | "Music"
   | "Blog"
-  | "Feed";
+  | "Feed"
+  | "Toolspedia";
 
 export const categoryDescriptions: Record<string, string> = {
   All: "Explore my complete portfolio of projects, apps, and experiments.",
@@ -93,6 +95,7 @@ export const tabs: { name: Category; icon: React.ReactNode }[] = [
   { name: "Music", icon: <Music size={18} /> },
   { name: "Blog", icon: <Newspaper size={18} /> },
   { name: "Feed", icon: <Radio size={18} /> },
+  { name: "Toolspedia", icon: <Wrench size={18} /> },
 ];
 
 export const socialTabs = [

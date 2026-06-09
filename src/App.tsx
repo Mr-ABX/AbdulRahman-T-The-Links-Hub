@@ -88,6 +88,7 @@ import { AcademyPage } from "./components/pages/AcademyPage";
 import { MusicPage } from "./components/pages/MusicPage";
 import { BlogPage } from "./components/pages/BlogPage";
 import { FeedPage } from "./components/pages/FeedPage";
+import { ToolspediaPage } from "./components/pages/ToolspediaPage";
 import { AboutPage } from "./components/pages/AboutPage";
 import { ReviewsPage } from "./components/pages/ReviewsPage";
 import { ConnectPage } from "./components/pages/ConnectPage";
@@ -145,6 +146,7 @@ export default function App() {
     if (path.startsWith("/music")) return "Music";
     if (path.startsWith("/blog")) return "Blog";
     if (path.startsWith("/feed")) return "Feed";
+    if (path.startsWith("/toolspedia")) return "Toolspedia";
     return "Home";
   }, [location.pathname]);
 
@@ -500,6 +502,8 @@ export default function App() {
         return <BlogPage />;
       case "Feed":
         return <FeedPage />;
+      case "Toolspedia":
+        return <ToolspediaPage />;
       case "About":
         return <AboutPage />;
       case "Reviews":

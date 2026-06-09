@@ -21,7 +21,8 @@ export type Category =
   | "Academy"
   | "Music"
   | "Blog"
-  | "Feed";
+  | "Feed"
+  | "Toolspedia";
 
 export type ProjectCategory =
   | "Apps & Dev"

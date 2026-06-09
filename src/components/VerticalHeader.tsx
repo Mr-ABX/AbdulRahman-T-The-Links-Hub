@@ -26,7 +26,7 @@ export const VerticalHeader = ({
 
   const navGroups = [
     { label: "Home", tab: "Home" },
-    { label: "Platform", items: ["Vortex", "Store", "Links", "Prompts", "Apps"] },
+    { label: "Platform", items: ["Vortex", "Store", "Links", "Prompts", "Apps", "Toolspedia"] },
     { label: "Work", items: ["Projects", "Services", "Automation"] },
     { label: "Insights", items: ["Journal", "Academy", "Music", "Blog", "Feed", "Ebooks"] },
     { label: "About", items: ["About", "Reviews", "Connect", "Community"] },
@@ -116,6 +116,7 @@ export const VerticalHeader = ({
                           item === "Music" ? "AI Music" : 
                           item === "Blog" ? "My Blog" : 
                           item === "Feed" ? "Release Feed" : 
+                          item === "Toolspedia" ? "Tools Pedia" : 
                           tabInfo?.name || item;
                         const icon = tabInfo?.icon || <Layout size={14} />;
                         const isActive = activeTab === item;
