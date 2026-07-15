@@ -22,21 +22,27 @@
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #050505;
+    background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: transparent;
     border-radius: 99px;
     border: 1px solid transparent;
   }
-  ::-webkit-scrollbar-thumb:hover {
+  *:hover::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  *:hover::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.25);
   }
 
   /* Firefox support */
   * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.1) #050505;
+    scrollbar-color: transparent transparent;
+  }
+  *:hover {
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
   }
 }
 
@@ -113,20 +119,5 @@
   .no-scrollbar {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
-  }
-
-  /* Custom scroll area that shows scrollbar ONLY on hover */
-  .custom-scroll-area::-webkit-scrollbar {
-    width: 4px;
-  }
-  .custom-scroll-area::-webkit-scrollbar-thumb {
-    background: transparent;
-    border-radius: 99px;
-  }
-  .custom-scroll-area:hover::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-  }
-  .custom-scroll-area::-webkit-scrollbar-track {
-    background: transparent;
   }
 }
