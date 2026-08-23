@@ -116,6 +116,20 @@ export const socialTabs = [
 
 export const projects: ProjectType[] = [
   {
+    name: "AB Folio Portal V2",
+    mainCategory: "Interactive Experiences",
+    categories: ["Web Development Projects", "Pro Business Suite", "Apps & Dev"],
+    tags: ["Portfolio V2", "3D Web", "Interactive", "Next-Gen UI", "Showcase"],
+    pricing: "Free",
+    desc: "The next-generation interactive web experience portal featuring immersive 3D spatial aesthetics, real-time visual dynamics, and high-performance showcase architecture.",
+    url: "https://ab-folio-portal-v2.vercel.app/",
+    previewUrl: "https://ab-folio-portal-v2.vercel.app/",
+    color: "text-cyan-400",
+    bg: "bg-cyan-500/10",
+    icon: <Sparkles size={20} />,
+    status: "Production",
+  },
+  {
     name: "Project X (Unreleased)",
     mainCategory: "My Personal Apps",
     tags: ["Experimental", "AI"],

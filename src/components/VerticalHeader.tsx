@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronDown, Settings, ShieldCheck, Mail, Sparkles, User, Star, Share2, Compass, Layout, Send, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { ChevronDown, Settings, ShieldCheck, Mail, Sparkles, User, Star, Share2, Compass, Layout, Send, PanelLeftClose, PanelLeftOpen, ExternalLink, Globe } from "lucide-react";
 import { cn } from "../lib/utils";
 import { ASSET_LINKS } from "../constants/assets";
 
@@ -176,6 +176,56 @@ export const VerticalHeader = ({
             );
           })}
         </nav>
+
+        {/* Portal V2 Showcase Widget */}
+        <div className="pt-2">
+          {isCollapsed ? (
+            <a
+              href="https://ab-folio-portal-v2.vercel.app/"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="w-10 h-10 mx-auto rounded-xl bg-gradient-to-br from-cyan-500/20 to-indigo-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 hover:text-white hover:border-cyan-400/60 hover:bg-cyan-500/30 transition-all group relative shadow-lg shadow-cyan-500/10"
+              title="AB Folio Portal V2 (Launch 3D Web)"
+            >
+              <Sparkles size={16} className="group-hover:scale-110 transition-transform" />
+              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-cyan-400 rounded-full border-2 border-[#050505] animate-pulse" />
+            </a>
+          ) : (
+            <div className="relative overflow-hidden rounded-2xl p-[1px] group">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/30 to-indigo-500/30 rounded-2xl" />
+              <div className="relative bg-[#0d0d12]/95 backdrop-blur-xl p-3.5 rounded-[calc(1rem-1px)] border border-white/10 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                    <span className="text-[9px] font-black uppercase tracking-wider text-cyan-400 font-mono">
+                      PORTAL V2
+                    </span>
+                  </div>
+                  <span className="text-[8px] font-mono font-bold px-1.5 py-0.5 rounded bg-white/5 text-white/50 border border-white/10 uppercase">
+                    3D Live
+                  </span>
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-white font-sans group-hover:text-cyan-300 transition-colors line-clamp-1">
+                    AB-Folio Experience
+                  </h4>
+                  <p className="text-[10px] text-white/40 leading-snug font-sans line-clamp-2">
+                    Spatial 3D web experience portal & showcase.
+                  </p>
+                </div>
+                <a
+                  href="https://ab-folio-portal-v2.vercel.app/"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="w-full py-2 px-3 rounded-lg bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 hover:from-cyan-500/30 hover:to-indigo-500/30 border border-cyan-500/30 text-cyan-300 hover:text-white text-[10px] font-bold font-mono flex items-center justify-between transition-all group/link"
+                >
+                  <span>Launch Portal</span>
+                  <ExternalLink size={12} className="group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Footer Settings & Controls */}

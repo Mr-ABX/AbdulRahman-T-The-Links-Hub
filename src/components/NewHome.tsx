@@ -12,6 +12,10 @@ import {
   Target,
   Star,
   Brain,
+  Sparkles,
+  ExternalLink,
+  Globe,
+  Layers,
 } from "lucide-react";
 
 const myArea51Image =
@@ -107,6 +111,80 @@ export const Home = ({
               </div>
             ),
           )}
+        </motion.div>
+      </section>
+
+      {/* Featured Showcase: AB-Folio Portal V2 */}
+      <section className="py-12 max-w-[1200px] mx-auto px-4 md:px-8 relative z-20">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
+          className="relative overflow-hidden rounded-[2.5rem] p-[2px] group"
+        >
+          {/* Animated Gradient Glow Border */}
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/30 via-indigo-500/30 to-purple-500/30 rounded-[2.5rem]" />
+          <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_240deg,#06b6d4_280deg,#6366f1_320deg,#ec4899_360deg)] animate-border-spin blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+
+          {/* Inner Content Card */}
+          <div className="relative h-full w-full bg-[#050505]/90 backdrop-blur-2xl rounded-[calc(2.5rem-2px)] p-8 md:p-12 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 overflow-hidden shadow-2xl border border-white/10">
+            {/* Background Ambient Lights */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full filter blur-[120px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500/10 rounded-full filter blur-[120px] pointer-events-none" />
+
+            <div className="relative z-10 space-y-4 max-w-2xl text-left">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-mono">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+                  ✨ NEW 3D EXPERIENCE PORTAL
+                </span>
+                <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-white/5 border border-white/10 text-white/50 uppercase">
+                  V2 Experience
+                </span>
+              </div>
+
+              <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight font-sans leading-tight">
+                AB-Folio <span className="bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">Portal V2</span>
+              </h2>
+
+              <p className="text-white/70 text-sm md:text-base font-light font-sans max-w-xl leading-relaxed">
+                Step into my next-generation interactive web showcase featuring 3D spatial environments, fluid motion physics, dynamic audio-visual aesthetics, and cutting-edge digital experiences.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-2 pt-2">
+                {["Spatial UI", "Interactive 3D", "Audio FX", "Next-Gen Web"].map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-white/5 text-white/40 border border-white/5"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA & Quick Action Box */}
+            <div className="relative z-10 flex flex-col sm:flex-row lg:flex-col gap-3.5 w-full lg:w-72 shrink-0">
+              <a
+                href="https://ab-folio-portal-v2.vercel.app/"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-400 hover:via-indigo-500 hover:to-purple-500 text-white font-bold text-sm flex items-center justify-center gap-2.5 transition-all shadow-[0_0_25px_rgba(99,102,241,0.4)] hover:scale-105 active:scale-95 group/btn cursor-pointer"
+              >
+                <span>Launch Live Experience</span>
+                <ExternalLink size={16} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+              </a>
+
+              <button
+                onClick={() => setActiveTab("Projects")}
+                className="w-full py-3.5 px-6 rounded-2xl bg-white/5 hover:bg-white/10 text-white/80 hover:text-white font-bold text-xs flex items-center justify-center gap-2 transition-all border border-white/10 hover:border-white/20"
+              >
+                <Layers size={14} className="text-white/40" />
+                <span>Explore In Portfolio</span>
+              </button>
+            </div>
+          </div>
         </motion.div>
       </section>
 

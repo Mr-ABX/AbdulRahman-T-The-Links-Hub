@@ -595,6 +595,39 @@ export const ProjectsPage = ({
           </div>
         </div>
 
+        {/* Featured Portal V2 Showcase Card */}
+        <div className="relative overflow-hidden rounded-[2rem] p-[2px] group mb-8">
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/30 via-indigo-500/30 to-purple-500/30 rounded-[2rem]" />
+          <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_240deg,#06b6d4_280deg,#6366f1_320deg,#a855f7_360deg)] animate-border-spin blur-md opacity-70 group-hover:opacity-100 transition-opacity pointer-events-none" />
+          <div className="relative h-full w-full bg-[#08080c]/90 backdrop-blur-2xl rounded-[calc(2rem-2px)] p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between overflow-hidden gap-6 border border-white/10">
+            <div className="relative z-10 space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-mono flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+                  NEW PORTAL V2
+                </span>
+                <span className="text-[10px] font-mono text-white/40">3D Interactive Experience</span>
+              </div>
+              <h3 className="text-2xl md:text-3xl font-extrabold text-white font-sans tracking-tight">
+                AB-Folio Experience Portal V2
+              </h3>
+              <p className="text-white/60 text-xs md:text-sm max-w-xl font-light font-sans leading-relaxed">
+                Step into the brand new spatial 3D web experience portal showcasing cutting-edge UI physics, interactive showcases, and dynamic sound design.
+              </p>
+            </div>
+            <a
+              href="https://ab-folio-portal-v2.vercel.app/"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="relative z-10 px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-xs flex items-center gap-2.5 shadow-lg shadow-indigo-500/20 hover:scale-105 active:scale-95 transition-all shrink-0 cursor-pointer group/link"
+            >
+              <Sparkles size={16} />
+              <span>Launch Live Portal</span>
+              <ExternalLink size={14} className="group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+            </a>
+          </div>
+        </div>
+
         <div className="text-center md:text-left mb-8">
           <h2 className="text-4xl font-extrabold mb-4 font-sans text-white tracking-tight">
             My <span className="text-indigo-400 text-outline-indigo">Work & Portfolios</span>
