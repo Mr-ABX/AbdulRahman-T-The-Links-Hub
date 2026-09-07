@@ -36,6 +36,7 @@ import {
   Music,
   Radio,
   Wrench,
+  Rocket,
 } from "lucide-react";
 import { ProjectType } from "../types";
 
@@ -61,7 +62,8 @@ type Category =
   | "Music"
   | "Blog"
   | "Feed"
-  | "Toolspedia";
+  | "Toolspedia"
+  | "Flagships";
 
 export const categoryDescriptions: Record<string, string> = {
   All: "Explore my complete portfolio of projects, apps, and experiments.",
@@ -80,6 +82,7 @@ export const tabs: { name: Category; icon: React.ReactNode }[] = [
   { name: "Links", icon: <LinkIcon size={18} /> },
   { name: "Store", icon: <ShoppingBag size={18} /> },
   { name: "Apps", icon: <LayoutGrid size={18} /> },
+  { name: "Flagships", icon: <Rocket size={18} /> },
   { name: "Journal", icon: <Newspaper size={18} /> },
   { name: "Projects", icon: <AppWindow size={18} /> },
   { name: "Ebooks", icon: <Book size={18} /> },
@@ -115,6 +118,20 @@ export const socialTabs = [
 ];
 
 export const projects: ProjectType[] = [
+  {
+    name: "MurMur — Ambient Voice AI OS",
+    mainCategory: "Apps & Dev",
+    categories: ["AI Solutions", "Pro Business Suite", "My Personal Apps"],
+    tags: ["Flagship", "Voice AI", "Whisper", "Rust", "Tauri v2", "Open Source"],
+    pricing: "Free & Open Source",
+    desc: "Ambient AI Voice & Assistant Operating System featuring sub-second local Whisper dictation, Dynamic Notch overlay, and universal auto-paste for macOS & Windows.",
+    url: "https://github.com/Mr-ABX/MurMur",
+    previewUrl: "https://github.com/Mr-ABX/MurMur",
+    color: "text-emerald-400",
+    bg: "bg-emerald-500/10",
+    icon: <Mic size={20} />,
+    status: "Active Beta",
+  },
   {
     name: "AB Folio Portal V2",
     mainCategory: "Interactive Experiences",

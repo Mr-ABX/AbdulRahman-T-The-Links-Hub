@@ -58,7 +58,7 @@ export const Home = ({
       <div className="absolute top-[60%] right-[-10%] w-[50%] h-[50%] bg-[#ec4899] opacity-[0.02] blur-[150px] rounded-full pointer-events-none" />
 
       {/* 1. Hero Section */}
-      <section className="min-h-screen pt-24 pb-12 flex flex-col items-center justify-center text-center max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
+      <section className="pt-10 sm:pt-14 md:pt-20 pb-12 flex flex-col items-center justify-center text-center max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

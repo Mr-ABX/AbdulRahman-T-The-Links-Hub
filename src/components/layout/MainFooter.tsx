@@ -51,12 +51,18 @@ export const MainFooter = ({
         </div>
 
         <div className="flex flex-col items-center md:items-end gap-4">
-          <div className="flex gap-8 text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
+          <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
             <button
               onClick={() => setActiveTab("Home")}
               className="hover:text-white transition-colors"
             >
               Home
+            </button>
+            <button
+              onClick={() => setActiveTab("Flagships")}
+              className="hover:text-white transition-colors"
+            >
+              Flagships
             </button>
             <button
               onClick={() => setActiveTab("Projects")}

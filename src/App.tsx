@@ -89,6 +89,7 @@ import { MusicPage } from "./components/pages/MusicPage";
 import { BlogPage } from "./components/pages/BlogPage";
 import { FeedPage } from "./components/pages/FeedPage";
 import { ToolspediaPage } from "./components/pages/ToolspediaPage";
+import { FlagshipsPage } from "./components/pages/FlagshipsPage";
 import { AboutPage } from "./components/pages/AboutPage";
 import { ReviewsPage } from "./components/pages/ReviewsPage";
 import { ConnectPage } from "./components/pages/ConnectPage";
@@ -147,6 +148,7 @@ export default function App() {
     if (path.startsWith("/blog")) return "Blog";
     if (path.startsWith("/feed")) return "Feed";
     if (path.startsWith("/toolspedia")) return "Toolspedia";
+    if (path.startsWith("/flagships")) return "Flagships";
     return "Home";
   }, [location.pathname]);
 
@@ -509,6 +511,8 @@ export default function App() {
         return <FeedPage />;
       case "Toolspedia":
         return <ToolspediaPage />;
+      case "Flagships":
+        return <FlagshipsPage />;
       case "About":
         return <AboutPage />;
       case "Reviews":
@@ -537,7 +541,7 @@ export default function App() {
           : "",
         isInImmersiveMode || activeTab === "Home" || activeTab === "Vortex"
           ? "py-0 px-0 relative top-0"
-          : "pt-32 pb-12 px-4 md:pt-40 md:pb-20",
+          : "pt-20 pb-12 px-4 md:pt-24 md:pb-16",
       )}
     >
       {!hideCustomCursor && <CustomCursor />}

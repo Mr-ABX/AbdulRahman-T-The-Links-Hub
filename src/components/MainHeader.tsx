@@ -34,7 +34,7 @@ export const MainHeader = ({
   const navGroups = [
     { label: "Home", tab: "Home" },
     { label: "Platform", items: ["Vortex", "Store", "Links", "Prompts", "Apps", "Toolspedia"] },
-    { label: "Work", items: ["Projects", "Services", "Automation"] },
+    { label: "Work", items: ["Flagships", "Projects", "Services", "Automation"] },
     { label: "Insights", items: ["Journal", "Academy", "Music", "Blog", "Feed", "Ebooks"] },
     { label: "About", items: ["About", "Reviews", "Connect", "Community"] },
   ];

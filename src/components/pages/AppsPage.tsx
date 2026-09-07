@@ -554,7 +554,7 @@ export const AppsPage = ({
   // Regular (Non-Immersive) Category View or Category Cards Grid
   if (!activeProjectCategory) {
     return (
-      <div className="space-y-8 pb-12 w-full pt-4 max-w-7xl mx-auto px-4">
+      <div className="space-y-6 pb-12 w-full pt-1 max-w-7xl mx-auto px-4">
         <div className="relative overflow-hidden rounded-[2.5rem] p-[2px] group mb-8">
           <div className="absolute inset-0 bg-indigo-500/20 rounded-[2.5rem]" />
           <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_270deg,#6366f1_300deg,#a855f7_330deg,#ec4899_360deg)] animate-border-spin blur-md opacity-70" />
