@@ -541,7 +541,9 @@ export default function App() {
           : "",
         isInImmersiveMode || activeTab === "Home" || activeTab === "Vortex"
           ? "py-0 px-0 relative top-0"
-          : "pt-20 pb-12 px-4 md:pt-24 md:pb-16",
+          : activeTab === "Flagships"
+          ? "pt-12 pb-10 px-4 md:pt-14 md:pb-12"
+          : "pt-18 pb-12 px-4 md:pt-20 md:pb-16",
       )}
     >
       {!hideCustomCursor && <CustomCursor />}

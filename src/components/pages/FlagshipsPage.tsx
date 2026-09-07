@@ -20,6 +20,8 @@ import {
   Search,
   Palette,
   Bot,
+  Eye,
+  Lock,
 } from "lucide-react";
 
 export interface FlagshipProduct {
@@ -167,31 +169,49 @@ export const FlagshipsPage = () => {
     return FLAGSHIPS.find((p) => p.id === selectedProductId) || null;
   }, [selectedProductId]);
 
-  const renderIcon = (product: FlagshipProduct) => {
+  // Enlarged, clean icon renderer without excessive padding or margins
+  const renderIcon = (
+    product: FlagshipProduct,
+    size: "md" | "lg" = "md",
+    isComingSoon: boolean = false
+  ) => {
     if (product.icon) {
       return (
         <img
           src={product.icon}
           alt={product.name}
-          className="w-full h-full object-cover rounded-2xl"
+          className="w-full h-full object-cover block"
           onError={(e) => {
             (e.target as HTMLElement).style.display = "none";
           }}
         />
       );
     }
-    switch (product.fallbackIconType) {
-      case "mic":
-        return <Mic size={30} className="text-purple-400" />;
-      case "bot":
-        return <Bot size={30} className="text-purple-400" />;
-      case "palette":
-        return <Palette size={30} className="text-purple-300" />;
-      case "sparkles":
-        return <Sparkles size={30} className="text-purple-400" />;
-      default:
-        return <Rocket size={30} className="text-purple-400" />;
-    }
+    const iconSize = size === "lg" ? 44 : 36;
+    const colorClass = isComingSoon
+      ? "text-zinc-400 group-hover:text-purple-300 transition-colors"
+      : "text-purple-300";
+
+    const content = (() => {
+      switch (product.fallbackIconType) {
+        case "mic":
+          return <Mic size={iconSize} className={colorClass} strokeWidth={1.8} />;
+        case "bot":
+          return <Bot size={iconSize} className={colorClass} strokeWidth={1.8} />;
+        case "palette":
+          return <Palette size={iconSize} className={colorClass} strokeWidth={1.8} />;
+        case "sparkles":
+          return <Sparkles size={iconSize} className={colorClass} strokeWidth={1.8} />;
+        default:
+          return <Rocket size={iconSize} className={colorClass} strokeWidth={1.8} />;
+      }
+    })();
+
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-purple-500/10 group-hover:bg-purple-500/20 transition-colors">
+        {content}
+      </div>
+    );
   };
 
   const getStatusBadge = (status: FlagshipProduct["status"]) => {
@@ -205,9 +225,10 @@ export const FlagshipsPage = () => {
         );
       case "Coming Soon":
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-white/10 text-white/70 border border-white/15">
-            <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
-            {status}
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-zinc-800/80 text-zinc-400 border border-zinc-700/50 group-hover:border-purple-500/40 group-hover:text-purple-300 group-hover:bg-purple-950/60 transition-all duration-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-zinc-500 group-hover:bg-purple-400 transition-colors" />
+            <span className="group-hover:hidden">Coming Soon</span>
+            <span className="hidden group-hover:inline flex items-center gap-1">Sneak Peek</span>
           </span>
         );
       case "In Development":
@@ -221,23 +242,23 @@ export const FlagshipsPage = () => {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 pt-1 pb-12 font-sans select-none text-left">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 pt-0 pb-10 font-sans select-none text-left">
       <AnimatePresence mode="wait">
         {activeProduct ? (
-          /* Detail View Mode */
+          /* Detail View Mode (Tightly spaced, cohesive, and modern) */
           <motion.div
             key="detail-view"
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-            className="space-y-6"
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
+            className="space-y-4"
           >
-            {/* Top Back Navigation & Action Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/10">
+            {/* Top Back Navigation & Action Bar with Compact Spacing */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10">
               <button
                 onClick={() => setSelectedProductId(null)}
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#12121c] hover:bg-[#181826] text-white/80 hover:text-white border border-white/10 text-xs font-mono font-semibold transition-all hover:border-purple-500/40 cursor-pointer"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#12121c] hover:bg-[#181826] text-white/80 hover:text-white border border-white/10 text-xs font-mono font-semibold transition-all hover:border-purple-500/40 cursor-pointer"
               >
                 <ArrowLeft size={14} />
                 <span>Back to all Flagships</span>
@@ -271,12 +292,12 @@ export const FlagshipsPage = () => {
               </div>
             </div>
 
-            {/* Product In-Depth Hero Showcase (Solid Background) */}
-            <section className="relative rounded-3xl border border-white/10 bg-[#0d0d15] p-6 sm:p-8 shadow-2xl overflow-hidden">
-              <div className="flex flex-wrap items-center justify-between gap-6 pb-6 border-b border-white/5">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#161622] border border-white/10 shrink-0 flex items-center justify-center overflow-hidden shadow-md p-0">
-                    {renderIcon(activeProduct)}
+            {/* Product In-Depth Hero Showcase (Solid Background, Enlarged Icon, Tighter Spacing) */}
+            <section className="relative rounded-2xl border border-white/10 bg-[#0d0d15] p-5 sm:p-6 shadow-2xl overflow-hidden">
+              <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-white/5">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-[#151522] border border-white/10 shrink-0 flex items-center justify-center overflow-hidden shadow-md p-0">
+                    {renderIcon(activeProduct, "lg", activeProduct.status === "Coming Soon")}
                   </div>
                   <div>
                     <div className="flex flex-wrap items-center gap-2 mb-1">
@@ -328,9 +349,9 @@ export const FlagshipsPage = () => {
               </div>
 
               {/* Description */}
-              <div className="py-5 text-sm text-white/70 leading-relaxed font-light space-y-3">
+              <div className="py-4 text-sm text-white/70 leading-relaxed font-light space-y-2.5">
                 <p>{activeProduct.desc}</p>
-                <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
                   {activeProduct.tags.map((tag) => (
                     <span
                       key={tag}
@@ -345,8 +366,8 @@ export const FlagshipsPage = () => {
               {/* MurMur Specific Interactive Sections */}
               {activeProduct.id === "murmur" && (
                 <>
-                  <div className="my-3 rounded-2xl border border-white/10 bg-[#08080f] overflow-hidden p-2 sm:p-3">
-                    <div className="flex items-center justify-between px-3 py-2 text-[11px] font-mono text-white/50 border-b border-white/5 mb-2">
+                  <div className="my-2.5 rounded-2xl border border-white/10 bg-[#08080f] overflow-hidden p-2 sm:p-2.5">
+                    <div className="flex items-center justify-between px-3 py-1.5 text-[11px] font-mono text-white/50 border-b border-white/5 mb-1.5">
                       <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
                         <span className="text-white/80">Dynamic Notch Overlay & Voice Wave Preview</span>
@@ -360,13 +381,13 @@ export const FlagshipsPage = () => {
                       <img
                         src="https://raw.githubusercontent.com/Mr-ABX/MurMur/main/assets/demo.gif"
                         alt="MurMur Dynamic Notch Demo Preview"
-                        className="w-full h-auto max-h-[480px] object-contain rounded-lg"
+                        className="w-full h-auto max-h-[460px] object-contain rounded-lg"
                         loading="lazy"
                       />
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 pt-5 border-t border-white/5 mb-5">
+                  <div className="flex items-center gap-2 pt-4 border-t border-white/5 mb-4">
                     {(
                       [
                         { id: "overview", label: "Core Capabilities" },
@@ -389,7 +410,7 @@ export const FlagshipsPage = () => {
                   </div>
 
                   {detailSubTab === "overview" && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                       {[
                         {
                           title: "100% Local Whisper",
@@ -430,7 +451,7 @@ export const FlagshipsPage = () => {
                       ].map((feat, i) => (
                         <div
                           key={i}
-                          className="p-4 rounded-2xl bg-[#12121c] border border-white/5 hover:border-purple-500/30 transition-colors text-left space-y-1.5"
+                          className="p-3.5 rounded-2xl bg-[#12121c] border border-white/5 hover:border-purple-500/30 transition-colors text-left space-y-1.5"
                         >
                           <div className="flex items-center justify-between">
                             <div className="p-2 rounded-xl bg-purple-500/10 border border-purple-500/20">
@@ -452,58 +473,58 @@ export const FlagshipsPage = () => {
                       <table className="w-full text-left text-xs font-sans">
                         <thead>
                           <tr className="border-b border-white/10 bg-white/5 text-white/70 font-mono text-[11px]">
-                            <th className="py-3 px-4">Feature</th>
-                            <th className="py-3 px-4 text-purple-300 font-bold bg-purple-500/10">🎙️ MurMur</th>
-                            <th className="py-3 px-4 text-white/50">Wispr Flow</th>
-                            <th className="py-3 px-4 text-white/50">Otter.ai</th>
-                            <th className="py-3 px-4 text-white/50">Superwhisper</th>
+                            <th className="py-2.5 px-4">Feature</th>
+                            <th className="py-2.5 px-4 text-purple-300 font-bold bg-purple-500/10">🎙️ MurMur</th>
+                            <th className="py-2.5 px-4 text-white/50">Wispr Flow</th>
+                            <th className="py-2.5 px-4 text-white/50">Otter.ai</th>
+                            <th className="py-2.5 px-4 text-white/50">Superwhisper</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-white/5 font-light text-white/80">
                           <tr>
-                            <td className="py-3 px-4 font-medium text-white">Pricing</td>
-                            <td className="py-3 px-4 font-bold text-purple-400 bg-purple-500/5">
+                            <td className="py-2.5 px-4 font-medium text-white">Pricing</td>
+                            <td className="py-2.5 px-4 font-bold text-purple-400 bg-purple-500/5">
                               100% Free & Open-Source
                             </td>
-                            <td className="py-3 px-4 text-white/50">$15 / mo</td>
-                            <td className="py-3 px-4 text-white/50">$10–$20 / mo</td>
-                            <td className="py-3 px-4 text-white/50">$8.99/mo or $199</td>
+                            <td className="py-2.5 px-4 text-white/50">$15 / mo</td>
+                            <td className="py-2.5 px-4 text-white/50">$10–$20 / mo</td>
+                            <td className="py-2.5 px-4 text-white/50">$8.99/mo or $199</td>
                           </tr>
                           <tr>
-                            <td className="py-3 px-4 font-medium text-white">Audio Privacy</td>
-                            <td className="py-3 px-4 font-bold text-purple-400 bg-purple-500/5">
+                            <td className="py-2.5 px-4 font-medium text-white">Audio Privacy</td>
+                            <td className="py-2.5 px-4 font-bold text-purple-400 bg-purple-500/5">
                               100% Local (Zero cloud upload)
                             </td>
-                            <td className="py-3 px-4 text-white/50">Sent to Cloud</td>
-                            <td className="py-3 px-4 text-white/50">Sent to Cloud</td>
-                            <td className="py-3 px-4 text-white/50">Hybrid / Local</td>
+                            <td className="py-2.5 px-4 text-white/50">Sent to Cloud</td>
+                            <td className="py-2.5 px-4 text-white/50">Sent to Cloud</td>
+                            <td className="py-2.5 px-4 text-white/50">Hybrid / Local</td>
                           </tr>
                           <tr>
-                            <td className="py-3 px-4 font-medium text-white">Idle Memory</td>
-                            <td className="py-3 px-4 font-bold text-purple-300 bg-purple-500/5">
+                            <td className="py-2.5 px-4 font-medium text-white">Idle Memory</td>
+                            <td className="py-2.5 px-4 font-bold text-purple-300 bg-purple-500/5">
                               ~35 MB RAM
                             </td>
-                            <td className="py-3 px-4 text-white/50">~250 MB+</td>
-                            <td className="py-3 px-4 text-white/50">~300 MB+</td>
-                            <td className="py-3 px-4 text-white/50">~400 MB+</td>
+                            <td className="py-2.5 px-4 text-white/50">~250 MB+</td>
+                            <td className="py-2.5 px-4 text-white/50">~300 MB+</td>
+                            <td className="py-2.5 px-4 text-white/50">~400 MB+</td>
                           </tr>
                           <tr>
-                            <td className="py-3 px-4 font-medium text-white">Disk Footprint</td>
-                            <td className="py-3 px-4 font-bold text-purple-300 bg-purple-500/5">
+                            <td className="py-2.5 px-4 font-medium text-white">Disk Footprint</td>
+                            <td className="py-2.5 px-4 font-bold text-purple-300 bg-purple-500/5">
                               ~150 MB (Base model)
                             </td>
-                            <td className="py-3 px-4 text-white/50">500 MB+</td>
-                            <td className="py-3 px-4 text-white/50">Web / Mobile</td>
-                            <td className="py-3 px-4 text-white/50">1.2 GB+</td>
+                            <td className="py-2.5 px-4 text-white/50">500 MB+</td>
+                            <td className="py-2.5 px-4 text-white/50">Web / Mobile</td>
+                            <td className="py-2.5 px-4 text-white/50">1.2 GB+</td>
                           </tr>
                           <tr>
-                            <td className="py-3 px-4 font-medium text-white">Dynamic Notch UI</td>
-                            <td className="py-3 px-4 font-bold text-purple-400 bg-purple-500/5">
+                            <td className="py-2.5 px-4 font-medium text-white">Dynamic Notch UI</td>
+                            <td className="py-2.5 px-4 font-bold text-purple-400 bg-purple-500/5">
                               Yes (Floating Pill + Wave)
                             </td>
-                            <td className="py-3 px-4 text-white/30">None</td>
-                            <td className="py-3 px-4 text-white/30">None</td>
-                            <td className="py-3 px-4 text-white/30">None</td>
+                            <td className="py-2.5 px-4 text-white/30">None</td>
+                            <td className="py-2.5 px-4 text-white/30">None</td>
+                            <td className="py-2.5 px-4 text-white/30">None</td>
                           </tr>
                         </tbody>
                       </table>
@@ -511,7 +532,7 @@ export const FlagshipsPage = () => {
                   )}
 
                   {detailSubTab === "downloads" && (
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                       <div className="p-4 rounded-2xl bg-[#12121c] border border-white/10 flex flex-col justify-between">
                         <div className="space-y-1.5">
                           <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-purple-500/15 text-purple-300">
@@ -581,15 +602,15 @@ export const FlagshipsPage = () => {
 
               {/* Other Products Concept Architecture Preview */}
               {activeProduct.id !== "murmur" && (
-                <div className="mt-4 p-5 rounded-2xl bg-[#12121c] border border-white/10 space-y-3">
+                <div className="mt-3.5 p-4 sm:p-5 rounded-2xl bg-[#12121c] border border-white/10 space-y-2.5">
                   <div className="flex items-center gap-2 text-xs font-mono text-purple-400">
                     <Sparkles size={14} />
                     <span>Product Architecture & Roadmap</span>
                   </div>
                   <p className="text-xs text-white/60 leading-relaxed font-light">
-                    {activeProduct.name} is currently in development. To receive early access notifications or track progress, stay tuned on GitHub.
+                    {activeProduct.name} is currently in stealth development. To receive early access preview notifications or track progress, stay tuned on GitHub.
                   </p>
-                  <div className="flex flex-wrap gap-2 pt-1">
+                  <div className="flex flex-wrap gap-1.5 pt-1">
                     {activeProduct.tags.map((tag) => (
                       <span
                         key={tag}
@@ -604,20 +625,20 @@ export const FlagshipsPage = () => {
             </section>
           </motion.div>
         ) : (
-          /* Cards Grid Mode (Default Minimal View) */
+          /* Cards Grid Mode (Default Minimal View, Low Negative Space) */
           <motion.div
             key="grid-view"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="space-y-6"
+            className="space-y-4"
           >
             {/* Header: Clean & Compact with Zero Extra Negative Space */}
-            <header className="border-b border-white/10 pb-4">
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+            <header className="border-b border-white/10 pb-3">
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2.5">
                 <div>
-                  <div className="flex items-center gap-2 mb-1.5">
+                  <div className="flex items-center gap-2 mb-1">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-purple-500/15 text-purple-300 border border-purple-500/25">
                       <Rocket size={11} className="text-purple-400" />
                       FLAGSHIPS
@@ -644,7 +665,7 @@ export const FlagshipsPage = () => {
             </header>
 
             {/* Filter Bar: AI Tools, Agentic OS, Design */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
               {/* Category Filter Pills */}
               <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
                 {FILTER_CATEGORIES.map((cat) => {
@@ -694,119 +715,162 @@ export const FlagshipsPage = () => {
               </div>
             </div>
 
-            {/* Minimal, Clean, Solid Background Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {filteredProducts.map((product) => (
-                <motion.div
-                  key={product.id}
-                  layout
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.98 }}
-                  whileHover={{
-                    y: -4,
-                    transition: { duration: 0.2, ease: [0.23, 1, 0.32, 1] },
-                  }}
-                  onClick={() => setSelectedProductId(product.id)}
-                  className="group relative rounded-2xl border border-white/10 bg-[#0e0e16] p-5 flex flex-col justify-between shadow-xl transition-all duration-300 hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-600/10 cursor-pointer text-left"
-                >
-                  {/* Card Main Info */}
-                  <div className="space-y-3">
-                    {/* Top Row: Full-fit Icon + Status Badge */}
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="w-14 h-14 rounded-2xl bg-[#151522] border border-white/10 shrink-0 flex items-center justify-center overflow-hidden shadow-md p-0 group-hover:scale-105 transition-transform duration-300">
-                        {renderIcon(product)}
-                      </div>
-                      <div className="flex flex-col items-end gap-1">
-                        {getStatusBadge(product.status)}
-                        {product.version && (
-                          <span className="text-[10px] font-mono text-white/40">
-                            {product.version}
+            {/* Minimal, Solid Background Cards Grid with Grayed & Blurred Sneak Peek on Coming Soon */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+              {filteredProducts.map((product) => {
+                const isComingSoon = product.status === "Coming Soon";
+
+                return (
+                  <motion.div
+                    key={product.id}
+                    layout
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    whileHover={{
+                      y: -4,
+                      transition: { duration: 0.2, ease: [0.23, 1, 0.32, 1] },
+                    }}
+                    onClick={() => setSelectedProductId(product.id)}
+                    className={`group relative rounded-2xl p-5 flex flex-col justify-between shadow-xl cursor-pointer text-left overflow-hidden transition-all duration-400 ${
+                      isComingSoon
+                        ? "border border-white/5 bg-[#0b0b12] grayscale-[90%] opacity-60 contrast-[0.88] brightness-[0.8] hover:grayscale-0 hover:opacity-100 hover:contrast-100 hover:brightness-100 hover:border-purple-500/40 hover:bg-[#0e0e16] hover:shadow-2xl hover:shadow-purple-600/10"
+                        : "border border-white/10 bg-[#0e0e16] hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-600/10"
+                    }`}
+                  >
+                    {/* Sneak Peek Pixel Effect Overlay for Coming Soon (dissolves on hover) */}
+                    {isComingSoon && (
+                      <div className="absolute inset-0 pointer-events-none rounded-2xl overflow-hidden transition-opacity duration-500 group-hover:opacity-0 z-10">
+                        {/* High-tech pixel dot grid pattern */}
+                        <div
+                          className="absolute inset-0 opacity-25"
+                          style={{
+                            backgroundImage:
+                              "radial-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px)",
+                            backgroundSize: "6px 6px",
+                          }}
+                        />
+                        {/* Subtle frosted vignette */}
+                        <div className="absolute inset-0 bg-[#090910]/40 backdrop-blur-[1px]" />
+                        {/* Center sneak-peek indicator badge at rest */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-black/80 border border-white/10 text-white/60 shadow-xl backdrop-blur-md">
+                            <Lock size={10} className="text-purple-400" />
+                            <span>Sneak Peek</span>
                           </span>
-                        )}
+                        </div>
                       </div>
-                    </div>
+                    )}
 
-                    {/* Title, Tagline & Category */}
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-lg font-bold text-white tracking-tight group-hover:text-purple-300 transition-colors">
-                          {product.name}
-                        </h3>
-                        <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-purple-500/10 text-purple-300/80 border border-purple-500/20">
-                          {product.category}
-                        </span>
+                    {/* Card Main Info (Blurs out slightly on Coming Soon cards until hovered) */}
+                    <div
+                      className={`space-y-3 transition-all duration-400 ${
+                        isComingSoon ? "filter blur-[2px] group-hover:blur-0" : ""
+                      }`}
+                    >
+                      {/* Top Row: Full-fit Enlarged Icon + Status Badge */}
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="w-14 h-14 rounded-2xl bg-[#141420] border border-white/10 shrink-0 flex items-center justify-center overflow-hidden shadow-md p-0 group-hover:scale-105 transition-transform duration-300">
+                          {renderIcon(product, "md", isComingSoon)}
+                        </div>
+                        <div className="flex flex-col items-end gap-1">
+                          {getStatusBadge(product.status)}
+                          {product.version && (
+                            <span className="text-[10px] font-mono text-white/40">
+                              {product.version}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                      <p className="text-xs text-white/50 font-mono mt-0.5 line-clamp-1">
-                        {product.tagline}
+
+                      {/* Title, Tagline & Category */}
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-lg font-bold text-white tracking-tight group-hover:text-purple-300 transition-colors">
+                            {product.name}
+                          </h3>
+                          <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-purple-500/10 text-purple-300/80 border border-purple-500/20">
+                            {product.category}
+                          </span>
+                        </div>
+                        <p className="text-xs text-white/50 font-mono mt-0.5 line-clamp-1">
+                          {product.tagline}
+                        </p>
+                      </div>
+
+                      {/* Minimal, Comfortable 2-Line Description */}
+                      <p className="text-xs text-white/70 font-light leading-relaxed line-clamp-2">
+                        {product.desc}
                       </p>
+
+                      {/* Clean Tags */}
+                      <div className="flex flex-wrap gap-1.5 pt-0.5">
+                        {product.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-2 py-0.5 rounded-md text-[9px] font-mono bg-white/5 text-white/50 border border-white/5"
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
                     </div>
 
-                    {/* Minimal, Comfortable 2-Line Description */}
-                    <p className="text-xs text-white/70 font-light leading-relaxed line-clamp-2">
-                      {product.desc}
-                    </p>
-
-                    {/* Clean Tags */}
-                    <div className="flex flex-wrap gap-1.5 pt-0.5">
-                      {product.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2 py-0.5 rounded-md text-[9px] font-mono bg-white/5 text-white/50 border border-white/5"
+                    {/* Card Bottom Quick Actions */}
+                    <div
+                      className={`pt-3.5 mt-3.5 border-t border-white/5 flex items-center justify-between gap-2 transition-all duration-400 ${
+                        isComingSoon ? "filter blur-[1.5px] group-hover:blur-0" : ""
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5">
+                        {/* 1-Click Copy Link Button */}
+                        <button
+                          onClick={(e) => handleCopyLink(product, e)}
+                          className="p-1.5 rounded-lg bg-[#151522] hover:bg-[#1b1b2c] text-white/60 hover:text-white border border-white/5 transition-colors cursor-pointer"
+                          title="Copy Link"
                         >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                          {copiedId === product.id ? (
+                            <Check size={13} className="text-purple-400" />
+                          ) : (
+                            <Copy size={13} />
+                          )}
+                        </button>
 
-                  {/* Card Bottom Quick Actions */}
-                  <div className="pt-4 mt-4 border-t border-white/5 flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-1.5">
-                      {/* 1-Click Copy Link Button */}
-                      <button
-                        onClick={(e) => handleCopyLink(product, e)}
-                        className="p-1.5 rounded-lg bg-[#151522] hover:bg-[#1b1b2c] text-white/60 hover:text-white border border-white/5 transition-colors cursor-pointer"
-                        title="Copy Link"
-                      >
-                        {copiedId === product.id ? (
-                          <Check size={13} className="text-purple-400" />
-                        ) : (
-                          <Copy size={13} />
+                        {/* Report Issue Button */}
+                        <button
+                          onClick={(e) => handleReportIssue(product, e)}
+                          className="p-1.5 rounded-lg bg-[#151522] hover:bg-[#1b1b2c] text-white/60 hover:text-white border border-white/5 transition-colors cursor-pointer"
+                          title="Report Issue"
+                        >
+                          <Bug size={13} className="text-purple-400/70 hover:text-purple-400" />
+                        </button>
+
+                        {product.repoUrl && (
+                          <a
+                            href={product.repoUrl}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            onClick={(e) => e.stopPropagation()}
+                            className="p-1.5 rounded-lg bg-[#151522] hover:bg-[#1b1b2c] text-white/60 hover:text-white border border-white/5 transition-colors"
+                            title="Open GitHub"
+                          >
+                            <Github size={13} />
+                          </a>
                         )}
-                      </button>
+                      </div>
 
-                      {/* Report Issue Button */}
-                      <button
-                        onClick={(e) => handleReportIssue(product, e)}
-                        className="p-1.5 rounded-lg bg-[#151522] hover:bg-[#1b1b2c] text-white/60 hover:text-white border border-white/5 transition-colors cursor-pointer"
-                        title="Report Issue"
-                      >
-                        <Bug size={13} className="text-purple-400/70 hover:text-purple-400" />
-                      </button>
-
-                      {product.repoUrl && (
-                        <a
-                          href={product.repoUrl}
-                          target="_blank"
-                          rel="noreferrer noopener"
-                          onClick={(e) => e.stopPropagation()}
-                          className="p-1.5 rounded-lg bg-[#151522] hover:bg-[#1b1b2c] text-white/60 hover:text-white border border-white/5 transition-colors"
-                          title="Open GitHub"
-                        >
-                          <Github size={13} />
-                        </a>
-                      )}
+                      {/* View Details / Sneak Peek Action */}
+                      <div className="flex items-center gap-1 text-[11px] font-mono font-medium text-purple-400 group-hover:text-purple-300">
+                        <span>{isComingSoon ? "Sneak Peek" : "Explore"}</span>
+                        <ArrowUpRight
+                          size={13}
+                          className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                        />
+                      </div>
                     </div>
-
-                    {/* View Details Action with Purplish Accent */}
-                    <div className="flex items-center gap-1 text-[11px] font-mono font-medium text-purple-400 group-hover:text-purple-300">
-                      <span>Explore</span>
-                      <ArrowUpRight size={13} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
 
             {filteredProducts.length === 0 && (
