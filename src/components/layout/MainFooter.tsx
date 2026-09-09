@@ -73,19 +73,28 @@ export const MainFooter = ({
       id="main-studio-footer"
       className="relative w-full border-t border-white/[0.08] bg-[#050508] overflow-hidden pt-16 md:pt-24 pb-12 mt-24 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.12)]"
     >
-      {/* Background Giant Subtle Watermark Branding ("ABDULRAHMAN-T" at 3.5% opacity) */}
+      {/* Dynamic Atmospheric Footer Image Layer (Screen Movie / Apple Style) */}
+      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden -z-10 opacity-25 mix-blend-luminosity">
+        <img
+          src="/footer-image.avif"
+          alt=""
+          className="w-full h-full object-cover object-bottom filter grayscale contrast-125 brightness-90"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050508] via-[#050508]/70 to-[#050508]" />
+      </div>
+
+      {/* Background Giant Subtle Watermark Branding ("ABDULRAHMAN-T") */}
       <div
         aria-hidden="true"
         className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none select-none overflow-hidden w-full flex justify-center text-center z-0"
       >
-        <span className="text-[clamp(3.5rem,11vw,150px)] font-[900] tracking-[-0.035em] text-white/[0.035] uppercase leading-none whitespace-nowrap translate-y-[22%]">
+        <span className="text-[clamp(3.5rem,11.5vw,160px)] font-[900] tracking-[-0.035em] text-white/[0.035] uppercase leading-none whitespace-nowrap translate-y-[18%]">
           ABDULRAHMAN-T
         </span>
       </div>
 
-      {/* Subtle Electric Purple Ambient Glow */}
-      <div className="absolute top-0 right-1/4 w-96 h-64 bg-purple-600/[0.04] blur-[120px] pointer-events-none -z-10" />
-      <div className="absolute bottom-10 left-1/4 w-96 h-64 bg-indigo-600/[0.03] blur-[120px] pointer-events-none -z-10" />
+      {/* Subtle Ambient Depth */}
+      <div className="absolute top-0 right-1/4 w-96 h-64 bg-white/[0.015] blur-[120px] pointer-events-none -z-10" />
 
       <div
         className={cn(
@@ -112,9 +121,9 @@ export const MainFooter = ({
                 </div>
                 <div>
                   <h3 className="font-semibold text-base text-white tracking-tight leading-none">
-                    Abdulrahman Toor
+                    ABDULRAHMAN-T
                   </h3>
-                  <p className="text-[10px] font-mono uppercase tracking-[0.18em] text-purple-400 mt-1">
+                  <p className="text-[10px] font-mono uppercase tracking-[0.18em] text-white/50 mt-1">
                     Creative Technologist & SaaS Builder
                   </p>
                 </div>
@@ -149,7 +158,7 @@ export const MainFooter = ({
                 <button
                   id="footer-explore-work-btn"
                   onClick={() => handleNavClick("Projects")}
-                  className="inline-flex items-center gap-2 py-3 px-5 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-white/80 hover:text-white font-semibold text-xs tracking-tight transition-all border border-white/10 hover:border-white/20"
+                  className="inline-flex items-center gap-2 py-3 px-5 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-white/80 hover:text-white font-semibold text-xs tracking-tight transition-all border border-white/10 hover:border-white/20 cursor-pointer"
                 >
                   <Layers size={13} className="text-white/50" />
                   <span>Explore Work</span>
@@ -162,7 +171,7 @@ export const MainFooter = ({
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                 </span>
-                <span>All Systems Operational // Available for Q3/Q4 Projects</span>
+                <span>All Systems Operational // Available for Projects</span>
               </div>
             </div>
           </div>
@@ -183,7 +192,7 @@ export const MainFooter = ({
                           id={`footer-nav-${link.tab.toLowerCase()}`}
                           onClick={() => handleNavClick(link.tab)}
                           className={cn(
-                            "group inline-flex items-center gap-1.5 text-xs font-medium tracking-tight transition-all text-left",
+                            "group inline-flex items-center gap-1.5 text-xs font-medium tracking-tight transition-all text-left cursor-pointer",
                             isActive
                               ? "text-white font-semibold"
                               : "text-white/60 hover:text-white",
@@ -193,7 +202,7 @@ export const MainFooter = ({
                             {link.label || link.name}
                           </span>
                           {link.badge && (
-                            <span className="text-[9px] font-mono px-1.5 py-0.2 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30">
+                            <span className="text-[9px] font-mono px-1.5 py-0.2 rounded-full bg-white/[0.06] text-white/70 border border-white/10">
                               {link.badge}
                             </span>
                           )}
@@ -210,15 +219,13 @@ export const MainFooter = ({
         {/* Bottom Sub-Footer Bar */}
         <div className="pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-white/40">
           <div className="flex items-center gap-2">
-            <span>© {currentYear} Abdulrahman Toor.</span>
+            <span>© {currentYear} ABDULRAHMAN-T.</span>
             <span className="hidden sm:inline text-white/20">•</span>
             <span>All rights reserved.</span>
           </div>
 
           <div className="flex items-center gap-1.5 text-white/60">
-            <span>Built with</span>
-            <Heart size={12} className="text-purple-400 fill-purple-400 inline mx-0.5" />
-            <span>by Abdulrahman Toor</span>
+            <span>Built with precision by ABDULRAHMAN-T</span>
           </div>
         </div>
       </div>

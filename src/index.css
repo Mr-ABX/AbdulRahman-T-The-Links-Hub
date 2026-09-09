@@ -109,8 +109,7 @@
   .mesh-gradient {
     background-color: #050508;
     background-image: 
-      radial-gradient(ellipse 90% 45% at 50% -10%, rgba(168, 85, 247, 0.09), transparent 75%),
-      radial-gradient(ellipse 60% 35% at 50% 100%, rgba(99, 102, 241, 0.05), transparent 75%);
+      radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255, 255, 255, 0.035), transparent 70%);
   }
 
   @keyframes shimmer {
@@ -151,9 +150,10 @@
     animation: border-spin 15s linear infinite;
   }
 
+  .text-outline-subtle,
   .text-outline-indigo {
     color: transparent;
-    -webkit-text-stroke: 1px rgba(99, 102, 241, 0.5);
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.12);
   }
 
   .mask-edges {

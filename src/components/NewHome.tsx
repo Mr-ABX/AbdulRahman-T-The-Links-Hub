@@ -19,8 +19,7 @@ import {
   Layers,
 } from "lucide-react";
 
-const myArea51Image =
-  "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
+const myArea51Image = "/my-image-for-home-01.jpeg";
 
 const HeroTitleLine = ({ 
   text, 
@@ -54,42 +53,102 @@ export const Home = ({
 }) => {
   return (
     <div className="w-full relative min-h-screen text-white overflow-hidden pb-0 bg-transparent">
-      {/* Background decorations */}
-      <div className="absolute top-[20%] left-[-10%] w-[50%] h-[50%] bg-[#6366f1] opacity-[0.03] blur-[150px] rounded-full pointer-events-none" />
-      <div className="absolute top-[60%] right-[-10%] w-[50%] h-[50%] bg-[#ec4899] opacity-[0.02] blur-[150px] rounded-full pointer-events-none" />
-
       {/* 1. Hero Section */}
       <section className="pt-10 sm:pt-14 md:pt-20 pb-12 flex flex-col items-center justify-center text-center max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
+        {/* Apple HIG Micro Pill */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-          className="mb-8 relative w-full max-w-[1200px]"
+          transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+          className="mb-8"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent blur-3xl -z-10" />
-          <h1 className="flex w-full flex-col items-center justify-center bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent">
-            <HeroTitleLine text="UNLEASH YOUR" variant="black" />
-            <HeroTitleLine text="IMAGINATION" variant="normal" className="-mt-2 md:-mt-4" />
-          </h1>
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.12)]">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            <span className="font-mono text-[11px] font-medium tracking-[0.18em] uppercase text-white/70">
+              Studio // Abdulrahman-T
+            </span>
+          </div>
         </motion.div>
+
+        {/* Hero Title Container with Rock Assets flanking the headline */}
+        <div className="relative w-full max-w-[1250px] flex items-center justify-center mb-8">
+          {/* Left Rock Asset */}
+          <motion.div
+            initial={{ opacity: 0, x: -50, scale: 0.85 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
+            className="hidden md:block absolute -left-12 lg:-left-24 xl:-left-32 top-1/2 -translate-y-[52%] w-48 md:w-60 lg:w-76 xl:w-88 pointer-events-none select-none z-0"
+          >
+            <motion.img
+              src="/rock-left-1000.webp"
+              alt=""
+              animate={{ y: [-10, 10, -10], rotate: [-1.5, 1.5, -1.5] }}
+              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+              className="w-full h-auto object-contain drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] filter brightness-95 contrast-105"
+            />
+          </motion.div>
+
+          {/* Right Rock Asset */}
+          <motion.div
+            initial={{ opacity: 0, x: 50, scale: 0.85 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 1.2, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
+            className="hidden md:block absolute -right-12 lg:-right-24 xl:-right-32 top-1/2 -translate-y-[48%] w-48 md:w-60 lg:w-76 xl:w-88 pointer-events-none select-none z-0"
+          >
+            <motion.img
+              src="/rock-right-1000.webp"
+              alt=""
+              animate={{ y: [10, -10, 10], rotate: [1.5, -1.5, 1.5] }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+              className="w-full h-auto object-contain drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] filter brightness-95 contrast-105"
+            />
+          </motion.div>
+
+          {/* Central Typography */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
+            className="relative z-10 w-full"
+          >
+            <h1 className="flex w-full flex-col items-center justify-center text-white">
+              <HeroTitleLine text="UNLEASH YOUR" variant="black" />
+              <HeroTitleLine text="IMAGINATION" variant="normal" className="-mt-2 md:-mt-4 text-white/80" />
+            </h1>
+          </motion.div>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
+          className="max-w-xl mx-auto"
         >
-          <p className="font-mono text-indigo-400 text-lg md:text-2xl tracking-[0.2em] uppercase font-bold italic mb-12 flex items-center justify-center gap-4">
-            <span className="opacity-50">—</span>
+          <p className="font-mono text-xs md:text-sm tracking-[0.25em] uppercase text-white/50 mb-3">
             Think. Make. Solve.
-            <span className="opacity-50">—</span>
+          </p>
+          <p className="text-white/70 text-sm md:text-base font-normal leading-relaxed mb-8 max-w-lg mx-auto">
+            Empowering human connection through deliberate design, spatial interfaces, and autonomous systems.
           </p>
 
-          <button
-            onClick={() => setActiveTab("Projects")}
-            className="px-8 py-4 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 text-white font-bold tracking-widest text-sm uppercase transition-all hover:scale-105 active:scale-95 flex items-center gap-3 mx-auto shadow-2xl shadow-indigo-500/10 hover:border-indigo-500/50"
-          >
-            Explore More <ArrowRight size={16} />
-          </button>
+          <div className="flex flex-wrap items-center justify-center gap-3.5">
+            <button
+              onClick={() => setActiveTab("Projects")}
+              className="px-7 py-3.5 rounded-full bg-white hover:bg-neutral-200 text-black font-semibold tracking-tight text-xs uppercase transition-all hover:scale-105 active:scale-95 flex items-center gap-2 shadow-[0_4px_20px_rgba(255,255,255,0.18)] cursor-pointer"
+            >
+              <span>Explore Projects</span>
+              <ArrowRight size={14} className="stroke-[2.5]" />
+            </button>
+            <button
+              onClick={() => setActiveTab("Connect")}
+              className="px-6 py-3.5 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-white/80 hover:text-white font-semibold tracking-tight text-xs transition-all border border-white/10 hover:border-white/20 cursor-pointer"
+            >
+              Get in Touch
+            </button>
+          </div>
         </motion.div>
 
         {/* Logos Bar */}
@@ -97,16 +156,16 @@ export const Home = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
-          className="w-full flex justify-center items-center gap-6 md:gap-12 mt-24 flex-wrap opacity-40 grayscale hover:grayscale-0 transition-all duration-1000"
+          className="w-full flex justify-center items-center gap-6 md:gap-12 mt-20 flex-wrap opacity-35 hover:opacity-70 transition-opacity duration-500"
         >
           {["Plotnao", "Jangle", "Junno", "Innovative", "Cherry"].map(
             (logo, i) => (
               <div
                 key={i}
-                className="text-lg md:text-xl font-black tracking-widest uppercase flex items-center gap-2"
+                className="text-base md:text-lg font-bold tracking-widest uppercase flex items-center gap-2 text-white"
               >
-                <div className="w-5 h-5 md:w-6 md:h-6 rounded-md bg-white/20 flex items-center justify-center">
-                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full" />
+                <div className="w-4 h-4 rounded-md bg-white/15 flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 bg-white rounded-full" />
                 </div>
                 {logo}
               </div>
@@ -115,32 +174,27 @@ export const Home = ({
         </motion.div>
       </section>
 
-      {/* Featured Showcase: AB-Folio Experience Portal V2 (Clean Pre-3D-Orb Version) */}
+      {/* Featured Showcase: AB-Folio Experience Portal V2 (Clean Apple HIG SpecularCard) */}
       <section className="py-10 max-w-[1300px] mx-auto px-4 md:px-8 relative z-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-          className="relative overflow-hidden rounded-[2rem] p-[1.5px] group shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8)]"
+          className="relative overflow-hidden rounded-[2rem]"
         >
-          {/* Animated Gradient Glow Rim */}
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/30 via-indigo-500/30 to-purple-500/30 rounded-[2rem]" />
-          <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_240deg,#06b6d4_280deg,#6366f1_320deg,#a855f7_360deg)] animate-border-spin blur-md opacity-70 group-hover:opacity-100 transition-opacity pointer-events-none" />
-
-          {/* Interactive SpecularCard Container with Mouse-following Glow */}
           <SpecularCard
-            className="relative h-full w-full bg-[#08080c]/95 backdrop-blur-2xl rounded-[calc(2rem-1.5px)] p-6 md:p-10 flex flex-col md:flex-row items-start md:items-center justify-between overflow-hidden gap-6 border border-white/10"
-            glowColor="rgba(6, 182, 212, 0.22)"
+            className="relative h-full w-full bg-[#0d0d14]/95 backdrop-blur-2xl rounded-[2rem] p-6 md:p-10 flex flex-col md:flex-row items-start md:items-center justify-between overflow-hidden gap-6 border border-white/[0.1] shadow-[0_24px_60px_-15px_rgba(0,0,0,0.8),inset_0_1px_0_0_rgba(255,255,255,0.14)]"
+            glowColor="rgba(255, 255, 255, 0.08)"
           >
             <div className="relative z-10 space-y-2.5 max-w-2xl">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-mono flex items-center gap-1.5 shadow-[0_0_12px_rgba(6,182,212,0.2)]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-                  NEW PORTAL V2
+                <span className="px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest bg-white/[0.08] border border-white/15 text-white font-mono flex items-center gap-1.5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  PORTAL V2 // 3D LAB
                 </span>
                 <span className="text-[10px] font-mono text-white/50 tracking-wider uppercase">
-                  3D Interactive Experience
+                  Spatial Interactive Experience
                 </span>
               </div>
               <h3 className="text-2xl md:text-4xl font-extrabold text-white font-sans tracking-tight leading-tight">
@@ -167,9 +221,9 @@ export const Home = ({
                 href="https://ab-folio-portal-v2.vercel.app/"
                 target="_blank"
                 rel="noreferrer noopener"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-2.5 shadow-lg shadow-indigo-500/25 hover:scale-105 active:scale-95 transition-all shrink-0 cursor-pointer group/link"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-xs flex items-center justify-center gap-2.5 shadow-[0_4px_20px_rgba(255,255,255,0.18)] hover:scale-105 active:scale-95 transition-all shrink-0 cursor-pointer group/link"
               >
-                <Sparkles size={15} className="text-white/90" />
+                <Sparkles size={15} className="text-black" />
                 <span>Launch Live Portal</span>
                 <ExternalLink size={14} className="group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
               </a>
@@ -189,54 +243,63 @@ export const Home = ({
 
       {/* 2. Area 51 (About) */}
       <section className="py-24 max-w-[1200px] mx-auto px-4 md:px-8 border-t border-white/5 relative">
-        <div className="flex flex-col md:flex-row items-center gap-16 md:gap-24">
+        <div className="flex flex-col md:flex-row items-center gap-14 md:gap-20">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
-            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
             className="w-full md:w-1/2 relative"
           >
-            <div className="absolute inset-0 bg-indigo-500/20 blur-[100px] rounded-full" />
-            <div className="relative rounded-full aspect-square overflow-hidden border border-white/10 shadow-2xl group">
+            <div className="relative rounded-3xl aspect-[4/5] sm:aspect-square overflow-hidden border border-white/10 shadow-[0_24px_50px_-15px_rgba(0,0,0,0.9),inset_0_1px_0_0_rgba(255,255,255,0.15)] group bg-[#0d0d14]">
               <img
                 src={myArea51Image}
-                alt="Area 51 of Creatives"
+                alt="Area 51 - Abdulrahman Toor"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
+              <div className="absolute bottom-4 left-4 right-4 p-3 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 flex items-center justify-between">
+                <div>
+                  <p className="text-white font-semibold text-xs tracking-tight">Abdulrahman Toor</p>
+                  <p className="text-white/50 text-[10px] font-mono uppercase tracking-wider">Creator & Architect</p>
+                </div>
+                <span className="w-2 h-2 rounded-full bg-emerald-400" />
+              </div>
             </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            transition={{ duration: 0.8, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
             className="w-full md:w-1/2"
           >
-            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-600 mb-2 lowercase tracking-tighter leading-none italic">
-              MY AREA-51
-              <br />
-              <span className="text-white not-italic uppercase tracking-tight ml-4">
-                OF CREATIVES
+            <div className="space-y-3 mb-6">
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-white/40">
+                02 // Personal Lab & Studio
               </span>
-            </h2>
-            <p className="mt-8 text-white/80 leading-relaxed font-medium uppercase tracking-wide text-sm border-l-2 border-indigo-500 pl-6">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
+                My Area 51
+                <span className="block text-white/50 text-2xl sm:text-3xl md:text-4xl font-normal mt-1">
+                  Creative Studio & Lab
+                </span>
+              </h2>
+            </div>
+
+            <p className="text-white/80 leading-relaxed font-normal text-sm md:text-base border-l-2 border-white/20 pl-6 mb-8">
               Hi! Abdulrahman-T this side. I'm empowering human connection
               through design, cross-platform adventures & user-friendly
               solutions. I ignite engagement that leaves a lasting impression.
               Ready for accuracy, impact, and a soaring return on investment?
             </p>
 
-            <div className="mt-12 p-8 rounded-2xl bg-white/5 border border-white/10 relative">
-              <div className="absolute -top-4 -left-4 text-6xl text-indigo-500/30">
-                "
-              </div>
-              <p className="text-white/60 font-serif italic text-lg text-center relative z-10 leading-relaxed">
-                Design is the bridge that connects creativity and functionality,
-                resulting in beautiful solutions that solve real-world problems.
+            <div className="p-6 md:p-8 rounded-2xl bg-white/[0.03] border border-white/10 relative shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)]">
+              <p className="text-white/70 font-sans text-sm md:text-base text-left relative z-10 leading-relaxed italic">
+                "Design is the bridge that connects creativity and functionality,
+                resulting in beautiful solutions that solve real-world problems."
               </p>
-              <div className="mt-4 text-center text-sm font-bold text-white/40 uppercase tracking-widest">
+              <div className="mt-4 text-left text-xs font-mono font-bold text-white/40 uppercase tracking-widest">
                 — Abdulrahman-T
               </div>
             </div>
@@ -246,59 +309,59 @@ export const Home = ({
 
       {/* 3. Services */}
       <section className="py-32 max-w-[1200px] mx-auto px-4 md:px-8 relative">
-        <h2 className="text-[12vw] md:text-[180px] font-black leading-none text-transparent text-outline-indigo text-center mb-24 opacity-80 pointer-events-none select-none">
+        <h2 className="text-[12vw] md:text-[180px] font-black leading-none text-transparent text-outline-subtle text-center mb-24 opacity-80 pointer-events-none select-none">
           SERVICES
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10 -mt-20 md:-mt-40">
           {[
             {
-              title: "UI/UX",
+              title: "UI/UX Design",
               desc: "Designing captivating and user-friendly interfaces that keep your audience hooked.",
               icon: <Monitor size={22} />,
-              color: "text-blue-400",
-              bg: "bg-blue-500/10",
-              glow: "rgba(59, 130, 246, 0.15)",
+              color: "text-white/90",
+              bg: "bg-white/[0.06]",
+              glow: "rgba(255, 255, 255, 0.08)",
             },
             {
-              title: "Graphic Designs",
+              title: "Graphic Design",
               desc: "Visually striking graphics that communicate your brand's message with a lasting impression.",
               icon: <Paintbrush size={22} />,
-              color: "text-purple-400",
-              bg: "bg-purple-500/10",
-              glow: "rgba(168, 85, 247, 0.15)",
+              color: "text-white/90",
+              bg: "bg-white/[0.06]",
+              glow: "rgba(255, 255, 255, 0.08)",
             },
             {
               title: "Video & Motion Graphics",
               desc: "Dynamics that ignite your audience's imagination and connect them on a deeper level.",
               icon: <PlayCircle size={22} />,
-              color: "text-pink-400",
-              bg: "bg-pink-500/10",
-              glow: "rgba(236, 72, 153, 0.15)",
+              color: "text-white/90",
+              bg: "bg-white/[0.06]",
+              glow: "rgba(255, 255, 255, 0.08)",
             },
             {
-              title: "Digital Marketing",
-              desc: "Digital marketing solutions that optimize your online presence and maximize your ROI.",
+              title: "Digital Strategy",
+              desc: "Digital solutions that optimize your online presence and maximize your return on effort.",
               icon: <Target size={22} />,
-              color: "text-orange-400",
-              bg: "bg-orange-500/10",
-              glow: "rgba(249, 115, 22, 0.15)",
+              color: "text-white/90",
+              bg: "bg-white/[0.06]",
+              glow: "rgba(255, 255, 255, 0.08)",
             },
             {
-              title: "Web Design & Development",
+              title: "Web Engineering",
               desc: "Websites with great user experiences, drive growth and elevate your brand in the digital sphere.",
               icon: <Rss size={22} />,
-              color: "text-emerald-400",
-              bg: "bg-emerald-500/10",
-              glow: "rgba(16, 185, 129, 0.15)",
+              color: "text-white/90",
+              bg: "bg-white/[0.06]",
+              glow: "rgba(255, 255, 255, 0.08)",
             },
             {
               title: "AI Automation",
               desc: "Intelligent systems that automate tasks, scaling your operations to new heights.",
               icon: <Brain size={22} />,
-              color: "text-indigo-400",
-              bg: "bg-indigo-500/10",
-              glow: "rgba(99, 102, 241, 0.15)",
+              color: "text-white/90",
+              bg: "bg-white/[0.06]",
+              glow: "rgba(255, 255, 255, 0.08)",
             },
           ].map((s, i) => (
             <motion.div
@@ -340,7 +403,7 @@ export const Home = ({
           <button
             id="all-services-cta-btn"
             onClick={() => setActiveTab("Services")}
-            className="inline-flex items-center gap-2 py-3.5 px-8 rounded-full bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(255,255,255,0.15)] hover:scale-105 active:scale-95"
+            className="inline-flex items-center gap-2 py-3.5 px-8 rounded-full bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(255,255,255,0.15)] hover:scale-105 active:scale-95 cursor-pointer"
           >
             <span>Explore All Services</span>
             <ArrowRight size={14} />
@@ -350,14 +413,13 @@ export const Home = ({
 
       {/* 4. Portfolio */}
       <section className="py-32 max-w-[1400px] mx-auto px-4 md:px-8 relative border-t border-white/5">
-        <h2 className="text-[12vw] md:text-[180px] font-black leading-none text-transparent text-outline-indigo text-center mb-8 opacity-80 pointer-events-none select-none">
+        <h2 className="text-[12vw] md:text-[180px] font-black leading-none text-transparent text-outline-subtle text-center mb-8 opacity-80 pointer-events-none select-none">
           PORTFOLIO
         </h2>
 
         <div className="text-center max-w-3xl mx-auto mb-16">
           <p className="text-2xl md:text-3xl font-bold leading-tight tracking-tight text-white/95">
-            I'm passionate about everything that has to do with Digital Design
-            and Art Direction Motion Graphics and Development.
+            I'm passionate about digital design, architecture, motion, and full-stack software development.
           </p>
         </div>
 
@@ -375,10 +437,10 @@ export const Home = ({
               <SpecularCard
                 id={`portfolio-preview-card-${p.name.toLowerCase().replace(/[^a-z0-9]/g, "-")}`}
                 className="p-5 md:p-6 group flex flex-col h-full"
-                glowColor="rgba(99, 102, 241, 0.12)"
+                glowColor="rgba(255, 255, 255, 0.08)"
               >
                 <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden mb-5 relative bg-black/40 border border-white/[0.06]">
-                  <div className="absolute inset-0 bg-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity z-10 mix-blend-overlay" />
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity z-10 mix-blend-overlay" />
                   {p.url && p.url !== "#" ? (
                     <img
                       src={`https://image.thum.io/get/width/800/crop/800/noanimate/${p.url}`}
@@ -403,7 +465,7 @@ export const Home = ({
 
                 <div className="flex items-center justify-between gap-4 mt-auto">
                   <div>
-                    <h3 className="font-bold text-xl md:text-2xl tracking-tight text-white group-hover:text-indigo-300 transition-colors">
+                    <h3 className="font-bold text-xl md:text-2xl tracking-tight text-white group-hover:text-white transition-colors">
                       {p.name}
                     </h3>
                     <p className="text-white/40 text-xs font-mono font-medium uppercase tracking-wider mt-1">
@@ -423,7 +485,7 @@ export const Home = ({
           <button
             id="all-projects-cta-btn"
             onClick={() => setActiveTab("Projects")}
-            className="inline-flex items-center gap-2 py-3.5 px-8 rounded-full bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(255,255,255,0.15)] hover:scale-105 active:scale-95"
+            className="inline-flex items-center gap-2 py-3.5 px-8 rounded-full bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(255,255,255,0.15)] hover:scale-105 active:scale-95 cursor-pointer"
           >
             <span>See All Projects</span>
             <ArrowRight size={14} />
@@ -433,24 +495,24 @@ export const Home = ({
 
       {/* 5. Testimonials */}
       <section className="py-32 max-w-[1200px] mx-auto px-4 md:px-8 border-t border-white/5 relative">
-        <h2 className="text-[6vw] md:text-[90px] font-black leading-none text-transparent text-outline-indigo text-center mb-20 opacity-80 select-none">
+        <h2 className="text-[6vw] md:text-[90px] font-black leading-none text-transparent text-outline-subtle text-center mb-20 opacity-80 select-none">
           WHAT OUR CLIENTS SAY
         </h2>
 
         <SpecularCard
           id="testimonials-featured-card"
           className="p-8 md:p-12 relative overflow-hidden"
-          glowColor="rgba(168, 85, 247, 0.1)"
+          glowColor="rgba(255, 255, 255, 0.08)"
         >
           <div className="flex flex-col md:flex-row items-center gap-10 md:gap-12 relative z-10">
-            <div className="w-full md:w-1/3 aspect-square rounded-3xl bg-gradient-to-br from-indigo-500/80 to-purple-600/80 border border-white/20 flex flex-col justify-end p-8 relative overflow-hidden shrink-0 shadow-2xl">
+            <div className="w-full md:w-1/3 aspect-square rounded-3xl bg-[#0d0d14] border border-white/10 flex flex-col justify-end p-8 relative overflow-hidden shrink-0 shadow-2xl">
               <h3 className="text-2xl font-bold mb-1 relative z-10 text-white">
                 Mary Thomas
               </h3>
-              <p className="text-white/70 text-xs font-mono font-bold uppercase tracking-widest relative z-10">
+              <p className="text-white/60 text-xs font-mono font-bold uppercase tracking-widest relative z-10">
                 Client Review
               </p>
-              <div className="absolute -bottom-10 -right-4 text-[150px] font-serif leading-none text-white/15 select-none font-black italic">
+              <div className="absolute -bottom-10 -right-4 text-[150px] font-serif leading-none text-white/10 select-none font-black italic">
                 "
               </div>
             </div>
@@ -475,9 +537,7 @@ export const Home = ({
 
       {/* 6. Contact Form Area */}
       <section className="py-32 max-w-[1200px] mx-auto px-4 md:px-8">
-        <div className="bg-[#050505] rounded-[3rem] border border-white/10 p-8 md:p-16 flex flex-col md:flex-row gap-16 relative overflow-hidden items-center shadow-2xl">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent pointer-events-none" />
-
+        <div className="bg-[#08080c] rounded-[3rem] border border-white/10 p-8 md:p-16 flex flex-col md:flex-row gap-16 relative overflow-hidden items-center shadow-2xl">
           {/* Medusa / Visual */}
           <div className="w-full md:w-1/2 relative perspective-[1000px]">
             <div className="aspect-square md:aspect-[3/4] rounded-[2rem] flex items-center justify-center relative z-10 w-full h-[350px] md:h-[500px]">
@@ -486,7 +546,7 @@ export const Home = ({
           </div>
 
           <div className="w-full md:w-1/2 relative z-10">
-            <h2 className="text-4xl md:text-6xl font-black mb-8 text-transparent text-outline-indigo lowercase italic tracking-tighter">
+            <h2 className="text-4xl md:text-6xl font-black mb-8 text-transparent text-outline-subtle lowercase italic tracking-tighter">
               START YOUR
               <br />
               PROJECT NOW
@@ -497,29 +557,29 @@ export const Home = ({
                 <input
                   type="text"
                   placeholder="Name"
-                  className="w-full bg-transparent border border-white/20 rounded-xl px-5 py-4 text-sm focus:border-indigo-500 focus:outline-none transition-colors"
+                  className="w-full bg-transparent border border-white/15 rounded-xl px-5 py-4 text-sm focus:border-white/50 focus:outline-none transition-colors"
                 />
                 <input
                   type="email"
                   placeholder="Email"
-                  className="w-full bg-transparent border border-white/20 rounded-xl px-5 py-4 text-sm focus:border-indigo-500 focus:outline-none transition-colors"
+                  className="w-full bg-transparent border border-white/15 rounded-xl px-5 py-4 text-sm focus:border-white/50 focus:outline-none transition-colors"
                 />
               </div>
               <input
                 type="text"
                 placeholder="Title"
-                className="w-full bg-transparent border border-white/20 rounded-xl px-5 py-4 text-sm focus:border-indigo-500 focus:outline-none transition-colors"
+                className="w-full bg-transparent border border-white/15 rounded-xl px-5 py-4 text-sm focus:border-white/50 focus:outline-none transition-colors"
               />
               <textarea
                 placeholder="Message"
                 rows={6}
-                className="w-full bg-transparent border border-white/20 rounded-xl px-5 py-4 text-sm focus:border-indigo-500 focus:outline-none transition-colors resize-none"
+                className="w-full bg-transparent border border-white/15 rounded-xl px-5 py-4 text-sm focus:border-white/50 focus:outline-none transition-colors resize-none"
               ></textarea>
 
               <label className="flex items-start gap-4 text-xs font-bold text-white/50 uppercase tracking-widest cursor-pointer group">
                 <input
                   type="checkbox"
-                  className="mt-0.5 accent-indigo-500 w-4 h-4 cursor-pointer"
+                  className="mt-0.5 accent-white w-4 h-4 cursor-pointer"
                 />
                 <span className="group-hover:text-white/70 transition-colors">
                   I consent to the conditions.
@@ -529,9 +589,9 @@ export const Home = ({
               <button
                 type="button"
                 onClick={() => setActiveTab("Connect")}
-                className="w-full py-4 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white font-bold uppercase tracking-widest text-sm transition-colors shadow-lg shadow-indigo-500/20"
+                className="w-full py-4 rounded-xl bg-white hover:bg-neutral-200 text-black font-semibold uppercase tracking-widest text-xs transition-colors shadow-[0_4px_20px_rgba(255,255,255,0.18)] cursor-pointer"
               >
-                Send
+                Send Message
               </button>
             </form>
           </div>
@@ -542,7 +602,7 @@ export const Home = ({
       <div className="text-center pt-20 pb-8 overflow-hidden relative border-t border-white/10 mt-12">
         <h2 className="text-[5vw] whitespace-nowrap font-black uppercase tracking-tight opacity-90 px-4 flex items-center justify-center gap-4">
           BRINGS YOUR SITE TO LIFE WITH
-          <span className="text-transparent text-outline-indigo italic">
+          <span className="text-transparent text-outline-subtle italic">
             CREATIVITY
           </span>
         </h2>
