@@ -22,8 +22,8 @@ export const MainFooter = ({
     target: footerRef,
     offset: ["start end", "end end"],
   });
-  const textY = useTransform(scrollYProgress, [0, 1], [80, -15]);
-  const textOpacity = useTransform(scrollYProgress, [0.1, 0.85], [0.08, 0.35]);
+  const textY = useTransform(scrollYProgress, [0, 1], [80, -50]);
+  const textOpacity = useTransform(scrollYProgress, [0.05, 0.85], [0.15, 0.65]);
 
   if (isInImmersiveMode) return null;
 
@@ -267,9 +267,9 @@ export const MainFooter = ({
         {/* Background Watermark Typography - Layered in Dark Sky Space */}
         <motion.div 
           style={{ y: textY, opacity: textOpacity }}
-          className="absolute inset-x-0 top-2 sm:top-6 md:top-10 lg:top-12 flex items-center justify-center z-0 pointer-events-none px-2"
+          className="absolute inset-x-0 -top-6 sm:-top-12 md:-top-16 lg:-top-20 flex items-center justify-center z-0 pointer-events-none px-2"
         >
-          <span className="text-[clamp(2.5rem,12vw,200px)] font-[900] tracking-[-0.035em] text-white uppercase leading-none whitespace-nowrap block text-center select-none drop-shadow-[0_0_30px_rgba(255,255,255,0.15)]">
+          <span className="text-[clamp(2.5rem,12vw,200px)] font-[900] tracking-[-0.035em] text-white uppercase leading-none whitespace-nowrap block text-center select-none drop-shadow-[0_0_35px_rgba(255,255,255,0.25)]">
             ABDULRAHMAN-T
           </span>
         </motion.div>

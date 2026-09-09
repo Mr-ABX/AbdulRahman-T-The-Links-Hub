@@ -537,7 +537,7 @@ export default function App() {
       className={cn(
         "min-h-screen mesh-gradient flex flex-col items-center selection:bg-indigo-500/30 transition-all duration-500",
         headerLayout === "vertical" && !isInImmersiveMode && activeTab !== "Links" && activeTab !== "Vortex"
-          ? isSidebarCollapsed ? "pl-16 md:pl-20" : "pl-60 md:pl-64"
+          ? isSidebarCollapsed ? "pl-0 md:pl-20" : "pl-0 md:pl-64"
           : "",
         isInImmersiveMode || activeTab === "Home" || activeTab === "Vortex"
           ? "py-0 px-0 relative top-0"
@@ -646,7 +646,10 @@ export default function App() {
       {/* Main Content */}
       <main
         className={cn(
-          "w-full transition-all duration-500",
+          "w-full transition-all duration-500 relative z-10",
+          headerLayout === "vertical" && !isInImmersiveMode && activeTab !== "Links" && activeTab !== "Vortex" && activeTab === "Home"
+            ? "mt-16 md:mt-0"
+            : "",
           isInImmersiveMode || activeTab === "Home" || activeTab === "Vortex"
             ? "max-w-full"
             : "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8",
