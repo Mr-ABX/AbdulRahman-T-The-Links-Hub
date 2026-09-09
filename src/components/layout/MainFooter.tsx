@@ -255,22 +255,29 @@ export const MainFooter = ({
             </div>
           </div>
         </div>
+
+        {/* Sub-footer Copyright Bar (Shifted into menu section before watermark and dunes) */}
+        <div className="pt-8 mt-10 sm:mt-14 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/40 font-mono">
+          <p>© {currentYear} Abdulrahman-T. All rights reserved.</p>
+          <p className="text-white/50">Crafted with precision &amp; intention.</p>
+        </div>
       </div>
 
-      {/* Responsive Watermark Typography (Prevents device cutting) */}
-      <div className="relative w-full overflow-hidden flex justify-center text-center select-none pointer-events-none px-4 mt-8 sm:mt-12">
-        <span className="text-[clamp(1.85rem,9.2vw,140px)] font-[900] tracking-[-0.03em] text-white/[0.05] uppercase leading-none whitespace-nowrap block max-w-full">
-          ABDULRAHMAN-T
-        </span>
-      </div>
+      {/* Immersive Watermark & Desert Dunes Integrated Layer (Watermark BEHIND dunes) */}
+      <div className="relative w-full overflow-hidden pointer-events-none select-none mt-10 sm:mt-14">
+        {/* Responsive Watermark Typography - Layered BEHIND dunes (z-0) */}
+        <div className="relative w-full flex justify-center text-center select-none pointer-events-none px-4 z-0 -mb-16 sm:-mb-24 md:-mb-32 lg:-mb-40">
+          <span className="text-[clamp(2.5rem,11.5vw,165px)] font-[900] tracking-[-0.04em] text-white/[0.08] uppercase leading-none whitespace-nowrap block max-w-full">
+            ABDULRAHMAN-T
+          </span>
+        </div>
 
-      {/* Atmospheric Desert Dunes Landscape Layer (Placed AFTER / below typography) */}
-      <div className="relative w-full overflow-hidden pointer-events-none select-none mt-2 sm:mt-4">
-        <div className="relative w-full h-[150px] sm:h-[220px] md:h-[280px] lg:h-[340px] overflow-hidden">
+        {/* Atmospheric Desert Dunes Landscape Layer - Layered IN FRONT of watermark (z-10) */}
+        <div className="relative z-10 w-full h-[180px] sm:h-[260px] md:h-[340px] lg:h-[420px] overflow-hidden">
           <img
             src="/footer-image.avif"
             alt="Landscape Atmospheric Ground"
-            className="w-full h-full object-cover object-bottom filter grayscale contrast-125 brightness-95 opacity-80"
+            className="w-full h-full object-cover object-bottom filter grayscale contrast-125 brightness-95 opacity-85"
             style={{
               filter: "url(#pixelate-b-w) grayscale(100%) contrast(125%) brightness(90%)",
               imageRendering: "pixelated",
@@ -287,15 +294,10 @@ export const MainFooter = ({
             }}
           />
 
-          {/* Top and Bottom Gradient Blending */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050508] via-transparent to-[#050508] opacity-95" />
+          {/* Top and Bottom Gradient Blending so watermark peaks emerge smoothly */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050508] via-transparent to-transparent opacity-95" />
+          <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-[#050508]/60 to-transparent" />
         </div>
-      </div>
-
-      {/* Sub-footer Copyright Bar */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/40 font-mono border-t border-white/[0.06]">
-        <p>© {currentYear} Abdulrahman-T. All rights reserved.</p>
-        <p className="text-white/50">Crafted with precision &amp; intention.</p>
       </div>
     </footer>
   );

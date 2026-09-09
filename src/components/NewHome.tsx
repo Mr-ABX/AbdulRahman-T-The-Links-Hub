@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "motion/react";
 import { MedusaImage } from "./MedusaImage";
 import { SpecularCard } from "./shared/SpecularCard";
+import { ASSET_LINKS } from "../constants/assets";
 import {
   ArrowRight,
   Monitor,
@@ -53,22 +54,37 @@ export const Home = ({
 }) => {
   return (
     <div className="w-full relative min-h-screen text-white overflow-hidden pb-0 bg-transparent">
+      {/* SVG Liquid Glitch & Obsidian Displacement Filter */}
+      <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
+        <filter id="rock-liquid-glitch" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.04 0.08" numOctaves="2" result="noise">
+            <animate attributeName="baseFrequency" dur="8s" values="0.04 0.08; 0.07 0.04; 0.04 0.08" repeatCount="indefinite" />
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
+
       {/* 1. Hero Section */}
       <section className="pt-28 sm:pt-36 md:pt-44 lg:pt-48 pb-14 flex flex-col items-center justify-center text-center max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
-        {/* Apple HIG Micro Pill */}
+        {/* Apple HIG Micro Pill with Circular Avatar */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
           className="mb-8"
         >
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.05] hover:bg-white/[0.08] border border-white/[0.12] backdrop-blur-xl transition-all duration-200 group cursor-default">
-            {/* Purple Triangle Indicator */}
-            <span className="relative flex items-center justify-center w-2.5 h-2.5">
-              <svg viewBox="0 0 12 12" className="w-2.5 h-2.5 fill-purple-400">
-                <polygon points="6,1 11,10 1,10" />
-              </svg>
-            </span>
+          <div className="inline-flex items-center gap-2.5 pl-1.5 pr-4 py-1.5 rounded-full bg-white/[0.05] hover:bg-white/[0.08] border border-white/[0.12] backdrop-blur-xl transition-all duration-200 group cursor-default shadow-sm">
+            {/* Small circular avatar with plain white background */}
+            <div className="w-5 h-5 rounded-full bg-white border border-white/60 overflow-hidden flex items-center justify-center shrink-0 shadow-sm">
+              <img
+                src="/my-image-for-home-01.jpeg"
+                alt="Abdulrahman"
+                className="w-full h-full object-cover object-center"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = ASSET_LINKS.myPfp;
+                }}
+              />
+            </div>
             <span className="font-mono text-[11px] font-medium tracking-[0.18em] uppercase text-white/80 group-hover:text-white transition-colors">
               Studio // Abdulrahman-T
             </span>
@@ -77,7 +93,7 @@ export const Home = ({
 
         {/* Hero Title Container with Rock Assets flanking the headline */}
         <div className="relative w-full max-w-[1150px] flex items-center justify-center mb-8">
-          {/* Left Rock Asset - Layered Behind Text */}
+          {/* Left Rock Asset - Layered Behind Text with Interactive Obsidian Liquid Reveal */}
           <motion.div
             initial={{ opacity: 0, x: -30, scale: 0.85 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
@@ -85,18 +101,45 @@ export const Home = ({
             whileTap={{ scale: 0.96 }}
             transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
             className="hidden md:block absolute left-0 lg:-left-6 xl:-left-12 top-1/2 -translate-y-[52%] w-44 md:w-52 lg:w-68 xl:w-76 pointer-events-auto cursor-pointer select-none z-0 group"
-            title="Interact with Left Obelisk Rock"
+            title="Interact with Left Monolith Rock"
           >
+            {/* Base Natural Rock */}
             <motion.img
               src="/rock-left-1000.webp"
               alt=""
               animate={{ y: [-8, 8, -8], rotate: [-1.2, 1.2, -1.2] }}
               transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-              className="w-full h-auto object-contain drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] group-hover:drop-shadow-[0_32px_60px_rgba(255,255,255,0.15)] filter brightness-95 contrast-105 group-hover:brightness-110 transition-all duration-300"
+              className="w-full h-auto object-contain drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] filter brightness-95 contrast-105 group-hover:opacity-15 transition-all duration-300"
             />
+
+            {/* Super-Black Obsidian Liquid Reveal Layer */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col items-center justify-center">
+              <motion.img
+                src="/rock-left-1000.webp"
+                alt=""
+                animate={{ y: [-8, 8, -8], rotate: [-1.2, 1.2, -1.2] }}
+                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                className="w-full h-auto object-contain drop-shadow-[0_0_35px_rgba(168,85,247,0.4)]"
+                style={{
+                  filter: "url(#rock-liquid-glitch) grayscale(100%) contrast(450%) brightness(12%)",
+                }}
+              />
+              {/* Halftone Dot Matrix Texture Overlay */}
+              <div
+                className="absolute inset-0 opacity-40 mix-blend-screen pointer-events-none"
+                style={{
+                  backgroundImage: "radial-gradient(rgba(192, 132, 252, 0.7) 1px, transparent 1px)",
+                  backgroundSize: "5px 5px",
+                }}
+              />
+              {/* Monolith Holographic Badge */}
+              <span className="absolute -bottom-4 px-2.5 py-0.5 rounded-full bg-black/85 border border-purple-400/40 text-[9px] font-mono tracking-widest text-purple-300 uppercase shadow-md backdrop-blur-md">
+                OBSIDIAN CORE // 01
+              </span>
+            </div>
           </motion.div>
 
-          {/* Right Rock Asset - Layered Behind Text */}
+          {/* Right Rock Asset - Layered Behind Text with Interactive Obsidian Liquid Reveal */}
           <motion.div
             initial={{ opacity: 0, x: 30, scale: 0.85 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
@@ -104,15 +147,42 @@ export const Home = ({
             whileTap={{ scale: 0.96 }}
             transition={{ duration: 1.2, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
             className="hidden md:block absolute right-0 lg:-right-6 xl:-right-12 top-1/2 -translate-y-[48%] w-44 md:w-52 lg:w-68 xl:w-76 pointer-events-auto cursor-pointer select-none z-0 group"
-            title="Interact with Right Obelisk Rock"
+            title="Interact with Right Monolith Rock"
           >
+            {/* Base Natural Rock */}
             <motion.img
               src="/rock-right-1000.webp"
               alt=""
               animate={{ y: [8, -8, 8], rotate: [1.2, -1.2, 1.2] }}
               transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-              className="w-full h-auto object-contain drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] group-hover:drop-shadow-[0_32px_60px_rgba(255,255,255,0.15)] filter brightness-95 contrast-105 group-hover:brightness-110 transition-all duration-300"
+              className="w-full h-auto object-contain drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] filter brightness-95 contrast-105 group-hover:opacity-15 transition-all duration-300"
             />
+
+            {/* Super-Black Obsidian Liquid Reveal Layer */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col items-center justify-center">
+              <motion.img
+                src="/rock-right-1000.webp"
+                alt=""
+                animate={{ y: [8, -8, 8], rotate: [1.2, -1.2, 1.2] }}
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                className="w-full h-auto object-contain drop-shadow-[0_0_35px_rgba(168,85,247,0.4)]"
+                style={{
+                  filter: "url(#rock-liquid-glitch) grayscale(100%) contrast(450%) brightness(12%)",
+                }}
+              />
+              {/* Halftone Dot Matrix Texture Overlay */}
+              <div
+                className="absolute inset-0 opacity-40 mix-blend-screen pointer-events-none"
+                style={{
+                  backgroundImage: "radial-gradient(rgba(192, 132, 252, 0.7) 1px, transparent 1px)",
+                  backgroundSize: "5px 5px",
+                }}
+              />
+              {/* Monolith Holographic Badge */}
+              <span className="absolute -bottom-4 px-2.5 py-0.5 rounded-full bg-black/85 border border-purple-400/40 text-[9px] font-mono tracking-widest text-purple-300 uppercase shadow-md backdrop-blur-md">
+                OBSIDIAN CORE // 02
+              </span>
+            </div>
           </motion.div>
 
           {/* Central Typography - Layered On Top */}
@@ -298,10 +368,6 @@ export const Home = ({
       <section className="py-24 md:py-32 max-w-[1250px] mx-auto px-4 md:px-8 relative">
         {/* Apple HIG Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.05] border border-white/10 text-white/70 font-mono text-[11px] uppercase tracking-[0.2em] mb-4">
-            <Sparkles size={11} strokeWidth={1.35} className="text-white/80" />
-            <span>Capabilities &amp; Services</span>
-          </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
             Engineered for Velocity. Crafted for Impact.
           </h2>
@@ -322,50 +388,32 @@ export const Home = ({
             {
               title: "UI/UX Design",
               desc: "Designing captivating and user-friendly interfaces that keep your audience hooked.",
-              icon: <Monitor size={20} strokeWidth={1.35} />,
-              color: "text-white/90",
-              bg: "bg-white/[0.05]",
-              glow: "rgba(255, 255, 255, 0.08)",
+              icon: <Monitor size={18} strokeWidth={1.35} />,
             },
             {
               title: "Graphic Design",
               desc: "Visually striking graphics that communicate your brand's message with a lasting impression.",
-              icon: <Paintbrush size={20} strokeWidth={1.35} />,
-              color: "text-white/90",
-              bg: "bg-white/[0.05]",
-              glow: "rgba(255, 255, 255, 0.08)",
+              icon: <Paintbrush size={18} strokeWidth={1.35} />,
             },
             {
               title: "Video & Motion Graphics",
               desc: "Dynamics that ignite your audience's imagination and connect them on a deeper level.",
-              icon: <PlayCircle size={20} strokeWidth={1.35} />,
-              color: "text-white/90",
-              bg: "bg-white/[0.05]",
-              glow: "rgba(255, 255, 255, 0.08)",
+              icon: <PlayCircle size={18} strokeWidth={1.35} />,
             },
             {
               title: "Digital Strategy",
               desc: "Digital solutions that optimize your online presence and maximize your return on effort.",
-              icon: <Target size={20} strokeWidth={1.35} />,
-              color: "text-white/90",
-              bg: "bg-white/[0.05]",
-              glow: "rgba(255, 255, 255, 0.08)",
+              icon: <Target size={18} strokeWidth={1.35} />,
             },
             {
               title: "Web Engineering",
               desc: "Websites with great user experiences, drive growth and elevate your brand in the digital sphere.",
-              icon: <Rss size={20} strokeWidth={1.35} />,
-              color: "text-white/90",
-              bg: "bg-white/[0.05]",
-              glow: "rgba(255, 255, 255, 0.08)",
+              icon: <Rss size={18} strokeWidth={1.35} />,
             },
             {
               title: "AI Automation",
               desc: "Intelligent systems that automate tasks, scaling your operations to new heights.",
-              icon: <Brain size={20} strokeWidth={1.35} />,
-              color: "text-white/90",
-              bg: "bg-white/[0.05]",
-              glow: "rgba(255, 255, 255, 0.08)",
+              icon: <Brain size={18} strokeWidth={1.35} />,
             },
           ].map((s, i) => (
             <motion.div
@@ -378,11 +426,11 @@ export const Home = ({
               <SpecularCard
                 id={`service-card-${s.title.toLowerCase().replace(/[^a-z0-9]/g, "-")}`}
                 className="p-7 h-full flex flex-col justify-between group cursor-default"
-                glowColor={s.glow}
+                glowColor="rgba(255, 255, 255, 0.06)"
               >
                 <div>
                   <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center mb-5 shadow-sm ${s.bg} ${s.color} border border-white/10`}
+                    className="w-9 h-9 rounded-lg flex items-center justify-center mb-5 bg-white/[0.03] border border-white/[0.06] text-white/35 group-hover:text-white/80 group-hover:border-white/15 transition-all duration-300"
                   >
                     {s.icon}
                   </div>
