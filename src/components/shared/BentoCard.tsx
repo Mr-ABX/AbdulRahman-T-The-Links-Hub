@@ -102,8 +102,9 @@ export const BentoCard = ({
       onMouseEnter={() => setMousePos((prev) => ({ ...prev, isHovered: true }))}
       onMouseLeave={() => setMousePos((prev) => ({ ...prev, isHovered: false }))}
       className={cn(
-        "glass rounded-[2rem] p-6 flex flex-col justify-between group cursor-default relative overflow-hidden",
-        "border border-white/[0.08] hover:border-white/[0.18]",
+        "rounded-[2rem] p-6 flex flex-col justify-between group cursor-default relative overflow-hidden",
+        "bg-[#0d0d14]/90 backdrop-blur-2xl",
+        "border border-white/[0.09] hover:border-white/[0.18]",
         "shadow-[0_16px_36px_-10px_rgba(0,0,0,0.65),inset_0_1px_0_0_rgba(255,255,255,0.12)]",
         sizeClasses[size],
         className,

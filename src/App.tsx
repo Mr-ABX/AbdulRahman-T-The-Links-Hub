@@ -541,9 +541,7 @@ export default function App() {
           : "",
         isInImmersiveMode || activeTab === "Home" || activeTab === "Vortex"
           ? "py-0 px-0 relative top-0"
-          : activeTab === "Flagships"
-          ? "pt-12 pb-10 px-4 md:pt-14 md:pb-12"
-          : "pt-18 pb-12 px-4 md:pt-20 md:pb-16",
+          : "pt-20 pb-12 px-4 md:pt-24 md:pb-16",
       )}
     >
       {!hideCustomCursor && <CustomCursor />}
@@ -651,7 +649,7 @@ export default function App() {
           "w-full transition-all duration-500",
           isInImmersiveMode || activeTab === "Home" || activeTab === "Vortex"
             ? "max-w-full"
-            : "max-w-4xl pt-4",
+            : "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8",
         )}
       >
         <AnimatePresence mode="wait">

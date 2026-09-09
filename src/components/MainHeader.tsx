@@ -57,8 +57,9 @@ export const MainHeader = ({
             "liquid-glass",
             isScrolled
               ? "mt-3 md:mt-4 rounded-full max-w-[92%] sm:max-w-2xl md:max-w-4xl px-3 md:px-5 py-2 border border-white/[0.12] shadow-[0_24px_50px_-12px_rgba(0,0,0,0.85),inset_0_1px_0_0_rgba(255,255,255,0.18)]"
-              : "mt-0 rounded-b-[24px] md:rounded-b-[28px] rounded-t-none max-w-[96%] sm:max-w-3xl md:max-w-5xl px-4 md:px-6 py-2.5 md:py-3 border-b border-x border-white/[0.1] border-t-0 shadow-[0_16px_36px_-10px_rgba(0,0,0,0.7)]",
+              : "-mt-[1px] rounded-b-[24px] md:rounded-b-[28px] rounded-t-none max-w-[96%] sm:max-w-3xl md:max-w-5xl px-4 md:px-6 py-2.5 md:py-3 border-b border-x border-white/[0.1] !border-t-0 !border-t-transparent shadow-[0_16px_36px_-10px_rgba(0,0,0,0.7)]",
           )}
+          style={isScrolled ? undefined : { borderTop: "none", borderTopColor: "transparent", borderTopWidth: 0 }}
         >
           {/* Left Concave Wing (Supaste Style Notch Fillet - Seamlessly Connected) */}
           <motion.div
@@ -79,13 +80,13 @@ export const MainHeader = ({
               {/* Glass body fill that bridges 2px into the nav to seamlessly cover the top 24px of nav border-left */}
               <path
                 d="M 0 0 C 13.255 0, 24 10.745, 24 24 L 26 24 L 26 0 Z"
-                fill="#0c0c14"
+                fill="#0d0d14"
               />
               {/* Outer specular border curve arriving exactly at the side wall at (24, 24) */}
               <path
                 d="M 0 0 C 13.255 0, 24 10.745, 24 24"
                 fill="none"
-                stroke="rgba(255, 255, 255, 0.12)"
+                stroke="rgba(255, 255, 255, 0.1)"
                 strokeWidth="1"
               />
             </svg>
@@ -110,13 +111,13 @@ export const MainHeader = ({
               {/* Glass body fill that bridges 2px into the nav to seamlessly cover the top 24px of nav border-right */}
               <path
                 d="M 26 0 C 12.745 0, 2 10.745, 2 24 L 0 24 L 0 0 Z"
-                fill="#0c0c14"
+                fill="#0d0d14"
               />
               {/* Outer specular border curve arriving exactly at the side wall at (2, 24) */}
               <path
                 d="M 26 0 C 12.745 0, 2 10.745, 2 24"
                 fill="none"
-                stroke="rgba(255, 255, 255, 0.12)"
+                stroke="rgba(255, 255, 255, 0.1)"
                 strokeWidth="1"
               />
             </svg>

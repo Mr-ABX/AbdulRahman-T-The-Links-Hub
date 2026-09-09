@@ -61,8 +61,8 @@ export const SpecularCard = ({
       whileHover={interactive ? { y: -3, transition: { duration: 0.25, ease: [0.23, 1, 0.32, 1] } } : undefined}
       className={cn(
         "relative rounded-3xl overflow-hidden transition-all duration-300",
-        "bg-[#0a0a10]/85 backdrop-blur-xl border border-white/[0.08]",
-        "shadow-[0_16px_36px_-10px_rgba(0,0,0,0.65),inset_0_1px_0_0_rgba(255,255,255,0.12)]",
+        "bg-[#0d0d14]/90 backdrop-blur-2xl border border-white/[0.09]",
+        "shadow-[0_16px_36px_-10px_rgba(0,0,0,0.65),inset_0_1px_0_0_rgba(255,255,255,0.14)]",
         interactive && "hover:border-white/[0.18]",
         className
       )}
