@@ -62,31 +62,35 @@ export const Home = ({
           transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
           className="mb-8"
         >
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.1] backdrop-blur-xl transition-all duration-200 group cursor-default">
-            {/* Clean minimal indicator */}
-            <span className="w-2 h-2 rounded-full bg-white/70 group-hover:bg-white transition-colors" />
-            <span className="font-mono text-[11px] font-medium tracking-[0.18em] uppercase text-white/70 group-hover:text-white transition-colors">
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.05] hover:bg-white/[0.08] border border-white/[0.12] backdrop-blur-xl transition-all duration-200 group cursor-default">
+            {/* Purple Triangle Indicator */}
+            <span className="relative flex items-center justify-center w-2.5 h-2.5">
+              <svg viewBox="0 0 12 12" className="w-2.5 h-2.5 fill-purple-400">
+                <polygon points="6,1 11,10 1,10" />
+              </svg>
+            </span>
+            <span className="font-mono text-[11px] font-medium tracking-[0.18em] uppercase text-white/80 group-hover:text-white transition-colors">
               Studio // Abdulrahman-T
             </span>
           </div>
         </motion.div>
 
         {/* Hero Title Container with Rock Assets flanking the headline */}
-        <div className="relative w-full max-w-[1250px] flex items-center justify-center mb-8">
+        <div className="relative w-full max-w-[1150px] flex items-center justify-center mb-8">
           {/* Left Rock Asset - Layered Behind Text */}
           <motion.div
-            initial={{ opacity: 0, x: -50, scale: 0.85 }}
+            initial={{ opacity: 0, x: -30, scale: 0.85 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
-            whileHover={{ scale: 1.08, rotate: -4, y: -8, transition: { type: "spring", stiffness: 280, damping: 16 } }}
+            whileHover={{ scale: 1.06, rotate: -3, y: -6, transition: { type: "spring", stiffness: 280, damping: 16 } }}
             whileTap={{ scale: 0.96 }}
             transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
-            className="hidden md:block absolute -left-12 lg:-left-24 xl:-left-32 top-1/2 -translate-y-[52%] w-48 md:w-60 lg:w-76 xl:w-88 pointer-events-auto cursor-pointer select-none z-0 group"
+            className="hidden md:block absolute left-0 lg:-left-6 xl:-left-12 top-1/2 -translate-y-[52%] w-44 md:w-52 lg:w-68 xl:w-76 pointer-events-auto cursor-pointer select-none z-0 group"
             title="Interact with Left Obelisk Rock"
           >
             <motion.img
               src="/rock-left-1000.webp"
               alt=""
-              animate={{ y: [-10, 10, -10], rotate: [-1.5, 1.5, -1.5] }}
+              animate={{ y: [-8, 8, -8], rotate: [-1.2, 1.2, -1.2] }}
               transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
               className="w-full h-auto object-contain drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] group-hover:drop-shadow-[0_32px_60px_rgba(255,255,255,0.15)] filter brightness-95 contrast-105 group-hover:brightness-110 transition-all duration-300"
             />
@@ -94,18 +98,18 @@ export const Home = ({
 
           {/* Right Rock Asset - Layered Behind Text */}
           <motion.div
-            initial={{ opacity: 0, x: 50, scale: 0.85 }}
+            initial={{ opacity: 0, x: 30, scale: 0.85 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
-            whileHover={{ scale: 1.08, rotate: 4, y: -8, transition: { type: "spring", stiffness: 280, damping: 16 } }}
+            whileHover={{ scale: 1.06, rotate: 3, y: -6, transition: { type: "spring", stiffness: 280, damping: 16 } }}
             whileTap={{ scale: 0.96 }}
             transition={{ duration: 1.2, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
-            className="hidden md:block absolute -right-12 lg:-right-24 xl:-right-32 top-1/2 -translate-y-[48%] w-48 md:w-60 lg:w-76 xl:w-88 pointer-events-auto cursor-pointer select-none z-0 group"
+            className="hidden md:block absolute right-0 lg:-right-6 xl:-right-12 top-1/2 -translate-y-[48%] w-44 md:w-52 lg:w-68 xl:w-76 pointer-events-auto cursor-pointer select-none z-0 group"
             title="Interact with Right Obelisk Rock"
           >
             <motion.img
               src="/rock-right-1000.webp"
               alt=""
-              animate={{ y: [10, -10, 10], rotate: [1.5, -1.5, 1.5] }}
+              animate={{ y: [8, -8, 8], rotate: [1.2, -1.2, 1.2] }}
               transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
               className="w-full h-auto object-contain drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] group-hover:drop-shadow-[0_32px_60px_rgba(255,255,255,0.15)] filter brightness-95 contrast-105 group-hover:brightness-110 transition-all duration-300"
             />
@@ -290,60 +294,77 @@ export const Home = ({
         </div>
       </section>
 
-      {/* 3. Services */}
-      <section className="py-32 max-w-[1200px] mx-auto px-4 md:px-8 relative">
-        <h2 className="text-[12vw] md:text-[180px] font-black leading-none text-transparent text-outline-subtle text-center mb-24 opacity-80 pointer-events-none select-none">
-          SERVICES
-        </h2>
+      {/* 3. Services / Capabilities */}
+      <section className="py-24 md:py-32 max-w-[1250px] mx-auto px-4 md:px-8 relative">
+        {/* Apple HIG Section Header */}
+        <div className="text-center max-w-2xl mx-auto mb-16 relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.05] border border-white/10 text-white/70 font-mono text-[11px] uppercase tracking-[0.2em] mb-4">
+            <Sparkles size={11} strokeWidth={1.35} className="text-white/80" />
+            <span>Capabilities &amp; Services</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
+            Engineered for Velocity. Crafted for Impact.
+          </h2>
+          <p className="text-white/60 text-sm md:text-base leading-relaxed">
+            Full-stack architectural precision, autonomous AI integration, bespoke UI/UX, and high-conversion brand mechanics.
+          </p>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10 -mt-20 md:-mt-40">
+        {/* Subtle Background Wire Watermark */}
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0">
+          <span className="text-[12vw] md:text-[180px] font-black leading-none text-transparent text-outline-subtle opacity-35">
+            SERVICES
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
           {[
             {
               title: "UI/UX Design",
               desc: "Designing captivating and user-friendly interfaces that keep your audience hooked.",
-              icon: <Monitor size={22} />,
+              icon: <Monitor size={20} strokeWidth={1.35} />,
               color: "text-white/90",
-              bg: "bg-white/[0.06]",
+              bg: "bg-white/[0.05]",
               glow: "rgba(255, 255, 255, 0.08)",
             },
             {
               title: "Graphic Design",
               desc: "Visually striking graphics that communicate your brand's message with a lasting impression.",
-              icon: <Paintbrush size={22} />,
+              icon: <Paintbrush size={20} strokeWidth={1.35} />,
               color: "text-white/90",
-              bg: "bg-white/[0.06]",
+              bg: "bg-white/[0.05]",
               glow: "rgba(255, 255, 255, 0.08)",
             },
             {
               title: "Video & Motion Graphics",
               desc: "Dynamics that ignite your audience's imagination and connect them on a deeper level.",
-              icon: <PlayCircle size={22} />,
+              icon: <PlayCircle size={20} strokeWidth={1.35} />,
               color: "text-white/90",
-              bg: "bg-white/[0.06]",
+              bg: "bg-white/[0.05]",
               glow: "rgba(255, 255, 255, 0.08)",
             },
             {
               title: "Digital Strategy",
               desc: "Digital solutions that optimize your online presence and maximize your return on effort.",
-              icon: <Target size={22} />,
+              icon: <Target size={20} strokeWidth={1.35} />,
               color: "text-white/90",
-              bg: "bg-white/[0.06]",
+              bg: "bg-white/[0.05]",
               glow: "rgba(255, 255, 255, 0.08)",
             },
             {
               title: "Web Engineering",
               desc: "Websites with great user experiences, drive growth and elevate your brand in the digital sphere.",
-              icon: <Rss size={22} />,
+              icon: <Rss size={20} strokeWidth={1.35} />,
               color: "text-white/90",
-              bg: "bg-white/[0.06]",
+              bg: "bg-white/[0.05]",
               glow: "rgba(255, 255, 255, 0.08)",
             },
             {
               title: "AI Automation",
               desc: "Intelligent systems that automate tasks, scaling your operations to new heights.",
-              icon: <Brain size={22} />,
+              icon: <Brain size={20} strokeWidth={1.35} />,
               color: "text-white/90",
-              bg: "bg-white/[0.06]",
+              bg: "bg-white/[0.05]",
               glow: "rgba(255, 255, 255, 0.08)",
             },
           ].map((s, i) => (
@@ -356,26 +377,23 @@ export const Home = ({
             >
               <SpecularCard
                 id={`service-card-${s.title.toLowerCase().replace(/[^a-z0-9]/g, "-")}`}
-                className="p-8 h-full flex flex-col justify-between group cursor-default"
+                className="p-7 h-full flex flex-col justify-between group cursor-default"
                 glowColor={s.glow}
               >
-                <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity translate-x-4 -translate-y-4">
-                  {React.cloneElement(s.icon, { size: 90 })}
-                </div>
                 <div>
                   <div
-                    className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 shadow-md ${s.bg} ${s.color} border border-white/10`}
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center mb-5 shadow-sm ${s.bg} ${s.color} border border-white/10`}
                   >
                     {s.icon}
                   </div>
-                  <h3 className="text-xl font-bold tracking-tight mb-2 text-white/95">{s.title}</h3>
-                  <p className="text-sm text-white/60 leading-relaxed font-normal">
+                  <h3 className="text-lg font-bold tracking-tight mb-2 text-white/95">{s.title}</h3>
+                  <p className="text-xs sm:text-sm text-white/60 leading-relaxed font-normal">
                     {s.desc}
                   </p>
                 </div>
-                <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-white/40 group-hover:text-white/70 transition-colors">
+                <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between text-[11px] font-mono text-white/40 group-hover:text-white/70 transition-colors">
                   <span>0{i + 1} // CAPABILITY</span>
-                  <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                  <ArrowRight size={13} strokeWidth={1.35} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                 </div>
               </SpecularCard>
             </motion.div>

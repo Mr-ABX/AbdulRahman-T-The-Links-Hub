@@ -95,24 +95,28 @@ export const ChatAssistant = ({ isOpen, setIsOpen, initialMessage, setInitialMes
 
   return (
     <>
-      {/* Docked Minimal Right Edge Widget */}
-      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-[100]">
+      {/* Floating Bottom AI Intelligence Widget */}
+      <div className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-[100]">
         <button
           id="docked-at-ai-widget-btn"
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
-            "group flex items-center gap-2 pl-3 pr-2.5 py-2.5 rounded-l-xl bg-[#0a0a0e]/90 hover:bg-white/[0.08] backdrop-blur-2xl border-l border-y border-white/10 hover:border-white/20 text-white shadow-[-6px_8px_24px_rgba(0,0,0,0.6)] transition-all duration-200 cursor-pointer select-none",
-            isOpen ? "bg-white/10 border-white/20" : ""
+            "relative w-12 h-12 rounded-full bg-[#0a0a0e]/95 hover:bg-[#15151f] backdrop-blur-2xl border border-white/15 hover:border-white/30 text-white shadow-[0_8px_32px_rgba(0,0,0,0.7)] flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 group cursor-pointer",
+            isOpen ? "bg-white/20 border-white/40 ring-2 ring-white/15 scale-105" : ""
           )}
-          title="A.T. Intelligence Assistant"
+          title="AI Intelligence Assistant"
         >
-          <div className="w-5 h-5 rounded-md bg-white/[0.08] border border-white/10 flex items-center justify-center p-0.5 shrink-0">
-            <img src={logo1} alt="AI" className="w-full h-full object-contain" />
-          </div>
-          <span className="text-[11px] font-mono font-medium tracking-wider text-white/70 group-hover:text-white uppercase">
-            AT AI
+          {/* AI Neural / Sparkles Icon */}
+          <Sparkles 
+            size={18} 
+            strokeWidth={1.35} 
+            className="text-white/90 group-hover:text-white group-hover:rotate-6 transition-all duration-200" 
+          />
+          {/* Active Status Pulse Indicator */}
+          <span className="absolute top-1 right-1 flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 border border-[#0a0a0e]" />
           </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
         </button>
       </div>
 
@@ -120,23 +124,23 @@ export const ChatAssistant = ({ isOpen, setIsOpen, initialMessage, setInitialMes
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, x: 20, scale: 0.96 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: 20, scale: 0.96 }}
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
-            className="fixed bottom-6 right-6 sm:right-8 w-[calc(100vw-3rem)] sm:w-[380px] h-[520px] max-h-[85vh] bg-[#09090d]/95 rounded-2xl shadow-[-10px_20px_50px_rgba(0,0,0,0.85)] border border-white/10 flex flex-col overflow-hidden backdrop-blur-2xl z-[110]"
+            className="fixed bottom-22 right-6 sm:right-8 w-[calc(100vw-3rem)] sm:w-[380px] h-[520px] max-h-[80vh] bg-[#09090d]/95 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.9)] border border-white/10 flex flex-col overflow-hidden backdrop-blur-2xl z-[110]"
           >
             {/* Header */}
             <div className="p-4 border-b border-white/[0.08] bg-white/[0.02] flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center p-1.5">
-                  <img src={logo1} alt="A.T. AI" className="w-full h-full object-contain" />
+                  <Sparkles size={16} strokeWidth={1.35} className="text-white/90" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-xs text-white tracking-tight">A.T. Intelligence</h3>
+                  <h3 className="font-semibold text-xs text-white tracking-tight">AI Intelligence</h3>
                   <div className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                    <span className="text-[9px] text-white/40 font-mono uppercase tracking-wider">Assistant</span>
+                    <span className="text-[9px] text-white/40 font-mono uppercase tracking-wider">Assistant Active</span>
                   </div>
                 </div>
               </div>

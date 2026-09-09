@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowUpRight, Sparkles, Layers, Send, Download } from "lucide-react";
+import { ArrowUpRight, Layers } from "lucide-react";
 import { ASSET_LINKS } from "../../constants/assets";
 import { cn } from "../../lib/utils";
 
@@ -25,41 +25,46 @@ export const MainFooter = ({
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const menuLinks = [
-    { name: "Home", tab: "Home" },
-    { name: "Flagships", tab: "Flagships" },
-    { name: "Projects", tab: "Projects" },
+  const platformLinks = [
+    { name: "Vortex", tab: "Vortex", badge: "Interactive" },
     { name: "Store", tab: "Store" },
-    { name: "Services", tab: "Services" },
-  ];
-
-  const navigationLinks = [
-    { name: "About", tab: "About" },
-    { name: "Connect", tab: "Connect" },
-    { name: "Reviews", tab: "Reviews" },
-    { name: "Journal", tab: "Journal" },
-    { name: "Blog", tab: "Blog" },
-  ];
-
-  const moreProductsLinks = [
-    { name: "Vortex Engine", tab: "Vortex" },
+    { name: "Links", tab: "Links" },
+    { name: "Prompts", tab: "Prompts" },
     { name: "Infni-T' Labz", tab: "Apps" },
-    { name: "Tools Pedia", tab: "Toolspedia" },
-    { name: "Prompt Matrix", tab: "Prompts" },
-    { name: "AI Academy", tab: "Academy" },
+    { name: "Toolspedia", tab: "Toolspedia" },
+  ];
+
+  const workLinks = [
+    { name: "Flagships", tab: "Flagships", badge: "Featured" },
+    { name: "Projects", tab: "Projects" },
+    { name: "Services", tab: "Services" },
+    { name: "Automation", tab: "Automation" },
+  ];
+
+  const insightsLinks = [
+    { name: "Journal", tab: "Journal" },
+    { name: "Academy", tab: "Academy" },
     { name: "AI Music", tab: "Music" },
-    { name: "Release Feed", tab: "Feed" },
+    { name: "Blog", tab: "Blog" },
+    { name: "Feed", tab: "Feed" },
+    { name: "Ebooks", tab: "Ebooks" },
+  ];
+
+  const aboutLinks = [
+    { name: "About", tab: "About" },
+    { name: "Reviews", tab: "Reviews" },
+    { name: "Connect", tab: "Connect", badge: "Hire Me" },
+    { name: "Community", tab: "Community" },
   ];
 
   return (
     <footer
       id="main-studio-footer"
-      className="relative w-full border-t border-white/[0.08] bg-[#050508] overflow-hidden pt-16 md:pt-20 pb-16 mt-24"
+      className="relative w-full border-t border-white/[0.08] bg-[#050508] overflow-hidden pt-16 md:pt-24 pb-10 mt-28"
     >
       {/* Dynamic SVG Filter for Crisp Pixelation */}
       <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
         <filter id="pixelate-b-w" x="0%" y="0%" width="100%" height="100%">
-          {/* Grayscale transformation */}
           <feColorMatrix
             type="matrix"
             values="0.33 0.33 0.33 0 0
@@ -68,9 +73,9 @@ export const MainFooter = ({
                     0    0    0    1 0"
           />
           <feComponentTransfer>
-            <feFuncR type="linear" slope="1.4" />
-            <feFuncG type="linear" slope="1.4" />
-            <feFuncB type="linear" slope="1.4" />
+            <feFuncR type="linear" slope="1.3" />
+            <feFuncG type="linear" slope="1.3" />
+            <feFuncB type="linear" slope="1.3" />
           </feComponentTransfer>
         </filter>
       </svg>
@@ -79,18 +84,18 @@ export const MainFooter = ({
         className={cn(
           "relative z-10 mx-auto w-full",
           activeTab === "Home" || activeTab === "Vortex"
-            ? "max-w-[1400px] px-6 md:px-12"
-            : "max-w-5xl px-6",
+            ? "max-w-[1340px] px-6 sm:px-8 md:px-12"
+            : "max-w-6xl px-6",
         )}
       >
-        {/* Top Editorial Grid (Screen.Movie Style Hierarchy) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-14 mb-16 md:mb-24">
-          {/* Left Hero Column */}
-          <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
+        {/* Top Section: Left Branding & Right 4 Columns */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 mb-16 md:mb-20">
+          {/* Left Column (Brand & Bio & CTAs) */}
+          <div className="lg:col-span-5 space-y-6">
+            {/* Identity & Badges */}
             <div className="space-y-4">
-              {/* Brand Title */}
-              <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center p-1">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center p-1.5 shrink-0 shadow-sm">
                   <img
                     src={logo1}
                     alt="Abdulrahman Logo"
@@ -98,55 +103,124 @@ export const MainFooter = ({
                     loading="lazy"
                   />
                 </div>
-                <h3 className="font-semibold text-sm text-white tracking-tight">
-                  Abdulrahman-T
-                </h3>
+                <div>
+                  <h3 className="font-bold text-sm text-white tracking-[0.12em] uppercase font-mono">
+                    ABDULRAHMAN-T
+                  </h3>
+                  <p className="text-[9px] text-white/40 font-mono tracking-[0.15em] uppercase">
+                    CREATIVE TECHNOLOGIST &amp; SAAS BUILDER
+                  </p>
+                </div>
               </div>
 
-              {/* Tagline */}
-              <h4 className="text-xl md:text-2xl font-bold text-white tracking-tight leading-snug">
-                Full-Stack Systems & Next-Gen Digital Products
+              {/* High-Impact Headline */}
+              <h4 className="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-[1.15]">
+                Architecting the future. Built with purpose.
               </h4>
 
               {/* Sub-description */}
-              <p className="text-white/50 text-xs md:text-sm font-normal leading-relaxed max-w-sm">
-                Architecting autonomous workflows, scalable web platforms, and bespoke creative engineering.
+              <p className="text-white/60 text-xs sm:text-sm font-normal leading-relaxed max-w-md">
+                Empowering human connection and digital velocity through next-gen design systems, autonomous AI workflows, and bespoke web platforms.
               </p>
             </div>
 
-            {/* Apple Style Download / Connect Button */}
-            <div className="pt-2">
+            {/* Action Buttons Row */}
+            <div className="flex flex-wrap items-center gap-3 pt-2">
               <button
                 id="footer-start-project-btn"
                 onClick={() => handleNavClick("Connect")}
-                className="inline-flex items-center gap-2 py-2.5 px-5 rounded-full bg-white text-black hover:bg-neutral-200 font-medium text-xs tracking-tight transition-all duration-200 cursor-pointer shadow-sm hover:scale-[1.01] active:scale-[0.99]"
+                className="inline-flex items-center gap-2 py-2.5 px-5 rounded-full bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight transition-all duration-200 cursor-pointer shadow-sm hover:scale-[1.01] active:scale-[0.99]"
               >
                 <span>Start a Project</span>
-                <ArrowUpRight size={13} className="text-black/70 stroke-[2]" />
+                <ArrowUpRight size={14} strokeWidth={2} />
+              </button>
+
+              <button
+                id="footer-explore-work-btn"
+                onClick={() => handleNavClick("Projects")}
+                className="inline-flex items-center gap-2 py-2.5 px-4.5 rounded-full bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 hover:border-white/20 text-white/90 font-medium text-xs tracking-tight transition-all duration-200 cursor-pointer"
+              >
+                <Layers size={13} strokeWidth={1.35} />
+                <span>Explore Work</span>
               </button>
             </div>
 
-            {/* Copyright & Maker Credit */}
-            <div className="space-y-1 pt-4 text-xs text-white/40 font-mono">
-              <p>© {currentYear} Abdulrahman-T - All rights reserved</p>
-              <p className="text-white/60">Built with 🖤 by Abdulrahman-T</p>
+            {/* Live Operational Status Indicator */}
+            <div className="flex items-center gap-2 pt-2">
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              <span className="text-[11px] font-mono text-white/40 tracking-tight">
+                All Systems Operational // Available for Projects
+              </span>
             </div>
           </div>
 
-          {/* Right Navigation Columns (Screen.movie Layout) */}
-          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8">
-            {/* Column 1: Menu */}
-            <div className="space-y-3">
-              <h5 className="text-xs font-semibold text-white tracking-tight">
-                Menu
+          {/* Right Navigation Columns (4 Columns: Platform, Work, Insights, About) */}
+          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 pt-2">
+            {/* Column 1: Platform */}
+            <div className="space-y-3.5">
+              <h5 className="text-[11px] font-mono font-semibold text-white/40 uppercase tracking-[0.16em]">
+                PLATFORM
               </h5>
-              <ul className="space-y-2">
-                {menuLinks.map((item) => (
+              <ul className="space-y-2.5">
+                {platformLinks.map((item) => (
                   <li key={item.name}>
                     <button
                       id={`footer-nav-${item.tab.toLowerCase()}`}
                       onClick={() => handleNavClick(item.tab)}
-                      className="text-xs text-white/50 hover:text-white transition-colors cursor-pointer text-left"
+                      className="group inline-flex items-center gap-1.5 text-xs text-white/60 hover:text-white transition-colors cursor-pointer text-left"
+                    >
+                      <span>{item.name}</span>
+                      {item.badge && (
+                        <span className="px-1.5 py-0.5 rounded-full text-[9px] font-mono uppercase bg-white/[0.08] text-white/60 group-hover:bg-white/15 group-hover:text-white transition-colors">
+                          {item.badge}
+                        </span>
+                      )}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 2: Work */}
+            <div className="space-y-3.5">
+              <h5 className="text-[11px] font-mono font-semibold text-white/40 uppercase tracking-[0.16em]">
+                WORK
+              </h5>
+              <ul className="space-y-2.5">
+                {workLinks.map((item) => (
+                  <li key={item.name}>
+                    <button
+                      id={`footer-nav-${item.tab.toLowerCase()}`}
+                      onClick={() => handleNavClick(item.tab)}
+                      className="group inline-flex items-center gap-1.5 text-xs text-white/60 hover:text-white transition-colors cursor-pointer text-left"
+                    >
+                      <span>{item.name}</span>
+                      {item.badge && (
+                        <span className="px-1.5 py-0.5 rounded-full text-[9px] font-mono uppercase bg-white/[0.08] text-white/60 group-hover:bg-white/15 group-hover:text-white transition-colors">
+                          {item.badge}
+                        </span>
+                      )}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 3: Insights */}
+            <div className="space-y-3.5">
+              <h5 className="text-[11px] font-mono font-semibold text-white/40 uppercase tracking-[0.16em]">
+                INSIGHTS
+              </h5>
+              <ul className="space-y-2.5">
+                {insightsLinks.map((item) => (
+                  <li key={item.name}>
+                    <button
+                      id={`footer-nav-${item.tab.toLowerCase()}`}
+                      onClick={() => handleNavClick(item.tab)}
+                      className="text-xs text-white/60 hover:text-white transition-colors cursor-pointer text-left"
                     >
                       {item.name}
                     </button>
@@ -155,40 +229,25 @@ export const MainFooter = ({
               </ul>
             </div>
 
-            {/* Column 2: Navigation */}
-            <div className="space-y-3">
-              <h5 className="text-xs font-semibold text-white tracking-tight">
-                Navigation
+            {/* Column 4: About */}
+            <div className="space-y-3.5">
+              <h5 className="text-[11px] font-mono font-semibold text-white/40 uppercase tracking-[0.16em]">
+                ABOUT
               </h5>
-              <ul className="space-y-2">
-                {navigationLinks.map((item) => (
+              <ul className="space-y-2.5">
+                {aboutLinks.map((item) => (
                   <li key={item.name}>
                     <button
                       id={`footer-nav-${item.tab.toLowerCase()}`}
                       onClick={() => handleNavClick(item.tab)}
-                      className="text-xs text-white/50 hover:text-white transition-colors cursor-pointer text-left"
+                      className="group inline-flex items-center gap-1.5 text-xs text-white/60 hover:text-white transition-colors cursor-pointer text-left"
                     >
-                      {item.name}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Column 3: More Products */}
-            <div className="space-y-3">
-              <h5 className="text-xs font-semibold text-white tracking-tight">
-                More products
-              </h5>
-              <ul className="space-y-2">
-                {moreProductsLinks.map((item) => (
-                  <li key={item.name}>
-                    <button
-                      id={`footer-nav-${item.tab.toLowerCase()}`}
-                      onClick={() => handleNavClick(item.tab)}
-                      className="text-xs text-white/50 hover:text-white transition-colors cursor-pointer text-left"
-                    >
-                      {item.name}
+                      <span>{item.name}</span>
+                      {item.badge && (
+                        <span className="px-1.5 py-0.5 rounded-full text-[9px] font-mono uppercase bg-white/[0.08] text-white/60 group-hover:bg-white/15 group-hover:text-white transition-colors">
+                          {item.badge}
+                        </span>
+                      )}
                     </button>
                   </li>
                 ))}
@@ -198,45 +257,48 @@ export const MainFooter = ({
         </div>
       </div>
 
-      {/* Screen.Movie Atmospheric Landscape Graphic & Large Watermark Layer */}
-      <div className="relative w-full overflow-hidden pointer-events-none select-none mt-8 -mb-16">
-        {/* Large Watermark Typography */}
-        <div
-          aria-hidden="true"
-          className="w-full flex justify-center text-center overflow-hidden mb-[-4vw] sm:mb-[-3vw] md:mb-[-2vw] relative z-0"
-        >
-          <span className="text-[clamp(3.5rem,13vw,190px)] font-[900] tracking-[-0.04em] text-white/[0.08] uppercase leading-none whitespace-nowrap">
-            ABDULRAHMAN-T
-          </span>
-        </div>
+      {/* Responsive Watermark Typography (Prevents device cutting) */}
+      <div className="relative w-full overflow-hidden flex justify-center text-center select-none pointer-events-none px-4 mt-8 sm:mt-12">
+        <span className="text-[clamp(1.85rem,9.2vw,140px)] font-[900] tracking-[-0.03em] text-white/[0.05] uppercase leading-none whitespace-nowrap block max-w-full">
+          ABDULRAHMAN-T
+        </span>
+      </div>
 
-        {/* Footer Background Image with Black & White Pixel Filter and Low Opacity Blending */}
-        <div className="relative w-full h-[200px] sm:h-[260px] md:h-[340px] lg:h-[400px] overflow-hidden z-10">
+      {/* Atmospheric Desert Dunes Landscape Layer (Placed AFTER / below typography) */}
+      <div className="relative w-full overflow-hidden pointer-events-none select-none mt-2 sm:mt-4">
+        <div className="relative w-full h-[150px] sm:h-[220px] md:h-[280px] lg:h-[340px] overflow-hidden">
           <img
             src="/footer-image.avif"
-            alt="Abdulrahman-T Landscape"
-            className="w-full h-full object-cover object-bottom filter grayscale contrast-125 brightness-90 opacity-80"
+            alt="Landscape Atmospheric Ground"
+            className="w-full h-full object-cover object-bottom filter grayscale contrast-125 brightness-95 opacity-80"
             style={{
-              filter: "url(#pixelate-b-w) grayscale(100%) contrast(130%) brightness(85%)",
+              filter: "url(#pixelate-b-w) grayscale(100%) contrast(125%) brightness(90%)",
               imageRendering: "pixelated",
             }}
           />
 
-          {/* Micro Pixel Grid Screen Pattern */}
+          {/* Micro Pixel Grid Screen Texture */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 opacity-30 mix-blend-overlay pointer-events-none"
+            className="absolute inset-0 opacity-25 mix-blend-overlay pointer-events-none"
             style={{
               backgroundImage: "radial-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px)",
               backgroundSize: "4px 4px",
             }}
           />
 
-          {/* Smooth Fade to Top & Bottom */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050508] via-transparent to-[#050508] opacity-90" />
+          {/* Top and Bottom Gradient Blending */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050508] via-transparent to-[#050508] opacity-95" />
         </div>
+      </div>
+
+      {/* Sub-footer Copyright Bar */}
+      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/40 font-mono border-t border-white/[0.06]">
+        <p>© {currentYear} Abdulrahman-T. All rights reserved.</p>
+        <p className="text-white/50">Crafted with precision &amp; intention.</p>
       </div>
     </footer>
   );
 };
+
 
