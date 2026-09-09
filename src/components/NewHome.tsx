@@ -1,6 +1,8 @@
 import React from "react";
 import { motion } from "motion/react";
 import { MedusaImage } from "./MedusaImage";
+import { Portal3DOrbit } from "./shared/Portal3DOrbit";
+import { SpecularCard } from "./shared/SpecularCard";
 import {
   ArrowRight,
   Monitor,
@@ -115,74 +117,86 @@ export const Home = ({
       </section>
 
       {/* Featured Showcase: AB-Folio Portal V2 */}
-      <section className="py-12 max-w-[1200px] mx-auto px-4 md:px-8 relative z-20">
+      <section className="py-12 max-w-[1300px] mx-auto px-4 md:px-8 relative z-20">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-          className="relative overflow-hidden rounded-[2.5rem] p-[2px] group"
+          className="relative overflow-hidden rounded-[2.5rem] p-[1.5px] group shadow-[0_30px_70px_-20px_rgba(0,0,0,0.9)]"
         >
-          {/* Animated Gradient Glow Border */}
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/30 via-indigo-500/30 to-purple-500/30 rounded-[2.5rem]" />
-          <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_240deg,#06b6d4_280deg,#6366f1_320deg,#ec4899_360deg)] animate-border-spin blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+          {/* Animated Gradient Glow Rim */}
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-indigo-500/25 to-purple-500/20 rounded-[2.5rem]" />
+          <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_240deg,#06b6d4_280deg,#6366f1_320deg,#ec4899_360deg)] animate-border-spin blur-xl opacity-40 group-hover:opacity-75 transition-opacity duration-700 pointer-events-none" />
 
-          {/* Inner Content Card */}
-          <div className="relative h-full w-full bg-[#050505]/90 backdrop-blur-2xl rounded-[calc(2.5rem-2px)] p-8 md:p-12 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 overflow-hidden shadow-2xl border border-white/10">
+          {/* Inner Content Card (macOS Pro Glass Aesthetic) */}
+          <div className="relative h-full w-full bg-[#0a0a12]/90 backdrop-blur-3xl rounded-[calc(2.5rem-1.5px)] p-6 md:p-10 flex flex-col lg:flex-row items-center justify-between gap-8 overflow-hidden border border-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18)]">
             {/* Background Ambient Lights */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full filter blur-[120px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500/10 rounded-full filter blur-[120px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full filter blur-[140px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full filter blur-[140px] pointer-events-none" />
 
-            <div className="relative z-10 space-y-4 max-w-2xl text-left">
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-mono">
+            {/* Left / Center 3D Interactive Spatial Viewport */}
+            <div className="w-full lg:w-3/5 relative flex items-center justify-center rounded-2xl bg-black/40 border border-white/[0.08] overflow-hidden shadow-inner">
+              <Portal3DOrbit className="w-full" showControls={true} />
+            </div>
+
+            {/* Right Information & Action Panel */}
+            <div className="relative z-10 space-y-5 w-full lg:w-2/5 text-left flex flex-col justify-center">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 font-mono shadow-[0_0_12px_rgba(6,182,212,0.15)]">
                   <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-                  ✨ NEW 3D EXPERIENCE PORTAL
+                  3D SPATIAL ORBIT
                 </span>
-                <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-white/5 border border-white/10 text-white/50 uppercase">
+                <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-medium bg-white/[0.06] border border-white/10 text-white/60 uppercase">
                   V2 Experience
                 </span>
               </div>
 
-              <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight font-sans leading-tight">
-                AB-Folio <span className="bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">Portal V2</span>
-              </h2>
+              <div>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight font-sans leading-tight">
+                  AB-Folio{" "}
+                  <span className="bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
+                    Portal V2
+                  </span>
+                </h2>
+                <p className="mt-3 text-white/70 text-sm md:text-base font-normal font-sans leading-relaxed">
+                  Explore an interactive 3D spatial ecosystem powered by live mathematical physics, rotating gyroscope orbital rings, and dynamic particle lattice projection.
+                </p>
+              </div>
 
-              <p className="text-white/70 text-sm md:text-base font-light font-sans max-w-xl leading-relaxed">
-                Step into my next-generation interactive web showcase featuring 3D spatial environments, fluid motion physics, dynamic audio-visual aesthetics, and cutting-edge digital experiences.
-              </p>
-
-              <div className="flex flex-wrap items-center gap-2 pt-2">
-                {["Spatial UI", "Interactive 3D", "Audio FX", "Next-Gen Web"].map((tag) => (
+              <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                {["Spatial UI", "Fibonacci Lattice", "3D Gyroscope", "Real-time Math", "Next-Gen Web"].map((tag) => (
                   <span
                     key={tag}
-                    className="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-white/5 text-white/40 border border-white/5"
+                    className="px-2.5 py-1 rounded-lg text-[10px] font-mono font-medium bg-white/[0.04] text-white/50 border border-white/[0.06]"
                   >
                     #{tag}
                   </span>
                 ))}
               </div>
-            </div>
 
-            {/* CTA & Quick Action Box */}
-            <div className="relative z-10 flex flex-col sm:flex-row lg:flex-col gap-3.5 w-full lg:w-72 shrink-0">
-              <a
-                href="https://ab-folio-portal-v2.vercel.app/"
-                target="_blank"
-                rel="noreferrer noopener"
-                className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-400 hover:via-indigo-500 hover:to-purple-500 text-white font-bold text-sm flex items-center justify-center gap-2.5 transition-all shadow-[0_0_25px_rgba(99,102,241,0.4)] hover:scale-105 active:scale-95 group/btn cursor-pointer"
-              >
-                <span>Launch Live Experience</span>
-                <ExternalLink size={16} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
-              </a>
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3 pt-2 w-full">
+                <a
+                  id="portal-launch-live-btn"
+                  href="https://ab-folio-portal-v2.vercel.app/"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="flex-1 py-3.5 px-6 rounded-full bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight flex items-center justify-center gap-2 transition-all duration-200 shadow-[0_4px_20px_rgba(255,255,255,0.2)] hover:scale-[1.02] active:scale-[0.98] group/btn cursor-pointer"
+                >
+                  <span>Launch Live Portal</span>
+                  <ArrowUpRight size={15} className="text-black/80 stroke-[2.5] group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                </a>
 
-              <button
-                onClick={() => setActiveTab("Projects")}
-                className="w-full py-3.5 px-6 rounded-2xl bg-white/5 hover:bg-white/10 text-white/80 hover:text-white font-bold text-xs flex items-center justify-center gap-2 transition-all border border-white/10 hover:border-white/20"
-              >
-                <Layers size={14} className="text-white/40" />
-                <span>Explore In Portfolio</span>
-              </button>
+                <button
+                  id="portal-explore-portfolio-btn"
+                  onClick={() => setActiveTab("Projects")}
+                  className="py-3.5 px-5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-white/80 hover:text-white font-semibold text-xs tracking-tight flex items-center justify-center gap-2 transition-all duration-200 border border-white/10 hover:border-white/20"
+                >
+                  <Layers size={14} className="text-white/50" />
+                  <span>Portfolio Apps</span>
+                </button>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -256,44 +270,50 @@ export const Home = ({
             {
               title: "UI/UX",
               desc: "Designing captivating and user-friendly interfaces that keep your audience hooked.",
-              icon: <Monitor size={24} />,
+              icon: <Monitor size={22} />,
               color: "text-blue-400",
               bg: "bg-blue-500/10",
+              glow: "rgba(59, 130, 246, 0.15)",
             },
             {
               title: "Graphic Designs",
               desc: "Visually striking graphics that communicate your brand's message with a lasting impression.",
-              icon: <Paintbrush size={24} />,
+              icon: <Paintbrush size={22} />,
               color: "text-purple-400",
               bg: "bg-purple-500/10",
+              glow: "rgba(168, 85, 247, 0.15)",
             },
             {
               title: "Video & Motion Graphics",
               desc: "Dynamics that ignite your audience's imagination and connect them on a deeper level.",
-              icon: <PlayCircle size={24} />,
+              icon: <PlayCircle size={22} />,
               color: "text-pink-400",
               bg: "bg-pink-500/10",
+              glow: "rgba(236, 72, 153, 0.15)",
             },
             {
               title: "Digital Marketing",
               desc: "Digital marketing solutions that optimize your online presence and maximize your ROI.",
-              icon: <Target size={24} />,
+              icon: <Target size={22} />,
               color: "text-orange-400",
               bg: "bg-orange-500/10",
+              glow: "rgba(249, 115, 22, 0.15)",
             },
             {
               title: "Web Design & Development",
               desc: "Websites with great user experiences, drive growth and elevate your brand in the digital sphere.",
-              icon: <Rss size={24} />,
+              icon: <Rss size={22} />,
               color: "text-emerald-400",
               bg: "bg-emerald-500/10",
+              glow: "rgba(16, 185, 129, 0.15)",
             },
             {
               title: "AI Automation",
               desc: "Intelligent systems that automate tasks, scaling your operations to new heights.",
-              icon: <Brain size={24} />,
+              icon: <Brain size={22} />,
               color: "text-indigo-400",
               bg: "bg-indigo-500/10",
+              glow: "rgba(99, 102, 241, 0.15)",
             },
           ].map((s, i) => (
             <motion.div
@@ -301,31 +321,44 @@ export const Home = ({
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="p-8 rounded-3xl bg-[#0a0a0a] border border-white/5 hover:border-white/20 transition-all group overflow-hidden relative"
+              transition={{ delay: i * 0.08, duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
             >
-              <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity translate-x-4 -translate-y-4">
-                {React.cloneElement(s.icon, { size: 100 })}
-              </div>
-              <div
-                className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-8 shadow-xl ${s.bg} ${s.color}`}
+              <SpecularCard
+                id={`service-card-${s.title.toLowerCase().replace(/[^a-z0-9]/g, "-")}`}
+                className="p-8 h-full flex flex-col justify-between group cursor-default"
+                glowColor={s.glow}
               >
-                {s.icon}
-              </div>
-              <h3 className="text-xl font-bold mb-3">{s.title}</h3>
-              <p className="text-sm text-white/50 leading-relaxed group-hover:text-white/70 transition-colors">
-                {s.desc}
-              </p>
+                <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity translate-x-4 -translate-y-4">
+                  {React.cloneElement(s.icon, { size: 90 })}
+                </div>
+                <div>
+                  <div
+                    className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 shadow-md ${s.bg} ${s.color} border border-white/10`}
+                  >
+                    {s.icon}
+                  </div>
+                  <h3 className="text-xl font-bold tracking-tight mb-2 text-white/95">{s.title}</h3>
+                  <p className="text-sm text-white/60 leading-relaxed font-normal">
+                    {s.desc}
+                  </p>
+                </div>
+                <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-white/40 group-hover:text-white/70 transition-colors">
+                  <span>0{i + 1} // CAPABILITY</span>
+                  <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                </div>
+              </SpecularCard>
             </motion.div>
           ))}
         </div>
 
         <div className="mt-16 text-center">
           <button
+            id="all-services-cta-btn"
             onClick={() => setActiveTab("Services")}
-            className="w-full max-w-md mx-auto py-5 rounded-2xl bg-indigo-500 hover:bg-indigo-400 text-white font-bold uppercase tracking-widest text-sm transition-colors shadow-xl shadow-indigo-500/20"
+            className="inline-flex items-center gap-2 py-3.5 px-8 rounded-full bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(255,255,255,0.15)] hover:scale-105 active:scale-95"
           >
-            All Services »
+            <span>Explore All Services</span>
+            <ArrowRight size={14} />
           </button>
         </div>
       </section>
@@ -336,103 +369,123 @@ export const Home = ({
           PORTFOLIO
         </h2>
 
-        <div className="text-center max-w-3xl mx-auto mb-20">
-          <p className="text-2xl md:text-3xl font-bold leading-tight">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <p className="text-2xl md:text-3xl font-bold leading-tight tracking-tight text-white/95">
             I'm passionate about everything that has to do with Digital Design
             and Art Direction Motion Graphics and Development.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
           {projects.slice(0, 4).map((p, i) => (
             <motion.div
               key={p.name}
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="group cursor-pointer"
+              transition={{ delay: i * 0.1, duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+              className="cursor-pointer"
               onClick={() => setActiveTab("Projects")}
             >
-              <div className="w-full aspect-[4/3] rounded-3xl overflow-hidden mb-6 relative bg-white/5">
-                <div className="absolute inset-0 bg-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity z-10 mix-blend-overlay" />
-                {p.url && p.url !== "#" ? (
-                  <img
-                    src={`https://image.thum.io/get/width/800/crop/800/noanimate/${p.url}`}
-                    alt={p.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    referrerPolicy="no-referrer"
-                  />
-                ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center fill-white/20 text-white/20">
-                    <div className="scale-150 mb-4">{p.icon}</div>
-                    <span className="font-bold uppercase tracking-widest text-xs">
-                      Unreleased
-                    </span>
-                  </div>
-                )}
+              <SpecularCard
+                id={`portfolio-preview-card-${p.name.toLowerCase().replace(/[^a-z0-9]/g, "-")}`}
+                className="p-5 md:p-6 group flex flex-col h-full"
+                glowColor="rgba(99, 102, 241, 0.12)"
+              >
+                <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden mb-5 relative bg-black/40 border border-white/[0.06]">
+                  <div className="absolute inset-0 bg-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity z-10 mix-blend-overlay" />
+                  {p.url && p.url !== "#" ? (
+                    <img
+                      src={`https://image.thum.io/get/width/800/crop/800/noanimate/${p.url}`}
+                      alt={p.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center fill-white/20 text-white/20">
+                      <div className="scale-150 mb-4">{p.icon}</div>
+                      <span className="font-mono font-medium uppercase tracking-widest text-[11px] text-white/40">
+                        Featured Platform
+                      </span>
+                    </div>
+                  )}
 
-                {/* Floating link icon */}
-                <div className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white text-black flex items-center justify-center opacity-0 group-hover:opacity-100 -translate-y-4 group-hover:translate-y-0 transition-all z-20 shadow-2xl">
-                  <ArrowUpRight size={20} />
+                  {/* Floating link icon */}
+                  <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white text-black flex items-center justify-center opacity-0 group-hover:opacity-100 -translate-y-2 group-hover:translate-y-0 transition-all z-20 shadow-xl">
+                    <ArrowUpRight size={18} />
+                  </div>
                 </div>
-              </div>
-              <h3 className="font-bold text-2xl uppercase tracking-wide mb-2 group-hover:text-indigo-400 transition-colors">
-                {p.name}
-              </h3>
-              <p className="text-white/40 text-sm font-bold uppercase tracking-widest">
-                {p.mainCategory}
-              </p>
+
+                <div className="flex items-center justify-between gap-4 mt-auto">
+                  <div>
+                    <h3 className="font-bold text-xl md:text-2xl tracking-tight text-white group-hover:text-indigo-300 transition-colors">
+                      {p.name}
+                    </h3>
+                    <p className="text-white/40 text-xs font-mono font-medium uppercase tracking-wider mt-1">
+                      {p.mainCategory}
+                    </p>
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-[10px] font-mono font-semibold bg-white/[0.06] border border-white/10 text-white/60">
+                    View Project
+                  </span>
+                </div>
+              </SpecularCard>
             </motion.div>
           ))}
         </div>
 
-        <div className="mt-20 text-center">
+        <div className="mt-16 text-center">
           <button
+            id="all-projects-cta-btn"
             onClick={() => setActiveTab("Projects")}
-            className="w-full max-w-md mx-auto py-5 rounded-2xl bg-indigo-500 hover:bg-indigo-400 text-white font-bold uppercase tracking-widest text-sm transition-colors shadow-xl shadow-indigo-500/20"
+            className="inline-flex items-center gap-2 py-3.5 px-8 rounded-full bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(255,255,255,0.15)] hover:scale-105 active:scale-95"
           >
-            See All Projects »
+            <span>See All Projects</span>
+            <ArrowRight size={14} />
           </button>
         </div>
       </section>
 
       {/* 5. Testimonials */}
       <section className="py-32 max-w-[1200px] mx-auto px-4 md:px-8 border-t border-white/5 relative">
-        <h2 className="text-[6vw] md:text-[90px] font-black leading-none text-transparent text-outline-indigo text-center mb-24 opacity-80 select-none">
+        <h2 className="text-[6vw] md:text-[90px] font-black leading-none text-transparent text-outline-indigo text-center mb-20 opacity-80 select-none">
           WHAT OUR CLIENTS SAY
         </h2>
 
-        <div className="flex flex-col md:flex-row items-center bg-[#0a0a0a] rounded-[2.5rem] p-8 md:p-12 border border-white/5 gap-12 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 blur-[100px]" />
+        <SpecularCard
+          id="testimonials-featured-card"
+          className="p-8 md:p-12 relative overflow-hidden"
+          glowColor="rgba(168, 85, 247, 0.1)"
+        >
+          <div className="flex flex-col md:flex-row items-center gap-10 md:gap-12 relative z-10">
+            <div className="w-full md:w-1/3 aspect-square rounded-3xl bg-gradient-to-br from-indigo-500/80 to-purple-600/80 border border-white/20 flex flex-col justify-end p-8 relative overflow-hidden shrink-0 shadow-2xl">
+              <h3 className="text-2xl font-bold mb-1 relative z-10 text-white">
+                Mary Thomas
+              </h3>
+              <p className="text-white/70 text-xs font-mono font-bold uppercase tracking-widest relative z-10">
+                Client Review
+              </p>
+              <div className="absolute -bottom-10 -right-4 text-[150px] font-serif leading-none text-white/15 select-none font-black italic">
+                "
+              </div>
+            </div>
 
-          <div className="w-full md:w-1/3 aspect-square rounded-[2rem] bg-gradient-to-br from-indigo-500 to-purple-600 flex flex-col justify-end p-8 relative overflow-hidden shrink-0 shadow-2xl">
-            <h3 className="text-2xl font-bold mb-1 relative z-10">
-              Mary Thomas
-            </h3>
-            <p className="text-white/60 text-xs font-bold uppercase tracking-widest relative z-10">
-              Client
-            </p>
-            <div className="absolute -bottom-10 -right-4 text-[150px] font-serif leading-none text-white/20 select-none font-black italic">
-              "
+            <div className="w-full md:w-2/3">
+              <div className="flex gap-1.5 text-amber-400 mb-6">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <Star key={s} size={18} fill="currentColor" />
+                ))}
+              </div>
+              <p className="text-lg md:text-xl text-white/80 leading-relaxed font-light italic">
+                "Working with Abdulrahman on our website design and development
+                was a breeze. Their team was responsive and creative, and truly
+                listened to our needs. We now have a website that not only looks
+                great but also provides a user experience that sets us apart from
+                the competition."
+              </p>
             </div>
           </div>
-
-          <div className="w-full md:w-2/3">
-            <div className="flex gap-1 text-yellow-500 mb-6">
-              {[1, 2, 3, 4, 5].map((s) => (
-                <Star key={s} size={20} fill="currentColor" />
-              ))}
-            </div>
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed font-light italic">
-              "Working with Abdulrahman on our website design and development
-              was a breeze. Their team was responsive and creative, and truly
-              listened to our needs. We now have a website that not only looks
-              great but also provides a user experience that sets us apart from
-              the competition."
-            </p>
-          </div>
-        </div>
+        </SpecularCard>
       </section>
 
       {/* 6. Contact Form Area */}
