@@ -84,14 +84,14 @@ export const Home = ({
 
         {/* Hero Title Container with Rock Assets flanking the headline */}
         <div className="relative w-full max-w-[1250px] flex items-center justify-center mb-8">
-          {/* Left Rock Asset - Interactive on Hover & Touch */}
+          {/* Left Rock Asset - Layered Behind Text */}
           <motion.div
             initial={{ opacity: 0, x: -50, scale: 0.85 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             whileHover={{ scale: 1.08, rotate: -4, y: -8, transition: { type: "spring", stiffness: 280, damping: 16 } }}
             whileTap={{ scale: 0.96 }}
             transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
-            className="hidden md:block absolute -left-12 lg:-left-24 xl:-left-32 top-1/2 -translate-y-[52%] w-48 md:w-60 lg:w-76 xl:w-88 pointer-events-auto cursor-pointer select-none z-20 group"
+            className="hidden md:block absolute -left-12 lg:-left-24 xl:-left-32 top-1/2 -translate-y-[52%] w-48 md:w-60 lg:w-76 xl:w-88 pointer-events-auto cursor-pointer select-none z-0 group"
             title="Interact with Left Obelisk Rock"
           >
             <motion.img
@@ -103,14 +103,14 @@ export const Home = ({
             />
           </motion.div>
 
-          {/* Right Rock Asset - Interactive on Hover & Touch */}
+          {/* Right Rock Asset - Layered Behind Text */}
           <motion.div
             initial={{ opacity: 0, x: 50, scale: 0.85 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             whileHover={{ scale: 1.08, rotate: 4, y: -8, transition: { type: "spring", stiffness: 280, damping: 16 } }}
             whileTap={{ scale: 0.96 }}
             transition={{ duration: 1.2, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
-            className="hidden md:block absolute -right-12 lg:-right-24 xl:-right-32 top-1/2 -translate-y-[48%] w-48 md:w-60 lg:w-76 xl:w-88 pointer-events-auto cursor-pointer select-none z-20 group"
+            className="hidden md:block absolute -right-12 lg:-right-24 xl:-right-32 top-1/2 -translate-y-[48%] w-48 md:w-60 lg:w-76 xl:w-88 pointer-events-auto cursor-pointer select-none z-0 group"
             title="Interact with Right Obelisk Rock"
           >
             <motion.img
@@ -122,7 +122,7 @@ export const Home = ({
             />
           </motion.div>
 
-          {/* Central Typography */}
+          {/* Central Typography - Layered On Top */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -142,61 +142,10 @@ export const Home = ({
           transition={{ duration: 0.8, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
           className="max-w-xl mx-auto"
         >
-          {/* Think. Make. Solve. with delicate purple shade & scribble marker underlines */}
-          <div className="inline-flex items-center gap-2 md:gap-3 px-4 py-1.5 rounded-full bg-purple-950/25 border border-purple-500/20 backdrop-blur-md shadow-[0_0_24px_-4px_rgba(168,85,247,0.22),inset_0_1px_0_0_rgba(255,255,255,0.08)] mb-4 group">
-            <span className="font-mono text-xs md:text-sm tracking-[0.22em] uppercase font-semibold text-white/90 flex items-center">
-              <span className="text-purple-200 relative inline-block">
-                Think
-                <svg
-                  className="absolute -bottom-1 left-0 w-full h-1.5 text-purple-400/80 overflow-visible"
-                  viewBox="0 0 40 6"
-                  fill="none"
-                  preserveAspectRatio="none"
-                >
-                  <path
-                    d="M1 4.5C12 2 28 1.5 39 3.5"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </span>
-              <span className="text-purple-400/60 mx-2.5 text-xs">✦</span>
-              <span className="text-purple-100 relative inline-block">
-                Make
-                <svg
-                  className="absolute -bottom-1 left-0 w-full h-1.5 text-purple-300/85 overflow-visible"
-                  viewBox="0 0 40 6"
-                  fill="none"
-                  preserveAspectRatio="none"
-                >
-                  <path
-                    d="M1 3.5C11 5 27 2 39 4"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </span>
-              <span className="text-purple-400/60 mx-2.5 text-xs">✦</span>
-              <span className="text-purple-200 relative inline-block">
-                Solve
-                <svg
-                  className="absolute -bottom-1 left-0 w-full h-1.5 text-purple-400/80 overflow-visible"
-                  viewBox="0 0 40 6"
-                  fill="none"
-                  preserveAspectRatio="none"
-                >
-                  <path
-                    d="M1 4C14 1.8 26 5 39 2.5"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </span>
-            </span>
-          </div>
+          {/* Think. Make. Solve. clean text in brand purple shade */}
+          <p className="font-mono text-xs md:text-sm tracking-[0.25em] uppercase text-purple-300/90 mb-3.5 font-semibold">
+            Think. Make. Solve.
+          </p>
           <p className="text-white/70 text-sm md:text-base font-normal leading-relaxed mb-8 max-w-lg mx-auto">
             Empowering human connection through deliberate design, spatial interfaces, and autonomous systems.
           </p>

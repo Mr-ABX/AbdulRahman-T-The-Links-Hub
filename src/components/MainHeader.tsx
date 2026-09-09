@@ -153,7 +153,7 @@ export const MainHeader = ({
               onClick={() => handleTabClick("Home")}
               className="cursor-pointer hidden xl:inline text-xs font-semibold tracking-tight text-white/90 hover:text-white transition-colors"
             >
-              Abdulrahman
+              Abdulrahman-T
             </span>
           </div>
 
@@ -274,10 +274,10 @@ export const MainHeader = ({
             <button
               id="header-settings-btn"
               onClick={() => setIsSettingsOpen(true)}
-              className="p-1.5 md:p-2 rounded-full text-white/50 hover:text-white hover:bg-white/[0.08] transition-all border border-transparent hover:border-white/10"
+              className="w-8 h-8 rounded-full bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 hover:border-purple-500/30 text-white/60 hover:text-purple-300 transition-all duration-200 flex items-center justify-center shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)] hover:shadow-[0_0_12px_rgba(168,85,247,0.3)]"
               title="Preferences"
             >
-              <Settings size={16} />
+              <Settings size={15} />
             </button>
 
             {/* Mobile Menu Icon */}

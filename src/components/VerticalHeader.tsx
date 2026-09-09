@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronDown, Settings, ShieldCheck, Mail, Sparkles, User, Star, Share2, Compass, Layout, Send, PanelLeftClose, PanelLeftOpen, ExternalLink, Globe } from "lucide-react";
+import { ChevronDown, Settings, Sparkles, Compass, Layout, Send, PanelLeftClose, PanelLeftOpen, ExternalLink } from "lucide-react";
 import { cn } from "../lib/utils";
 import { ASSET_LINKS } from "../constants/assets";
 
@@ -41,47 +41,70 @@ export const VerticalHeader = ({
   };
 
   return (
-    <aside className={cn(
-      "fixed left-0 top-0 bottom-0 bg-[#050505]/90 backdrop-blur-3xl border-r border-white/10 z-[90] flex flex-col justify-between select-none font-sans transition-all duration-300 py-6",
-      isCollapsed ? "w-20" : "w-64 md:w-68"
-    )}>
-      <div className={cn("space-y-6 flex-1 overflow-y-auto custom-scroll-area", isCollapsed ? "px-4" : "px-6")}>
+    <aside
+      className={cn(
+        "fixed left-0 top-3 bottom-3 md:top-4 md:bottom-4 my-auto h-[calc(100vh-24px)] md:h-[calc(100vh-32px)] z-[90] flex flex-col justify-between select-none font-sans transition-all duration-300",
+        "bg-[#0c0c14]/92 backdrop-blur-3xl border-r border-y border-white/[0.12] rounded-r-[22px] md:rounded-r-[26px]",
+        "shadow-[0_20px_50px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.15)] py-4",
+        isCollapsed ? "w-16" : "w-56 md:w-60"
+      )}
+    >
+      {/* Top Concave Notch Wing (Curves seamlessly from left screen edge into sidebar top) */}
+      <div className="absolute -top-[16px] left-0 w-[16px] h-[16px] pointer-events-none overflow-hidden">
+        <svg viewBox="0 0 16 16" className="w-full h-full">
+          <path d="M 0 0 C 0 8.837, 7.163 16, 16 16 L 0 16 Z" fill="#0c0c14" />
+          <path d="M 0 0 C 0 8.837, 7.163 16, 16 16" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
+        </svg>
+      </div>
+
+      {/* Bottom Concave Notch Wing (Curves seamlessly from sidebar bottom back into left screen edge) */}
+      <div className="absolute -bottom-[16px] left-0 w-[16px] h-[16px] pointer-events-none overflow-hidden">
+        <svg viewBox="0 0 16 16" className="w-full h-full">
+          <path d="M 16 0 C 7.163 0, 0 7.163, 0 16 L 0 0 Z" fill="#0c0c14" />
+          <path d="M 16 0 C 7.163 0, 0 7.163, 0 16" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
+        </svg>
+      </div>
+
+      {/* Main Nav Scroll Body */}
+      <div className={cn("space-y-4 flex-1 overflow-y-auto custom-scroll-area", isCollapsed ? "px-2" : "px-3.5")}>
         {/* Header Actions / Branding */}
-        <div className={cn("flex items-center pb-4 border-b border-white/5", isCollapsed ? "flex-col gap-4 justify-center" : "justify-between gap-3.5")}>
-          <div className="flex items-center gap-3.5">
+        <div className={cn("flex items-center pb-3 border-b border-white/[0.08]", isCollapsed ? "flex-col gap-3 justify-center" : "justify-between gap-2")}>
+          <div className="flex items-center gap-2.5">
             <button
               onClick={() => setActiveTab("Home")}
-              className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors group shrink-0"
+              className="w-9 h-9 rounded-xl bg-white/[0.05] border border-white/10 hover:border-purple-500/30 flex items-center justify-center hover:bg-white/[0.1] transition-all group shrink-0 shadow-sm"
               title="Home"
             >
               <img
                 src={logo1}
                 alt="Logo"
-                className="w-6 h-6 object-contain group-hover:scale-110 transition-transform"
+                className="w-5 h-5 object-contain group-hover:scale-110 transition-transform"
               />
             </button>
             {!isCollapsed && (
-              <div className="text-left whitespace-nowrap">
-                <h1 className="text-xs font-black tracking-[0.2em] text-white uppercase font-mono">
-                  Abdulrahman
+              <div className="text-left whitespace-nowrap overflow-hidden">
+                <h1 className="text-xs font-black tracking-[0.16em] text-white uppercase font-mono truncate">
+                  Abdulrahman-T
                 </h1>
-                <span className="text-[9px] text-white/30 tracking-widest font-mono uppercase">
+                <span className="text-[8px] text-purple-400 font-mono tracking-widest uppercase flex items-center gap-1">
+                  <span className="w-1 h-1 rounded-full bg-purple-400 inline-block" />
                   LABS ENGINE
                 </span>
               </div>
             )}
           </div>
           <button
+            id="toggle-sidebar-collapse-btn"
             onClick={() => setIsCollapsed && setIsCollapsed(!isCollapsed)}
-            className="w-8 h-8 rounded-xl flex items-center justify-center text-white/30 hover:text-white hover:bg-white/5 transition-colors shrink-0"
-            title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+            className="w-7 h-7 rounded-lg flex items-center justify-center text-white/40 hover:text-purple-300 hover:bg-white/[0.06] transition-colors shrink-0"
+            title={isCollapsed ? "Expand Sidebar Notch" : "Collapse Sidebar Notch"}
           >
-            {isCollapsed ? <PanelLeftOpen size={16} /> : <PanelLeftClose size={16} />}
+            {isCollapsed ? <PanelLeftOpen size={15} /> : <PanelLeftClose size={15} />}
           </button>
         </div>
 
         {/* Navigation Categories */}
-        <nav className={cn("space-y-5", isCollapsed ? "mt-4" : "")}>
+        <nav className={cn("space-y-3.5", isCollapsed ? "mt-2" : "")}>
           {navGroups.map((group, groupIdx) => {
             if (group.tab) {
               const isActive = activeTab === group.tab;
@@ -90,15 +113,15 @@ export const VerticalHeader = ({
                   key={group.label}
                   onClick={() => setActiveTab(group.tab)}
                   className={cn(
-                    "flex items-center rounded-xl font-bold text-xs uppercase transition-all border outline-none",
-                    isCollapsed ? "justify-center w-10 h-10 p-0 mx-auto" : "w-full gap-3 px-4 py-3 tracking-wider text-left",
+                    "flex items-center rounded-xl font-bold text-xs uppercase transition-all border outline-none cursor-pointer",
+                    isCollapsed ? "justify-center w-10 h-10 p-0 mx-auto" : "w-full gap-2.5 px-3 py-2 tracking-wider text-left",
                     isActive
-                      ? "bg-white/15 border-white/20 text-white shadow-md shadow-black/40"
-                      : "bg-transparent border-transparent text-white/50 hover:text-white/80 hover:bg-white/5"
+                      ? "bg-purple-950/40 border-purple-500/30 text-white shadow-[0_0_12px_rgba(168,85,247,0.25)]"
+                      : "bg-transparent border-transparent text-white/50 hover:text-white hover:bg-white/[0.04]"
                   )}
                   title={isCollapsed ? group.label : undefined}
                 >
-                  <Compass size={14} className={isActive ? "text-indigo-400" : "text-white/30"} />
+                  <Compass size={14} className={isActive ? "text-purple-400" : "text-white/40"} />
                   {!isCollapsed && group.label}
                 </button>
               );
@@ -109,16 +132,16 @@ export const VerticalHeader = ({
               <div key={group.label} className={cn("space-y-1", isCollapsed ? "flex flex-col items-center" : "")}>
                 {/* Accordion header or Divider */}
                 {isCollapsed ? (
-                  groupIdx > 0 && <div className="w-6 border-b border-white/5 my-2"></div>
+                  groupIdx > 0 && <div className="w-5 border-b border-white/[0.08] my-1.5"></div>
                 ) : (
                   <button
                     onClick={() => toggleGroup(group.label)}
-                    className="w-full flex items-center justify-between py-1 text-[9px] font-black text-white/30 uppercase tracking-[0.2em] hover:text-white/60 transition-colors"
+                    className="w-full flex items-center justify-between py-1 text-[9px] font-black text-white/35 uppercase tracking-[0.2em] hover:text-white/60 transition-colors cursor-pointer"
                   >
                     <span>{group.label}</span>
                     <ChevronDown
                       size={10}
-                      className={cn("transition-transform duration-300", isGroupExpanded ? "rotate-180" : "")}
+                      className={cn("transition-transform duration-200", isGroupExpanded ? "rotate-180" : "")}
                     />
                   </button>
                 )}
@@ -130,15 +153,14 @@ export const VerticalHeader = ({
                       initial={isCollapsed ? false : { height: 0, opacity: 0 }}
                       animate={isCollapsed ? false : { height: "auto", opacity: 1 }}
                       exit={isCollapsed ? false : { height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
+                      transition={{ duration: 0.18, ease: [0.23, 1, 0.32, 1] }}
                       className={cn(
                         "overflow-hidden flex flex-col",
-                        isCollapsed ? "gap-2 items-center w-full" : "gap-0.5 pl-1"
+                        isCollapsed ? "gap-1.5 items-center w-full" : "gap-0.5"
                       )}
                     >
                       {group.items.map((item) => {
                         const tabInfo = tabs.find((t) => t.name === item);
-                        // Fallback handling if custom tabs name aren't found
                         const displayName = 
                           item === "Apps" ? "INFNI-T' LABZ" : 
                           item === "Music" ? "AI Music" : 
@@ -146,7 +168,7 @@ export const VerticalHeader = ({
                           item === "Feed" ? "Release Feed" : 
                           item === "Toolspedia" ? "Tools Pedia" : 
                           tabInfo?.name || item;
-                        const icon = tabInfo?.icon || <Layout size={14} />;
+                        const icon = tabInfo?.icon || <Layout size={13} />;
                         const isActive = activeTab === item;
 
                         return (
@@ -154,15 +176,15 @@ export const VerticalHeader = ({
                             key={item}
                             onClick={() => setActiveTab(item)}
                             className={cn(
-                              "flex items-center text-xs font-bold leading-none tracking-wide rounded-xl transition-all border outline-none",
-                              isCollapsed ? "justify-center w-10 h-10 p-0" : "w-full gap-3 px-3.5 py-2.5 text-left",
+                              "flex items-center text-xs font-semibold leading-none tracking-wide rounded-xl transition-all border outline-none cursor-pointer",
+                              isCollapsed ? "justify-center w-10 h-10 p-0" : "w-full gap-2.5 px-3 py-2 text-left",
                               isActive
-                                ? "bg-white/10 border-white/10 text-white shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
-                                : "bg-transparent border-transparent text-white/50 hover:text-white hover:bg-white/5"
+                                ? "bg-purple-950/40 border-purple-500/30 text-white shadow-[0_0_12px_rgba(168,85,247,0.25)]"
+                                : "bg-transparent border-transparent text-white/50 hover:text-white hover:bg-white/[0.04]"
                             )}
                             title={isCollapsed ? displayName : undefined}
                           >
-                            <span className={cn("transition-colors flex shrink-0", isActive ? "text-indigo-400" : "text-white/30")}>
+                            <span className={cn("transition-colors flex shrink-0", isActive ? "text-purple-400" : "text-white/40")}>
                               {icon}
                             </span>
                             {!isCollapsed && <span className="truncate">{displayName}</span>}
@@ -177,51 +199,48 @@ export const VerticalHeader = ({
           })}
         </nav>
 
-        {/* Portal V2 Showcase Widget */}
+        {/* Compact Portal V2 Showcase Widget */}
         <div className="pt-2">
           {isCollapsed ? (
             <a
               href="https://ab-folio-portal-v2.vercel.app/"
               target="_blank"
               rel="noreferrer noopener"
-              className="w-10 h-10 mx-auto rounded-xl bg-gradient-to-br from-cyan-500/20 to-indigo-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 hover:text-white hover:border-cyan-400/60 hover:bg-cyan-500/30 transition-all group relative shadow-lg shadow-cyan-500/10"
+              className="w-10 h-10 mx-auto rounded-xl bg-purple-950/30 border border-purple-500/30 flex items-center justify-center text-purple-300 hover:text-white hover:border-purple-400/60 hover:bg-purple-500/20 transition-all group relative shadow-md shadow-purple-950/50"
               title="AB Folio Portal V2 (Launch 3D Web)"
             >
-              <Sparkles size={16} className="group-hover:scale-110 transition-transform" />
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-cyan-400 rounded-full border-2 border-[#050505] animate-pulse" />
+              <Sparkles size={15} className="group-hover:scale-110 transition-transform text-purple-400" />
+              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-purple-400 rounded-full border border-[#0c0c14] animate-pulse" />
             </a>
           ) : (
-            <div className="relative overflow-hidden rounded-2xl p-[1px] group">
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/30 to-indigo-500/30 rounded-2xl" />
-              <div className="relative bg-[#0d0d12]/95 backdrop-blur-xl p-3.5 rounded-[calc(1rem-1px)] border border-white/10 space-y-2">
+            <div className="relative overflow-hidden rounded-xl p-[1px] group">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/25 to-indigo-500/25 rounded-xl" />
+              <div className="relative bg-[#0c0c14]/95 backdrop-blur-xl p-2.5 rounded-[calc(0.75rem-1px)] border border-white/[0.08] space-y-1.5">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-                    <span className="text-[9px] font-black uppercase tracking-wider text-cyan-400 font-mono">
+                    <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+                    <span className="text-[8px] font-black uppercase tracking-wider text-purple-300 font-mono">
                       PORTAL V2
                     </span>
                   </div>
-                  <span className="text-[8px] font-mono font-bold px-1.5 py-0.5 rounded bg-white/5 text-white/50 border border-white/10 uppercase">
-                    3D Live
+                  <span className="text-[7px] font-mono font-bold px-1 py-0.5 rounded bg-white/[0.05] text-white/50 border border-white/10 uppercase">
+                    3D LIVE
                   </span>
                 </div>
-                <div>
-                  <h4 className="text-xs font-bold text-white font-sans group-hover:text-cyan-300 transition-colors line-clamp-1">
+                <div className="flex items-center justify-between gap-1">
+                  <h4 className="text-[11px] font-bold text-white font-sans truncate">
                     AB-Folio Experience
                   </h4>
-                  <p className="text-[10px] text-white/40 leading-snug font-sans line-clamp-2">
-                    Spatial 3D web experience portal & showcase.
-                  </p>
+                  <a
+                    href="https://ab-folio-portal-v2.vercel.app/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="p-1 rounded-md bg-white/[0.06] hover:bg-purple-500/25 text-purple-300 hover:text-white border border-white/10 transition-all shrink-0"
+                    title="Launch 3D Web Portal"
+                  >
+                    <ExternalLink size={11} />
+                  </a>
                 </div>
-                <a
-                  href="https://ab-folio-portal-v2.vercel.app/"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="w-full py-2 px-3 rounded-lg bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 hover:from-cyan-500/30 hover:to-indigo-500/30 border border-cyan-500/30 text-cyan-300 hover:text-white text-[10px] font-bold font-mono flex items-center justify-between transition-all group/link"
-                >
-                  <span>Launch Portal</span>
-                  <ExternalLink size={12} className="group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
-                </a>
               </div>
             </div>
           )}
@@ -229,31 +248,32 @@ export const VerticalHeader = ({
       </div>
 
       {/* Footer Settings & Controls */}
-      <div className={cn("pt-4 border-t border-white/5 space-y-4 shrink-0", isCollapsed ? "px-4 flex flex-col items-center" : "px-6")}>
+      <div className={cn("pt-3 border-t border-white/[0.08] space-y-3 shrink-0", isCollapsed ? "px-2 flex flex-col items-center" : "px-3.5")}>
         <button
           onClick={() => setActiveTab("Connect")}
           className={cn(
-            "bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-400 hover:to-purple-400 text-white font-black uppercase tracking-[0.1em] rounded-xl transition-all shadow-[0_0_15px_rgba(99,102,241,0.2)] flex items-center justify-center",
-            isCollapsed ? "w-10 h-10 p-0" : "w-full py-3.5 text-[10px]"
+            "bg-white hover:bg-neutral-200 text-black font-bold uppercase tracking-wider rounded-xl transition-all duration-200 shadow-[0_4px_16px_rgba(255,255,255,0.15)] flex items-center justify-center cursor-pointer",
+            isCollapsed ? "w-10 h-10 p-0" : "w-full py-2.5 text-[10px]"
           )}
           title={isCollapsed ? "Hire Me" : undefined}
         >
-          {isCollapsed ? <Send size={16} /> : "Hire Me"}
+          {isCollapsed ? <Send size={14} /> : "Hire Me"}
         </button>
 
         <div className={cn("flex items-center", isCollapsed ? "justify-center w-full" : "justify-between")}>
           <button
+            id="sidebar-preferences-btn"
             onClick={() => setIsSettingsOpen(true)}
             className={cn(
-              "flex items-center rounded-lg text-[10px] font-mono text-white/40 hover:text-white hover:bg-white/5 transition-all border border-transparent",
-              isCollapsed ? "justify-center w-10 h-10 p-0" : "gap-2 px-3 py-1.5"
+              "flex items-center rounded-lg text-[10px] font-mono text-white/50 hover:text-purple-300 hover:bg-white/[0.05] transition-all border border-transparent cursor-pointer",
+              isCollapsed ? "justify-center w-10 h-10 p-0" : "gap-1.5 px-2 py-1"
             )}
-            title={isCollapsed ? "Preferences" : undefined}
+            title="Preferences"
           >
-            <Settings size={14} />
+            <Settings size={13} />
             {!isCollapsed && <span>Preferences</span>}
           </button>
-          {!isCollapsed && <span className="text-[8px] font-mono text-white/20 uppercase">Core v4.2</span>}
+          {!isCollapsed && <span className="text-[8px] font-mono text-white/30 uppercase">v4.2</span>}
         </div>
       </div>
     </aside>
