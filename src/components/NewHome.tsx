@@ -54,7 +54,7 @@ export const Home = ({
   return (
     <div className="w-full relative min-h-screen text-white overflow-hidden pb-0 bg-transparent">
       {/* 1. Hero Section */}
-      <section className="pt-10 sm:pt-14 md:pt-20 pb-12 flex flex-col items-center justify-center text-center max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
+      <section className="pt-28 sm:pt-36 md:pt-44 lg:pt-48 pb-14 flex flex-col items-center justify-center text-center max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
         {/* Apple HIG Micro Pill */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -75,35 +75,41 @@ export const Home = ({
 
         {/* Hero Title Container with Rock Assets flanking the headline */}
         <div className="relative w-full max-w-[1250px] flex items-center justify-center mb-8">
-          {/* Left Rock Asset */}
+          {/* Left Rock Asset - Interactive on Hover & Touch */}
           <motion.div
             initial={{ opacity: 0, x: -50, scale: 0.85 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
+            whileHover={{ scale: 1.08, rotate: -4, y: -8, transition: { type: "spring", stiffness: 280, damping: 16 } }}
+            whileTap={{ scale: 0.96 }}
             transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
-            className="hidden md:block absolute -left-12 lg:-left-24 xl:-left-32 top-1/2 -translate-y-[52%] w-48 md:w-60 lg:w-76 xl:w-88 pointer-events-none select-none z-0"
+            className="hidden md:block absolute -left-12 lg:-left-24 xl:-left-32 top-1/2 -translate-y-[52%] w-48 md:w-60 lg:w-76 xl:w-88 pointer-events-auto cursor-pointer select-none z-20 group"
+            title="Interact with Left Obelisk Rock"
           >
             <motion.img
               src="/rock-left-1000.webp"
               alt=""
               animate={{ y: [-10, 10, -10], rotate: [-1.5, 1.5, -1.5] }}
               transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-              className="w-full h-auto object-contain drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] filter brightness-95 contrast-105"
+              className="w-full h-auto object-contain drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] group-hover:drop-shadow-[0_32px_60px_rgba(255,255,255,0.15)] filter brightness-95 contrast-105 group-hover:brightness-110 transition-all duration-300"
             />
           </motion.div>
 
-          {/* Right Rock Asset */}
+          {/* Right Rock Asset - Interactive on Hover & Touch */}
           <motion.div
             initial={{ opacity: 0, x: 50, scale: 0.85 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
+            whileHover={{ scale: 1.08, rotate: 4, y: -8, transition: { type: "spring", stiffness: 280, damping: 16 } }}
+            whileTap={{ scale: 0.96 }}
             transition={{ duration: 1.2, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
-            className="hidden md:block absolute -right-12 lg:-right-24 xl:-right-32 top-1/2 -translate-y-[48%] w-48 md:w-60 lg:w-76 xl:w-88 pointer-events-none select-none z-0"
+            className="hidden md:block absolute -right-12 lg:-right-24 xl:-right-32 top-1/2 -translate-y-[48%] w-48 md:w-60 lg:w-76 xl:w-88 pointer-events-auto cursor-pointer select-none z-20 group"
+            title="Interact with Right Obelisk Rock"
           >
             <motion.img
               src="/rock-right-1000.webp"
               alt=""
               animate={{ y: [10, -10, 10], rotate: [1.5, -1.5, 1.5] }}
               transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-              className="w-full h-auto object-contain drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] filter brightness-95 contrast-105"
+              className="w-full h-auto object-contain drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] group-hover:drop-shadow-[0_32px_60px_rgba(255,255,255,0.15)] filter brightness-95 contrast-105 group-hover:brightness-110 transition-all duration-300"
             />
           </motion.div>
 
@@ -174,70 +180,48 @@ export const Home = ({
         </motion.div>
       </section>
 
-      {/* Featured Showcase: AB-Folio Experience Portal V2 (Clean Apple HIG SpecularCard) */}
-      <section className="py-10 max-w-[1300px] mx-auto px-4 md:px-8 relative z-20">
+      {/* Featured Showcase: AB-Folio Experience Portal V2 (Apple HIG Minimal Decent Pill) */}
+      <section className="py-6 max-w-[1100px] mx-auto px-4 md:px-8 relative z-20 flex justify-center">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-          className="relative overflow-hidden rounded-[2rem]"
+          viewport={{ once: true, margin: "-20px" }}
+          transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+          className="w-full max-w-2xl"
         >
-          <SpecularCard
-            className="relative h-full w-full bg-[#0d0d14]/95 backdrop-blur-2xl rounded-[2rem] p-6 md:p-10 flex flex-col md:flex-row items-start md:items-center justify-between overflow-hidden gap-6 border border-white/[0.1] shadow-[0_24px_60px_-15px_rgba(0,0,0,0.8),inset_0_1px_0_0_rgba(255,255,255,0.14)]"
-            glowColor="rgba(255, 255, 255, 0.08)"
+          <a
+            id="portal-minimal-pill"
+            href="https://ab-folio-portal-v2.vercel.app/"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="group flex items-center justify-between gap-4 px-5 py-3 rounded-full bg-[#0d0d14]/90 hover:bg-white/[0.08] backdrop-blur-2xl border border-white/10 hover:border-white/20 shadow-[0_16px_36px_-10px_rgba(0,0,0,0.8),inset_0_1px_0_0_rgba(255,255,255,0.12)] transition-all cursor-pointer"
           >
-            <div className="relative z-10 space-y-2.5 max-w-2xl">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest bg-white/[0.08] border border-white/15 text-white font-mono flex items-center gap-1.5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  PORTAL V2 // 3D LAB
-                </span>
-                <span className="text-[10px] font-mono text-white/50 tracking-wider uppercase">
-                  Spatial Interactive Experience
-                </span>
-              </div>
-              <h3 className="text-2xl md:text-4xl font-extrabold text-white font-sans tracking-tight leading-tight">
-                AB-Folio Experience Portal V2
-              </h3>
-              <p className="text-white/65 text-xs md:text-sm font-normal font-sans leading-relaxed">
-                Step into the brand new spatial 3D web experience portal showcasing cutting-edge UI physics, interactive showcases, and dynamic sound design.
-              </p>
-              <div className="flex flex-wrap items-center gap-2 pt-1">
-                {["Spatial UI", "Web Audio", "Interactive Physics", "Next-Gen 3D"].map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-2.5 py-0.5 rounded-md text-[10px] font-mono font-medium bg-white/[0.04] text-white/50 border border-white/[0.08]"
-                  >
-                    #{tag}
+            <div className="flex items-center gap-3.5 min-w-0">
+              <span className="flex h-2.5 w-2.5 relative shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+              </span>
+              <div className="text-left truncate">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs sm:text-sm font-bold text-white tracking-tight truncate">
+                    AB-Folio Experience Portal V2
                   </span>
-                ))}
+                  <span className="hidden sm:inline-block px-2 py-0.5 rounded-full text-[9px] font-mono uppercase tracking-wider bg-white/[0.08] border border-white/10 text-white/70">
+                    3D Spatial Lab
+                  </span>
+                </div>
+                <p className="text-[11px] text-white/50 truncate hidden sm:block">
+                  Next-generation interactive 3D spatial showcase & audio canvas
+                </p>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto shrink-0 relative z-10 pt-2 md:pt-0">
-              <a
-                id="portal-launch-live-btn"
-                href="https://ab-folio-portal-v2.vercel.app/"
-                target="_blank"
-                rel="noreferrer noopener"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-xs flex items-center justify-center gap-2.5 shadow-[0_4px_20px_rgba(255,255,255,0.18)] hover:scale-105 active:scale-95 transition-all shrink-0 cursor-pointer group/link"
-              >
-                <Sparkles size={15} className="text-black" />
-                <span>Launch Live Portal</span>
-                <ExternalLink size={14} className="group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
-              </a>
-
-              <button
-                id="portal-explore-portfolio-btn"
-                onClick={() => setActiveTab("Projects")}
-                className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-white/80 hover:text-white font-semibold text-xs tracking-tight flex items-center justify-center gap-2 transition-all duration-200 border border-white/10 hover:border-white/20 cursor-pointer"
-              >
-                <Layers size={14} className="text-white/50" />
-                <span>Portfolio Apps</span>
-              </button>
+            <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white text-black font-semibold text-xs tracking-tight shadow-sm shrink-0 group-hover:scale-105 transition-transform">
+              <Sparkles size={13} className="text-black" />
+              <span>Launch Portal</span>
+              <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </div>
-          </SpecularCard>
+          </a>
         </motion.div>
       </section>
 
@@ -251,11 +235,11 @@ export const Home = ({
             transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
             className="w-full md:w-1/2 relative"
           >
-            <div className="relative rounded-3xl aspect-[4/5] sm:aspect-square overflow-hidden border border-white/10 shadow-[0_24px_50px_-15px_rgba(0,0,0,0.9),inset_0_1px_0_0_rgba(255,255,255,0.15)] group bg-[#0d0d14]">
+            <div className="relative rounded-3xl aspect-[4/5] sm:aspect-[4/5] md:aspect-[5/6] overflow-hidden border border-white/10 shadow-[0_24px_50px_-15px_rgba(0,0,0,0.9),inset_0_1px_0_0_rgba(255,255,255,0.15)] group bg-[#0d0d14]">
               <img
                 src={myArea51Image}
                 alt="Area 51 - Abdulrahman Toor"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                className="w-full h-full object-cover object-[center_8%] group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
               <div className="absolute bottom-4 left-4 right-4 p-3 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 flex items-center justify-between">
@@ -546,11 +530,17 @@ export const Home = ({
           </div>
 
           <div className="w-full md:w-1/2 relative z-10">
-            <h2 className="text-4xl md:text-6xl font-black mb-8 text-transparent text-outline-subtle lowercase italic tracking-tighter">
-              START YOUR
-              <br />
-              PROJECT NOW
-            </h2>
+            <div className="mb-8">
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-white/50 block mb-2">
+                06 // Collaborate & Build
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] text-white tracking-tight leading-tight">
+                Start Your Project Now
+              </h2>
+              <p className="text-white/60 text-sm md:text-base font-normal mt-3">
+                Ready to build something unforgettable? Drop your vision below and let's engineer something iconic together.
+              </p>
+            </div>
 
             <form className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -598,14 +588,27 @@ export const Home = ({
         </div>
       </section>
 
-      {/* Footer Title */}
-      <div className="text-center pt-20 pb-8 overflow-hidden relative border-t border-white/10 mt-12">
-        <h2 className="text-[5vw] whitespace-nowrap font-black uppercase tracking-tight opacity-90 px-4 flex items-center justify-center gap-4">
-          BRINGS YOUR SITE TO LIFE WITH
-          <span className="text-transparent text-outline-subtle italic">
-            CREATIVITY
-          </span>
-        </h2>
+      {/* Infinite Looping Marquee Before Footer */}
+      <div className="py-12 md:py-16 overflow-hidden relative border-t border-white/10 mt-12 select-none bg-black/40">
+        <div className="relative flex overflow-x-hidden">
+          <motion.div
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ ease: "linear", duration: 25, repeat: Infinity }}
+            className="flex items-center whitespace-nowrap shrink-0"
+          >
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="flex items-center gap-6 md:gap-10 pr-6 md:pr-10">
+                <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-[900] tracking-tight uppercase text-white">
+                  BRINGS YOUR SITE TO LIFE WITH
+                </span>
+                <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-[900] tracking-tight uppercase text-transparent text-outline-subtle italic">
+                  CREATIVITY
+                </span>
+                <span className="text-white/20 text-2xl sm:text-4xl font-mono">✦</span>
+              </div>
+            ))}
+          </motion.div>
+        </div>
       </div>
     </div>
   );

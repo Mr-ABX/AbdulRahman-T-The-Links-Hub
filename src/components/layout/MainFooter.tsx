@@ -73,14 +73,27 @@ export const MainFooter = ({
       id="main-studio-footer"
       className="relative w-full border-t border-white/[0.08] bg-[#050508] overflow-hidden pt-16 md:pt-24 pb-12 mt-24 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.12)]"
     >
-      {/* Dynamic Atmospheric Footer Image Layer (Screen Movie / Apple Style) */}
-      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden -z-10 opacity-25 mix-blend-luminosity">
+      {/* Dynamic Atmospheric Footer Image Layer (Screen Movie / Apple Style with Pixel Grid & Subtle Brand Accents) */}
+      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden -z-10 opacity-30">
+        {/* Base Black & White High Contrast Image */}
         <img
           src="/footer-image.avif"
           alt=""
-          className="w-full h-full object-cover object-bottom filter grayscale contrast-125 brightness-90"
+          className="w-full h-full object-cover object-bottom filter grayscale contrast-150 brightness-75 scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050508] via-[#050508]/70 to-[#050508]" />
+        {/* Intricate Micro Pixel Grid Texture Overlay */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 opacity-40 mix-blend-overlay pointer-events-none"
+          style={{
+            backgroundImage: "radial-gradient(rgba(255, 255, 255, 0.35) 1px, transparent 1px)",
+            backgroundSize: "3px 3px",
+          }}
+        />
+        {/* Subtle Brand Color Accent Glow (Emerald/Cyan & Violet) */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/15 via-transparent to-violet-500/10 mix-blend-color-dodge pointer-events-none" />
+        {/* Seamless Vignette Fading into Obsidian #050508 */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050508] via-[#050508]/75 to-[#050508]" />
       </div>
 
       {/* Background Giant Subtle Watermark Branding ("ABDULRAHMAN-T") */}
