@@ -89,8 +89,8 @@ export const MainFooter = ({
         )}
       >
         {/* Top Section: Left Branding & Right 4 Columns */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 mb-16 md:mb-20">
-          {/* Left Column (Brand & Bio & CTAs) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
+          {/* Left Column (Brand & Bio & CTAs & Copyright) */}
           <div className="lg:col-span-5 space-y-6">
             {/* Identity & Badges */}
             <div className="space-y-4">
@@ -125,7 +125,7 @@ export const MainFooter = ({
             </div>
 
             {/* Action Buttons Row */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-3 pt-1">
               <button
                 id="footer-start-project-btn"
                 onClick={() => handleNavClick("Connect")}
@@ -145,15 +145,21 @@ export const MainFooter = ({
               </button>
             </div>
 
-            {/* Live Operational Status Indicator */}
-            <div className="flex items-center gap-2 pt-2">
-              <span className="relative flex h-2 w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-              </span>
-              <span className="text-[11px] font-mono text-white/40 tracking-tight">
-                All Systems Operational // Available for Projects
-              </span>
+            {/* Live Operational Status & Copyright Info placed cleanly underneath */}
+            <div className="space-y-2 pt-2 text-xs font-mono text-white/40">
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2 w-2 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                <span className="text-[11px] text-white/40 tracking-tight">
+                  All Systems Operational // Available for Projects
+                </span>
+              </div>
+              <div className="text-[11px] text-white/30 space-y-0.5 pt-1">
+                <p>© {currentYear} Abdulrahman-T. All rights reserved.</p>
+                <p className="text-white/40">Crafted with precision &amp; intention.</p>
+              </div>
             </div>
           </div>
 
@@ -255,48 +261,29 @@ export const MainFooter = ({
             </div>
           </div>
         </div>
-
-        {/* Sub-footer Copyright Bar (Shifted into menu section before watermark and dunes) */}
-        <div className="pt-8 mt-10 sm:mt-14 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/40 font-mono">
-          <p>© {currentYear} Abdulrahman-T. All rights reserved.</p>
-          <p className="text-white/50">Crafted with precision &amp; intention.</p>
-        </div>
       </div>
 
-      {/* Immersive Watermark & Desert Dunes Integrated Layer (Watermark BEHIND dunes) */}
-      <div className="relative w-full overflow-hidden pointer-events-none select-none mt-10 sm:mt-14">
-        {/* Responsive Watermark Typography - Layered BEHIND dunes (z-0) */}
-        <div className="relative w-full flex justify-center text-center select-none pointer-events-none px-4 z-0 -mb-16 sm:-mb-24 md:-mb-32 lg:-mb-40">
-          <span className="text-[clamp(2.5rem,11.5vw,165px)] font-[900] tracking-[-0.04em] text-white/[0.08] uppercase leading-none whitespace-nowrap block max-w-full">
+      {/* Cinematic Dune & Watermark Hero Display (Matching Reference) */}
+      <div className="relative w-full overflow-hidden select-none mt-10 md:mt-16 pointer-events-none">
+        {/* Responsive Watermark Typography - Sits in the Sky Layer Behind the Dunes (z-0) */}
+        <div className="relative w-full flex items-center justify-center pt-6 sm:pt-10 md:pt-14 pb-0 z-0">
+          <span className="text-[clamp(2.8rem,13vw,190px)] font-[900] tracking-[-0.035em] text-white/[0.16] uppercase leading-none whitespace-nowrap block text-center -mb-16 sm:-mb-24 md:-mb-36 lg:-mb-44 xl:-mb-52 select-none">
             ABDULRAHMAN-T
           </span>
         </div>
 
-        {/* Atmospheric Desert Dunes Landscape Layer - Layered IN FRONT of watermark (z-10) */}
-        <div className="relative z-10 w-full h-[180px] sm:h-[260px] md:h-[340px] lg:h-[420px] overflow-hidden">
+        {/* Atmospheric Glowing Neon Desert Dunes Layer - Layered IN FRONT of watermark (z-10) */}
+        <div className="relative z-10 w-full h-[180px] sm:h-[260px] md:h-[360px] lg:h-[440px] xl:h-[500px] overflow-hidden">
           <img
             src="/footer-image.avif"
-            alt="Landscape Atmospheric Ground"
-            className="w-full h-full object-cover object-bottom filter grayscale contrast-125 brightness-95 opacity-85"
-            style={{
-              filter: "url(#pixelate-b-w) grayscale(100%) contrast(125%) brightness(90%)",
-              imageRendering: "pixelated",
-            }}
+            alt="Neon Desert Dunes"
+            className="w-full h-full object-cover object-bottom"
           />
 
-          {/* Micro Pixel Grid Screen Texture */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 opacity-25 mix-blend-overlay pointer-events-none"
-            style={{
-              backgroundImage: "radial-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px)",
-              backgroundSize: "4px 4px",
-            }}
-          />
-
-          {/* Top and Bottom Gradient Blending so watermark peaks emerge smoothly */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050508] via-transparent to-transparent opacity-95" />
-          <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-[#050508]/60 to-transparent" />
+          {/* Seamless Top Blend into dark background sky */}
+          <div className="absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-[#050508] via-[#050508]/50 to-transparent pointer-events-none" />
+          {/* Subtle bottom fade */}
+          <div className="absolute bottom-0 inset-x-0 h-12 bg-gradient-to-t from-[#050508] to-transparent pointer-events-none" />
         </div>
       </div>
     </footer>
