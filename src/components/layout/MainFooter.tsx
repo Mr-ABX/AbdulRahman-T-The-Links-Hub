@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowUpRight, Layers } from "lucide-react";
 import { ASSET_LINKS } from "../../constants/assets";
 import { cn } from "../../lib/utils";
@@ -16,6 +17,13 @@ export const MainFooter = ({
   setActiveTab,
   isInImmersiveMode,
 }: MainFooterProps) => {
+  const footerRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: footerRef,
+    offset: ["start end", "end end"],
+  });
+  const textY = useTransform(scrollYProgress, [0, 1], [200, 0]);
+
   if (isInImmersiveMode) return null;
 
   const currentYear = new Date().getFullYear();
@@ -59,8 +67,9 @@ export const MainFooter = ({
 
   return (
     <footer
+      ref={footerRef}
       id="main-studio-footer"
-      className="relative w-full border-t border-white/[0.08] bg-[#050508] overflow-hidden pt-16 md:pt-24 pb-10 mt-28"
+      className="relative w-full border-t border-white/[0.08] bg-[#050508] overflow-hidden pt-16 md:pt-24 pb-0 mt-28"
     >
       {/* Dynamic SVG Filter for Crisp Pixelation */}
       <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
@@ -253,13 +262,16 @@ export const MainFooter = ({
       </div>
 
       {/* Cinematic Dune & Watermark Hero Display (Matching Reference) */}
-      <div className="relative w-full overflow-hidden select-none mt-8 sm:mt-14 md:mt-20 pointer-events-none">
+      <div className="relative w-full overflow-hidden select-none mt-8 sm:mt-14 md:mt-20 pointer-events-none flex flex-col justify-end">
         {/* Background Watermark Typography - Layered in Dark Sky Space */}
-        <div className="absolute inset-x-0 top-2 sm:top-6 md:top-10 lg:top-12 flex items-center justify-center z-0 pointer-events-none px-2">
-          <span className="text-[clamp(2.8rem,13vw,200px)] font-[900] tracking-[-0.035em] text-white/[0.24] uppercase leading-none whitespace-nowrap block text-center select-none">
+        <motion.div 
+          style={{ y: textY }}
+          className="absolute inset-x-0 bottom-16 sm:bottom-28 md:bottom-36 lg:bottom-40 flex items-center justify-center z-0 pointer-events-none px-2"
+        >
+          <span className="text-[clamp(2.5rem,12vw,200px)] font-[900] tracking-[-0.035em] text-white/[0.24] uppercase leading-none whitespace-nowrap block text-center select-none">
             ABDULRAHMAN-T
           </span>
-        </div>
+        </motion.div>
 
         {/* Glowing Neon Desert Dunes Layer - Screen Blended to make black sky 100% seamless */}
         <div className="relative z-10 w-full h-[180px] sm:h-[260px] md:h-[360px] lg:h-[440px] xl:h-[500px]">

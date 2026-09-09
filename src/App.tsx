@@ -535,8 +535,8 @@ export default function App() {
   return (
     <div
       className={cn(
-        "min-h-screen mesh-gradient flex flex-col items-center selection:bg-indigo-500/30 transition-all duration-300",
-        headerLayout === "vertical" && !isInImmersiveMode && activeTab !== "Links" && activeTab !== "Vortex"
+        "min-h-screen mesh-gradient flex flex-col items-center selection:bg-indigo-500/30 transition-all duration-500",
+        headerLayout === "vertical" && !isInImmersiveMode && activeTab !== "Links" && activeTab !== "Vortex" && activeTab !== "Home"
           ? isSidebarCollapsed ? "md:pl-20" : "md:pl-64"
           : "",
         isInImmersiveMode || activeTab === "Home" || activeTab === "Vortex"
