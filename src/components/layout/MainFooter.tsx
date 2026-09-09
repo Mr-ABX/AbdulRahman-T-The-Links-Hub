@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import React from "react";
+import { motion } from "motion/react";
 import { ArrowUpRight, Layers } from "lucide-react";
 import { ASSET_LINKS } from "../../constants/assets";
 import { cn } from "../../lib/utils";
@@ -17,14 +17,6 @@ export const MainFooter = ({
   setActiveTab,
   isInImmersiveMode,
 }: MainFooterProps) => {
-  const footerRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: footerRef,
-    offset: ["start end", "end end"],
-  });
-  const textY = useTransform(scrollYProgress, [0, 1], [150, -80]);
-  const textOpacity = useTransform(scrollYProgress, [0.05, 0.85], [0.0, 0.85]);
-
   if (isInImmersiveMode) return null;
 
   const currentYear = new Date().getFullYear();
@@ -68,7 +60,6 @@ export const MainFooter = ({
 
   return (
     <footer
-      ref={footerRef}
       id="main-studio-footer"
       className="relative w-full border-t border-white/[0.08] bg-[#050508] overflow-hidden pt-16 md:pt-24 pb-0 mt-28"
     >
@@ -262,29 +253,23 @@ export const MainFooter = ({
         </div>
       </div>
 
-      {/* Cinematic Dune & Watermark Hero Display (Matching Reference) */}
-      <div className="relative w-full select-none mt-8 sm:mt-14 md:mt-20 pointer-events-none flex flex-col justify-end">
-        {/* Background Watermark Typography - Layered in Dark Sky Space */}
-        <motion.div 
-          style={{ y: textY, opacity: textOpacity }}
-          className="absolute inset-x-0 -top-10 sm:-top-16 md:-top-24 lg:-top-32 flex items-center justify-center z-0 pointer-events-none px-2"
-        >
-          <span className="text-[clamp(2.5rem,12vw,200px)] font-[900] tracking-[-0.035em] text-white uppercase leading-none whitespace-nowrap block text-center select-none drop-shadow-[0_0_35px_rgba(255,255,255,0.25)]">
+      {/* Cinematic Dune & Watermark Hero Display (Matching User Edit Screenshot) */}
+      <div className="relative w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[480px] xl:h-[560px] select-none mt-12 sm:mt-20 md:mt-28 pointer-events-none">
+        {/* Background Watermark Typography - Shifted higher into the dark space above dunes */}
+        <div className="absolute inset-x-0 -top-6 sm:-top-12 md:-top-18 lg:-top-24 flex items-center justify-center z-10 pointer-events-none px-4">
+          <span 
+            className="text-[clamp(2.2rem,9.5vw,170px)] font-extrabold tracking-tight text-white/35 uppercase leading-none whitespace-nowrap block text-center select-none drop-shadow-[0_0_25px_rgba(255,255,255,0.15)]"
+          >
             ABDULRAHMAN-T
           </span>
-        </motion.div>
-
-        {/* Glowing Neon Desert Dunes Layer - Screen Blended to make black sky 100% seamless */}
-        <div 
-          className="relative z-10 w-full h-[180px] sm:h-[260px] md:h-[360px] lg:h-[440px] xl:h-[500px]"
-          style={{ maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 100%)', WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 100%)' }}
-        >
-          <img
-            src="/footer-image.avif"
-            alt="Neon Desert Dunes"
-            className="w-full h-full object-cover object-bottom mix-blend-screen"
-          />
         </div>
+
+        {/* Glowing Neon Desert Dunes Layer - Screen Blended so black sky is 100% transparent */}
+        <img
+          src="/footer-image.avif"
+          alt="Neon Desert Dunes"
+          className="relative z-20 w-full h-full object-cover object-bottom mix-blend-screen"
+        />
       </div>
     </footer>
   );
