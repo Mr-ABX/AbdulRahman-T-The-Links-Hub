@@ -13,22 +13,24 @@ export const CustomCursor = () => {
     let currentX = 0;
     let currentY = 0;
 
-    const render = () => {
-      // Use linear interpolation (lerp) for ultra-smooth following
-      // This eliminates any 'jitter' while still being incredibly responsive
-      currentX += (targetX - currentX) * 0.5;
-      currentY += (targetY - currentY) * 0.5;
-
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${currentX - 16}px, ${currentY - 16}px, 0)`;
-      }
-      animationFrameId = requestAnimationFrame(render);
-    };
-
     const updateMousePosition = (e: MouseEvent) => {
       if (!isVisible) setIsVisible(true);
       targetX = e.clientX;
       targetY = e.clientY;
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate3d(${targetX - 16}px, ${targetY - 16}px, 0)`;
+      }
+    };
+
+    const render = () => {
+      // Instant direct tracking for native 1:1 response with zero lag
+      currentX = targetX;
+      currentY = targetY;
+
+      if (cursorRef.current && (currentX !== 0 || currentY !== 0)) {
+        cursorRef.current.style.transform = `translate3d(${currentX - 16}px, ${currentY - 16}px, 0)`;
+      }
+      animationFrameId = requestAnimationFrame(render);
     };
     
     const handleMouseOver = (e: MouseEvent) => {
