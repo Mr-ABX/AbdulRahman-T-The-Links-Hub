@@ -145,21 +145,10 @@ export const MainFooter = ({
               </button>
             </div>
 
-            {/* Live Operational Status & Copyright Info placed cleanly underneath */}
-            <div className="space-y-2 pt-2 text-xs font-mono text-white/40">
-              <div className="flex items-center gap-2">
-                <span className="relative flex h-2 w-2 shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                </span>
-                <span className="text-[11px] text-white/40 tracking-tight">
-                  All Systems Operational // Available for Projects
-                </span>
-              </div>
-              <div className="text-[11px] text-white/30 space-y-0.5 pt-1">
-                <p>© {currentYear} Abdulrahman-T. All rights reserved.</p>
-                <p className="text-white/40">Crafted with precision &amp; intention.</p>
-              </div>
+            {/* Copyright Info placed cleanly underneath buttons without operational status */}
+            <div className="pt-2 text-xs font-mono text-white/35 space-y-0.5">
+              <p>© {currentYear} Abdulrahman-T. All rights reserved.</p>
+              <p className="text-white/45">Crafted with precision &amp; intention.</p>
             </div>
           </div>
 
@@ -264,26 +253,21 @@ export const MainFooter = ({
       </div>
 
       {/* Cinematic Dune & Watermark Hero Display (Matching Reference) */}
-      <div className="relative w-full overflow-hidden select-none mt-10 md:mt-16 pointer-events-none">
-        {/* Responsive Watermark Typography - Sits high in the Sky Layer Behind the Dunes (z-0) */}
-        <div className="relative w-full flex items-center justify-center pt-8 sm:pt-12 md:pt-16 pb-0 z-0">
-          <span className="text-[clamp(3rem,13.5vw,200px)] font-[900] tracking-[-0.03em] text-white/[0.22] uppercase leading-none whitespace-nowrap block text-center -mb-8 sm:-mb-14 md:-mb-20 lg:-mb-26 xl:-mb-32 select-none">
+      <div className="relative w-full overflow-hidden select-none mt-8 sm:mt-14 md:mt-20 pointer-events-none">
+        {/* Background Watermark Typography - Layered in Dark Sky Space */}
+        <div className="absolute inset-x-0 top-2 sm:top-6 md:top-10 lg:top-12 flex items-center justify-center z-0 pointer-events-none px-2">
+          <span className="text-[clamp(2.8rem,13vw,200px)] font-[900] tracking-[-0.035em] text-white/[0.24] uppercase leading-none whitespace-nowrap block text-center select-none">
             ABDULRAHMAN-T
           </span>
         </div>
 
-        {/* Atmospheric Glowing Neon Desert Dunes Layer - Layered IN FRONT of watermark (z-10) */}
-        <div className="relative z-10 w-full h-[180px] sm:h-[260px] md:h-[360px] lg:h-[440px] xl:h-[500px] overflow-hidden">
+        {/* Glowing Neon Desert Dunes Layer - Screen Blended to make black sky 100% seamless */}
+        <div className="relative z-10 w-full h-[180px] sm:h-[260px] md:h-[360px] lg:h-[440px] xl:h-[500px]">
           <img
             src="/footer-image.avif"
             alt="Neon Desert Dunes"
-            className="w-full h-full object-cover object-bottom"
+            className="w-full h-full object-cover object-bottom mix-blend-screen"
           />
-
-          {/* Seamless Top Blend into dark background sky */}
-          <div className="absolute top-0 inset-x-0 h-20 bg-gradient-to-b from-[#050508] via-[#050508]/40 to-transparent pointer-events-none" />
-          {/* Subtle bottom fade */}
-          <div className="absolute bottom-0 inset-x-0 h-12 bg-gradient-to-t from-[#050508] to-transparent pointer-events-none" />
         </div>
       </div>
     </footer>
