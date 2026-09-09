@@ -66,27 +66,27 @@ export const MainHeader = ({
             initial={false}
             animate={{
               opacity: isScrolled ? 0 : 1,
-              scaleY: isScrolled ? 0.3 : 1,
-              scaleX: isScrolled ? 0.3 : 1,
+              scaleY: isScrolled ? 0.2 : 1,
+              scaleX: isScrolled ? 0.2 : 1,
             }}
-            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-            className="hidden md:block absolute -left-[20px] top-0 w-[20px] h-[20px] pointer-events-none origin-top-right overflow-hidden"
+            transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
+            className="hidden md:block absolute -left-[24px] top-0 w-[24px] h-[24px] pointer-events-none origin-top-right overflow-hidden"
           >
             <svg
-              viewBox="0 0 20 20"
+              viewBox="0 0 24 24"
               className="w-full h-full"
               style={{ filter: "drop-shadow(0 1px 0 rgba(255,255,255,0.05))" }}
             >
               {/* Glass body fill */}
               <path
-                d="M 0 0 C 11.046 0, 20 8.954, 20 20 L 20 0 Z"
-                fill="rgba(13, 13, 20, 0.75)"
+                d="M 0 0 C 13.255 0, 24 10.745, 24 24 L 24 0 Z"
+                fill="rgba(13, 13, 20, 0.85)"
               />
               {/* Outer specular border curve */}
               <path
-                d="M 0 0 C 11.046 0, 20 8.954, 20 20"
+                d="M 0 0 C 13.255 0, 24 10.745, 24 24"
                 fill="none"
-                stroke="rgba(255, 255, 255, 0.1)"
+                stroke="rgba(255, 255, 255, 0.12)"
                 strokeWidth="1"
               />
             </svg>
@@ -98,27 +98,27 @@ export const MainHeader = ({
             initial={false}
             animate={{
               opacity: isScrolled ? 0 : 1,
-              scaleY: isScrolled ? 0.3 : 1,
-              scaleX: isScrolled ? 0.3 : 1,
+              scaleY: isScrolled ? 0.2 : 1,
+              scaleX: isScrolled ? 0.2 : 1,
             }}
-            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-            className="hidden md:block absolute -right-[20px] top-0 w-[20px] h-[20px] pointer-events-none origin-top-left overflow-hidden"
+            transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
+            className="hidden md:block absolute -right-[24px] top-0 w-[24px] h-[24px] pointer-events-none origin-top-left overflow-hidden"
           >
             <svg
-              viewBox="0 0 20 20"
+              viewBox="0 0 24 24"
               className="w-full h-full"
               style={{ filter: "drop-shadow(0 1px 0 rgba(255,255,255,0.05))" }}
             >
               {/* Glass body fill */}
               <path
-                d="M 20 0 C 8.954 0, 0 8.954, 0 20 L 0 0 Z"
-                fill="rgba(13, 13, 20, 0.75)"
+                d="M 24 0 C 10.745 0, 0 10.745, 0 24 L 0 0 Z"
+                fill="rgba(13, 13, 20, 0.85)"
               />
               {/* Outer specular border curve */}
               <path
-                d="M 20 0 C 8.954 0, 0 8.954, 0 20"
+                d="M 24 0 C 10.745 0, 0 10.745, 0 24"
                 fill="none"
-                stroke="rgba(255, 255, 255, 0.1)"
+                stroke="rgba(255, 255, 255, 0.12)"
                 strokeWidth="1"
               />
             </svg>

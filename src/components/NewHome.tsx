@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
 import { MedusaImage } from "./MedusaImage";
-import { Portal3DOrbit } from "./shared/Portal3DOrbit";
 import { SpecularCard } from "./shared/SpecularCard";
 import {
   ArrowRight,
@@ -135,9 +134,26 @@ export const Home = ({
             <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full filter blur-[140px] pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full filter blur-[140px] pointer-events-none" />
 
-            {/* Left / Center 3D Interactive Spatial Viewport */}
-            <div className="w-full lg:w-3/5 relative flex items-center justify-center rounded-2xl bg-black/40 border border-white/[0.08] overflow-hidden shadow-inner">
-              <Portal3DOrbit className="w-full" showControls={true} />
+            {/* Left Preview Viewport */}
+            <div className="w-full lg:w-3/5 relative rounded-2xl bg-black/50 border border-white/[0.08] overflow-hidden group/preview aspect-[16/10] sm:aspect-[16/9] flex items-center justify-center shadow-2xl">
+              <img
+                src="https://image.thum.io/get/width/1000/crop/800/noanimate/https://ab-folio-portal-v2.vercel.app/"
+                alt="AB-Folio Experience Portal V2 Preview"
+                className="w-full h-full object-cover group-hover/preview:scale-105 transition-transform duration-700 filter brightness-95 group-hover/preview:brightness-105"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+              
+              {/* Overlay Glass Badge */}
+              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-white/80 text-xs font-mono">
+                  <Sparkles size={12} className="text-cyan-400" />
+                  <span>ab-folio-portal-v2.vercel.app</span>
+                </div>
+                <div className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center opacity-0 group-hover/preview:opacity-100 -translate-y-1 group-hover/preview:translate-y-0 transition-all shadow-xl">
+                  <ArrowUpRight size={16} />
+                </div>
+              </div>
             </div>
 
             {/* Right Information & Action Panel */}
@@ -145,10 +161,10 @@ export const Home = ({
               <div className="flex flex-wrap items-center gap-2.5">
                 <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 font-mono shadow-[0_0_12px_rgba(6,182,212,0.15)]">
                   <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-                  3D SPATIAL ORBIT
+                  NEW PORTAL V2
                 </span>
                 <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-medium bg-white/[0.06] border border-white/10 text-white/60 uppercase">
-                  V2 Experience
+                  Interactive Experience
                 </span>
               </div>
 
@@ -160,12 +176,12 @@ export const Home = ({
                   </span>
                 </h2>
                 <p className="mt-3 text-white/70 text-sm md:text-base font-normal font-sans leading-relaxed">
-                  Explore an interactive 3D spatial ecosystem powered by live mathematical physics, rotating gyroscope orbital rings, and dynamic particle lattice projection.
+                  Step into the brand new spatial web experience portal showcasing cutting-edge UI physics, interactive showcases, and dynamic sound design.
                 </p>
               </div>
 
               <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                {["Spatial UI", "Fibonacci Lattice", "3D Gyroscope", "Real-time Math", "Next-Gen Web"].map((tag) => (
+                {["Spatial UI", "Sound Design", "Interactive Showcase", "Next-Gen Web"].map((tag) => (
                   <span
                     key={tag}
                     className="px-2.5 py-1 rounded-lg text-[10px] font-mono font-medium bg-white/[0.04] text-white/50 border border-white/[0.06]"
