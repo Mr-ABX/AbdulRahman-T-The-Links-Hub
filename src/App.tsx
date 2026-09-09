@@ -172,8 +172,9 @@ export default function App() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [hideCustomCursor, setHideCustomCursor] = useState(() => {
-    const val = localStorage.getItem("abdulrahman_hideCursor");
-    return val !== null ? val === "true" : true; // true by default (hidden)
+    const val = localStorage.getItem("abdulrahman_hideCursor_v3");
+    if (val !== null) return val === "true";
+    return false; // custom cursor ENABLED by default for new and existing users
   });
   const [enableSmoothScroll, setEnableSmoothScroll] = useState(
     () => localStorage.getItem("abdulrahman_smoothScroll") === "true",
@@ -183,8 +184,9 @@ export default function App() {
   );
   const [headerLayout, setHeaderLayout] = useState<"horizontal" | "vertical">(
     () => {
-      const val = localStorage.getItem("abdulrahman_header_layout");
-      return val === "vertical" ? "vertical" : "horizontal";
+      const val = localStorage.getItem("abdulrahman_header_layout_v3");
+      if (val !== null) return val === "vertical" ? "vertical" : "horizontal";
+      return "horizontal"; // Top Notch Bar version as default
     }
   );
   const [activeHomeSection, setActiveHomeSection] = useState<
@@ -197,13 +199,13 @@ export default function App() {
   );
 
   useEffect(() => {
-    localStorage.setItem("abdulrahman_hideCursor", hideCustomCursor.toString());
+    localStorage.setItem("abdulrahman_hideCursor_v3", hideCustomCursor.toString());
     localStorage.setItem(
       "abdulrahman_smoothScroll",
       enableSmoothScroll.toString(),
     );
     localStorage.setItem("abdulrahman_compactHome", compactHomeView.toString());
-    localStorage.setItem("abdulrahman_header_layout", headerLayout);
+    localStorage.setItem("abdulrahman_header_layout_v3", headerLayout);
     localStorage.setItem("abdulrahman_sidebar_collapsed", isSidebarCollapsed.toString());
   }, [hideCustomCursor, enableSmoothScroll, compactHomeView, headerLayout, isSidebarCollapsed]);
 

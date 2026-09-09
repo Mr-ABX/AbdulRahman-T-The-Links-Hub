@@ -253,12 +253,12 @@ export const MainFooter = ({
         </div>
       </div>
 
-      {/* Cinematic Dune & Watermark Hero Display (Matching User Edit Screenshot) */}
+      {/* Cinematic Dune & Watermark Hero Display (Matching User Request) */}
       <div className="relative w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[480px] xl:h-[560px] select-none mt-8 sm:mt-14 md:mt-20 pointer-events-none">
-        {/* Background Watermark Typography - Aligned to start right from the dune ridge line */}
-        <div className="absolute inset-x-0 top-[6%] sm:top-[10%] md:top-[12%] lg:top-[14%] flex items-center justify-center z-10 pointer-events-none px-4">
+        {/* Background Watermark Typography - Shifted 100px UP on Y axis */}
+        <div className="absolute inset-x-0 top-[6%] sm:top-[10%] md:top-[12%] lg:top-[14%] -translate-y-[100px] flex items-center justify-center z-10 pointer-events-none px-4">
           <span 
-            className="text-[clamp(2.2rem,9.5vw,170px)] font-extrabold tracking-tight text-white/30 uppercase leading-none whitespace-nowrap block text-center select-none"
+            className="text-[clamp(2.2rem,9.5vw,170px)] font-extrabold tracking-tight text-white/35 uppercase leading-none whitespace-nowrap block text-center select-none drop-shadow-[0_0_25px_rgba(255,255,255,0.12)]"
           >
             ABDULRAHMAN-T
           </span>
