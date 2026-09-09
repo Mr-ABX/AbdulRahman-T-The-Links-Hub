@@ -4,7 +4,7 @@ import { ArrowUpRight, Layers } from "lucide-react";
 import { ASSET_LINKS } from "../../constants/assets";
 import { cn } from "../../lib/utils";
 
-const logo1 = ASSET_LINKS.logo1Svg;
+const logo2 = ASSET_LINKS.logo2Svg;
 
 interface MainFooterProps {
   activeTab: string;
@@ -98,7 +98,7 @@ export const MainFooter = ({
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-[14px] bg-[#12121c]/90 border border-white/[0.14] flex items-center justify-center p-2 shrink-0 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.22),0_4px_16px_rgba(0,0,0,0.5)]">
                   <img
-                    src={logo1}
+                    src={logo2}
                     alt="Abdulrahman Logo"
                     className="w-full h-full object-contain"
                     loading="lazy"
@@ -256,7 +256,7 @@ export const MainFooter = ({
       {/* Cinematic Dune & Watermark Hero Display (Matching User Request) */}
       <div className="relative w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[480px] xl:h-[560px] select-none mt-8 sm:mt-14 md:mt-20 pointer-events-none">
         {/* Background Watermark Typography - Layered behind the sand dunes */}
-        <div className="absolute inset-x-0 top-[6%] sm:top-[10%] md:top-[12%] lg:top-[14%] -translate-y-[50px] flex items-center justify-center z-10 pointer-events-none px-4">
+        <div className="absolute inset-x-0 top-[6%] sm:top-[10%] md:top-[12%] lg:top-[14%] -translate-y-[100px] flex items-center justify-center z-10 pointer-events-none px-4">
           <span 
             className="text-[clamp(2.2rem,9.5vw,170px)] font-extrabold tracking-tight text-white/30 uppercase leading-none whitespace-nowrap block text-center select-none"
           >
