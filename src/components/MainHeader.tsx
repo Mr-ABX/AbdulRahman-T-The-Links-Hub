@@ -128,7 +128,7 @@ export const MainHeader = ({
             <motion.button
               id="header-logo-btn"
               onClick={() => handleTabClick("Home")}
-              className="relative w-9 h-9 md:w-9.5 md:h-9.5 rounded-full bg-white/[0.06] border border-white/12 flex items-center justify-center hover:bg-white/[0.12] hover:border-white/20 transition-all shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)] group"
+              className="relative w-9 h-9 md:w-9.5 md:h-9.5 rounded-[13px] bg-[#12121c]/90 border border-white/[0.14] flex items-center justify-center hover:bg-white/[0.14] hover:border-white/25 transition-all shadow-[inset_0_1px_0_0_rgba(255,255,255,0.22),0_4px_14px_rgba(0,0,0,0.4)] group"
               animate={
                 isScrolled
                   ? {
@@ -146,7 +146,7 @@ export const MainHeader = ({
               <img
                 src={logo1}
                 alt="Abdulrahman Toor Logo"
-                className="w-5.5 h-5.5 object-contain group-hover:scale-105 transition-transform"
+                className="w-5 h-5 object-contain group-hover:scale-105 transition-transform"
               />
             </motion.button>
             <span

@@ -95,13 +95,13 @@ export const SettingsPanel = ({
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 28, stiffness: 260 }}
-            className="fixed right-0 top-0 bottom-0 z-[160] w-full max-w-md bg-[#09090d]/95 backdrop-blur-2xl border-l border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.85)] p-6 flex flex-col justify-between"
+            className="fixed right-0 top-0 bottom-0 z-[160] w-full max-w-md liquid-glass !border-l !border-white/[0.12] !border-y-0 !border-r-0 shadow-[0_0_80px_rgba(0,0,0,0.9)] p-6 flex flex-col justify-between"
           >
             {/* Header Area */}
             <div className="space-y-6 flex-1 overflow-y-auto no-scrollbar pr-1">
               <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80">
+                  <div className="w-8 h-8 rounded-[11px] bg-white/[0.06] border border-white/12 flex items-center justify-center text-white/80 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]">
                     <Sliders size={15} strokeWidth={1.35} />
                   </div>
                   <div>
@@ -116,7 +116,7 @@ export const SettingsPanel = ({
                 <button
                   id="close-settings-drawer-btn"
                   onClick={onClose}
-                  className="w-7 h-7 rounded-full bg-white/[0.06] hover:bg-white/[0.12] flex items-center justify-center text-white/70 hover:text-white transition-colors border border-white/10 cursor-pointer"
+                  className="w-8 h-8 rounded-full bg-white/[0.05] hover:bg-white/[0.12] flex items-center justify-center text-white/70 hover:text-white transition-all border border-white/10 hover:border-white/20 cursor-pointer shadow-sm"
                   title="Close Preferences"
                 >
                   <X size={14} strokeWidth={1.35} />
@@ -126,7 +126,7 @@ export const SettingsPanel = ({
               {/* Layout Toggles */}
               <div className="space-y-3">
                 {/* 1. Header Layout Selector (Horizontal vs Vertical) */}
-                <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.08] space-y-3">
+                <div className="p-4 rounded-2xl liquid-glass-subtle border border-white/[0.09] space-y-3 shadow-sm">
                   <div className="flex items-start gap-3">
                     <LayoutGrid className="text-white/70 shrink-0 mt-0.5" size={16} strokeWidth={1.35} />
                     <div className="space-y-0.5">
@@ -144,10 +144,10 @@ export const SettingsPanel = ({
                       id="nav-style-horizontal-btn"
                       onClick={() => setHeaderLayout("horizontal")}
                       className={cn(
-                        "p-2.5 rounded-lg border text-xs font-medium flex flex-col items-center gap-0.5 transition-all duration-150 cursor-pointer",
+                        "p-2.5 rounded-xl border text-xs font-medium flex flex-col items-center gap-0.5 transition-all duration-200 cursor-pointer",
                         headerLayout === "horizontal"
-                          ? "bg-white/10 border-white/20 text-white font-semibold shadow-sm"
-                          : "bg-white/[0.02] border-transparent text-white/40 hover:text-white/80 hover:bg-white/[0.04]"
+                          ? "bg-white/10 border-white/20 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]"
+                          : "bg-white/[0.02] border-transparent text-white/40 hover:text-white/80 hover:bg-white/[0.05]"
                       )}
                     >
                       <span className="text-[11px]">Top Notch Bar</span>
@@ -157,10 +157,10 @@ export const SettingsPanel = ({
                       id="nav-style-vertical-btn"
                       onClick={() => setHeaderLayout("vertical")}
                       className={cn(
-                        "p-2.5 rounded-lg border text-xs font-medium flex flex-col items-center gap-0.5 transition-all duration-150 cursor-pointer",
+                        "p-2.5 rounded-xl border text-xs font-medium flex flex-col items-center gap-0.5 transition-all duration-200 cursor-pointer",
                         headerLayout === "vertical"
-                          ? "bg-white/10 border-white/20 text-white font-semibold shadow-sm"
-                          : "bg-white/[0.02] border-transparent text-white/40 hover:text-white/80 hover:bg-white/[0.04]"
+                          ? "bg-white/10 border-white/20 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]"
+                          : "bg-white/[0.02] border-transparent text-white/40 hover:text-white/80 hover:bg-white/[0.05]"
                       )}
                     >
                       <span className="text-[11px]">Sidebar Notch</span>
@@ -170,7 +170,7 @@ export const SettingsPanel = ({
                 </div>
 
                 {/* 2. Hide Custom Cursor Toggle */}
-                <div className="flex items-center justify-between p-4 bg-white/[0.03] rounded-xl border border-white/[0.08]">
+                <div className="flex items-center justify-between p-4 liquid-glass-subtle rounded-2xl border border-white/[0.09] shadow-sm">
                   <div className="flex gap-3">
                     <MousePointer className="text-white/70 shrink-0 mt-0.5" size={16} strokeWidth={1.35} />
                     <div className="space-y-0.5">
@@ -191,7 +191,7 @@ export const SettingsPanel = ({
                 </div>
 
                 {/* 3. Smooth Scrolling Toggle */}
-                <div className="flex items-center justify-between p-4 bg-white/[0.03] rounded-xl border border-white/[0.08]">
+                <div className="flex items-center justify-between p-4 liquid-glass-subtle rounded-2xl border border-white/[0.09] shadow-sm">
                   <div className="flex gap-3">
                     <Compass className="text-white/70 shrink-0 mt-0.5" size={16} strokeWidth={1.35} />
                     <div className="space-y-0.5">
@@ -212,7 +212,7 @@ export const SettingsPanel = ({
                 </div>
 
                 {/* 4. Compact Home View */}
-                <div className="flex items-center justify-between p-4 bg-white/[0.03] rounded-xl border border-white/[0.08]">
+                <div className="flex items-center justify-between p-4 liquid-glass-subtle rounded-2xl border border-white/[0.09] shadow-sm">
                   <div className="flex gap-3">
                     <MonitorSmartphone className="text-white/70 shrink-0 mt-0.5" size={16} strokeWidth={1.35} />
                     <div className="space-y-0.5">
@@ -235,7 +235,7 @@ export const SettingsPanel = ({
 
               {/* Centered System Status Badge before the bottom divider */}
               <div className="pt-3 pb-1 flex justify-center text-center">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.06] text-[10px] font-mono text-white/40 tracking-wider">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[10px] font-mono text-white/40 tracking-wider">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   <span>SYSTEM CORE: v4.2.5 // ALL SYSTEMS NOMINAL</span>
                 </div>
@@ -247,7 +247,7 @@ export const SettingsPanel = ({
               <button
                 id="save-preferences-btn"
                 onClick={onClose}
-                className="w-full py-3 rounded-full bg-white hover:bg-neutral-200 text-black text-xs font-medium tracking-tight transition-all duration-200 cursor-pointer shadow-sm"
+                className="w-full py-3 rounded-full bg-white hover:bg-neutral-200 text-black text-xs font-semibold tracking-tight transition-all duration-200 cursor-pointer shadow-[0_4px_16px_rgba(255,255,255,0.15)] hover:scale-[1.01] active:scale-[0.99]"
               >
                 Done
               </button>
