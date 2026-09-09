@@ -70,12 +70,11 @@ export const ProjectsPage = ({
 
   const currentCategoryProjects = useMemo(() => {
     if (!activeProjectCategory) {
-      // Default to non-apps categories
+      // Default to portfolio showcase categories
       return projects.filter(
         (p) =>
-          p.mainCategory === "Web Development Projects" ||
-          p.mainCategory === "Video & Motion Graphics" ||
-          p.mainCategory === "Graphics & Marketing"
+          projectCategories.includes(p.mainCategory) ||
+          (p as any).categories?.some((c: string) => projectCategories.includes(c))
       );
     }
     return projects.filter(
@@ -90,23 +89,30 @@ export const ProjectsPage = ({
   }, [currentCategoryProjects]);
 
   const getProjectImageUrl = (url: string, previewUrl?: string) => {
-    if (url && url !== "#") {
-      return `https://image.thum.io/get/width/800/crop/800/noanimate/${url}`;
-    }
-    if (previewUrl) {
-      if (previewUrl.includes("youtube.com") || previewUrl.includes("youtu.be")) {
+    // Check YouTube first
+    const checkYt = (str?: string) => {
+      if (!str) return null;
+      if (str.includes("youtube.com") || str.includes("youtu.be")) {
         let videoId = "";
-        if (previewUrl.includes("v=")) {
-          videoId = previewUrl.split("v=")[1].split("&")[0];
-        } else if (previewUrl.includes("embed/")) {
-          videoId = previewUrl.split("embed/")[1].split("?")[0];
-        } else if (previewUrl.includes("youtu.be/")) {
-          videoId = previewUrl.split("youtu.be/")[1].split("?")[0];
+        if (str.includes("v=")) {
+          videoId = str.split("v=")[1].split("&")[0];
+        } else if (str.includes("embed/")) {
+          videoId = str.split("embed/")[1].split("?")[0];
+        } else if (str.includes("youtu.be/")) {
+          videoId = str.split("youtu.be/")[1].split("?")[0];
         }
         if (videoId) {
           return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
         }
       }
+      return null;
+    };
+
+    const ytThumbnail = checkYt(previewUrl) || checkYt(url);
+    if (ytThumbnail) return ytThumbnail;
+
+    if (url && url !== "#") {
+      return `https://image.thum.io/get/width/800/crop/800/noanimate/${url}`;
     }
     return null;
   };
@@ -375,6 +381,15 @@ export const ProjectsPage = ({
                                 )}
                                 {/* Cover overlay gradient to transition nicely */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/20 to-transparent" />
+
+                                {/* Play button indicator for video project ads */}
+                                {(p.previewUrl?.includes("youtube.com") || p.previewUrl?.includes("youtu.be")) && (
+                                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                                    <div className="w-11 h-11 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-2xl group-hover/project:scale-110 group-hover/project:bg-purple-600 transition-all duration-300">
+                                      <Play size={18} className="fill-white translate-x-0.5" />
+                                    </div>
+                                  </div>
+                                )}
 
                                 {/* Absolute Overlays inside Thumbnail area */}
                                 <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
@@ -876,6 +891,15 @@ export const ProjectsPage = ({
                         )}
                         {/* Cover overlay gradient to transition nicely */}
                         <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/20 to-transparent" />
+
+                        {/* Play button indicator for video project ads */}
+                        {(p.previewUrl?.includes("youtube.com") || p.previewUrl?.includes("youtu.be")) && (
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                            <div className="w-11 h-11 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-2xl group-hover/project:scale-110 group-hover/project:bg-purple-600 transition-all duration-300">
+                              <Play size={18} className="fill-white translate-x-0.5" />
+                            </div>
+                          </div>
+                        )}
 
                         {/* Absolute Overlays inside Thumbnail area */}
                         <div className="absolute top-4 left-4 right-4 flex justify-between items-start">

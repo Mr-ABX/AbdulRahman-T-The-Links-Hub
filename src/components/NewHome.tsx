@@ -62,12 +62,21 @@ export const Home = ({
           transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
           className="mb-8"
         >
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.12)]">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#0d0d14]/85 hover:bg-white/[0.08] border border-white/[0.12] hover:border-purple-500/40 backdrop-blur-2xl shadow-[0_8px_24px_-4px_rgba(147,51,234,0.22),inset_0_1px_0_0_rgba(255,255,255,0.15)] transition-all duration-300 group cursor-default">
+            {/* Pulsing purple triangle indicator in brand colors */}
+            <span className="relative flex items-center justify-center w-2.5 h-2.5">
+              <span className="animate-ping absolute inline-flex w-2.5 h-2.5 opacity-75">
+                <svg viewBox="0 0 12 12" className="w-full h-full fill-purple-400">
+                  <polygon points="6,1 11,10 1,10" />
+                </svg>
+              </span>
+              <span className="relative inline-flex w-2.5 h-2.5 drop-shadow-[0_0_8px_rgba(168,85,247,0.95)]">
+                <svg viewBox="0 0 12 12" className="w-full h-full fill-purple-400">
+                  <polygon points="6,1 11,10 1,10" />
+                </svg>
+              </span>
             </span>
-            <span className="font-mono text-[11px] font-medium tracking-[0.18em] uppercase text-white/70">
+            <span className="font-mono text-[11px] font-medium tracking-[0.2em] uppercase text-white/80 group-hover:text-white transition-colors">
               Studio // Abdulrahman-T
             </span>
           </div>
@@ -133,9 +142,61 @@ export const Home = ({
           transition={{ duration: 0.8, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
           className="max-w-xl mx-auto"
         >
-          <p className="font-mono text-xs md:text-sm tracking-[0.25em] uppercase text-white/50 mb-3">
-            Think. Make. Solve.
-          </p>
+          {/* Think. Make. Solve. with delicate purple shade & scribble marker underlines */}
+          <div className="inline-flex items-center gap-2 md:gap-3 px-4 py-1.5 rounded-full bg-purple-950/25 border border-purple-500/20 backdrop-blur-md shadow-[0_0_24px_-4px_rgba(168,85,247,0.22),inset_0_1px_0_0_rgba(255,255,255,0.08)] mb-4 group">
+            <span className="font-mono text-xs md:text-sm tracking-[0.22em] uppercase font-semibold text-white/90 flex items-center">
+              <span className="text-purple-200 relative inline-block">
+                Think
+                <svg
+                  className="absolute -bottom-1 left-0 w-full h-1.5 text-purple-400/80 overflow-visible"
+                  viewBox="0 0 40 6"
+                  fill="none"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    d="M1 4.5C12 2 28 1.5 39 3.5"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
+              <span className="text-purple-400/60 mx-2.5 text-xs">✦</span>
+              <span className="text-purple-100 relative inline-block">
+                Make
+                <svg
+                  className="absolute -bottom-1 left-0 w-full h-1.5 text-purple-300/85 overflow-visible"
+                  viewBox="0 0 40 6"
+                  fill="none"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    d="M1 3.5C11 5 27 2 39 4"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
+              <span className="text-purple-400/60 mx-2.5 text-xs">✦</span>
+              <span className="text-purple-200 relative inline-block">
+                Solve
+                <svg
+                  className="absolute -bottom-1 left-0 w-full h-1.5 text-purple-400/80 overflow-visible"
+                  viewBox="0 0 40 6"
+                  fill="none"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    d="M1 4C14 1.8 26 5 39 2.5"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
+            </span>
+          </div>
           <p className="text-white/70 text-sm md:text-base font-normal leading-relaxed mb-8 max-w-lg mx-auto">
             Empowering human connection through deliberate design, spatial interfaces, and autonomous systems.
           </p>
@@ -424,8 +485,23 @@ export const Home = ({
                 glowColor="rgba(255, 255, 255, 0.08)"
               >
                 <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden mb-5 relative bg-black/40 border border-white/[0.06]">
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity z-10 mix-blend-overlay" />
-                  {p.url && p.url !== "#" ? (
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity z-10 mix-blend-overlay pointer-events-none" />
+                  
+                  {p.previewUrl?.includes("youtube.com") || p.url?.includes("youtube.com") ? (
+                    <div className="w-full h-full relative overflow-hidden bg-black">
+                      <iframe
+                        src="https://www.youtube.com/embed/0Wh7MhqeHHA?autoplay=1&mute=1&loop=1&playlist=0Wh7MhqeHHA&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                        className="w-full h-full object-cover scale-105 pointer-events-none"
+                        allow="autoplay; encrypted-media"
+                        title={p.name}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
+                      <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-purple-500/30 text-[10px] font-mono font-semibold text-purple-300 flex items-center gap-1.5 z-10 shadow-lg">
+                        <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping" />
+                        <span>Commercial Ads Reel</span>
+                      </div>
+                    </div>
+                  ) : p.url && p.url !== "#" ? (
                     <img
                       src={`https://image.thum.io/get/width/800/crop/800/noanimate/${p.url}`}
                       alt={p.name}
