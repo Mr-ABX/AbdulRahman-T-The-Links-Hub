@@ -22,8 +22,8 @@ export const MainFooter = ({
     target: footerRef,
     offset: ["start end", "end end"],
   });
-  const textY = useTransform(scrollYProgress, [0, 1], [80, -50]);
-  const textOpacity = useTransform(scrollYProgress, [0.05, 0.85], [0.15, 0.65]);
+  const textY = useTransform(scrollYProgress, [0, 1], [150, -80]);
+  const textOpacity = useTransform(scrollYProgress, [0.05, 0.85], [0.0, 0.85]);
 
   if (isInImmersiveMode) return null;
 
@@ -263,11 +263,11 @@ export const MainFooter = ({
       </div>
 
       {/* Cinematic Dune & Watermark Hero Display (Matching Reference) */}
-      <div className="relative w-full overflow-hidden select-none mt-8 sm:mt-14 md:mt-20 pointer-events-none flex flex-col justify-end">
+      <div className="relative w-full select-none mt-8 sm:mt-14 md:mt-20 pointer-events-none flex flex-col justify-end">
         {/* Background Watermark Typography - Layered in Dark Sky Space */}
         <motion.div 
           style={{ y: textY, opacity: textOpacity }}
-          className="absolute inset-x-0 -top-6 sm:-top-12 md:-top-16 lg:-top-20 flex items-center justify-center z-0 pointer-events-none px-2"
+          className="absolute inset-x-0 -top-10 sm:-top-16 md:-top-24 lg:-top-32 flex items-center justify-center z-0 pointer-events-none px-2"
         >
           <span className="text-[clamp(2.5rem,12vw,200px)] font-[900] tracking-[-0.035em] text-white uppercase leading-none whitespace-nowrap block text-center select-none drop-shadow-[0_0_35px_rgba(255,255,255,0.25)]">
             ABDULRAHMAN-T
@@ -275,7 +275,10 @@ export const MainFooter = ({
         </motion.div>
 
         {/* Glowing Neon Desert Dunes Layer - Screen Blended to make black sky 100% seamless */}
-        <div className="relative z-10 w-full h-[180px] sm:h-[260px] md:h-[360px] lg:h-[440px] xl:h-[500px]">
+        <div 
+          className="relative z-10 w-full h-[180px] sm:h-[260px] md:h-[360px] lg:h-[440px] xl:h-[500px]"
+          style={{ maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 100%)', WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 100%)' }}
+        >
           <img
             src="/footer-image.avif"
             alt="Neon Desert Dunes"
