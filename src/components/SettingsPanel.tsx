@@ -232,14 +232,18 @@ export const SettingsPanel = ({
                   />
                 </div>
               </div>
+
+              {/* Centered System Status Badge before the bottom divider */}
+              <div className="pt-3 pb-1 flex justify-center text-center">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.06] text-[10px] font-mono text-white/40 tracking-wider">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>SYSTEM CORE: v4.2.5 // ALL SYSTEMS NOMINAL</span>
+                </div>
+              </div>
             </div>
 
             {/* Close footer button */}
-            <div className="pt-4 border-t border-white/[0.08] space-y-3">
-              <div className="flex items-center justify-between text-[10px] font-mono text-white/35">
-                <span>SYSTEM CORE: v4.2.5</span>
-                <span>STATUS: OPERATIONAL</span>
-              </div>
+            <div className="pt-4 border-t border-white/[0.08]">
               <button
                 id="save-preferences-btn"
                 onClick={onClose}

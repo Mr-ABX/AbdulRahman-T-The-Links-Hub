@@ -265,9 +265,9 @@ export const MainFooter = ({
 
       {/* Cinematic Dune & Watermark Hero Display (Matching Reference) */}
       <div className="relative w-full overflow-hidden select-none mt-10 md:mt-16 pointer-events-none">
-        {/* Responsive Watermark Typography - Sits in the Sky Layer Behind the Dunes (z-0) */}
-        <div className="relative w-full flex items-center justify-center pt-6 sm:pt-10 md:pt-14 pb-0 z-0">
-          <span className="text-[clamp(2.8rem,13vw,190px)] font-[900] tracking-[-0.035em] text-white/[0.16] uppercase leading-none whitespace-nowrap block text-center -mb-16 sm:-mb-24 md:-mb-36 lg:-mb-44 xl:-mb-52 select-none">
+        {/* Responsive Watermark Typography - Sits high in the Sky Layer Behind the Dunes (z-0) */}
+        <div className="relative w-full flex items-center justify-center pt-8 sm:pt-12 md:pt-16 pb-0 z-0">
+          <span className="text-[clamp(3rem,13.5vw,200px)] font-[900] tracking-[-0.03em] text-white/[0.22] uppercase leading-none whitespace-nowrap block text-center -mb-8 sm:-mb-14 md:-mb-20 lg:-mb-26 xl:-mb-32 select-none">
             ABDULRAHMAN-T
           </span>
         </div>
@@ -281,7 +281,7 @@ export const MainFooter = ({
           />
 
           {/* Seamless Top Blend into dark background sky */}
-          <div className="absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-[#050508] via-[#050508]/50 to-transparent pointer-events-none" />
+          <div className="absolute top-0 inset-x-0 h-20 bg-gradient-to-b from-[#050508] via-[#050508]/40 to-transparent pointer-events-none" />
           {/* Subtle bottom fade */}
           <div className="absolute bottom-0 inset-x-0 h-12 bg-gradient-to-t from-[#050508] to-transparent pointer-events-none" />
         </div>
