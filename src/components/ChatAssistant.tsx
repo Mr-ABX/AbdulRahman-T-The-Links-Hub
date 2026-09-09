@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { MessageCircle, X, Send, Bot, User, Sparkles, Loader2 } from 'lucide-react';
+import { X, Send, Sparkles, Loader2, Bot } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
 import { ASSET_LINKS } from '../constants/assets';
+import { cn } from '../lib/utils';
 
 const logo1 = ASSET_LINKS.logo1Svg;
 
@@ -20,7 +21,7 @@ interface ChatAssistantProps {
 
 export const ChatAssistant = ({ isOpen, setIsOpen, initialMessage, setInitialMessage }: ChatAssistantProps) => {
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: "Hi! I'm A.T. Intelligence, Abdulrahman's personal AI. How can I help you today? I can tell you about his projects, skills, or help you book a meeting." }
+    { role: 'model', text: "Hi! I'm A.T. Intelligence, Abdulrahman's personal assistant. How can I help you explore his projects, workflows, or services?" }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -54,7 +55,6 @@ export const ChatAssistant = ({ isOpen, setIsOpen, initialMessage, setInitialMes
       });
       const model = "gemini-3-flash-preview";
 
-      // Simple history conversion
       const history = messages.map(m => ({
         role: m.role,
         parts: [{ text: m.text }]
@@ -79,7 +79,7 @@ export const ChatAssistant = ({ isOpen, setIsOpen, initialMessage, setInitialMes
           - Personality: Innovative, efficient, results-driven, and friendly.
           
           If someone wants to book a meeting, tell them to email him or use the contact form on the 'Connect' tab.
-          Keep responses concise and engaging. Use emojis occasionally.`,
+          Keep responses concise and engaging.`,
         }
       });
 
@@ -94,51 +94,76 @@ export const ChatAssistant = ({ isOpen, setIsOpen, initialMessage, setInitialMes
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[100]">
+    <>
+      {/* Docked Minimal Right Edge Widget */}
+      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-[100]">
+        <button
+          id="docked-at-ai-widget-btn"
+          onClick={() => setIsOpen(!isOpen)}
+          className={cn(
+            "group flex items-center gap-2 pl-3 pr-2.5 py-2.5 rounded-l-xl bg-[#0a0a0e]/90 hover:bg-white/[0.08] backdrop-blur-2xl border-l border-y border-white/10 hover:border-white/20 text-white shadow-[-6px_8px_24px_rgba(0,0,0,0.6)] transition-all duration-200 cursor-pointer select-none",
+            isOpen ? "bg-white/10 border-white/20" : ""
+          )}
+          title="A.T. Intelligence Assistant"
+        >
+          <div className="w-5 h-5 rounded-md bg-white/[0.08] border border-white/10 flex items-center justify-center p-0.5 shrink-0">
+            <img src={logo1} alt="AI" className="w-full h-full object-contain" />
+          </div>
+          <span className="text-[11px] font-mono font-medium tracking-wider text-white/70 group-hover:text-white uppercase">
+            AT AI
+          </span>
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+        </button>
+      </div>
+
+      {/* Floating Chat Modal */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95, transformOrigin: 'bottom right' }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="absolute bottom-20 right-0 w-[350px] sm:w-[400px] h-[500px] glass rounded-[2.5rem] shadow-2xl border border-white/10 flex flex-col overflow-hidden backdrop-blur-2xl"
+            initial={{ opacity: 0, x: 20, scale: 0.96 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: 20, scale: 0.96 }}
+            transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
+            className="fixed bottom-6 right-6 sm:right-8 w-[calc(100vw-3rem)] sm:w-[380px] h-[520px] max-h-[85vh] bg-[#09090d]/95 rounded-2xl shadow-[-10px_20px_50px_rgba(0,0,0,0.85)] border border-white/10 flex flex-col overflow-hidden backdrop-blur-2xl z-[110]"
           >
             {/* Header */}
-            <div className="p-6 border-b border-white/5 bg-white/5 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 p-2">
+            <div className="p-4 border-b border-white/[0.08] bg-white/[0.02] flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center p-1.5">
                   <img src={logo1} alt="A.T. AI" className="w-full h-full object-contain" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm">A.T. Intelligence</h3>
+                  <h3 className="font-semibold text-xs text-white tracking-tight">A.T. Intelligence</h3>
                   <div className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span className="text-[10px] text-white/40 font-medium uppercase tracking-wider">Online</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    <span className="text-[9px] text-white/40 font-mono uppercase tracking-wider">Assistant</span>
                   </div>
                 </div>
               </div>
               <button 
+                id="close-chat-assistant-btn"
                 onClick={() => setIsOpen(false)}
-                className="p-2 rounded-xl hover:bg-white/5 text-white/40 hover:text-white transition-colors"
+                className="w-7 h-7 rounded-full bg-white/[0.04] hover:bg-white/[0.1] flex items-center justify-center text-white/60 hover:text-white transition-colors border border-white/10 cursor-pointer"
+                title="Close Assistant"
               >
-                <X size={20} />
+                <X size={14} strokeWidth={1.35} />
               </button>
             </div>
 
             {/* Messages */}
             <div 
               ref={scrollRef}
-              className="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar"
+              className="flex-1 overflow-y-auto p-4 space-y-3.5 no-scrollbar"
             >
               {messages.map((m, i) => (
                 <div 
                   key={i}
                   className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`max-w-[80%] p-4 rounded-2xl text-sm ${
+                  <div className={`max-w-[85%] p-3 rounded-xl text-xs leading-relaxed ${
                     m.role === 'user' 
-                      ? 'bg-indigo-500 text-white rounded-tr-none' 
-                      : 'bg-white/5 text-white/80 rounded-tl-none border border-white/5'
+                      ? 'bg-white text-black font-medium' 
+                      : 'bg-white/[0.05] text-white/80 border border-white/[0.08]'
                   }`}>
                     {m.text}
                   </div>
@@ -146,57 +171,39 @@ export const ChatAssistant = ({ isOpen, setIsOpen, initialMessage, setInitialMes
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-white/5 p-4 rounded-2xl rounded-tl-none border border-white/5 flex items-center gap-2">
-                    <Loader2 size={16} className="animate-spin text-indigo-400" />
-                    <span className="text-xs text-white/40">Thinking...</span>
+                  <div className="bg-white/[0.05] p-3 rounded-xl border border-white/[0.08] flex items-center gap-2">
+                    <Loader2 size={13} className="animate-spin text-white/60" />
+                    <span className="text-xs text-white/40 font-mono">Thinking...</span>
                   </div>
                 </div>
               )}
             </div>
 
             {/* Input */}
-            <div className="p-4 bg-white/5 border-t border-white/5">
-              <div className="relative">
+            <div className="p-3 bg-white/[0.02] border-t border-white/[0.08]">
+              <div className="relative flex items-center">
                 <input 
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder="Ask me anything..."
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-4 pr-12 text-sm focus:outline-none focus:border-indigo-500/50 transition-colors"
+                  placeholder="Ask about projects, workflows, or contact..."
+                  className="w-full bg-white/[0.04] border border-white/10 rounded-xl py-2.5 pl-3 pr-10 text-xs text-white placeholder:text-white/35 focus:outline-none focus:border-white/30 transition-colors"
                 />
                 <button 
-                  onClick={handleSend}
+                  id="send-chat-message-btn"
+                  onClick={() => handleSend()}
                   disabled={!input.trim() || isLoading}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-xl bg-indigo-500 text-white hover:bg-indigo-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="absolute right-1.5 p-1.5 rounded-lg bg-white text-black hover:bg-neutral-200 transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
                 >
-                  <Send size={16} />
+                  <Send size={12} strokeWidth={1.5} />
                 </button>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Toggle Button */}
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-16 h-16 rounded-full bg-[#0a0a0a] border border-white/10 backdrop-blur-xl flex items-center justify-center text-white shadow-[0_0_30px_rgba(99,102,241,0.3)] hover:bg-white/5 transition-all relative group"
-      >
-        <div className="absolute inset-0 rounded-full bg-indigo-500 animate-ping opacity-20 group-hover:opacity-0 transition-opacity" />
-        {isOpen ? (
-          <X size={28} />
-        ) : (
-          <img src={logo1} alt="A.T. Intelligence" className="w-8 h-8 object-contain" />
-        )}
-        {!isOpen && (
-          <div className="absolute -top-1 -right-1 w-5 h-5 bg-indigo-500 rounded-full border-2 border-[#050505] flex items-center justify-center">
-            <Sparkles size={10} className="text-white" />
-          </div>
-        )}
-      </motion.button>
-    </div>
+    </>
   );
 };
+

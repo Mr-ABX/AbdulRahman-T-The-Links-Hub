@@ -274,10 +274,10 @@ export const MainHeader = ({
             <button
               id="header-settings-btn"
               onClick={() => setIsSettingsOpen(true)}
-              className="w-8 h-8 rounded-full bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 hover:border-purple-500/30 text-white/60 hover:text-purple-300 transition-all duration-200 flex items-center justify-center shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)] hover:shadow-[0_0_12px_rgba(168,85,247,0.3)]"
+              className="w-8 h-8 rounded-full bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 hover:border-white/20 text-white/60 hover:text-white transition-all duration-200 flex items-center justify-center cursor-pointer shadow-sm"
               title="Preferences"
             >
-              <Settings size={15} />
+              <Settings size={14} strokeWidth={1.35} />
             </button>
 
             {/* Mobile Menu Icon */}
