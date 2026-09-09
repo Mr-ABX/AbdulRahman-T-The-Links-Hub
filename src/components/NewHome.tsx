@@ -62,21 +62,10 @@ export const Home = ({
           transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
           className="mb-8"
         >
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#0d0d14]/85 hover:bg-white/[0.08] border border-white/[0.12] hover:border-purple-500/40 backdrop-blur-2xl shadow-[0_8px_24px_-4px_rgba(147,51,234,0.22),inset_0_1px_0_0_rgba(255,255,255,0.15)] transition-all duration-300 group cursor-default">
-            {/* Pulsing purple triangle indicator in brand colors */}
-            <span className="relative flex items-center justify-center w-2.5 h-2.5">
-              <span className="animate-ping absolute inline-flex w-2.5 h-2.5 opacity-75">
-                <svg viewBox="0 0 12 12" className="w-full h-full fill-purple-400">
-                  <polygon points="6,1 11,10 1,10" />
-                </svg>
-              </span>
-              <span className="relative inline-flex w-2.5 h-2.5 drop-shadow-[0_0_8px_rgba(168,85,247,0.95)]">
-                <svg viewBox="0 0 12 12" className="w-full h-full fill-purple-400">
-                  <polygon points="6,1 11,10 1,10" />
-                </svg>
-              </span>
-            </span>
-            <span className="font-mono text-[11px] font-medium tracking-[0.2em] uppercase text-white/80 group-hover:text-white transition-colors">
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.1] backdrop-blur-xl transition-all duration-200 group cursor-default">
+            {/* Clean minimal indicator */}
+            <span className="w-2 h-2 rounded-full bg-white/70 group-hover:bg-white transition-colors" />
+            <span className="font-mono text-[11px] font-medium tracking-[0.18em] uppercase text-white/70 group-hover:text-white transition-colors">
               Studio // Abdulrahman-T
             </span>
           </div>
