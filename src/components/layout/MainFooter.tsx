@@ -73,13 +73,13 @@ export const MainFooter = ({
       id="main-studio-footer"
       className="relative w-full border-t border-white/[0.08] bg-[#050508] overflow-hidden pt-16 md:pt-24 pb-12 mt-24 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.12)]"
     >
-      {/* Background Giant Subtle Watermark Branding ("ABDULRAHMAN" at 3% opacity) */}
+      {/* Background Giant Subtle Watermark Branding ("ABDULRAHMAN-T" at 3% opacity) */}
       <div
         aria-hidden="true"
         className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none select-none overflow-hidden w-full flex justify-center text-center z-0 opacity-100"
       >
-        <span className="text-[clamp(4.5rem,14vw,175px)] font-[900] tracking-[-0.04em] text-white/[0.03] uppercase leading-none whitespace-nowrap translate-y-[20%]">
-          ABDULRAHMAN
+        <span className="text-[clamp(4rem,13vw,160px)] font-[900] tracking-[-0.04em] text-white/[0.03] uppercase leading-none whitespace-nowrap translate-y-[20%]">
+          ABDULRAHMAN-T
         </span>
       </div>
 

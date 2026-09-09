@@ -115,106 +115,75 @@ export const Home = ({
         </motion.div>
       </section>
 
-      {/* Featured Showcase: AB-Folio Portal V2 */}
-      <section className="py-12 max-w-[1300px] mx-auto px-4 md:px-8 relative z-20">
+      {/* Featured Showcase: AB-Folio Experience Portal V2 (Clean Pre-3D-Orb Version) */}
+      <section className="py-10 max-w-[1300px] mx-auto px-4 md:px-8 relative z-20">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-          className="relative overflow-hidden rounded-[2.5rem] p-[1.5px] group shadow-[0_30px_70px_-20px_rgba(0,0,0,0.9)]"
+          transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+          className="relative overflow-hidden rounded-[2rem] p-[1.5px] group shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8)]"
         >
           {/* Animated Gradient Glow Rim */}
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-indigo-500/25 to-purple-500/20 rounded-[2.5rem]" />
-          <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_240deg,#06b6d4_280deg,#6366f1_320deg,#ec4899_360deg)] animate-border-spin blur-xl opacity-40 group-hover:opacity-75 transition-opacity duration-700 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/30 via-indigo-500/30 to-purple-500/30 rounded-[2rem]" />
+          <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_240deg,#06b6d4_280deg,#6366f1_320deg,#a855f7_360deg)] animate-border-spin blur-md opacity-70 group-hover:opacity-100 transition-opacity pointer-events-none" />
 
-          {/* Inner Content Card (macOS Pro Glass Aesthetic) */}
-          <div className="relative h-full w-full bg-[#0a0a12]/90 backdrop-blur-3xl rounded-[calc(2.5rem-1.5px)] p-6 md:p-10 flex flex-col lg:flex-row items-center justify-between gap-8 overflow-hidden border border-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18)]">
-            {/* Background Ambient Lights */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full filter blur-[140px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full filter blur-[140px] pointer-events-none" />
-
-            {/* Left Preview Viewport */}
-            <div className="w-full lg:w-3/5 relative rounded-2xl bg-black/50 border border-white/[0.08] overflow-hidden group/preview aspect-[16/10] sm:aspect-[16/9] flex items-center justify-center shadow-2xl">
-              <img
-                src="https://image.thum.io/get/width/1000/crop/800/noanimate/https://ab-folio-portal-v2.vercel.app/"
-                alt="AB-Folio Experience Portal V2 Preview"
-                className="w-full h-full object-cover group-hover/preview:scale-105 transition-transform duration-700 filter brightness-95 group-hover/preview:brightness-105"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
-              
-              {/* Overlay Glass Badge */}
-              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-white/80 text-xs font-mono">
-                  <Sparkles size={12} className="text-cyan-400" />
-                  <span>ab-folio-portal-v2.vercel.app</span>
-                </div>
-                <div className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center opacity-0 group-hover/preview:opacity-100 -translate-y-1 group-hover/preview:translate-y-0 transition-all shadow-xl">
-                  <ArrowUpRight size={16} />
-                </div>
-              </div>
-            </div>
-
-            {/* Right Information & Action Panel */}
-            <div className="relative z-10 space-y-5 w-full lg:w-2/5 text-left flex flex-col justify-center">
-              <div className="flex flex-wrap items-center gap-2.5">
-                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 font-mono shadow-[0_0_12px_rgba(6,182,212,0.15)]">
-                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+          {/* Interactive SpecularCard Container with Mouse-following Glow */}
+          <SpecularCard
+            className="relative h-full w-full bg-[#08080c]/95 backdrop-blur-2xl rounded-[calc(2rem-1.5px)] p-6 md:p-10 flex flex-col md:flex-row items-start md:items-center justify-between overflow-hidden gap-6 border border-white/10"
+            glowColor="rgba(6, 182, 212, 0.22)"
+          >
+            <div className="relative z-10 space-y-2.5 max-w-2xl">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-mono flex items-center gap-1.5 shadow-[0_0_12px_rgba(6,182,212,0.2)]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
                   NEW PORTAL V2
                 </span>
-                <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-medium bg-white/[0.06] border border-white/10 text-white/60 uppercase">
-                  Interactive Experience
+                <span className="text-[10px] font-mono text-white/50 tracking-wider uppercase">
+                  3D Interactive Experience
                 </span>
               </div>
-
-              <div>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight font-sans leading-tight">
-                  AB-Folio{" "}
-                  <span className="bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
-                    Portal V2
-                  </span>
-                </h2>
-                <p className="mt-3 text-white/70 text-sm md:text-base font-normal font-sans leading-relaxed">
-                  Step into the brand new spatial web experience portal showcasing cutting-edge UI physics, interactive showcases, and dynamic sound design.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                {["Spatial UI", "Sound Design", "Interactive Showcase", "Next-Gen Web"].map((tag) => (
+              <h3 className="text-2xl md:text-4xl font-extrabold text-white font-sans tracking-tight leading-tight">
+                AB-Folio Experience Portal V2
+              </h3>
+              <p className="text-white/65 text-xs md:text-sm font-normal font-sans leading-relaxed">
+                Step into the brand new spatial 3D web experience portal showcasing cutting-edge UI physics, interactive showcases, and dynamic sound design.
+              </p>
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                {["Spatial UI", "Web Audio", "Interactive Physics", "Next-Gen 3D"].map((tag) => (
                   <span
                     key={tag}
-                    className="px-2.5 py-1 rounded-lg text-[10px] font-mono font-medium bg-white/[0.04] text-white/50 border border-white/[0.06]"
+                    className="px-2.5 py-0.5 rounded-md text-[10px] font-mono font-medium bg-white/[0.04] text-white/50 border border-white/[0.08]"
                   >
                     #{tag}
                   </span>
                 ))}
               </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-2 w-full">
-                <a
-                  id="portal-launch-live-btn"
-                  href="https://ab-folio-portal-v2.vercel.app/"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="flex-1 py-3.5 px-6 rounded-full bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight flex items-center justify-center gap-2 transition-all duration-200 shadow-[0_4px_20px_rgba(255,255,255,0.2)] hover:scale-[1.02] active:scale-[0.98] group/btn cursor-pointer"
-                >
-                  <span>Launch Live Portal</span>
-                  <ArrowUpRight size={15} className="text-black/80 stroke-[2.5] group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
-                </a>
-
-                <button
-                  id="portal-explore-portfolio-btn"
-                  onClick={() => setActiveTab("Projects")}
-                  className="py-3.5 px-5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-white/80 hover:text-white font-semibold text-xs tracking-tight flex items-center justify-center gap-2 transition-all duration-200 border border-white/10 hover:border-white/20"
-                >
-                  <Layers size={14} className="text-white/50" />
-                  <span>Portfolio Apps</span>
-                </button>
-              </div>
             </div>
-          </div>
+
+            <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto shrink-0 relative z-10 pt-2 md:pt-0">
+              <a
+                id="portal-launch-live-btn"
+                href="https://ab-folio-portal-v2.vercel.app/"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-2.5 shadow-lg shadow-indigo-500/25 hover:scale-105 active:scale-95 transition-all shrink-0 cursor-pointer group/link"
+              >
+                <Sparkles size={15} className="text-white/90" />
+                <span>Launch Live Portal</span>
+                <ExternalLink size={14} className="group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+              </a>
+
+              <button
+                id="portal-explore-portfolio-btn"
+                onClick={() => setActiveTab("Projects")}
+                className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-white/80 hover:text-white font-semibold text-xs tracking-tight flex items-center justify-center gap-2 transition-all duration-200 border border-white/10 hover:border-white/20 cursor-pointer"
+              >
+                <Layers size={14} className="text-white/50" />
+                <span>Portfolio Apps</span>
+              </button>
+            </div>
+          </SpecularCard>
         </motion.div>
       </section>
 

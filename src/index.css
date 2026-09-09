@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro", "Helvetica Neue", "Inter", system-ui, sans-serif;
-  --font-mono: "SF Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro", "Helvetica Neue", system-ui, sans-serif;
+  --font-mono: "SF Mono", "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
   --radius-3xl: 24px;
   --color-obsidian: #050508;
   --color-obsidian-card: #0c0c14;
@@ -10,9 +10,24 @@
 
 @layer base {
   body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro", "Helvetica Neue", system-ui, sans-serif;
     @apply bg-[#050508] text-white antialiased selection:bg-purple-500/30;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    letter-spacing: -0.012em;
+    letter-spacing: -0.015em;
+  }
+
+  /* Global Apple HIG Typography: All H1, H2, H3 headings enforce tracking-tight (-0.02em) */
+  h1, h2, h3, .heading-hig {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", system-ui, sans-serif;
+    letter-spacing: -0.02em !important;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Global Apple HIG Typography: SF Mono on small tags, badges, chips, and meta labels */
+  .font-mono, [data-tag], .apple-mono, .tag-mono, code, kbd, samp {
+    font-family: "SF Mono", "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", monospace !important;
+    letter-spacing: 0.025em;
+    font-feature-settings: "tnum" 1, "zero" 1;
   }
 
   @media (pointer: fine) {
@@ -96,10 +111,8 @@
   .mesh-gradient {
     background-color: #050508;
     background-image: 
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(168, 85, 247, 0.12), transparent),
-      radial-gradient(ellipse 60% 40% at 85% 15%, rgba(192, 132, 252, 0.05), transparent),
-      radial-gradient(ellipse 50% 50% at 10% 60%, rgba(126, 34, 206, 0.06), transparent),
-      radial-gradient(ellipse 60% 30% at 50% 100%, rgba(168, 85, 247, 0.08), transparent);
+      radial-gradient(ellipse 90% 45% at 50% -10%, rgba(168, 85, 247, 0.09), transparent 75%),
+      radial-gradient(ellipse 60% 35% at 50% 100%, rgba(99, 102, 241, 0.05), transparent 75%);
   }
 
   @keyframes shimmer {

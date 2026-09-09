@@ -57,10 +57,10 @@ export const MainHeader = ({
             "liquid-glass",
             isScrolled
               ? "mt-3 md:mt-4 rounded-full max-w-[92%] sm:max-w-2xl md:max-w-4xl px-3 md:px-5 py-2 border border-white/[0.12] shadow-[0_24px_50px_-12px_rgba(0,0,0,0.85),inset_0_1px_0_0_rgba(255,255,255,0.18)]"
-              : "mt-0 rounded-b-[24px] md:rounded-b-[28px] rounded-t-none max-w-[96%] sm:max-w-3xl md:max-w-5xl px-4 md:px-6 py-2.5 md:py-3 border-b border-x border-white/[0.1] border-t-0 shadow-[0_16px_36px_-10px_rgba(0,0,0,0.7),inset_0_1px_0_0_rgba(255,255,255,0.12)]",
+              : "mt-0 rounded-b-[24px] md:rounded-b-[28px] rounded-t-none max-w-[96%] sm:max-w-3xl md:max-w-5xl px-4 md:px-6 py-2.5 md:py-3 border-b border-x border-white/[0.1] border-t-0 shadow-[0_16px_36px_-10px_rgba(0,0,0,0.7)]",
           )}
         >
-          {/* Left Concave Wing (Supaste Style Notch Fillet - Visible when Unscrolled) */}
+          {/* Left Concave Wing (Supaste Style Notch Fillet - Seamlessly Connected) */}
           <motion.div
             aria-hidden="true"
             initial={false}
@@ -70,19 +70,18 @@ export const MainHeader = ({
               scaleX: isScrolled ? 0.2 : 1,
             }}
             transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
-            className="hidden md:block absolute -left-[24px] top-0 w-[24px] h-[24px] pointer-events-none origin-top-right overflow-hidden"
+            className="hidden md:block absolute -left-[24px] top-0 w-[26px] h-[25px] pointer-events-none origin-top-right z-20 overflow-visible"
           >
             <svg
-              viewBox="0 0 24 24"
-              className="w-full h-full"
-              style={{ filter: "drop-shadow(0 1px 0 rgba(255,255,255,0.05))" }}
+              viewBox="0 0 26 25"
+              className="w-full h-full overflow-visible"
             >
-              {/* Glass body fill */}
+              {/* Glass body fill that bridges 2px into the nav to seamlessly cover the top 24px of nav border-left */}
               <path
-                d="M 0 0 C 13.255 0, 24 10.745, 24 24 L 24 0 Z"
-                fill="rgba(13, 13, 20, 0.85)"
+                d="M 0 0 C 13.255 0, 24 10.745, 24 24 L 26 24 L 26 0 Z"
+                fill="#0c0c14"
               />
-              {/* Outer specular border curve */}
+              {/* Outer specular border curve arriving exactly at the side wall at (24, 24) */}
               <path
                 d="M 0 0 C 13.255 0, 24 10.745, 24 24"
                 fill="none"
@@ -92,7 +91,7 @@ export const MainHeader = ({
             </svg>
           </motion.div>
 
-          {/* Right Concave Wing (Supaste Style Notch Fillet - Visible when Unscrolled) */}
+          {/* Right Concave Wing (Supaste Style Notch Fillet - Seamlessly Connected) */}
           <motion.div
             aria-hidden="true"
             initial={false}
@@ -102,21 +101,20 @@ export const MainHeader = ({
               scaleX: isScrolled ? 0.2 : 1,
             }}
             transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
-            className="hidden md:block absolute -right-[24px] top-0 w-[24px] h-[24px] pointer-events-none origin-top-left overflow-hidden"
+            className="hidden md:block absolute -right-[24px] top-0 w-[26px] h-[25px] pointer-events-none origin-top-left z-20 overflow-visible"
           >
             <svg
-              viewBox="0 0 24 24"
-              className="w-full h-full"
-              style={{ filter: "drop-shadow(0 1px 0 rgba(255,255,255,0.05))" }}
+              viewBox="0 0 26 25"
+              className="w-full h-full overflow-visible"
             >
-              {/* Glass body fill */}
+              {/* Glass body fill that bridges 2px into the nav to seamlessly cover the top 24px of nav border-right */}
               <path
-                d="M 24 0 C 10.745 0, 0 10.745, 0 24 L 0 0 Z"
-                fill="rgba(13, 13, 20, 0.85)"
+                d="M 26 0 C 12.745 0, 2 10.745, 2 24 L 0 24 L 0 0 Z"
+                fill="#0c0c14"
               />
-              {/* Outer specular border curve */}
+              {/* Outer specular border curve arriving exactly at the side wall at (2, 24) */}
               <path
-                d="M 24 0 C 10.745 0, 0 10.745, 0 24"
+                d="M 26 0 C 12.745 0, 2 10.745, 2 24"
                 fill="none"
                 stroke="rgba(255, 255, 255, 0.12)"
                 strokeWidth="1"
