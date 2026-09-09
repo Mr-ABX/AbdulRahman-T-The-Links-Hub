@@ -532,13 +532,15 @@ export default function App() {
     }
   };
 
+  const isVerticalNav = headerLayout === "vertical" && !isInImmersiveMode && activeTab !== "Links" && activeTab !== "Vortex";
+
   return (
     <div
       className={cn(
-        "min-h-screen mesh-gradient flex flex-col items-center selection:bg-indigo-500/30 transition-all duration-500",
-        headerLayout === "vertical" && !isInImmersiveMode && activeTab !== "Links" && activeTab !== "Vortex"
-          ? isSidebarCollapsed ? "pl-0 md:pl-20" : "pl-0 md:pl-64"
-          : "",
+        "min-h-screen mesh-gradient flex flex-col items-center selection:bg-indigo-500/30 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]",
+        isVerticalNav
+          ? isSidebarCollapsed ? "pl-0 md:pl-16" : "pl-0 md:pl-64"
+          : "pl-0",
         isInImmersiveMode || activeTab === "Home" || activeTab === "Vortex"
           ? "py-0 px-0 relative top-0"
           : "pt-20 pb-12 px-4 md:pt-24 md:pb-16",
