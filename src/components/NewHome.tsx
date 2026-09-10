@@ -317,23 +317,23 @@ export const Home = ({
       </section>
 
       {/* 2. Area 51 (About) */}
-      <section className="py-24 max-w-[1200px] mx-auto px-4 md:px-8 border-t border-white/5 relative">
-        <div className="flex flex-col md:flex-row items-stretch gap-14 md:gap-20">
+      <section className="py-20 md:py-28 max-w-[1200px] mx-auto px-4 md:px-8 border-t border-white/5 relative">
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-12 md:gap-16">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-            className="w-full md:w-1/2 relative flex"
+            className="w-full md:w-1/2 relative flex justify-center"
           >
-            <div className="relative rounded-3xl w-full aspect-[4/5] md:aspect-auto md:h-full overflow-hidden border border-white/10 shadow-[0_24px_50px_-15px_rgba(0,0,0,0.9),inset_0_1px_0_0_rgba(255,255,255,0.15)] group bg-[#0d0d14]">
+            <div className="relative rounded-3xl w-full max-w-[480px] aspect-[4/5] overflow-hidden border border-white/10 shadow-[0_24px_50px_-15px_rgba(0,0,0,0.9),inset_0_1px_0_0_rgba(255,255,255,0.15)] group bg-[#0d0d14]">
               <img
                 src={myArea51Image}
                 alt="Area 51 - Abdulrahman Toor"
-                className="w-full h-full object-cover object-[center_8%] group-hover:scale-105 transition-transform duration-700"
+                className="w-full h-full object-cover object-[center_15%] group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
-              <div className="absolute bottom-4 left-4 right-4 p-3 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 flex items-center justify-between">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90" />
+              <div className="absolute bottom-4 left-4 right-4 p-3.5 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 flex items-center justify-between">
                 <div>
                   <p className="text-white font-semibold text-xs tracking-tight">Abdulrahman Toor</p>
                   <p className="text-white/50 text-[10px] font-mono uppercase tracking-wider">Creator & Architect</p>

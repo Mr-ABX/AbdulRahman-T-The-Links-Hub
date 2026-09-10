@@ -72,6 +72,7 @@ import Lenis from "lenis";
 
 import { ChatAssistant } from "./components/ChatAssistant";
 import { CustomCursor } from "./components/CustomCursor";
+import { SplashScreen } from "./components/SplashScreen";
 import { Home as NewHome } from "./components/NewHome";
 import { MainHeader } from "./components/MainHeader";
 import { Vortex } from "./components/Vortex";
@@ -548,6 +549,7 @@ export default function App() {
           : "pt-20 pb-12 px-4 md:pt-24 md:pb-16",
       )}
     >
+      <SplashScreen />
       {!hideCustomCursor && <CustomCursor />}
       {/* Headers / Navigation */}
 
