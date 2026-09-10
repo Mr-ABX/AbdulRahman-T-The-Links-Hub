@@ -100,7 +100,7 @@ export const Home = ({
             whileHover={{ scale: 1.06, rotate: -3, y: -6, transition: { type: "spring", stiffness: 280, damping: 16 } }}
             whileTap={{ scale: 0.96 }}
             transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
-            className="hidden md:block absolute -left-10 lg:-left-20 xl:-left-32 top-1/2 -translate-y-[52%] w-44 md:w-52 lg:w-68 xl:w-76 pointer-events-auto cursor-pointer select-none z-0 group"
+            className="hidden md:block absolute -left-5 lg:-left-12 xl:-left-20 top-1/2 -translate-y-[52%] w-44 md:w-52 lg:w-68 xl:w-76 pointer-events-auto cursor-pointer select-none z-0 group"
             title="Interact with Left Monolith Rock"
           >
             {/* Base Natural Rock */}
@@ -146,7 +146,7 @@ export const Home = ({
             whileHover={{ scale: 1.06, rotate: 3, y: -6, transition: { type: "spring", stiffness: 280, damping: 16 } }}
             whileTap={{ scale: 0.96 }}
             transition={{ duration: 1.2, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
-            className="hidden md:block absolute -right-10 lg:-right-20 xl:-right-32 top-1/2 -translate-y-[48%] w-44 md:w-52 lg:w-68 xl:w-76 pointer-events-auto cursor-pointer select-none z-0 group"
+            className="hidden md:block absolute -right-5 lg:-right-12 xl:-right-20 top-1/2 -translate-y-[48%] w-44 md:w-52 lg:w-68 xl:w-76 pointer-events-auto cursor-pointer select-none z-0 group"
             title="Interact with Right Monolith Rock"
           >
             {/* Base Natural Rock */}
