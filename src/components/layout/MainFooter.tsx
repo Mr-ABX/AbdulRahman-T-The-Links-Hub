@@ -157,7 +157,7 @@ export const MainFooter = ({
           <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 pt-2">
             {/* Column 1: Platform */}
             <div className="space-y-3.5">
-              <h5 className="text-[11px] font-mono font-semibold text-white/40 uppercase tracking-[0.16em]">
+              <h5 className="text-[11px] font-mono font-semibold text-[#f2f2f2] uppercase tracking-[0.16em]">
                 PLATFORM
               </h5>
               <ul className="space-y-2.5">
@@ -182,7 +182,7 @@ export const MainFooter = ({
 
             {/* Column 2: Work */}
             <div className="space-y-3.5">
-              <h5 className="text-[11px] font-mono font-semibold text-white/40 uppercase tracking-[0.16em]">
+              <h5 className="text-[11px] font-mono font-semibold text-[#f2f2f2] uppercase tracking-[0.16em]">
                 WORK
               </h5>
               <ul className="space-y-2.5">
@@ -207,7 +207,7 @@ export const MainFooter = ({
 
             {/* Column 3: Insights */}
             <div className="space-y-3.5">
-              <h5 className="text-[11px] font-mono font-semibold text-white/40 uppercase tracking-[0.16em]">
+              <h5 className="text-[11px] font-mono font-semibold text-[#f2f2f2] uppercase tracking-[0.16em]">
                 INSIGHTS
               </h5>
               <ul className="space-y-2.5">
@@ -227,7 +227,7 @@ export const MainFooter = ({
 
             {/* Column 4: About */}
             <div className="space-y-3.5">
-              <h5 className="text-[11px] font-mono font-semibold text-white/40 uppercase tracking-[0.16em]">
+              <h5 className="text-[11px] font-mono font-semibold text-[#f2f2f2] uppercase tracking-[0.16em]">
                 ABOUT
               </h5>
               <ul className="space-y-2.5">
