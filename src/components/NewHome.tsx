@@ -45,6 +45,24 @@ const HeroTitleLine = ({
   </span>
 );
 
+import { GitHubGraph } from "./GitHubGraph";
+import { Portfolio3D } from "./Portfolio3D";
+
+const LiquidCapsule = ({ color1, color2 }: { color1: string, color2: string }) => (
+  <div className="w-12 h-5 rounded-full overflow-hidden relative shadow-[0_0_15px_rgba(255,255,255,0.1)] shrink-0 hidden sm:block">
+    <svg width="48" height="20" viewBox="0 0 48 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute inset-0 w-full h-full">
+      <rect width="48" height="20" fill={`url(#gradient-${color1.substring(1)})`} />
+      <defs>
+        <linearGradient id={`gradient-${color1.substring(1)}`} x1="0" y1="0" x2="48" y2="20" gradientUnits="userSpaceOnUse">
+          <stop stopColor={color1} />
+          <stop offset="1" stopColor={color2} />
+        </linearGradient>
+      </defs>
+    </svg>
+    <div className="absolute inset-0 opacity-40 mix-blend-overlay" style={{ filter: "url(#rock-liquid-glitch)" }}></div>
+  </div>
+);
+
 export const Home = ({
   projects,
   setActiveTab,
@@ -333,9 +351,9 @@ export const Home = ({
             className="w-full md:w-1/2"
           >
             <div className="space-y-3 mb-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/10 text-[11px] font-mono tracking-widest uppercase text-white/70">
-                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
-                <span>02 // Personal Lab & Studio</span>
+              <div className="flex items-center gap-3 mb-4">
+                <LiquidCapsule color1="#8B5CF6" color2="#3B82F6" />
+                <span className="text-xs font-mono tracking-widest uppercase text-white/50">02 // Personal Lab & Studio</span>
               </div>
               <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
                 My Area 51
@@ -352,7 +370,7 @@ export const Home = ({
               Ready for accuracy, impact, and a soaring return on investment?
             </p>
 
-            <div className="p-6 md:p-8 rounded-2xl bg-white/[0.03] border border-white/10 relative shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)]">
+            <div className="p-6 md:p-8 rounded-2xl bg-white/[0.03] border border-white/10 relative shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] mb-8">
               <p className="text-white/70 font-sans text-sm md:text-base text-left relative z-10 leading-relaxed italic">
                 "Design is the bridge that connects creativity and functionality,
                 resulting in beautiful solutions that solve real-world problems."
@@ -361,6 +379,8 @@ export const Home = ({
                 — Abdulrahman-T
               </div>
             </div>
+
+            <GitHubGraph />
           </motion.div>
         </div>
       </section>
@@ -369,9 +389,9 @@ export const Home = ({
       <section className="py-24 md:py-32 max-w-[1250px] mx-auto px-4 md:px-8 relative">
         {/* Apple HIG Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/10 text-[11px] font-mono tracking-widest uppercase text-white/70 mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
-            <span>03 // Capabilities & Services</span>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <LiquidCapsule color1="#C084FC" color2="#EC4899" />
+            <span className="text-xs font-mono tracking-widest uppercase text-white/50">03 // Capabilities & Services</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
             Engineered for Velocity. Crafted for Impact.
@@ -461,9 +481,9 @@ export const Home = ({
       {/* 4. Portfolio */}
       <section className="py-24 md:py-32 max-w-[1400px] mx-auto px-4 md:px-8 relative border-t border-white/5">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/10 text-[11px] font-mono tracking-widest uppercase text-white/70 mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span>04 // Selected Works & Platforms</span>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <LiquidCapsule color1="#10B981" color2="#0EA5E9" />
+            <span className="text-xs font-mono tracking-widest uppercase text-white/50">04 // Selected Works & Platforms</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
             Passionate about digital design, spatial architecture, and full-stack software.
@@ -473,78 +493,7 @@ export const Home = ({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-          {projects.slice(0, 4).map((p, i) => (
-            <motion.div
-              key={p.name}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-              className="cursor-pointer"
-              onClick={() => setActiveTab("Projects")}
-            >
-              <SpecularCard
-                id={`portfolio-preview-card-${p.name.toLowerCase().replace(/[^a-z0-9]/g, "-")}`}
-                className="p-5 md:p-6 group flex flex-col h-full"
-                glowColor="rgba(255, 255, 255, 0.08)"
-              >
-                <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden mb-5 relative bg-black/40 border border-white/[0.06]">
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity z-10 mix-blend-overlay pointer-events-none" />
-                  
-                  {p.previewUrl?.includes("youtube.com") || p.url?.includes("youtube.com") ? (
-                    <div className="w-full h-full relative overflow-hidden bg-black">
-                      <iframe
-                        src="https://www.youtube.com/embed/0Wh7MhqeHHA?autoplay=1&mute=1&loop=1&playlist=0Wh7MhqeHHA&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                        className="w-full h-full object-cover scale-105 pointer-events-none"
-                        allow="autoplay; encrypted-media"
-                        title={p.name}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
-                      <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-purple-500/30 text-[10px] font-mono font-semibold text-purple-300 flex items-center gap-1.5 z-10 shadow-lg">
-                        <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping" />
-                        <span>Commercial Ads Reel</span>
-                      </div>
-                    </div>
-                  ) : p.url && p.url !== "#" ? (
-                    <img
-                      src={`https://image.thum.io/get/width/800/crop/800/noanimate/${p.url}`}
-                      alt={p.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      referrerPolicy="no-referrer"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center fill-white/20 text-white/20">
-                      <div className="scale-150 mb-4">{p.icon}</div>
-                      <span className="font-mono font-medium uppercase tracking-widest text-[11px] text-white/40">
-                        Featured Platform
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Floating link icon */}
-                  <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white text-black flex items-center justify-center opacity-0 group-hover:opacity-100 -translate-y-2 group-hover:translate-y-0 transition-all z-20 shadow-xl">
-                    <ArrowUpRight size={18} />
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between gap-4 mt-auto">
-                  <div>
-                    <h3 className="font-bold text-xl md:text-2xl tracking-tight text-white group-hover:text-white transition-colors">
-                      {p.name}
-                    </h3>
-                    <p className="text-white/40 text-xs font-mono font-medium uppercase tracking-wider mt-1">
-                      {p.mainCategory}
-                    </p>
-                  </div>
-                  <span className="px-3 py-1 rounded-full text-[10px] font-mono font-semibold bg-white/[0.06] border border-white/10 text-white/60">
-                    View Project
-                  </span>
-                </div>
-              </SpecularCard>
-            </motion.div>
-          ))}
-        </div>
+        <Portfolio3D />
 
         <div className="mt-16 text-center">
           <button
@@ -561,9 +510,9 @@ export const Home = ({
       {/* 5. Testimonials */}
       <section className="py-24 md:py-32 max-w-[1200px] mx-auto px-4 md:px-8 border-t border-white/5 relative">
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/10 text-[11px] font-mono tracking-widest uppercase text-white/70 mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-            <span>05 // Client Reviews</span>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <LiquidCapsule color1="#F59E0B" color2="#EF4444" />
+            <span className="text-xs font-mono tracking-widest uppercase text-white/50">05 // Client Reviews</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-3">
             What Our Partners Say
@@ -621,9 +570,9 @@ export const Home = ({
 
           <div className="w-full md:w-1/2 relative z-10">
             <div className="mb-8">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/10 text-[11px] font-mono tracking-widest uppercase text-white/70 mb-4">
-                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
-                <span>06 // Collaborate & Build</span>
+              <div className="flex items-center gap-3 mb-4">
+                <LiquidCapsule color1="#8B5CF6" color2="#6366F1" />
+                <span className="text-xs font-mono tracking-widest uppercase text-white/50">06 // Collaborate & Build</span>
               </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] text-white tracking-tight leading-tight">
                 Start Your Project Now
@@ -635,45 +584,85 @@ export const Home = ({
 
             <form className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="relative group">
+                  <input
+                    type="text"
+                    id="name-input"
+                    className="block px-5 pb-3 pt-6 w-full text-sm text-white bg-white/[0.03] rounded-xl border border-white/10 appearance-none focus:outline-none focus:ring-0 focus:border-purple-500 peer transition-all duration-300 shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]"
+                    placeholder=" "
+                  />
+                  <label
+                    htmlFor="name-input"
+                    className="absolute text-xs text-white/50 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-5 peer-focus:text-purple-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 pointer-events-none uppercase tracking-widest font-mono"
+                  >
+                    Your Name
+                  </label>
+                </div>
+                <div className="relative group">
+                  <input
+                    type="email"
+                    id="email-input"
+                    className="block px-5 pb-3 pt-6 w-full text-sm text-white bg-white/[0.03] rounded-xl border border-white/10 appearance-none focus:outline-none focus:ring-0 focus:border-purple-500 peer transition-all duration-300 shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]"
+                    placeholder=" "
+                  />
+                  <label
+                    htmlFor="email-input"
+                    className="absolute text-xs text-white/50 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-5 peer-focus:text-purple-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 pointer-events-none uppercase tracking-widest font-mono"
+                  >
+                    Email Address
+                  </label>
+                </div>
+              </div>
+              
+              <div className="relative group">
                 <input
                   type="text"
-                  placeholder="Name"
-                  className="w-full bg-transparent border border-white/15 rounded-xl px-5 py-4 text-sm focus:border-white/50 focus:outline-none transition-colors"
+                  id="title-input"
+                  className="block px-5 pb-3 pt-6 w-full text-sm text-white bg-white/[0.03] rounded-xl border border-white/10 appearance-none focus:outline-none focus:ring-0 focus:border-purple-500 peer transition-all duration-300 shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]"
+                  placeholder=" "
                 />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="w-full bg-transparent border border-white/15 rounded-xl px-5 py-4 text-sm focus:border-white/50 focus:outline-none transition-colors"
-                />
+                <label
+                  htmlFor="title-input"
+                  className="absolute text-xs text-white/50 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-5 peer-focus:text-purple-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 pointer-events-none uppercase tracking-widest font-mono"
+                >
+                  Project Subject
+                </label>
               </div>
-              <input
-                type="text"
-                placeholder="Title"
-                className="w-full bg-transparent border border-white/15 rounded-xl px-5 py-4 text-sm focus:border-white/50 focus:outline-none transition-colors"
-              />
-              <textarea
-                placeholder="Message"
-                rows={6}
-                className="w-full bg-transparent border border-white/15 rounded-xl px-5 py-4 text-sm focus:border-white/50 focus:outline-none transition-colors resize-none"
-              ></textarea>
 
-              <label className="flex items-start gap-4 text-xs font-bold text-white/50 uppercase tracking-widest cursor-pointer group">
-                <input
-                  type="checkbox"
-                  className="mt-0.5 accent-white w-4 h-4 cursor-pointer"
-                />
-                <span className="group-hover:text-white/70 transition-colors">
-                  I consent to the conditions.
-                </span>
-              </label>
+              <div className="relative group">
+                <textarea
+                  id="message-input"
+                  rows={5}
+                  className="block px-5 pb-3 pt-6 w-full text-sm text-white bg-white/[0.03] rounded-xl border border-white/10 appearance-none focus:outline-none focus:ring-0 focus:border-purple-500 peer transition-all duration-300 resize-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]"
+                  placeholder=" "
+                ></textarea>
+                <label
+                  htmlFor="message-input"
+                  className="absolute text-xs text-white/50 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-5 peer-focus:text-purple-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 pointer-events-none uppercase tracking-widest font-mono"
+                >
+                  Message Details
+                </label>
+              </div>
 
-              <button
-                type="button"
-                onClick={() => setActiveTab("Connect")}
-                className="w-full py-4 rounded-xl bg-white hover:bg-neutral-200 text-black font-semibold uppercase tracking-widest text-xs transition-colors shadow-[0_4px_20px_rgba(255,255,255,0.18)] cursor-pointer"
-              >
-                Send Message
-              </button>
+              <div className="flex items-center justify-between pt-2">
+                <label className="flex items-center gap-3 text-xs font-bold text-white/50 uppercase tracking-widest cursor-pointer group">
+                  <div className="relative flex items-center justify-center w-5 h-5 rounded border border-white/20 bg-black group-hover:border-purple-500 transition-colors">
+                    <input type="checkbox" className="opacity-0 absolute inset-0 cursor-pointer peer" />
+                    <svg className="w-3 h-3 text-purple-400 opacity-0 peer-checked:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <span className="group-hover:text-white/70 transition-colors">
+                    I consent to the terms.
+                  </span>
+                </label>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("Connect")}
+                  className="px-8 py-3.5 rounded-xl bg-white hover:bg-neutral-200 text-black font-semibold uppercase tracking-widest text-xs transition-transform shadow-[0_4px_20px_rgba(255,255,255,0.18)] cursor-pointer hover:scale-105 active:scale-95"
+                >
+                  Send Message
+                </button>
+              </div>
             </form>
           </div>
         </div>

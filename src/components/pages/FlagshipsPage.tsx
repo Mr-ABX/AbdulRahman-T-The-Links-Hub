@@ -47,6 +47,27 @@ export interface FlagshipProduct {
 
 const FLAGSHIPS: FlagshipProduct[] = [
   {
+    id: "snapcaption",
+    name: "SnapCaption",
+    tagline: "AI-Powered Caption Generation Tool",
+    category: "AI Tools",
+    status: "Active Beta (MVP)",
+    version: "v1.0.0",
+    icon: "https://snapcaption.netlify.app/favicon.ico",
+    fallbackIconType: "palette",
+    tags: ["React", "AI", "Captions", "Open Source"],
+    githubTags: [
+      "ai",
+      "caption-generator",
+      "react",
+    ],
+    pricing: "100% Free",
+    desc: "AI-powered caption generation tool for modern creators. Generate perfect captions instantly.",
+    previewUrl: "https://snapcaption.netlify.app/",
+    repoUrl: "https://github.com/Mr-ABX",
+    hasRichDetail: true,
+  },
+  {
     id: "murmur",
     name: "MurMur",
     tagline: "Ambient AI Voice & Assistant Operating System",

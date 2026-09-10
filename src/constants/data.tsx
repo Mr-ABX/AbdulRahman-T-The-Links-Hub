@@ -129,6 +129,20 @@ export const socialTabs = [
 
 export const projects: ProjectType[] = [
   {
+    name: "SnapCaption",
+    mainCategory: "AI Solutions",
+    categories: ["AI Solutions", "Pro Business Suite"],
+    tags: ["SaaS", "AI Tools"],
+    pricing: "Free",
+    desc: "AI-powered caption generation tool for modern creators.",
+    url: "https://snapcaption.netlify.app/",
+    previewUrl: "https://snapcaption.netlify.app/",
+    color: "text-blue-400",
+    bg: "bg-blue-500/10",
+    icon: <Bot size={20} />,
+    status: "Production",
+  },
+  {
     name: "Fusion Nexus — Enterprise Web Ecosystem",
     mainCategory: "Web Development Projects",
     categories: ["Web Development Projects", "Pro Business Suite"],
