@@ -333,9 +333,10 @@ export const Home = ({
             className="w-full md:w-1/2"
           >
             <div className="space-y-3 mb-6">
-              <span className="font-mono text-xs uppercase tracking-[0.2em] text-white/40">
-                02 // Personal Lab & Studio
-              </span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/10 text-[11px] font-mono tracking-widest uppercase text-white/70">
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
+                <span>02 // Personal Lab & Studio</span>
+              </div>
               <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
                 My Area 51
                 <span className="block text-white/50 text-2xl sm:text-3xl md:text-4xl font-normal mt-1">
@@ -368,19 +369,16 @@ export const Home = ({
       <section className="py-24 md:py-32 max-w-[1250px] mx-auto px-4 md:px-8 relative">
         {/* Apple HIG Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/10 text-[11px] font-mono tracking-widest uppercase text-white/70 mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+            <span>03 // Capabilities & Services</span>
+          </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
             Engineered for Velocity. Crafted for Impact.
           </h2>
           <p className="text-white/60 text-sm md:text-base leading-relaxed">
             Full-stack architectural precision, autonomous AI integration, bespoke UI/UX, and high-conversion brand mechanics.
           </p>
-        </div>
-
-        {/* Subtle Background Wire Watermark */}
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0">
-          <span className="text-[12vw] md:text-[180px] font-black leading-none text-transparent text-outline-subtle opacity-35">
-            SERVICES
-          </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
@@ -461,14 +459,17 @@ export const Home = ({
       </section>
 
       {/* 4. Portfolio */}
-      <section className="py-32 max-w-[1400px] mx-auto px-4 md:px-8 relative border-t border-white/5">
-        <h2 className="text-[12vw] md:text-[180px] font-black leading-none text-transparent text-outline-subtle text-center mb-8 opacity-80 pointer-events-none select-none">
-          PORTFOLIO
-        </h2>
-
+      <section className="py-24 md:py-32 max-w-[1400px] mx-auto px-4 md:px-8 relative border-t border-white/5">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <p className="text-2xl md:text-3xl font-bold leading-tight tracking-tight text-white/95">
-            I'm passionate about digital design, architecture, motion, and full-stack software development.
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/10 text-[11px] font-mono tracking-widest uppercase text-white/70 mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span>04 // Selected Works & Platforms</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
+            Passionate about digital design, spatial architecture, and full-stack software.
+          </h2>
+          <p className="text-white/60 text-sm md:text-base leading-relaxed">
+            Explorations across Web, Spatial Audio, 3D Canvas, and Autonomous Systems.
           </p>
         </div>
 
@@ -558,10 +559,19 @@ export const Home = ({
       </section>
 
       {/* 5. Testimonials */}
-      <section className="py-32 max-w-[1200px] mx-auto px-4 md:px-8 border-t border-white/5 relative">
-        <h2 className="text-[6vw] md:text-[90px] font-black leading-none text-transparent text-outline-subtle text-center mb-20 opacity-80 select-none">
-          WHAT OUR CLIENTS SAY
-        </h2>
+      <section className="py-24 md:py-32 max-w-[1200px] mx-auto px-4 md:px-8 border-t border-white/5 relative">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/10 text-[11px] font-mono tracking-widest uppercase text-white/70 mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+            <span>05 // Client Reviews</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-3">
+            What Our Partners Say
+          </h2>
+          <p className="text-white/60 text-sm md:text-base">
+            Feedback from creators, founders, and teams we've collaborated with.
+          </p>
+        </div>
 
         <SpecularCard
           id="testimonials-featured-card"
@@ -611,9 +621,10 @@ export const Home = ({
 
           <div className="w-full md:w-1/2 relative z-10">
             <div className="mb-8">
-              <span className="font-mono text-xs uppercase tracking-[0.2em] text-white/50 block mb-2">
-                06 // Collaborate & Build
-              </span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/10 text-[11px] font-mono tracking-widest uppercase text-white/70 mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
+                <span>06 // Collaborate & Build</span>
+              </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] text-white tracking-tight leading-tight">
                 Start Your Project Now
               </h2>
@@ -681,7 +692,7 @@ export const Home = ({
                 <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-[900] tracking-tight uppercase text-white">
                   BRINGS YOUR SITE TO LIFE WITH
                 </span>
-                <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-[900] tracking-tight uppercase text-transparent text-outline-subtle italic">
+                <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-[900] tracking-tight uppercase text-purple-300 italic">
                   CREATIVITY
                 </span>
                 <span className="text-white/20 text-2xl sm:text-4xl font-mono">✦</span>
