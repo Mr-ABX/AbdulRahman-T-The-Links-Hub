@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ExternalLink, ArrowRight, X } from "lucide-react";
 import { projects } from "../constants/data";
@@ -7,63 +7,101 @@ export const Portfolio3D = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [selectedProject, setSelectedProject] = useState<any>(null);
 
-  // Take first 6 projects for the carousel
-  const carouselProjects = projects.slice(0, 6);
+  // Take 8 projects to form a nice globe
+  const globeProjects = projects.slice(0, 8);
 
   const openProject = (url: string) => {
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
+  // Generate spherical coordinates using Fibonacci sphere algorithm
+  const getSpherePositions = (count: number, radius: number) => {
+    const positions = [];
+    const phi = Math.PI * (3 - Math.sqrt(5)); // Golden angle
+    for (let i = 0; i < count; i++) {
+      const y = 1 - (i / (count - 1)) * 2; // y goes from 1 to -1
+      const r = Math.sqrt(1 - y * y); // radius at y
+      const theta = phi * i; // Golden angle increment
+      
+      const x = Math.cos(theta) * r;
+      const z = Math.sin(theta) * r;
+      
+      // Calculate rotation to face outward from center
+      const rotateY = Math.atan2(x, z) * (180 / Math.PI);
+      const rotateX = Math.asin(y) * (180 / Math.PI);
+      
+      positions.push({
+        rotateY,
+        rotateX: -rotateX,
+        translateZ: radius
+      });
+    }
+    return positions;
+  };
+
+  const positions = getSpherePositions(globeProjects.length, 300);
+
   return (
     <div className="relative w-full max-w-6xl mx-auto flex flex-col items-center pb-24">
-      {/* 3D Carousel Container */}
+      <div className="text-center mb-8">
+        <p className="text-white/40 text-xs font-mono uppercase tracking-widest mb-2 animate-pulse">Interactive 3D Globe</p>
+        <p className="text-white/60 text-sm">Drag to explore or click a node to view the project</p>
+      </div>
+
+      {/* 3D Globe Container */}
       <div
-        className="relative w-full h-[350px] md:h-[450px] lg:h-[550px] perspective-[1000px] flex items-center justify-center mt-12 mb-8 md:mb-16"
+        className="relative w-full h-[500px] md:h-[600px] perspective-[1200px] flex items-center justify-center mb-16 cursor-grab active:cursor-grabbing"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <motion.div
           animate={{
-            rotateY: isHovered ? undefined : 360,
+            rotateY: isHovered ? undefined : [0, 360],
+            rotateX: isHovered ? undefined : [0, 360],
           }}
           transition={{
-            duration: 35,
+            duration: 60,
             repeat: Infinity,
             ease: "linear",
           }}
           style={{
             transformStyle: "preserve-3d",
             position: "relative",
-            width: "280px",
-            height: "360px",
+            width: "200px",
+            height: "260px",
           }}
-          className="carousel-spinner"
+          className="globe-spinner"
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
         >
-          {carouselProjects.map((project, index) => {
-            const rotateY = index * (360 / carouselProjects.length);
-            const translateZ = 320; // Distance from center
+          {globeProjects.map((project, index) => {
+            const pos = positions[index];
 
             return (
               <div
                 key={project.name}
                 className="absolute top-0 left-0 w-full h-full cursor-pointer group"
                 style={{
-                  transform: `rotateY(${rotateY}deg) translateZ(${translateZ}px)`,
-                  backfaceVisibility: "hidden",
+                  transform: `rotateY(${pos.rotateY}deg) rotateX(${pos.rotateX}deg) translateZ(${pos.translateZ}px)`,
+                  backfaceVisibility: "visible", // We want to see them on the back side as well, but maybe dimmed?
                 }}
                 onClick={() => setSelectedProject(project)}
               >
                 {/* Project Card in 3D */}
-                <div className="w-full h-full bg-[#12121c]/90 border border-white/[0.08] rounded-2xl overflow-hidden shadow-[0_24px_50px_rgba(0,0,0,0.8),inset_0_1px_0_0_rgba(255,255,255,0.15)] flex flex-col transition-all duration-300 group-hover:border-white/20 group-hover:shadow-[0_0_40px_rgba(168,85,247,0.15)]">
+                <div 
+                  className="w-full h-full bg-[#12121c]/90 border border-white/10 rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.8),inset_0_1px_0_0_rgba(255,255,255,0.15)] flex flex-col transition-all duration-300 group-hover:border-purple-500/50 group-hover:shadow-[0_0_40px_rgba(168,85,247,0.3)]"
+                  style={{ backfaceVisibility: 'hidden' }} // Only show the front of the card
+                >
                   {/* Iframe Preview or Placeholder */}
-                  <div className="relative w-full h-[55%] bg-black/50 overflow-hidden border-b border-white/[0.05]">
+                  <div className="relative w-full h-[50%] bg-black/50 overflow-hidden border-b border-white/[0.05]">
                     {project.previewUrl ? (
                       <div className="absolute inset-0 pointer-events-none">
                         <iframe
                           src={project.previewUrl}
-                          className="w-[140%] h-[140%] -top-[20%] -left-[20%] absolute"
+                          className="w-[160%] h-[160%] -top-[30%] -left-[30%] absolute"
                           style={{
-                            transform: "scale(0.71)",
+                            transform: "scale(0.625)",
                             transformOrigin: "center center",
                           }}
                           title={project.name}
@@ -79,24 +117,29 @@ export const Portfolio3D = () => {
                   </div>
 
                   {/* Content */}
-                  <div className="p-5 flex-1 flex flex-col justify-between">
+                  <div className="p-4 flex-1 flex flex-col justify-between bg-gradient-to-b from-transparent to-black/40">
                     <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className={`p-1.5 rounded-lg ${project.bg} ${project.color}`}>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className={`p-1.5 rounded-lg ${project.bg} ${project.color} scale-75 origin-left`}>
                           {project.icon}
                         </span>
-                        <span className="text-[10px] font-mono uppercase tracking-widest text-white/50">
+                        <span className="text-[9px] font-mono uppercase tracking-widest text-white/50 truncate">
                           {project.mainCategory}
                         </span>
                       </div>
-                      <h3 className="text-white font-bold text-lg leading-tight line-clamp-2">
+                      <h3 className="text-white font-bold text-sm leading-tight line-clamp-2">
                         {project.name}
                       </h3>
                     </div>
-                    <div className="text-[11px] font-medium text-white/40 uppercase tracking-widest flex items-center gap-1 group-hover:text-purple-400 transition-colors">
-                      View Project <ArrowRight size={12} />
-                    </div>
                   </div>
+                </div>
+
+                {/* Back side of the card (shows when rotated away) */}
+                <div 
+                  className="absolute inset-0 w-full h-full bg-black/60 border border-white/5 rounded-2xl flex items-center justify-center opacity-30"
+                  style={{ transform: 'rotateY(180deg)', backfaceVisibility: 'hidden' }}
+                >
+                  <span className="text-white/20 scale-150">{project.icon}</span>
                 </div>
               </div>
             );
