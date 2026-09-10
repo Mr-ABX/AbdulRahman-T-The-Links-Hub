@@ -167,22 +167,31 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    {/* Audio Toggle Pill for Video Cards */}
+                    {/* Audio Toggle Pill for Video Cards - Compact Sound Icon */}
                     {isVideo && isCenter && (
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           setUnmutedVideoId(isAudioActive ? null : project.youtubeId);
                         }}
-                        className={`px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer ${
+                        className={`p-2 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
                           isAudioActive
                             ? "bg-purple-500 text-white border border-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.6)]"
                             : "bg-white/10 text-white/70 border border-white/10 hover:bg-white/20 hover:text-white"
                         }`}
-                        title={isAudioActive ? "Mute Video" : "Unmute 720p HD Sound"}
+                        title={isAudioActive ? "Mute Audio (720p HD)" : "Unmute Audio (720p HD)"}
                       >
-                        {isAudioActive ? <Volume2 size={12} className="animate-pulse" /> : <VolumeX size={12} />}
-                        <span>{isAudioActive ? "720p Sound On" : "Unmute Audio"}</span>
+                        {isAudioActive ? (
+                          <div className="flex items-center gap-1">
+                            <Volume2 size={14} className="animate-pulse text-white" />
+                            <span className="text-[9px] font-mono font-bold tracking-tight bg-black/40 px-1 py-0.5 rounded text-purple-200">720p</span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-1">
+                            <VolumeX size={14} />
+                            <span className="text-[9px] font-mono text-white/50">HD</span>
+                          </div>
+                        )}
                       </button>
                     )}
 
