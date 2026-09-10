@@ -493,18 +493,7 @@ export const Home = ({
           </p>
         </div>
 
-        <Portfolio3D />
-
-        <div className="mt-16 text-center">
-          <button
-            id="all-projects-cta-btn"
-            onClick={() => setActiveTab("Projects")}
-            className="inline-flex items-center gap-2 py-3.5 px-8 rounded-full bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(255,255,255,0.15)] hover:scale-105 active:scale-95 cursor-pointer"
-          >
-            <span>See All Projects</span>
-            <ArrowRight size={14} />
-          </button>
-        </div>
+        <Portfolio3D setActiveTab={setActiveTab} />
       </section>
 
       {/* 5. Testimonials */}
