@@ -45,6 +45,7 @@ export interface ProjectType {
   desc: string;
   url: string;
   previewUrl?: string;
+  youtubeId?: string;
   color: string;
   bg: string;
   icon: React.ReactNode;

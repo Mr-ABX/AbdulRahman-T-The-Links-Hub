@@ -9,6 +9,11 @@ import {
   X,
   Zap,
   ArrowRight,
+  Volume2,
+  VolumeX,
+  Play,
+  Globe,
+  Video,
 } from "lucide-react";
 import { projects } from "../constants/data";
 
@@ -23,6 +28,7 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [unmutedVideoId, setUnmutedVideoId] = useState<string | null>(null);
 
   // Helper index calculators
   const prevIndex = (currentIndex - 1 + total) % total;
@@ -30,10 +36,12 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % total);
+    setUnmutedVideoId(null); // Reset unmuted state on swivel
   };
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev - 1 + total) % total);
+    setUnmutedVideoId(null); // Reset unmuted state on swivel
   };
 
   const openExternal = (url: string) => {
@@ -52,14 +60,29 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedProject, currentIndex]);
 
+  const getEmbedUrl = (project: any, isCenter: boolean) => {
+    if (!project.previewUrl) return "";
+    
+    // Check if it's a YouTube video project
+    if (project.youtubeId) {
+      const isAudioOn = isCenter && unmutedVideoId === project.youtubeId;
+      const muteParam = isAudioOn ? "0" : "1";
+      const qualityParam = isCenter ? "hd720" : "small";
+      
+      return `https://www.youtube.com/embed/${project.youtubeId}?enablejsapi=1&autoplay=1&mute=${muteParam}&loop=1&playlist=${project.youtubeId}&vq=${qualityParam}&controls=1&modestbranding=1&rel=0&playsinline=1`;
+    }
+    
+    return project.previewUrl;
+  };
+
   return (
-    <div className="relative w-full max-w-6xl mx-auto flex flex-col items-center select-none py-4">
+    <div className="relative w-full max-w-6xl mx-auto flex flex-col items-center select-none py-2">
       {/* 3D Rotating Carousel Container */}
-      <div className="relative w-full h-[480px] sm:h-[540px] flex items-center justify-center perspective-[1200px] overflow-hidden sm:overflow-visible">
+      <div className="relative w-full h-[500px] sm:h-[560px] flex items-center justify-center perspective-[1200px] overflow-hidden sm:overflow-visible">
         {/* Navigation Arrow Left */}
         <button
           onClick={handlePrev}
-          className="absolute left-2 sm:left-6 z-40 w-12 h-12 rounded-full bg-black/70 border border-white/20 text-white/80 hover:text-white hover:bg-purple-600 hover:border-purple-400 flex items-center justify-center transition-all duration-300 shadow-2xl backdrop-blur-xl hover:scale-110 cursor-pointer group"
+          className="absolute left-2 sm:left-6 z-40 w-12 h-12 rounded-full bg-black/80 border border-white/20 text-white/80 hover:text-white hover:bg-purple-600 hover:border-purple-400 flex items-center justify-center transition-all duration-300 shadow-2xl backdrop-blur-xl hover:scale-110 cursor-pointer group"
           title="Previous Project"
         >
           <ChevronLeft size={22} className="group-hover:-translate-x-0.5 transition-transform" />
@@ -68,7 +91,7 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
         {/* Navigation Arrow Right */}
         <button
           onClick={handleNext}
-          className="absolute right-2 sm:right-6 z-40 w-12 h-12 rounded-full bg-black/70 border border-white/20 text-white/80 hover:text-white hover:bg-purple-600 hover:border-purple-400 flex items-center justify-center transition-all duration-300 shadow-2xl backdrop-blur-xl hover:scale-110 cursor-pointer group"
+          className="absolute right-2 sm:right-6 z-40 w-12 h-12 rounded-full bg-black/80 border border-white/20 text-white/80 hover:text-white hover:bg-purple-600 hover:border-purple-400 flex items-center justify-center transition-all duration-300 shadow-2xl backdrop-blur-xl hover:scale-110 cursor-pointer group"
           title="Next Project"
         >
           <ChevronRight size={22} className="group-hover:translate-x-0.5 transition-transform" />
@@ -88,6 +111,8 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
             const isCenter = position === "center";
             const isLeft = position === "left";
             const isRight = position === "right";
+            const isVideo = Boolean(project.youtubeId);
+            const isAudioActive = isCenter && unmutedVideoId === project.youtubeId;
 
             return (
               <motion.div
@@ -109,11 +134,11 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                   duration: 0.6,
                   ease: [0.23, 1, 0.32, 1],
                 }}
-                className={`absolute w-[90%] sm:w-[580px] md:w-[640px] h-[420px] sm:h-[480px] rounded-3xl bg-[#0e0e16]/95 border ${
+                className={`absolute w-[92%] sm:w-[580px] md:w-[650px] h-[440px] sm:h-[500px] rounded-[28px] bg-[#0c0c14]/95 border ${
                   isCenter
-                    ? "border-white/20 shadow-[0_25px_80px_rgba(0,0,0,0.9),0_0_40px_rgba(168,85,247,0.2)] z-30"
+                    ? "border-white/20 shadow-[0_30px_90px_rgba(0,0,0,0.95),0_0_50px_rgba(168,85,247,0.18),inset_0_1px_0_0_rgba(255,255,255,0.2)] z-30"
                     : "border-white/10 shadow-xl z-10 cursor-pointer hover:opacity-60"
-                } overflow-hidden flex flex-col backdrop-blur-2xl group`}
+                } overflow-hidden flex flex-col backdrop-blur-3xl group`}
               >
                 {/* Top Specular Edge Highlight for Center Card */}
                 {isCenter && (
@@ -122,41 +147,61 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
 
                 {/* Left/Right Card Edge Fade Gradients for Extra Depth */}
                 {!isCenter && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60 z-20 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/70 z-20 pointer-events-none" />
                 )}
 
-                {/* Card Header */}
-                <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
+                {/* Apple HIG Header Bar */}
+                <div className="px-5 py-4 border-b border-white/[0.08] flex items-center justify-between bg-white/[0.03]">
                   <div className="flex items-center gap-3">
-                    <span className={`p-2.5 rounded-2xl ${project.bg} ${project.color} border border-white/10 shadow-inner`}>
+                    <div className={`p-2.5 rounded-2xl ${project.bg} ${project.color} border border-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)] flex items-center justify-center`}>
                       {project.icon}
-                    </span>
+                    </div>
                     <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-white font-bold text-base sm:text-lg tracking-tight">
-                          {project.name}
-                        </h3>
-                      </div>
-                      <p className="text-white/50 text-xs font-mono">
+                      <h3 className="text-white font-bold text-base sm:text-lg tracking-tight flex items-center gap-2">
+                        <span>{project.name}</span>
+                      </h3>
+                      <p className="text-white/40 text-[11px] font-mono tracking-wide">
                         {project.mainCategory}
                       </p>
                     </div>
                   </div>
 
-                  <span className="text-[10px] font-mono text-purple-400 border border-purple-500/30 bg-purple-500/10 px-2.5 py-1 rounded-full uppercase tracking-wider">
-                    {project.status || "Production"}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    {/* Audio Toggle Pill for Video Cards */}
+                    {isVideo && isCenter && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setUnmutedVideoId(isAudioActive ? null : project.youtubeId);
+                        }}
+                        className={`px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer ${
+                          isAudioActive
+                            ? "bg-purple-500 text-white border border-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.6)]"
+                            : "bg-white/10 text-white/70 border border-white/10 hover:bg-white/20 hover:text-white"
+                        }`}
+                        title={isAudioActive ? "Mute Video" : "Unmute 720p HD Sound"}
+                      >
+                        {isAudioActive ? <Volume2 size={12} className="animate-pulse" /> : <VolumeX size={12} />}
+                        <span>{isAudioActive ? "720p Sound On" : "Unmute Audio"}</span>
+                      </button>
+                    )}
+
+                    <span className="text-[10px] font-mono text-purple-400 border border-purple-500/30 bg-purple-500/10 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                      {project.status || "Production"}
+                    </span>
+                  </div>
                 </div>
 
-                {/* Card Preview Body */}
-                <div className="relative flex-1 bg-black/70 overflow-hidden flex items-center justify-center p-2">
-                  <div className="w-full h-full rounded-xl overflow-hidden border border-white/10 bg-[#07070c] relative">
+                {/* Card Preview Viewport */}
+                <div className="relative flex-1 bg-black/80 overflow-hidden flex items-center justify-center p-2.5">
+                  <div className="w-full h-full rounded-2xl overflow-hidden border border-white/10 bg-[#05050a] relative">
                     {project.previewUrl ? (
                       <iframe
-                        src={project.previewUrl}
+                        src={getEmbedUrl(project, isCenter)}
                         className={`w-full h-full border-0 ${isCenter ? "pointer-events-auto" : "pointer-events-none"}`}
                         title={project.name}
                         loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       />
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center">
@@ -170,10 +215,10 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                   </div>
                 </div>
 
-                {/* Card Footer */}
-                <div className="p-4 sm:p-5 bg-[#08080e]/90 border-t border-white/10 flex items-center justify-between gap-4">
+                {/* Apple HIG Card Footer */}
+                <div className="px-5 py-4 bg-[#08080f]/95 border-t border-white/[0.08] flex items-center justify-between gap-4">
                   <div className="flex-1 min-w-0">
-                    <p className="text-white/70 text-xs line-clamp-1">
+                    <p className="text-white/70 text-xs leading-relaxed line-clamp-1">
                       {project.desc}
                     </p>
                   </div>
@@ -185,7 +230,7 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                           e.stopPropagation();
                           setSelectedProject(project);
                         }}
-                        className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs tracking-tight transition-colors flex items-center gap-1.5 cursor-pointer"
+                        className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs tracking-tight transition-colors flex items-center gap-1.5 cursor-pointer border border-white/10"
                       >
                         <Maximize2 size={13} />
                         <span className="hidden sm:inline">Inspect</span>
@@ -195,7 +240,7 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                           e.stopPropagation();
                           openExternal(project.url);
                         }}
-                        className="px-3.5 py-2 rounded-xl bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight transition-colors flex items-center gap-1.5 cursor-pointer shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                        className="px-4 py-2 rounded-xl bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight transition-colors flex items-center gap-1.5 cursor-pointer shadow-[0_0_20px_rgba(255,255,255,0.2)]"
                       >
                         <span>Launch</span>
                         <ExternalLink size={13} />
@@ -214,7 +259,10 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
         {featuredProjects.map((p, idx) => (
           <button
             key={p.name}
-            onClick={() => setCurrentIndex(idx)}
+            onClick={() => {
+              setCurrentIndex(idx);
+              setUnmutedVideoId(null);
+            }}
             className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
               currentIndex === idx
                 ? "w-8 bg-purple-500 shadow-[0_0_12px_rgba(168,85,247,0.8)]"
@@ -227,7 +275,7 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
 
       {/* Direct CTA: See All Projects */}
       {setActiveTab && (
-        <div className="mt-10 text-center">
+        <div className="mt-8 text-center">
           <button
             onClick={() => setActiveTab("Projects")}
             className="inline-flex items-center gap-2.5 py-3.5 px-8 rounded-full bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight transition-all duration-200 shadow-[0_4px_25px_rgba(255,255,255,0.15)] hover:scale-105 active:scale-95 cursor-pointer"
@@ -245,7 +293,7 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl"
+            className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/85 backdrop-blur-2xl"
             onClick={() => setSelectedProject(null)}
           >
             <motion.div
@@ -253,22 +301,23 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-4xl bg-[#0b0b12] border border-white/15 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]"
+              className="relative w-full max-w-4xl bg-[#090910] border border-white/20 rounded-3xl overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.95)] flex flex-col md:flex-row max-h-[90vh]"
             >
               <button
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-black/60 border border-white/20 text-white/70 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-black/70 border border-white/20 text-white/80 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
               >
                 <X size={18} />
               </button>
 
               {/* Preview Half */}
-              <div className="w-full md:w-1/2 h-[300px] md:h-auto bg-black relative flex items-center justify-center">
+              <div className="w-full md:w-1/2 h-[320px] md:h-auto bg-black relative flex items-center justify-center border-b md:border-b-0 md:border-r border-white/10">
                 {selectedProject.previewUrl ? (
                   <iframe
-                    src={selectedProject.previewUrl}
+                    src={getEmbedUrl(selectedProject, true)}
                     className="w-full h-full border-0"
                     title={selectedProject.name}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   />
                 ) : (
                   <div className="p-6 text-center">
@@ -287,12 +336,12 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                     <span className="text-[10px] font-mono text-purple-400 border border-purple-500/30 bg-purple-500/10 px-2.5 py-1 rounded-full uppercase tracking-wider">
                       {selectedProject.mainCategory}
                     </span>
-                    <span className="text-[10px] font-mono text-white/50 border border-white/10 px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] font-mono text-white/50 border border-white/10 px-2.5 py-1 rounded-full">
                       {selectedProject.status || "Production"}
                     </span>
                   </div>
 
-                  <h2 className="text-2xl font-extrabold text-white mb-3">
+                  <h2 className="text-2xl font-extrabold text-white mb-3 tracking-tight">
                     {selectedProject.name}
                   </h2>
 
@@ -307,11 +356,11 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                     <ul className="space-y-2 text-xs text-white/80">
                       <li className="flex items-center gap-2">
                         <Sparkles size={13} className="text-purple-400 shrink-0" />
-                        <span>High-performance reactive UI with instant feedback</span>
+                        <span>High-performance reactive UI & fluid 3D spatial transitions</span>
                       </li>
                       <li className="flex items-center gap-2">
                         <Zap size={13} className="text-blue-400 shrink-0" />
-                        <span>Zero latency architecture and fluid spatial transitions</span>
+                        <span>Apple HIG pro design system with edge-cached assets</span>
                       </li>
                     </ul>
                   </div>
@@ -332,7 +381,7 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                   onClick={() => openExternal(selectedProject.url)}
                   className="w-full py-3.5 bg-white text-black font-semibold text-xs tracking-wider uppercase rounded-2xl flex items-center justify-center gap-2 hover:bg-neutral-200 transition-colors cursor-pointer shadow-[0_0_30px_rgba(255,255,255,0.2)]"
                 >
-                  <span>Launch Live Platform</span>
+                  <span>Launch Live Platform / Video</span>
                   <ExternalLink size={14} />
                 </button>
               </div>
@@ -343,3 +392,4 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
     </div>
   );
 };
+
