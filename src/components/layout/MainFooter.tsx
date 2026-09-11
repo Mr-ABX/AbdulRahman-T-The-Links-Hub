@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from "react";
-import { motion, useMotionValue, useSpring } from "motion/react";
 import { ArrowUpRight, Layers } from "lucide-react";
 import { ASSET_LINKS } from "../../constants/assets";
 import { cn } from "../../lib/utils";
@@ -12,73 +11,220 @@ interface MainFooterProps {
   isInImmersiveMode: boolean;
 }
 
+interface FluidPoint {
+  x: number;
+  y: number;
+  radius: number;
+  alpha: number;
+  decay: number;
+}
+
 const LiquidDuneHero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const pointsRef = useRef<FluidPoint[]>([]);
+  const lastMousePos = useRef<{ x: number; y: number } | null>(null);
+  const imageRef = useRef<HTMLImageElement | null>(null);
+  const [isInteracting, setIsInteracting] = useState(false);
+  const animFrameId = useRef<number>(0);
 
-  // Motion values with liquid inertia
-  const mouseX = useMotionValue(-1000);
-  const mouseY = useMotionValue(-1000);
-
-  const springX = useSpring(mouseX, { stiffness: 220, damping: 24, mass: 0.8 });
-  const springY = useSpring(mouseY, { stiffness: 220, damping: 24, mass: 0.8 });
-
-  const [pos, setPos] = useState({ x: -1000, y: -1000 });
-
+  // Preload Dune Image
   useEffect(() => {
-    const unsubX = springX.on("change", (v) => setPos((prev) => ({ ...prev, x: Math.round(v) })));
-    const unsubY = springY.on("change", (v) => setPos((prev) => ({ ...prev, y: Math.round(v) })));
-    return () => {
-      unsubX();
-      unsubY();
+    const img = new Image();
+    img.src = "/footer-image.avif";
+    img.onload = () => {
+      imageRef.current = img;
     };
-  }, [springX, springY]);
+  }, []);
+
+  // Liquid trail interpolation helper
+  const addFluidPoint = (x: number, y: number) => {
+    const last = lastMousePos.current;
+    if (last) {
+      const dx = x - last.x;
+      const dy = y - last.y;
+      const dist = Math.hypot(dx, dy);
+      // Interpolate points so rapid mouse movements form a continuous, connected liquid ribbon
+      const steps = Math.min(10, Math.max(1, Math.floor(dist / 10)));
+      for (let i = 1; i <= steps; i++) {
+        pointsRef.current.push({
+          x: last.x + (dx * i) / steps,
+          y: last.y + (dy * i) / steps,
+          radius: 75 + Math.random() * 20,
+          alpha: 1.0,
+          decay: 0.014, // ~1.2s viscous persistence
+        });
+      }
+    } else {
+      pointsRef.current.push({
+        x,
+        y,
+        radius: 80,
+        alpha: 1.0,
+        decay: 0.014,
+      });
+    }
+    lastMousePos.current = { x, y };
+  };
+
+  // Fluid canvas drawing and liquid animation loop
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d", { willReadFrequently: false });
+    if (!ctx) return;
+
+    let width = 0;
+    let height = 0;
+
+    const updateDimensions = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      if (canvas.width !== width || canvas.height !== height) {
+        canvas.width = width;
+        canvas.height = height;
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+
+    const render = () => {
+      if (width === 0 || height === 0) {
+        animFrameId.current = requestAnimationFrame(render);
+        return;
+      }
+
+      ctx.clearRect(0, 0, width, height);
+
+      const now = performance.now() * 0.001;
+      const points = pointsRef.current;
+
+      // Ambient idle liquid pulse: when user is not interacting, a gentle liquid wave rolls across the dune crest
+      const ambientX = width * 0.5 + Math.sin(now * 0.75) * (width * 0.32);
+      const ambientY = height * 0.58 + Math.cos(now * 1.1) * (height * 0.09);
+
+      if (points.length > 0 || imageRef.current) {
+        ctx.save();
+
+        // 1. Draw Ambient Idle Liquid Stream
+        const ambientRadius = 90 + Math.sin(now * 1.5) * 15;
+        const ambientGrad = ctx.createRadialGradient(ambientX, ambientY, 0, ambientX, ambientY, ambientRadius);
+        ambientGrad.addColorStop(0, "rgba(255, 255, 255, 0.45)");
+        ambientGrad.addColorStop(0.5, "rgba(255, 255, 255, 0.25)");
+        ambientGrad.addColorStop(0.85, "rgba(255, 255, 255, 0.06)");
+        ambientGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
+        ctx.fillStyle = ambientGrad;
+        ctx.beginPath();
+        ctx.arc(ambientX, ambientY, ambientRadius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 2. Draw Interactive User Liquid Trail Points
+        for (let i = 0; i < points.length; i++) {
+          const p = points[i];
+          const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius);
+          grad.addColorStop(0, `rgba(255, 255, 255, ${p.alpha * 0.95})`);
+          grad.addColorStop(0.5, `rgba(255, 255, 255, ${p.alpha * 0.65})`);
+          grad.addColorStop(0.85, `rgba(255, 255, 255, ${p.alpha * 0.2})`);
+          grad.addColorStop(1, "rgba(255, 255, 255, 0)");
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // 3. Connect consecutive points with viscous liquid strokes for zero gap
+        for (let i = 1; i < points.length; i++) {
+          const p1 = points[i - 1];
+          const p2 = points[i];
+          const avgAlpha = (p1.alpha + p2.alpha) * 0.5;
+          if (avgAlpha > 0.05) {
+            ctx.strokeStyle = `rgba(255, 255, 255, ${avgAlpha * 0.75})`;
+            ctx.lineWidth = (p1.radius + p2.radius) * 0.85;
+            ctx.lineCap = "round";
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+
+        // 4. Reveal true color image exclusively through the liquid mask
+        if (imageRef.current) {
+          ctx.globalCompositeOperation = "source-in";
+          const img = imageRef.current;
+          const imgRatio = img.naturalWidth / img.naturalHeight;
+          const canvasRatio = width / height;
+          let drawW = width;
+          let drawH = height;
+          let offsetX = 0;
+          let offsetY = 0;
+
+          if (canvasRatio > imgRatio) {
+            drawW = width;
+            drawH = width / imgRatio;
+            offsetX = 0;
+            offsetY = height - drawH; // align object-bottom
+          } else {
+            drawH = height;
+            drawW = height * imgRatio;
+            offsetX = (width - drawW) / 2;
+            offsetY = 0;
+          }
+
+          ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
+          ctx.globalCompositeOperation = "source-over";
+        }
+
+        ctx.restore();
+      }
+
+      // Decay points
+      for (let i = 0; i < points.length; i++) {
+        points[i].radius += 0.45; // gentle fluid spread
+        points[i].alpha -= points[i].decay;
+      }
+      pointsRef.current = points.filter((p) => p.alpha > 0);
+
+      animFrameId.current = requestAnimationFrame(render);
+    };
+
+    animFrameId.current = requestAnimationFrame(render);
+
+    return () => {
+      window.removeEventListener("resize", updateDimensions);
+      cancelAnimationFrame(animFrameId.current);
+    };
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    mouseX.set(x);
-    mouseY.set(y);
-    if (!isHovered) setIsHovered(true);
+    addFluidPoint(e.clientX - rect.left, e.clientY - rect.top);
+    if (!isInteracting) setIsInteracting(true);
   };
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    mouseX.jump(x);
-    mouseY.jump(y);
-    setPos({ x, y });
-    setIsHovered(true);
+    lastMousePos.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    addFluidPoint(e.clientX - rect.left, e.clientY - rect.top);
+    setIsInteracting(true);
   };
 
   const handleMouseLeave = () => {
-    setIsHovered(false);
+    lastMousePos.current = null;
+    setIsInteracting(false);
   };
 
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
     if (!containerRef.current || !e.touches[0]) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const touch = e.touches[0];
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
-    mouseX.set(x);
-    mouseY.set(y);
-    if (!isHovered) setIsHovered(true);
+    addFluidPoint(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
+    if (!isInteracting) setIsInteracting(true);
   };
-
-  const maskStyle = isHovered && pos.x > -500
-    ? {
-        WebkitMaskImage: `radial-gradient(circle 260px at ${pos.x}px ${pos.y}px, black 0%, black 45%, rgba(0,0,0,0.35) 75%, transparent 100%)`,
-        maskImage: `radial-gradient(circle 260px at ${pos.x}px ${pos.y}px, black 0%, black 45%, rgba(0,0,0,0.35) 75%, transparent 100%)`,
-      }
-    : {
-        WebkitMaskImage: "radial-gradient(circle 0px at 0px 0px, transparent 100%)",
-        maskImage: "radial-gradient(circle 0px at 0px 0px, transparent 100%)",
-      };
 
   return (
     <div
@@ -88,61 +234,58 @@ const LiquidDuneHero = () => {
       onMouseLeave={handleMouseLeave}
       onTouchStart={handleTouchMove}
       onTouchMove={handleTouchMove}
-      onTouchEnd={() => setIsHovered(false)}
-      className="relative w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[480px] xl:h-[560px] select-none mt-8 sm:mt-14 md:mt-20 overflow-hidden cursor-crosshair group"
+      onTouchEnd={() => {
+        lastMousePos.current = null;
+        setIsInteracting(false);
+      }}
+      className="relative w-full h-[260px] sm:h-[340px] md:h-[440px] lg:h-[520px] xl:h-[600px] select-none mt-8 sm:mt-12 md:mt-16 overflow-hidden cursor-crosshair group"
     >
-      {/* Background Watermark Typography - Layered behind the sand dunes */}
-      <div className="absolute inset-x-0 top-[6%] sm:top-[10%] md:top-[12%] lg:top-[14%] -translate-y-[100px] flex items-center justify-center z-10 pointer-events-none px-4">
+      {/* Background Watermark Typography - Anchored cleanly with zero clipping on any screen ratio */}
+      <div className="absolute inset-x-0 top-3 sm:top-5 md:top-8 lg:top-10 flex items-center justify-center z-10 pointer-events-none px-3 sm:px-6">
         <span 
-          className="text-[clamp(2.2rem,9.5vw,170px)] font-extrabold tracking-tight text-white/30 uppercase leading-none whitespace-nowrap block text-center select-none"
+          className="text-[clamp(1.6rem,7.5vw,135px)] font-black tracking-tight text-white/[0.22] uppercase leading-none whitespace-nowrap block text-center select-none py-2"
+          style={{
+            textShadow: "0 0 40px rgba(0,0,0,0.9)",
+            WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.25) 85%, transparent 100%)",
+            maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.25) 85%, transparent 100%)",
+          }}
         >
           ABDULRAHMAN-T
         </span>
       </div>
 
-      {/* Layer 1: Base High-Contrast Monochrome / Pixelated Dunes */}
+      {/* Layer 1: Base Living Liquid Obsidian Dunes (Breathes with continuous organic liquid undulation like hero rocks) */}
       <img
         src="/footer-image.avif"
-        alt="Monochrome Desert Dunes"
-        style={{ filter: "url(#pixelate-b-w) contrast(1.15) brightness(0.85)" }}
+        alt="Living Liquid Obsidian Dunes"
+        style={{
+          filter: "url(#dune-liquid-obsidian) contrast(1.18) brightness(0.9)",
+        }}
         className="absolute inset-0 z-20 w-full h-full object-cover object-bottom mix-blend-lighten pointer-events-none opacity-85 transition-opacity duration-300"
       />
 
-      {/* Layer 2: True Color Neon Desert Dunes Revealed via Liquid Lens */}
+      {/* Subtle Halftone Matrix Grain Overlay echoing the obsidian monolith rocks */}
       <div
-        className="absolute inset-0 z-25 w-full h-full pointer-events-none transition-opacity duration-300"
+        className="absolute inset-0 z-22 opacity-25 mix-blend-screen pointer-events-none"
         style={{
-          opacity: isHovered ? 1 : 0,
-          ...maskStyle,
+          backgroundImage: "radial-gradient(rgba(192, 132, 252, 0.4) 1px, transparent 1px)",
+          backgroundSize: "6px 6px",
         }}
-      >
-        <img
-          src="/footer-image.avif"
-          alt="Neon Desert Dunes Revealed"
-          className="w-full h-full object-cover object-bottom mix-blend-lighten filter brightness-110 saturate-125"
-        />
-      </div>
+      />
 
-      {/* Optical Lens Rim & Golden Aura Indicator */}
-      {isHovered && pos.x > -500 && (
-        <div
-          className="absolute z-30 pointer-events-none rounded-full transition-opacity duration-300"
-          style={{
-            width: 520,
-            height: 520,
-            left: pos.x - 260,
-            top: pos.y - 260,
-            background: "radial-gradient(circle, rgba(251,191,36,0.05) 0%, rgba(245,158,11,0.015) 60%, transparent 100%)",
-            boxShadow: "inset 0 0 35px rgba(251,191,36,0.12), 0 0 45px rgba(245,158,11,0.15)",
-            border: "1px solid rgba(251,191,36,0.22)",
-          }}
-        />
-      )}
+      {/* Layer 2: Interactive Viscous Liquid Color Trail with Turbulent Edge Displacement */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 z-25 w-full h-full pointer-events-none mix-blend-lighten"
+        style={{
+          filter: "url(#dune-interactive-liquid) brightness(1.12) saturate(1.2)",
+        }}
+      />
 
-      {/* Minimal Discreet Exploration Hint Badge */}
-      <div className="absolute bottom-4 right-6 z-30 px-3 py-1 rounded-full bg-black/60 border border-white/10 backdrop-blur-md text-[10px] font-mono tracking-widest text-white/50 uppercase pointer-events-none flex items-center gap-1.5 opacity-60 group-hover:opacity-90 transition-opacity">
-        <span className="w-1.5 h-1.5 rounded-full bg-amber-400/80 animate-pulse" />
-        <span>Optical Lens // Dunes</span>
+      {/* Minimal Discreet Liquid Indicator Badge */}
+      <div className="absolute bottom-4 right-6 z-30 px-3 py-1 rounded-full bg-black/70 border border-purple-500/25 backdrop-blur-md text-[10px] font-mono tracking-widest text-white/50 uppercase pointer-events-none flex items-center gap-2 opacity-65 group-hover:opacity-100 transition-opacity">
+        <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+        <span>Liquid Obsidian // Dunes</span>
       </div>
     </div>
   );
@@ -199,8 +342,36 @@ export const MainFooter = ({
       id="main-studio-footer"
       className="relative w-full border-t border-white/[0.08] bg-[#050508] overflow-hidden pt-16 md:pt-24 pb-0 mt-28"
     >
-      {/* Dynamic SVG Filter for Crisp Pixelation */}
+      {/* Dynamic SVG Liquid Glitch & Obsidian Displacement Filters */}
       <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
+        {/* Base Living Obsidian Dunes Liquid Undulation Filter */}
+        <filter id="dune-liquid-obsidian" x="-10%" y="-10%" width="120%" height="120%">
+          <feColorMatrix
+            type="matrix"
+            values="0.33 0.33 0.33 0 0
+                    0.33 0.33 0.33 0 0
+                    0.33 0.33 0.33 0 0
+                    0    0    0    1 0"
+          />
+          <feComponentTransfer>
+            <feFuncR type="linear" slope="1.25" />
+            <feFuncG type="linear" slope="1.25" />
+            <feFuncB type="linear" slope="1.25" />
+          </feComponentTransfer>
+          <feTurbulence type="fractalNoise" baseFrequency="0.015 0.035" numOctaves="2" result="liquidNoise">
+            <animate attributeName="baseFrequency" dur="10s" values="0.015 0.035; 0.025 0.06; 0.015 0.035" repeatCount="indefinite" />
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="liquidNoise" scale="12" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+
+        {/* Interactive Fluid Trail Liquid Edge Filter */}
+        <filter id="dune-interactive-liquid" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.025 0.05" numOctaves="2" result="fluidNoise">
+            <animate attributeName="baseFrequency" dur="7s" values="0.025 0.05; 0.04 0.03; 0.025 0.05" repeatCount="indefinite" />
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="fluidNoise" scale="18" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+
         <filter id="pixelate-b-w" x="0%" y="0%" width="100%" height="100%">
           <feColorMatrix
             type="matrix"
