@@ -280,6 +280,17 @@ export const Home = ({
   const [customInquiry, setCustomInquiry] = useState("");
   const [budgetRange, setBudgetRange] = useState("$5k – $10k");
   const [activeReviewIndex, setActiveReviewIndex] = useState(0);
+  const [isReviewPaused, setIsReviewPaused] = useState(false);
+
+  // Apple HIG Pro Auto-Scroll Carousel Timer
+  useEffect(() => {
+    if (isReviewPaused) return;
+    const timer = setInterval(() => {
+      setActiveReviewIndex((prev) => (prev + 1) % reviews.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [isReviewPaused]);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -809,214 +820,126 @@ export const Home = ({
         <Portfolio3D setActiveTab={setActiveTab} />
       </section>
 
-      {/* 5. Minimal Apple HIG Pro Partner Reviews & Quantitative Proof */}
-      <section className="py-20 md:py-28 max-w-[1200px] mx-auto px-4 md:px-8 border-t border-white/[0.08] relative">
-        {/* Apple HIG Pro Specular Subtle Top Ambient */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-20 bg-gradient-to-b from-white/[0.03] to-transparent blur-2xl pointer-events-none" />
+      {/* 5. Minimal Apple HIG Pro Partner Reviews (Singular Auto-Advancing Card + Metric Capsule) */}
+      <section className="py-16 md:py-24 max-w-[1100px] mx-auto px-4 md:px-8 border-t border-white/[0.08] relative">
+        {/* Subtle Ambient Refraction */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-16 bg-gradient-to-b from-white/[0.02] to-transparent blur-xl pointer-events-none" />
 
-        {/* Minimal Section Header */}
-        <div className="max-w-2xl mx-auto text-center mb-10 md:mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-neutral-300 text-xs font-mono tracking-widest uppercase mb-4 shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span>05 // Client Endorsements</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-white mb-3 font-sans">
-            Engineered for Commercial Impact
+        {/* Minimal Apple-Style Section Header (No Fluff) */}
+        <div className="max-w-xl mx-auto text-center mb-8 sm:mb-10">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium tracking-tight text-white mb-2 font-sans">
+            Client Endorsements
           </h2>
-          <p className="text-neutral-400 text-sm sm:text-base leading-relaxed">
-            Direct feedback and validated outcomes from founders, CTOs, and global engineering teams.
+          <p className="text-neutral-400 text-xs sm:text-sm">
+            Verified feedback from founders, CTOs, and global engineering teams.
           </p>
         </div>
 
-        {/* Apple HIG Pro Silver Specular Testimonial Showcase */}
+        {/* Singular Minimal Apple HIG Testimonial Card with Auto-Advance */}
         {(() => {
           const activeReview = reviews[activeReviewIndex] || reviews[0];
           return (
-            <div className="mb-8">
-              <div
-                id="testimonials-featured-card"
-                className="relative rounded-3xl bg-gradient-to-b from-[#131418] via-[#0e0f13] to-[#0a0a0d] border border-white/[0.12] p-6 sm:p-10 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.12)] overflow-hidden"
-              >
-                {/* Silver Precision Specular Hairline */}
-                <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-neutral-300/30 to-transparent" />
+            <div
+              id="testimonials-featured-card"
+              className="relative max-w-3xl mx-auto mb-8 rounded-3xl bg-gradient-to-b from-[#121317] to-[#090a0d] border border-white/[0.1] p-7 sm:p-10 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl overflow-hidden group"
+              onMouseEnter={() => setIsReviewPaused(true)}
+              onMouseLeave={() => setIsReviewPaused(false)}
+            >
+              {/* Precision Specular Top Edge */}
+              <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
-                {/* Apple Pro Client Segmented Selector Bar */}
-                <div className="flex items-center justify-between gap-3 pb-6 sm:pb-8 mb-6 sm:mb-8 border-b border-white/[0.08] overflow-x-auto scrollbar-none">
-                  <div className="flex items-center gap-1.5 sm:gap-2">
-                    {reviews.slice(0, 6).map((r, idx) => (
-                      <button
-                        key={r.name}
-                        onClick={() => setActiveReviewIndex(idx)}
-                        className={cn(
-                          "px-3 py-1.5 rounded-full text-xs font-medium transition-all shrink-0 cursor-pointer flex items-center gap-2",
-                          activeReviewIndex === idx
-                            ? "bg-white/15 text-white border border-white/25 shadow-sm"
-                            : "bg-white/[0.03] text-neutral-400 border border-white/[0.06] hover:bg-white/[0.08] hover:text-neutral-200"
-                        )}
-                      >
-                        <img
-                          src={r.avatar}
-                          alt={r.name}
-                          className="w-4 h-4 rounded-full object-cover border border-white/20"
-                        />
-                        <span>{r.company}</span>
-                      </button>
-                    ))}
-                  </div>
+              {/* Animated Quote & Author */}
+              <div className="relative min-h-[160px] sm:min-h-[140px] flex flex-col justify-between">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeReviewIndex}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+                    className="flex flex-col justify-between"
+                  >
+                    {/* Clean Typography Quote */}
+                    <blockquote className="text-base sm:text-lg md:text-xl text-neutral-100 font-normal leading-relaxed tracking-tight mb-8">
+                      "{activeReview.text}"
+                    </blockquote>
 
-                  {/* Navigation Chevrons & Counter */}
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-[11px] font-mono text-neutral-400 pr-1">
-                      {String(activeReviewIndex + 1).padStart(2, "0")} / {String(reviews.length).padStart(2, "0")}
-                    </span>
-                    <button
-                      onClick={() =>
-                        setActiveReviewIndex((prev) => (prev - 1 + reviews.length) % reviews.length)
-                      }
-                      className="p-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.12] border border-white/10 text-neutral-300 hover:text-white transition-all cursor-pointer"
-                      title="Previous endorsement"
-                    >
-                      <ChevronLeft size={14} />
-                    </button>
-                    <button
-                      onClick={() =>
-                        setActiveReviewIndex((prev) => (prev + 1) % reviews.length)
-                      }
-                      className="p-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.12] border border-white/10 text-neutral-300 hover:text-white transition-all cursor-pointer"
-                      title="Next endorsement"
-                    >
-                      <ChevronRight size={14} />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 md:gap-12 relative z-10">
-                  {/* Left Column: Authentic Client Profile */}
-                  <div className="w-full lg:w-4/12 flex flex-row lg:flex-col items-center lg:items-start gap-4 lg:gap-3 shrink-0 pb-6 lg:pb-0 border-b lg:border-b-0 lg:border-r border-white/[0.08] lg:pr-8">
-                    <div className="relative shrink-0">
-                      <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl overflow-hidden border border-white/20 bg-neutral-900 shadow-md">
+                    {/* Author Profile */}
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-3.5">
                         <img
                           src={activeReview.avatar}
                           alt={activeReview.name}
-                          className="w-full h-full object-cover"
+                          className="w-11 h-11 sm:w-12 sm:h-12 rounded-full object-cover border border-white/20 shadow-sm"
                           loading="lazy"
                         />
-                      </div>
-                      <span className="absolute -bottom-1 -right-1 p-1 rounded-full bg-[#0e0f13] border border-white/20 text-emerald-400 flex items-center justify-center shadow">
-                        <ShieldCheck size={13} />
-                      </span>
-                    </div>
-
-                    <div className="text-left">
-                      <div className="flex items-center gap-1.5 mb-0.5">
-                        <h3 className="text-lg sm:text-xl font-semibold text-white tracking-tight">
-                          {activeReview.name}
-                        </h3>
-                      </div>
-                      <p className="text-neutral-300 text-xs sm:text-sm font-medium">
-                        {activeReview.role}
-                      </p>
-                      <p className="text-neutral-400 text-xs font-mono mt-0.5">
-                        {activeReview.company} • {activeReview.location}
-                      </p>
-
-                      {activeReview.metric && (
-                        <div className="mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-neutral-200 text-[11px] font-mono">
-                          <span className="w-1 h-1 rounded-full bg-emerald-400" />
-                          <span>{activeReview.metric}</span>
+                        <div>
+                          <h4 className="text-sm sm:text-base font-semibold text-white tracking-tight leading-tight">
+                            {activeReview.name}
+                          </h4>
+                          <p className="text-xs text-neutral-400 mt-0.5">
+                            {activeReview.role} • {activeReview.company}
+                          </p>
                         </div>
+                      </div>
+
+                      {/* 5-Star Rating */}
+                      <div className="flex items-center gap-0.5 text-amber-400 shrink-0">
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <Star key={s} size={13} fill="currentColor" />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Minimal Apple Progress Indicators & Subtle Navigation */}
+              <div className="mt-8 pt-6 border-t border-white/[0.06] flex items-center justify-between">
+                {/* Clean Progress Pills */}
+                <div className="flex items-center gap-1.5">
+                  {reviews.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveReviewIndex(idx)}
+                      className={cn(
+                        "h-1 rounded-full transition-all duration-300 cursor-pointer",
+                        activeReviewIndex === idx
+                          ? "w-6 sm:w-8 bg-white"
+                          : "w-1.5 sm:w-2 bg-white/20 hover:bg-white/40"
                       )}
-                    </div>
-                  </div>
+                      aria-label={`Go to slide ${idx + 1}`}
+                    />
+                  ))}
+                </div>
 
-                  {/* Right Column: High-Legibility Apple Pro Quote */}
-                  <div className="w-full lg:w-8/12 flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-1 text-amber-400">
-                          {[1, 2, 3, 4, 5].map((s) => (
-                            <Star key={s} size={14} fill="currentColor" />
-                          ))}
-                          <span className="ml-1.5 text-xs font-mono text-neutral-400 font-medium">
-                            5.0 / 5.0
-                          </span>
-                        </div>
-                        {activeReview.projectCategory && (
-                          <span className="text-xs font-mono text-neutral-400 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08]">
-                            {activeReview.projectCategory}
-                          </span>
-                        )}
-                      </div>
-
-                      <AnimatePresence mode="wait">
-                        <motion.blockquote
-                          key={activeReviewIndex}
-                          initial={{ opacity: 0, y: 6 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -6 }}
-                          transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-                          className="text-base sm:text-lg md:text-xl text-neutral-100 leading-relaxed font-normal font-sans"
-                        >
-                          "{activeReview.text}"
-                        </motion.blockquote>
-                      </AnimatePresence>
-                    </div>
-
-                    <div className="mt-6 pt-5 border-t border-white/[0.06] flex items-center justify-between text-xs text-neutral-400 font-mono">
-                      <span>Verified Partner Delivery</span>
-                      <span>Production Verified</span>
-                    </div>
-                  </div>
+                {/* Quiet Chevrons */}
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() =>
+                      setActiveReviewIndex((prev) => (prev - 1 + reviews.length) % reviews.length)
+                    }
+                    className="p-1.5 sm:p-2 rounded-full bg-white/[0.04] hover:bg-white/[0.1] border border-white/10 text-neutral-300 hover:text-white transition-all cursor-pointer"
+                    aria-label="Previous review"
+                  >
+                    <ChevronLeft size={15} />
+                  </button>
+                  <button
+                    onClick={() =>
+                      setActiveReviewIndex((prev) => (prev + 1) % reviews.length)
+                    }
+                    className="p-1.5 sm:p-2 rounded-full bg-white/[0.04] hover:bg-white/[0.1] border border-white/10 text-neutral-300 hover:text-white transition-all cursor-pointer"
+                    aria-label="Next review"
+                  >
+                    <ChevronRight size={15} />
+                  </button>
                 </div>
               </div>
             </div>
           );
         })()}
 
-        {/* Minimal 3-Card Partner Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 mb-8">
-          {reviews.slice(1, 4).map((item) => (
-            <div
-              key={item.name}
-              className="p-5 sm:p-6 rounded-2xl bg-[#0f1014]/70 border border-white/[0.08] hover:border-white/20 transition-all duration-300 flex flex-col justify-between group shadow-sm"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-3.5">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={item.avatar}
-                      alt={item.name}
-                      className="w-10 h-10 rounded-xl object-cover border border-white/15 shrink-0"
-                    />
-                    <div>
-                      <h4 className="text-white font-medium text-sm leading-tight">
-                        {item.name}
-                      </h4>
-                      <p className="text-neutral-400 text-xs">
-                        {item.role} • {item.company}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex text-amber-400">
-                    <Star size={12} fill="currentColor" />
-                    <span className="text-[11px] font-mono text-neutral-300 ml-1">5.0</span>
-                  </div>
-                </div>
-
-                <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed mb-4">
-                  "{item.text}"
-                </p>
-              </div>
-
-              <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between text-[11px] font-mono text-neutral-400">
-                <span>{item.projectCategory}</span>
-                <span>{item.location}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Sleek Apple HIG Pro Pill / Metric Widget (Requested Precision Specification) */}
+        {/* Sleek Apple HIG Pro Metric Capsule Widget */}
         <div className="flex justify-center">
           <div className="inline-flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 md:gap-5 py-2.5 px-4 sm:px-6 md:px-8 rounded-full bg-[#101115]/90 border border-white/[0.12] backdrop-blur-2xl shadow-[0_12px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.15)]">
             {/* 100% Satisfaction Badge */}
