@@ -36,6 +36,8 @@ export type ProjectCategory =
   | "My Personal Apps"
   | "Pro Business Suite";
 
+export type RockLightColor = "purple" | "white";
+
 export interface ProjectType {
   name: string;
   mainCategory: ProjectCategory | string;

@@ -1,8 +1,22 @@
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { X, Sliders, MousePointer, Compass, LayoutGrid, MonitorSmartphone, Sparkles, Grid, Eye, CircleDot, Moon } from "lucide-react";
+import {
+  X,
+  Sliders,
+  MousePointer,
+  Compass,
+  LayoutGrid,
+  MonitorSmartphone,
+  Sparkles,
+  Grid,
+  Eye,
+  CircleDot,
+  Moon,
+  SunMedium,
+} from "lucide-react";
 import { cn } from "../lib/utils";
 import { DuneShaderStyle, DuneInteractionMode } from "./layout/PixelDunes";
+import { RockLightColor } from "../types";
 
 interface SettingsPanelProps {
   isOpen: boolean;
@@ -15,6 +29,10 @@ interface SettingsPanelProps {
   setCompactHomeView: (val: boolean) => void;
   headerLayout: "horizontal" | "vertical";
   setHeaderLayout: (val: "horizontal" | "vertical") => void;
+  rocksLightEnabled: boolean;
+  setRocksLightEnabled: (val: boolean) => void;
+  rocksLightColor: RockLightColor;
+  setRocksLightColor: (val: RockLightColor) => void;
   footerDuneShader: DuneShaderStyle;
   setFooterDuneShader: (val: DuneShaderStyle) => void;
   footerPixelMode: DuneInteractionMode;
@@ -74,6 +92,10 @@ export const SettingsPanel = ({
   setCompactHomeView,
   headerLayout,
   setHeaderLayout,
+  rocksLightEnabled,
+  setRocksLightEnabled,
+  rocksLightColor,
+  setRocksLightColor,
   footerDuneShader,
   setFooterDuneShader,
   footerPixelMode,
@@ -253,7 +275,129 @@ export const SettingsPanel = ({
                   />
                 </div>
 
-                {/* 5. Footer Dunes Visuals & Shader FX Section */}
+                {/* 5. Rock Monolith Ambient Lighting */}
+                <div className="p-4 rounded-2xl liquid-glass-subtle border border-white/[0.09] space-y-3.5 shadow-sm">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-3">
+                      <SunMedium
+                        className={cn(
+                          "shrink-0 mt-0.5 transition-colors duration-200",
+                          rocksLightEnabled
+                            ? rocksLightColor === "purple"
+                              ? "text-purple-400"
+                              : "text-white"
+                            : "text-white/40"
+                        )}
+                        size={16}
+                        strokeWidth={1.35}
+                      />
+                      <div className="space-y-0.5">
+                        <div className="flex items-center gap-2">
+                          <h4 className="text-xs font-semibold text-white tracking-tight">
+                            Rock Monolith Light
+                          </h4>
+                          <span
+                            className={cn(
+                              "px-1.5 py-0.5 rounded text-[8px] font-mono uppercase tracking-wider transition-colors border",
+                              rocksLightEnabled
+                                ? rocksLightColor === "purple"
+                                  ? "bg-purple-500/20 text-purple-300 border-purple-500/30"
+                                  : "bg-white/10 text-white border-white/20"
+                                : "bg-white/[0.04] text-white/40 border-white/[0.08]"
+                            )}
+                          >
+                            {rocksLightEnabled ? "Active" : "Disabled"}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-white/50 max-w-[210px] leading-relaxed font-light">
+                          Toggle ambient radiance and customize light aura color around hero rocks.
+                        </p>
+                      </div>
+                    </div>
+
+                    <AppleSwitch
+                      id="toggle-rocks-light-switch"
+                      checked={rocksLightEnabled}
+                      onChange={() => setRocksLightEnabled(!rocksLightEnabled)}
+                    />
+                  </div>
+
+                  {/* Color Selection Palette when Light is Enabled */}
+                  {rocksLightEnabled && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+                      className="space-y-2 pt-2 border-t border-white/[0.06]"
+                    >
+                      <div className="flex items-center justify-between">
+                        <label className="text-[10px] font-mono text-white/40 uppercase tracking-wider block">
+                          Lighting Tone & Spectrum
+                        </label>
+                        <span className="text-[10px] font-mono text-white/60">
+                          {rocksLightColor === "purple" ? "Cosmic Purple" : "Lunar White"}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        {/* Option 1: Cosmic Purple */}
+                        <button
+                          id="rock-light-purple-btn"
+                          type="button"
+                          onClick={() => setRocksLightColor("purple")}
+                          className={cn(
+                            "p-2.5 rounded-xl border text-xs font-medium flex flex-col items-start gap-1 transition-all duration-200 cursor-pointer relative overflow-hidden text-left",
+                            rocksLightColor === "purple"
+                              ? "bg-purple-500/15 border-purple-500/40 text-white shadow-[0_0_15px_rgba(168,85,247,0.15),inset_0_1px_0_0_rgba(255,255,255,0.15)]"
+                              : "bg-white/[0.02] border-transparent text-white/45 hover:text-white/80 hover:bg-white/[0.05]"
+                          )}
+                        >
+                          <div className="flex items-center justify-between w-full">
+                            <span className="flex items-center gap-1.5 font-medium text-[11px]">
+                              <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-purple-500 via-indigo-500 to-pink-400 shadow-[0_0_8px_rgba(168,85,247,0.8)] shrink-0" />
+                              <span>Cosmic Purple</span>
+                            </span>
+                            {rocksLightColor === "purple" && (
+                              <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+                            )}
+                          </div>
+                          <span className="text-[9px] text-white/40 font-mono tracking-wider">
+                            Ultraviolet Aura
+                          </span>
+                        </button>
+
+                        {/* Option 2: Lunar White */}
+                        <button
+                          id="rock-light-white-btn"
+                          type="button"
+                          onClick={() => setRocksLightColor("white")}
+                          className={cn(
+                            "p-2.5 rounded-xl border text-xs font-medium flex flex-col items-start gap-1 transition-all duration-200 cursor-pointer relative overflow-hidden text-left",
+                            rocksLightColor === "white"
+                              ? "bg-white/10 border-white/30 text-white shadow-[0_0_15px_rgba(255,255,255,0.15),inset_0_1px_0_0_rgba(255,255,255,0.2)]"
+                              : "bg-white/[0.02] border-transparent text-white/45 hover:text-white/80 hover:bg-white/[0.05]"
+                          )}
+                        >
+                          <div className="flex items-center justify-between w-full">
+                            <span className="flex items-center gap-1.5 font-medium text-[11px]">
+                              <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-white via-slate-200 to-slate-400 shadow-[0_0_8px_rgba(255,255,255,0.9)] shrink-0" />
+                              <span>Lunar White</span>
+                            </span>
+                            {rocksLightColor === "white" && (
+                              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                            )}
+                          </div>
+                          <span className="text-[9px] text-white/40 font-mono tracking-wider">
+                            Soft Silver Blite
+                          </span>
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+
+                {/* 6. Footer Dunes Visuals & Shader FX Section */}
                 <div className="p-4 rounded-2xl liquid-glass-subtle border border-white/[0.09] space-y-3.5 shadow-sm">
                   <div className="flex items-start gap-3">
                     <Sparkles className="text-purple-400 shrink-0 mt-0.5" size={16} strokeWidth={1.35} />

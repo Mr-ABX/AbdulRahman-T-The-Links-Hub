@@ -117,7 +117,7 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-import { Category, ProjectCategory } from "./types";
+import { Category, ProjectCategory, RockLightColor } from "./types";
 import { tabs, socialTabs, projects, reviews, companies, skills, categoryDescriptions } from "./constants/data";
 import { SkeletonCard, BentoCard } from "./components/shared/BentoCard";
 import { LiveAutomationFeed } from "./components/shared/LiveAutomationFeed";
@@ -233,6 +233,16 @@ export default function App() {
     if (val !== null) return val === "true";
     return false; // Default: dark monochrome is off
   });
+  const [rocksLightEnabled, setRocksLightEnabled] = useState<boolean>(() => {
+    const val = localStorage.getItem("abdulrahman_rocks_light_enabled_v1");
+    if (val !== null) return val === "true";
+    return true; // Default: Rock Monolith Light is ON
+  });
+  const [rocksLightColor, setRocksLightColor] = useState<RockLightColor>(() => {
+    const val = localStorage.getItem("abdulrahman_rocks_light_color_v1");
+    if (val === "purple" || val === "white") return val;
+    return "purple"; // Default: Cosmic Purple
+  });
 
   useEffect(() => {
     localStorage.setItem("abdulrahman_hideCursor_v3", hideCustomCursor.toString());
@@ -248,6 +258,8 @@ export default function App() {
     localStorage.setItem("abdulrahman_footer_pixel_size_v3", footerPixelSize.toString());
     localStorage.setItem("abdulrahman_footer_pixel_glitch_v3", footerPixelGlitch.toString());
     localStorage.setItem("abdulrahman_footer_pixel_mono_v3", footerPixelMonochrome.toString());
+    localStorage.setItem("abdulrahman_rocks_light_enabled_v1", rocksLightEnabled.toString());
+    localStorage.setItem("abdulrahman_rocks_light_color_v1", rocksLightColor);
   }, [
     hideCustomCursor,
     enableSmoothScroll,
@@ -259,6 +271,8 @@ export default function App() {
     footerPixelSize,
     footerPixelGlitch,
     footerPixelMonochrome,
+    rocksLightEnabled,
+    rocksLightColor,
   ]);
 
   const slugify = (text: string) => {
@@ -496,7 +510,14 @@ export default function App() {
   const renderContent = () => {
     switch (activeTab) {
       case "Home":
-        return <NewHome projects={projects} setActiveTab={setActiveTab} />;
+        return (
+          <NewHome
+            projects={projects}
+            setActiveTab={setActiveTab}
+            rocksLightEnabled={rocksLightEnabled}
+            rocksLightColor={rocksLightColor}
+          />
+        );
       case "Links":
         return (
           <LinksPage
@@ -755,6 +776,10 @@ export default function App() {
         setCompactHomeView={setCompactHomeView}
         headerLayout={headerLayout}
         setHeaderLayout={setHeaderLayout}
+        rocksLightEnabled={rocksLightEnabled}
+        setRocksLightEnabled={setRocksLightEnabled}
+        rocksLightColor={rocksLightColor}
+        setRocksLightColor={setRocksLightColor}
         footerDuneShader={footerDuneShader}
         setFooterDuneShader={setFooterDuneShader}
         footerPixelMode={footerPixelMode}

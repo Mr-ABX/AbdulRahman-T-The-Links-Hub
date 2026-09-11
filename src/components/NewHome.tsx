@@ -6,6 +6,7 @@ import { ASSET_LINKS } from "../constants/assets";
 import { GitHubGraph } from "./GitHubGraph";
 import { Portfolio3D } from "./Portfolio3D";
 import { cn } from "../lib/utils";
+import { RockLightColor } from "../types";
 import {
   ArrowRight,
   Monitor,
@@ -189,9 +190,13 @@ const LiquidCapsule = ({
 export const Home = ({
   projects,
   setActiveTab,
+  rocksLightEnabled = true,
+  rocksLightColor = "purple",
 }: {
   projects: any[];
   setActiveTab: (tab: string) => void;
+  rocksLightEnabled?: boolean;
+  rocksLightColor?: RockLightColor;
 }) => {
   const PROJECT_TYPE_OPTIONS = [
     "Full-Stack Web & App",
@@ -289,16 +294,32 @@ export const Home = ({
             className="hidden md:block absolute -left-5 lg:-left-12 xl:-left-20 top-1/2 -translate-y-[52%] w-44 md:w-52 lg:w-68 xl:w-76 pointer-events-auto cursor-pointer select-none z-0 group"
             title="Interact with Left Monolith Rock"
           >
-            {/* Constant Ambient Glow Field (Always active, softly radiating) */}
-            <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-purple-500/25 via-indigo-500/20 to-cyan-500/10 blur-2xl opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 pointer-events-none" />
+            {/* Ambient Glow Field (Controlled by Settings - Soft, Atmospheric Radial Diffusion) */}
+            {rocksLightEnabled && (
+              <div
+                className={cn(
+                  "absolute inset-2 -z-10 rounded-full blur-xl transition-all duration-700 pointer-events-none",
+                  rocksLightColor === "purple"
+                    ? "bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.14)_0%,rgba(99,102,241,0.06)_45%,transparent_70%)] group-hover:scale-105 group-hover:opacity-100"
+                    : "bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.09)_0%,rgba(203,213,225,0.04)_45%,transparent_70%)] group-hover:scale-105 group-hover:opacity-100"
+                )}
+              />
+            )}
 
-            {/* Base Natural Rock with Permanent Clean Specular Glow */}
+            {/* Base Natural Rock with Clean Natural Specular Contour */}
             <motion.img
               src="/rock-left-1000.webp"
               alt=""
               animate={{ y: [-8, 8, -8], rotate: [-1.2, 1.2, -1.2] }}
               transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-              className="w-full h-auto object-contain drop-shadow-[0_0_25px_rgba(168,85,247,0.35)] drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] filter brightness-100 contrast-105 group-hover:opacity-15 transition-all duration-300"
+              className={cn(
+                "w-full h-auto object-contain filter brightness-100 contrast-105 group-hover:opacity-15 transition-all duration-300",
+                rocksLightEnabled
+                  ? rocksLightColor === "purple"
+                    ? "drop-shadow-[0_0_10px_rgba(168,85,247,0.16)] drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
+                    : "drop-shadow-[0_0_8px_rgba(255,255,255,0.10)] drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
+                  : "drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
+              )}
             />
 
             {/* Super-Black Obsidian Liquid Reveal Layer */}
@@ -308,21 +329,38 @@ export const Home = ({
                 alt=""
                 animate={{ y: [-8, 8, -8], rotate: [-1.2, 1.2, -1.2] }}
                 transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-                className="w-full h-auto object-contain drop-shadow-[0_0_40px_rgba(168,85,247,0.6)]"
+                className={cn(
+                  "w-full h-auto object-contain transition-all duration-300",
+                  rocksLightEnabled
+                    ? rocksLightColor === "purple"
+                      ? "drop-shadow-[0_0_22px_rgba(168,85,247,0.35)] drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
+                      : "drop-shadow-[0_0_18px_rgba(255,255,255,0.22)] drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
+                    : "drop-shadow-[0_15px_35px_rgba(0,0,0,0.9)]"
+                )}
                 style={{
                   filter: "url(#rock-liquid-glitch) grayscale(100%) contrast(450%) brightness(12%)",
                 }}
               />
               {/* Halftone Dot Matrix Texture Overlay */}
               <div
-                className="absolute inset-0 opacity-40 mix-blend-screen pointer-events-none"
+                className="absolute inset-0 opacity-25 mix-blend-screen pointer-events-none"
                 style={{
-                  backgroundImage: "radial-gradient(rgba(192, 132, 252, 0.7) 1px, transparent 1px)",
+                  backgroundImage:
+                    rocksLightColor === "purple"
+                      ? "radial-gradient(rgba(192, 132, 252, 0.6) 1px, transparent 1px)"
+                      : "radial-gradient(rgba(255, 255, 255, 0.6) 1px, transparent 1px)",
                   backgroundSize: "5px 5px",
                 }}
               />
               {/* Monolith Holographic Badge */}
-              <span className="absolute -bottom-4 px-2.5 py-0.5 rounded-full bg-black/85 border border-purple-400/40 text-[9px] font-mono tracking-widest text-purple-300 uppercase shadow-md backdrop-blur-md">
+              <span
+                className={cn(
+                  "absolute -bottom-4 px-2.5 py-0.5 rounded-full bg-black/85 text-[9px] font-mono tracking-widest uppercase shadow-md backdrop-blur-md transition-colors",
+                  rocksLightColor === "purple"
+                    ? "border border-purple-400/40 text-purple-300"
+                    : "border border-white/30 text-white/90 shadow-[0_0_8px_rgba(255,255,255,0.1)]"
+                )}
+              >
                 OBSIDIAN CORE // 01
               </span>
             </div>
@@ -338,16 +376,32 @@ export const Home = ({
             className="hidden md:block absolute -right-5 lg:-right-12 xl:-right-20 top-1/2 -translate-y-[48%] w-44 md:w-52 lg:w-68 xl:w-76 pointer-events-auto cursor-pointer select-none z-0 group"
             title="Interact with Right Monolith Rock"
           >
-            {/* Constant Ambient Glow Field (Always active, softly radiating) */}
-            <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-indigo-500/25 via-purple-500/20 to-pink-500/10 blur-2xl opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 pointer-events-none" />
+            {/* Ambient Glow Field (Controlled by Settings - Soft, Atmospheric Radial Diffusion) */}
+            {rocksLightEnabled && (
+              <div
+                className={cn(
+                  "absolute inset-2 -z-10 rounded-full blur-xl transition-all duration-700 pointer-events-none",
+                  rocksLightColor === "purple"
+                    ? "bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.14)_0%,rgba(168,85,247,0.06)_45%,transparent_70%)] group-hover:scale-105 group-hover:opacity-100"
+                    : "bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.09)_0%,rgba(203,213,225,0.04)_45%,transparent_70%)] group-hover:scale-105 group-hover:opacity-100"
+                )}
+              />
+            )}
 
-            {/* Base Natural Rock with Permanent Clean Specular Glow */}
+            {/* Base Natural Rock with Clean Natural Specular Contour */}
             <motion.img
               src="/rock-right-1000.webp"
               alt=""
               animate={{ y: [8, -8, 8], rotate: [1.2, -1.2, 1.2] }}
               transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-              className="w-full h-auto object-contain drop-shadow-[0_0_25px_rgba(168,85,247,0.35)] drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] filter brightness-100 contrast-105 group-hover:opacity-15 transition-all duration-300"
+              className={cn(
+                "w-full h-auto object-contain filter brightness-100 contrast-105 group-hover:opacity-15 transition-all duration-300",
+                rocksLightEnabled
+                  ? rocksLightColor === "purple"
+                    ? "drop-shadow-[0_0_10px_rgba(168,85,247,0.16)] drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
+                    : "drop-shadow-[0_0_8px_rgba(255,255,255,0.10)] drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
+                  : "drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
+              )}
             />
 
             {/* Super-Black Obsidian Liquid Reveal Layer */}
@@ -357,21 +411,38 @@ export const Home = ({
                 alt=""
                 animate={{ y: [8, -8, 8], rotate: [1.2, -1.2, 1.2] }}
                 transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                className="w-full h-auto object-contain drop-shadow-[0_0_40px_rgba(168,85,247,0.6)]"
+                className={cn(
+                  "w-full h-auto object-contain transition-all duration-300",
+                  rocksLightEnabled
+                    ? rocksLightColor === "purple"
+                      ? "drop-shadow-[0_0_22px_rgba(168,85,247,0.35)] drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
+                      : "drop-shadow-[0_0_18px_rgba(255,255,255,0.22)] drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
+                    : "drop-shadow-[0_15px_35px_rgba(0,0,0,0.9)]"
+                )}
                 style={{
                   filter: "url(#rock-liquid-glitch) grayscale(100%) contrast(450%) brightness(12%)",
                 }}
               />
               {/* Halftone Dot Matrix Texture Overlay */}
               <div
-                className="absolute inset-0 opacity-40 mix-blend-screen pointer-events-none"
+                className="absolute inset-0 opacity-25 mix-blend-screen pointer-events-none"
                 style={{
-                  backgroundImage: "radial-gradient(rgba(192, 132, 252, 0.7) 1px, transparent 1px)",
+                  backgroundImage:
+                    rocksLightColor === "purple"
+                      ? "radial-gradient(rgba(192, 132, 252, 0.6) 1px, transparent 1px)"
+                      : "radial-gradient(rgba(255, 255, 255, 0.6) 1px, transparent 1px)",
                   backgroundSize: "5px 5px",
                 }}
               />
               {/* Monolith Holographic Badge */}
-              <span className="absolute -bottom-4 px-2.5 py-0.5 rounded-full bg-black/85 border border-purple-400/40 text-[9px] font-mono tracking-widest text-purple-300 uppercase shadow-md backdrop-blur-md">
+              <span
+                className={cn(
+                  "absolute -bottom-4 px-2.5 py-0.5 rounded-full bg-black/85 text-[9px] font-mono tracking-widest uppercase shadow-md backdrop-blur-md transition-colors",
+                  rocksLightColor === "purple"
+                    ? "border border-purple-400/40 text-purple-300"
+                    : "border border-white/30 text-white/90 shadow-[0_0_8px_rgba(255,255,255,0.1)]"
+                )}
+              >
                 OBSIDIAN CORE // 02
               </span>
             </div>
