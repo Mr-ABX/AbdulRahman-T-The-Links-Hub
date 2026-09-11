@@ -195,6 +195,13 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                       </button>
                     )}
 
+                    {project.hasCaseStudy && (
+                      <span className="text-[10px] font-mono text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 rounded-full uppercase tracking-wider flex items-center gap-1">
+                        <Sparkles size={11} />
+                        Case Study
+                      </span>
+                    )}
+
                     <span className="text-[10px] font-mono text-purple-400 border border-purple-500/30 bg-purple-500/10 px-2.5 py-1 rounded-full uppercase tracking-wider">
                       {project.status || "Production"}
                     </span>
@@ -243,6 +250,18 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
 
                   {isCenter && (
                     <div className="flex items-center gap-2 shrink-0">
+                      {project.hasCaseStudy && setActiveTab && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveTab("CaseStudies");
+                          }}
+                          className="px-3.5 py-2 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 font-semibold text-xs tracking-tight transition-colors flex items-center gap-1.5 cursor-pointer border border-purple-500/30"
+                        >
+                          <Sparkles size={13} />
+                          <span>Case Study</span>
+                        </button>
+                      )}
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -400,13 +419,29 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                   </div>
                 </div>
 
-                <button
-                  onClick={() => openExternal(selectedProject.url)}
-                  className="w-full py-3.5 bg-white text-black font-semibold text-xs tracking-wider uppercase rounded-2xl flex items-center justify-center gap-2 hover:bg-neutral-200 transition-colors cursor-pointer shadow-[0_0_30px_rgba(255,255,255,0.2)]"
-                >
-                  <span>Launch Live Platform / Video</span>
-                  <ExternalLink size={14} />
-                </button>
+                <div className="flex flex-col gap-2.5">
+                  {selectedProject.hasCaseStudy && setActiveTab && (
+                    <button
+                      onClick={() => {
+                        setSelectedProject(null);
+                        setActiveTab("CaseStudies");
+                      }}
+                      className="w-full py-3.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs tracking-wider uppercase rounded-2xl flex items-center justify-center gap-2 transition-all cursor-pointer shadow-[0_0_30px_rgba(168,85,247,0.35)]"
+                    >
+                      <Sparkles size={14} />
+                      <span>Read Full Case Study</span>
+                      <ArrowRight size={14} />
+                    </button>
+                  )}
+
+                  <button
+                    onClick={() => openExternal(selectedProject.url)}
+                    className="w-full py-3.5 bg-white text-black font-semibold text-xs tracking-wider uppercase rounded-2xl flex items-center justify-center gap-2 hover:bg-neutral-200 transition-colors cursor-pointer shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+                  >
+                    <span>Launch Live Platform / Video</span>
+                    <ExternalLink size={14} />
+                  </button>
+                </div>
               </div>
             </motion.div>
           </motion.div>

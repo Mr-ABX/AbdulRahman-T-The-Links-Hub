@@ -91,6 +91,7 @@ import { BlogPage } from "./components/pages/BlogPage";
 import { FeedPage } from "./components/pages/FeedPage";
 import { ToolspediaPage } from "./components/pages/ToolspediaPage";
 import { FlagshipsPage } from "./components/pages/FlagshipsPage";
+import { CaseStudiesPage } from "./components/pages/CaseStudiesPage";
 import { AboutPage } from "./components/pages/AboutPage";
 import { ReviewsPage } from "./components/pages/ReviewsPage";
 import { ConnectPage } from "./components/pages/ConnectPage";
@@ -131,6 +132,7 @@ export default function App() {
 
   const activeTab = useMemo<Category>(() => {
     const path = location.pathname;
+    if (path.startsWith("/case-studies") || path.startsWith("/case-study") || path.startsWith("/casestudies")) return "CaseStudies";
     if (path.startsWith("/projects")) return "Projects";
     if (path.startsWith("/apps")) return "Apps";
     if (path.startsWith("/automation")) return "Automation";
@@ -156,6 +158,7 @@ export default function App() {
 
   const setActiveTab = (tab: Category) => {
     if (tab === "Home") navigate("/");
+    else if (tab === "CaseStudies") navigate("/case-studies");
     else navigate(`/${tab.toLowerCase()}`);
   };
 
@@ -564,6 +567,8 @@ export default function App() {
         return <ToolspediaPage />;
       case "Flagships":
         return <FlagshipsPage />;
+      case "CaseStudies":
+        return <CaseStudiesPage />;
       case "About":
         return <AboutPage />;
       case "Reviews":
@@ -730,7 +735,14 @@ export default function App() {
         setInitialMessage={setInitialChatMessage}
       />
 
-      <ProjectModal selectedProject={selectedProject} closeProjectModal={closeProjectModal} />
+      <ProjectModal
+        selectedProject={selectedProject}
+        closeProjectModal={closeProjectModal}
+        onNavigateCaseStudy={() => {
+          closeProjectModal();
+          setActiveTab("CaseStudies");
+        }}
+      />
       <EbookModal selectedEbook={selectedEbook} closeEbookModal={closeEbookModal} />
       <SettingsPanel
         isOpen={isSettingsOpen}

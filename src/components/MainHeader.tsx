@@ -34,7 +34,7 @@ export const MainHeader = ({
   const navGroups = [
     { label: "Home", tab: "Home" },
     { label: "Platform", items: ["Vortex", "Store", "Links", "Prompts", "Apps", "Toolspedia"] },
-    { label: "Work", items: ["Flagships", "Projects", "Services", "Automation"] },
+    { label: "Work", items: ["CaseStudies", "Flagships", "Projects", "Services", "Automation"] },
     { label: "Insights", items: ["Journal", "Academy", "Music", "Blog", "Feed", "Ebooks"] },
     { label: "About", items: ["About", "Reviews", "Connect", "Community"] },
   ];
@@ -236,7 +236,9 @@ export const MainHeader = ({
                                   {tabInfo?.icon}
                                 </span>
                                 <span className="flex-1 truncate">
-                                  {item === "Apps"
+                                  {item === "CaseStudies"
+                                    ? "Case Studies"
+                                    : item === "Apps"
                                     ? "INFNI-T' LABZ"
                                     : item === "Music"
                                     ? "AI Music"
@@ -363,7 +365,9 @@ export const MainHeader = ({
                               {tabInfo?.icon}
                             </span>
                             <span className="truncate">
-                              {item === "Apps"
+                              {item === "CaseStudies"
+                                ? "Case Studies"
+                                : item === "Apps"
                                 ? "INFNI-T' LABZ"
                                 : item === "Music"
                                 ? "AI Music"

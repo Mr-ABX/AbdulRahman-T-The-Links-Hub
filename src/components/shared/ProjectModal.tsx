@@ -1,15 +1,17 @@
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { X, ExternalLink, CheckCircle2 } from "lucide-react";
+import { X, ExternalLink, CheckCircle2, Sparkles, ArrowRight } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { ProjectType } from "../../types";
 
 export const ProjectModal = ({
   selectedProject,
   closeProjectModal,
+  onNavigateCaseStudy,
 }: {
   selectedProject: ProjectType | null;
   closeProjectModal: () => void;
+  onNavigateCaseStudy?: () => void;
 }) => {
   return (
     <AnimatePresence>
@@ -97,7 +99,17 @@ export const ProjectModal = ({
                       ))}
                     </ul>
 
-                    <div className="flex gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      {selectedProject.hasCaseStudy && onNavigateCaseStudy && (
+                        <button
+                          onClick={onNavigateCaseStudy}
+                          className="flex-1 bg-purple-600 text-white px-8 py-4 rounded-2xl font-bold text-center hover:bg-purple-500 transition-all flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(168,85,247,0.35)] cursor-pointer"
+                        >
+                          <Sparkles size={18} />
+                          <span>Full Case Study</span>
+                          <ArrowRight size={16} />
+                        </button>
+                      )}
                       {selectedProject.mainCategory !== "My Personal Apps" && (
                         <>
                           <a
@@ -108,9 +120,6 @@ export const ProjectModal = ({
                           >
                             Live Demo <ExternalLink size={18} />
                           </a>
-                          <button className="flex-1 bg-white/5 text-white px-8 py-4 rounded-2xl font-bold border border-white/10 hover:bg-white/10 transition-all">
-                            View Code
-                          </button>
                         </>
                       )}
                     </div>

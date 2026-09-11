@@ -4,6 +4,7 @@ export type Category =
   | "Home"
   | "Links"
   | "Projects"
+  | "CaseStudies"
   | "Apps"
   | "Automation"
   | "Ebooks"
@@ -50,6 +51,8 @@ export interface ProjectType {
   bg: string;
   icon: React.ReactNode;
   status: string;
+  hasCaseStudy?: boolean;
+  caseStudyId?: string;
 }
 
 export interface BentoCardProps {

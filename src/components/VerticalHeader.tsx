@@ -31,7 +31,7 @@ export const VerticalHeader = ({
   const navGroups = [
     { label: "Home", tab: "Home" },
     { label: "Platform", items: ["Vortex", "Store", "Links", "Prompts", "Apps", "Toolspedia"] },
-    { label: "Work", items: ["Flagships", "Projects", "Services", "Automation"] },
+    { label: "Work", items: ["CaseStudies", "Flagships", "Projects", "Services", "Automation"] },
     { label: "Insights", items: ["Journal", "Academy", "Music", "Blog", "Feed", "Ebooks"] },
     { label: "About", items: ["About", "Reviews", "Connect", "Community"] },
   ];
@@ -150,6 +150,7 @@ export const VerticalHeader = ({
                       {group.items.map((item) => {
                         const tabInfo = tabs.find((t) => t.name === item);
                         const displayName = 
+                          item === "CaseStudies" ? "Case Studies" :
                           item === "Apps" ? "Infni-T' Labz" : 
                           item === "Music" ? "AI Music" : 
                           item === "Blog" ? "My Blog" : 

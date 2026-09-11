@@ -10,6 +10,7 @@ export interface SpecularCardProps {
   interactive?: boolean;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   style?: React.CSSProperties;
+  key?: React.Key;
 }
 
 export const SpecularCard = ({

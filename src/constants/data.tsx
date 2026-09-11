@@ -54,6 +54,7 @@ type Category =
   | "Home"
   | "Links"
   | "Projects"
+  | "CaseStudies"
   | "Apps"
   | "Automation"
   | "Ebooks"
@@ -92,7 +93,8 @@ export const tabs: { name: Category; icon: React.ReactNode }[] = [
   { name: "Links", icon: <LinkIcon size={16} strokeWidth={1.35} /> },
   { name: "Store", icon: <ShoppingBag size={16} strokeWidth={1.35} /> },
   { name: "Apps", icon: <LayoutGrid size={16} strokeWidth={1.35} /> },
-  { name: "Flagships", icon: <Sparkles size={16} strokeWidth={1.35} /> },
+  { name: "CaseStudies", icon: <Sparkles size={16} strokeWidth={1.35} /> },
+  { name: "Flagships", icon: <Rocket size={16} strokeWidth={1.35} /> },
   { name: "Journal", icon: <BookOpen size={16} strokeWidth={1.35} /> },
   { name: "Projects", icon: <FolderGit2 size={16} strokeWidth={1.35} /> },
   { name: "Ebooks", icon: <Book size={16} strokeWidth={1.35} /> },
@@ -128,6 +130,22 @@ export const socialTabs = [
 ];
 
 export const projects: ProjectType[] = [
+  {
+    name: "MSN Global Trainings Portal",
+    mainCategory: "Web Development Projects",
+    categories: ["Web Development Projects", "Pro Business Suite", "AI Solutions"],
+    tags: ["Enterprise Portal", "E-Learning", "MSN Global", "Brand Identity", "Design System", "Case Study"],
+    pricing: "Enterprise",
+    desc: "A premier digital learning academy & enterprise training portal for MSN Global IT Solutions, featuring modern course navigation, Apple HIG design system, and frictionless enrollment funnels.",
+    url: "http://trainings.msn-global.com/",
+    previewUrl: "http://trainings.msn-global.com/",
+    color: "text-rose-400",
+    bg: "bg-rose-500/10",
+    icon: <GraduationCap size={20} />,
+    status: "Production",
+    hasCaseStudy: true,
+    caseStudyId: "msn-trainings",
+  },
   {
     name: "Infni-T — Digital Ecosystem & Agency",
     mainCategory: "Web Development Projects",

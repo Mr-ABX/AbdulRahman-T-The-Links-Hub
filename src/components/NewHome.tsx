@@ -609,7 +609,7 @@ export const Home = ({
 
       {/* 4. Portfolio */}
       <section className="py-24 md:py-32 max-w-[1400px] mx-auto px-4 md:px-8 relative border-t border-white/5">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
             <LiquidCapsule color1="#10B981" color2="#0EA5E9" />
             <span className="text-xs font-mono tracking-widest uppercase text-white/50">04 // Selected Works & Platforms</span>
@@ -617,9 +617,26 @@ export const Home = ({
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
             Passionate about digital design, spatial architecture, and full-stack software.
           </h2>
-          <p className="text-white/60 text-sm md:text-base leading-relaxed">
+          <p className="text-white/60 text-sm md:text-base leading-relaxed mb-6">
             Explorations across Web, Spatial Audio, 3D Canvas, and Autonomous Systems.
           </p>
+
+          {/* Apple HIG Case Study Spotlight Pill */}
+          <div className="inline-flex items-center gap-3 p-1.5 pl-4 pr-2 rounded-full bg-[#10101c]/90 border border-white/12 backdrop-blur-xl shadow-lg">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-rose-400 animate-pulse" />
+              <span className="text-xs text-white/80 font-medium">
+                New Case Study: <strong className="text-white font-semibold">MSN Global Trainings Portal</strong>
+              </span>
+            </div>
+            <button
+              onClick={() => setActiveTab("CaseStudies")}
+              className="px-3.5 py-1.5 rounded-full bg-white text-black hover:bg-neutral-200 text-xs font-bold flex items-center gap-1.5 transition-transform hover:scale-105 cursor-pointer shadow-sm"
+            >
+              <span>Read Case Study</span>
+              <ArrowRight size={12} />
+            </button>
+          </div>
         </div>
 
         <Portfolio3D setActiveTab={setActiveTab} />
