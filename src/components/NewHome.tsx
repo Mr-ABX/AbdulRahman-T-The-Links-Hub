@@ -5,6 +5,7 @@ import { SpecularCard } from "./shared/SpecularCard";
 import { ASSET_LINKS } from "../constants/assets";
 import { GitHubGraph } from "./GitHubGraph";
 import { Portfolio3D } from "./Portfolio3D";
+import { cn } from "../lib/utils";
 import {
   ArrowRight,
   Monitor,
@@ -134,20 +135,56 @@ const AppleSelect = ({ label, value, options, onChange }: AppleSelectProps) => {
   );
 };
 
-const LiquidCapsule = ({ color1, color2 }: { color1: string, color2: string }) => (
-  <div className="w-12 h-5 rounded-full overflow-hidden relative shadow-[0_0_15px_rgba(255,255,255,0.1)] shrink-0 hidden sm:block">
-    <svg width="48" height="20" viewBox="0 0 48 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute inset-0 w-full h-full">
-      <rect width="48" height="20" fill={`url(#gradient-${color1.substring(1)})`} />
-      <defs>
-        <linearGradient id={`gradient-${color1.substring(1)}`} x1="0" y1="0" x2="48" y2="20" gradientUnits="userSpaceOnUse">
-          <stop stopColor={color1} />
-          <stop offset="1" stopColor={color2} />
-        </linearGradient>
-      </defs>
-    </svg>
-    <div className="absolute inset-0 opacity-40 mix-blend-overlay" style={{ filter: "url(#rock-liquid-glitch)" }}></div>
-  </div>
-);
+const LiquidCapsule = ({
+  color1,
+  color2,
+  className,
+  showOnMobile = false,
+}: {
+  color1: string;
+  color2: string;
+  className?: string;
+  showOnMobile?: boolean;
+}) => {
+  const gradientId = `gradient-${color1.replace(/[^a-zA-Z0-9]/g, "")}-${color2.replace(/[^a-zA-Z0-9]/g, "")}`;
+  return (
+    <div
+      className={cn(
+        "w-10 sm:w-12 h-4 sm:h-5 rounded-full overflow-hidden relative shadow-[0_0_15px_rgba(255,255,255,0.12)] shrink-0",
+        !showOnMobile && "hidden sm:block",
+        className
+      )}
+    >
+      <svg
+        width="48"
+        height="20"
+        viewBox="0 0 48 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="absolute inset-0 w-full h-full"
+      >
+        <rect width="48" height="20" fill={`url(#${gradientId})`} />
+        <defs>
+          <linearGradient
+            id={gradientId}
+            x1="0"
+            y1="0"
+            x2="48"
+            y2="20"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor={color1} />
+            <stop offset="1" stopColor={color2} />
+          </linearGradient>
+        </defs>
+      </svg>
+      <div
+        className="absolute inset-0 opacity-45 mix-blend-overlay"
+        style={{ filter: "url(#rock-liquid-glitch)" }}
+      />
+    </div>
+  );
+};
 
 export const Home = ({
   projects,
@@ -206,26 +243,35 @@ export const Home = ({
 
       {/* 1. Hero Section */}
       <section className="pt-28 sm:pt-36 md:pt-44 lg:pt-48 pb-14 flex flex-col items-center justify-center text-center max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
-        {/* Apple HIG Micro Pill with Circular Avatar */}
+        {/* Apple HIG Micro Pill with Zoomed Avatar, Dark-Silver Liquid Capsule, and Monospace Studio Tag */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
           className="mb-8"
         >
-          <div className="inline-flex items-center gap-2.5 pl-1.5 pr-4 py-1.5 rounded-full bg-white/[0.05] hover:bg-white/[0.08] border border-white/[0.12] backdrop-blur-xl transition-all duration-200 group cursor-default shadow-sm">
-            {/* Small circular avatar with plain white background */}
-            <div className="w-5 h-5 rounded-full bg-white border border-white/60 overflow-hidden flex items-center justify-center shrink-0 shadow-sm">
+          <div className="inline-flex items-center gap-2.5 pl-2 pr-4 py-1.5 rounded-full bg-[#0d0d18]/90 hover:bg-[#141424]/95 border border-white/[0.14] hover:border-white/25 backdrop-blur-2xl transition-all duration-300 group cursor-default shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_10px_30px_rgba(0,0,0,0.6)]">
+            {/* Zoomed Avatar - Framed to Face with Translucent Glass Rim (Harsh White Border Removed) */}
+            <div className="w-6 h-6 rounded-full bg-black/60 border border-white/20 overflow-hidden flex items-center justify-center shrink-0 shadow-inner relative">
               <img
                 src="/my-image-for-home-01.jpeg"
                 alt="Abdulrahman"
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-cover scale-[1.38] object-[50%_20%]"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = ASSET_LINKS.myPfp;
                 }}
               />
             </div>
-            <span className="font-mono text-[11px] font-medium tracking-[0.18em] uppercase text-white/80 group-hover:text-white transition-colors">
+
+            {/* Apple-style Dark & Metallic Silver Liquid Capsule */}
+            <LiquidCapsule
+              color1="#1E293B"
+              color2="#CBD5E1"
+              showOnMobile={true}
+              className="w-8 sm:w-9 h-3.5 sm:h-4 shadow-[0_0_12px_rgba(203,213,225,0.25)] border border-white/10"
+            />
+
+            <span className="font-mono text-[11px] font-semibold tracking-[0.18em] uppercase text-white/90 group-hover:text-white transition-colors">
               Studio // Abdulrahman-T
             </span>
           </div>
@@ -233,7 +279,7 @@ export const Home = ({
 
         {/* Hero Title Container with Rock Assets flanking the headline */}
         <div className="relative w-full max-w-[1150px] flex items-center justify-center mb-8">
-          {/* Left Rock Asset - Layered Behind Text with Interactive Obsidian Liquid Reveal */}
+          {/* Left Rock Asset - Layered Behind Text with Ambient Glow and Interactive Obsidian Liquid Reveal */}
           <motion.div
             initial={{ opacity: 0, x: -30, scale: 0.85 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
@@ -243,13 +289,16 @@ export const Home = ({
             className="hidden md:block absolute -left-5 lg:-left-12 xl:-left-20 top-1/2 -translate-y-[52%] w-44 md:w-52 lg:w-68 xl:w-76 pointer-events-auto cursor-pointer select-none z-0 group"
             title="Interact with Left Monolith Rock"
           >
-            {/* Base Natural Rock */}
+            {/* Constant Ambient Glow Field (Always active, softly radiating) */}
+            <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-purple-500/25 via-indigo-500/20 to-cyan-500/10 blur-2xl opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 pointer-events-none" />
+
+            {/* Base Natural Rock with Permanent Clean Specular Glow */}
             <motion.img
               src="/rock-left-1000.webp"
               alt=""
               animate={{ y: [-8, 8, -8], rotate: [-1.2, 1.2, -1.2] }}
               transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-              className="w-full h-auto object-contain drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] filter brightness-95 contrast-105 group-hover:opacity-15 transition-all duration-300"
+              className="w-full h-auto object-contain drop-shadow-[0_0_25px_rgba(168,85,247,0.35)] drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] filter brightness-100 contrast-105 group-hover:opacity-15 transition-all duration-300"
             />
 
             {/* Super-Black Obsidian Liquid Reveal Layer */}
@@ -259,7 +308,7 @@ export const Home = ({
                 alt=""
                 animate={{ y: [-8, 8, -8], rotate: [-1.2, 1.2, -1.2] }}
                 transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-                className="w-full h-auto object-contain drop-shadow-[0_0_35px_rgba(168,85,247,0.4)]"
+                className="w-full h-auto object-contain drop-shadow-[0_0_40px_rgba(168,85,247,0.6)]"
                 style={{
                   filter: "url(#rock-liquid-glitch) grayscale(100%) contrast(450%) brightness(12%)",
                 }}
@@ -279,7 +328,7 @@ export const Home = ({
             </div>
           </motion.div>
 
-          {/* Right Rock Asset - Layered Behind Text with Interactive Obsidian Liquid Reveal */}
+          {/* Right Rock Asset - Layered Behind Text with Ambient Glow and Interactive Obsidian Liquid Reveal */}
           <motion.div
             initial={{ opacity: 0, x: 30, scale: 0.85 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
@@ -289,13 +338,16 @@ export const Home = ({
             className="hidden md:block absolute -right-5 lg:-right-12 xl:-right-20 top-1/2 -translate-y-[48%] w-44 md:w-52 lg:w-68 xl:w-76 pointer-events-auto cursor-pointer select-none z-0 group"
             title="Interact with Right Monolith Rock"
           >
-            {/* Base Natural Rock */}
+            {/* Constant Ambient Glow Field (Always active, softly radiating) */}
+            <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-indigo-500/25 via-purple-500/20 to-pink-500/10 blur-2xl opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 pointer-events-none" />
+
+            {/* Base Natural Rock with Permanent Clean Specular Glow */}
             <motion.img
               src="/rock-right-1000.webp"
               alt=""
               animate={{ y: [8, -8, 8], rotate: [1.2, -1.2, 1.2] }}
               transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-              className="w-full h-auto object-contain drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] filter brightness-95 contrast-105 group-hover:opacity-15 transition-all duration-300"
+              className="w-full h-auto object-contain drop-shadow-[0_0_25px_rgba(168,85,247,0.35)] drop-shadow-[0_24px_50px_rgba(0,0,0,0.85)] filter brightness-100 contrast-105 group-hover:opacity-15 transition-all duration-300"
             />
 
             {/* Super-Black Obsidian Liquid Reveal Layer */}
@@ -305,7 +357,7 @@ export const Home = ({
                 alt=""
                 animate={{ y: [8, -8, 8], rotate: [1.2, -1.2, 1.2] }}
                 transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                className="w-full h-auto object-contain drop-shadow-[0_0_35px_rgba(168,85,247,0.4)]"
+                className="w-full h-auto object-contain drop-shadow-[0_0_40px_rgba(168,85,247,0.6)]"
                 style={{
                   filter: "url(#rock-liquid-glitch) grayscale(100%) contrast(450%) brightness(12%)",
                 }}
