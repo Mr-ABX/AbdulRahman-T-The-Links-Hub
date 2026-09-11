@@ -170,7 +170,7 @@ const CASE_STUDIES_CATALOG: CaseStudySummary[] = [
     id: "prompt-os-platform",
     title: "PromptOS & Autonomous Orchestrator",
     subtitle: "Enterprise Prompt Engineering Studio & Multi-Model Benchmark Testing Suite",
-    client: "Infni-T' Autonomous Systems",
+    client: "INFNI-T AI Digital Ecosystem",
     clientRole: "Internal AI Flagship",
     category: "AI & Developer Tooling",
     year: "2025–2026",

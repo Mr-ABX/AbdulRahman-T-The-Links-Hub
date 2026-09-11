@@ -24,9 +24,9 @@ interface Portfolio3DProps {
 }
 
 export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
-  // Curate top featured projects with guaranteed live embeds, rotating order starting with Infni-T
+  // Curate top featured projects with guaranteed live embeds, rotating order starting with INFNI-T
   const featuredProjects = [
-    projects.find((p) => p.name.includes("Infni-T")) || projects[0],
+    projects.find((p) => p.name.toUpperCase().includes("INFNI-T")) || projects[0],
     projects.find((p) => p.name.includes("MSN Global Trainings")) || projects[1],
     projects.find((p) => p.name.includes("Vibelex")) || projects[2],
     projects.find((p) => p.name.includes("Cinematic Motion")) || projects[3],

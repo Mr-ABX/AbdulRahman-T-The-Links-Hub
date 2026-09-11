@@ -223,7 +223,7 @@ export const AboutPage = () => {
               <div className="flex justify-between items-start">
                 <LayoutIcon size={24} className="text-white/40" />
                 <a
-                  href="https://infni-t.com"
+                  href="https://infni-t.online"
                   target="_blank"
                   className="text-white/20 hover:text-white transition-colors"
                 >
@@ -231,9 +231,9 @@ export const AboutPage = () => {
                 </a>
               </div>
               <div>
-                <h3 className="font-bold mb-1">INFNI-T'</h3>
-                <p className="text-[10px] text-white/30 uppercase tracking-widest">
-                  Agency Venture
+                <h3 className="font-bold mb-1">INFNI-T</h3>
+                <p className="text-[10px] text-white/40 uppercase tracking-wider font-mono">
+                  AI Digital Ecosystem & Multidisciplinary Agency
                 </p>
               </div>
             </div>

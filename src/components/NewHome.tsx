@@ -809,90 +809,140 @@ export const Home = ({
         <Portfolio3D setActiveTab={setActiveTab} />
       </section>
 
-      {/* 5. Testimonials & Client Reviews Suite */}
-      <section className="py-24 md:py-32 max-w-[1280px] mx-auto px-4 md:px-8 border-t border-white/5 relative">
-        {/* Ambient Top Glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+      {/* 5. Minimal Apple HIG Pro Partner Reviews & Quantitative Proof */}
+      <section className="py-20 md:py-28 max-w-[1200px] mx-auto px-4 md:px-8 border-t border-white/[0.08] relative">
+        {/* Apple HIG Pro Specular Subtle Top Ambient */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-20 bg-gradient-to-b from-white/[0.03] to-transparent blur-2xl pointer-events-none" />
 
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <LiquidCapsule color1="#F59E0B" color2="#EC4899" />
-            <span className="text-xs font-mono tracking-widest uppercase text-white/50">05 // Verified Reviews</span>
+        {/* Minimal Section Header */}
+        <div className="max-w-2xl mx-auto text-center mb-10 md:mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-neutral-300 text-xs font-mono tracking-widest uppercase mb-4 shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span>05 // Client Endorsements</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-3">
-            Whatever Our Partners Say
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-white mb-3 font-sans">
+            Engineered for Commercial Impact
           </h2>
-          <p className="text-white/60 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
-            Real feedback, authentic outcomes, and measured impact from agency founders, enterprise teams, and creators worldwide.
+          <p className="text-neutral-400 text-sm sm:text-base leading-relaxed">
+            Direct feedback and validated outcomes from founders, CTOs, and global engineering teams.
           </p>
         </div>
 
-        {/* Featured Review Spotlight Showcase */}
+        {/* Apple HIG Pro Silver Specular Testimonial Showcase */}
         {(() => {
           const activeReview = reviews[activeReviewIndex] || reviews[0];
           return (
-            <div className="mb-14">
-              <SpecularCard
+            <div className="mb-8">
+              <div
                 id="testimonials-featured-card"
-                className="p-6 sm:p-8 md:p-12 relative overflow-hidden rounded-[2.5rem] border border-white/15 bg-gradient-to-br from-[#0e0e18]/95 via-[#130f24]/90 to-[#090912]/95 shadow-[0_30px_90px_rgba(0,0,0,0.95)]"
-                glowColor="rgba(245, 158, 11, 0.12)"
+                className="relative rounded-3xl bg-gradient-to-b from-[#131418] via-[#0e0f13] to-[#0a0a0d] border border-white/[0.12] p-6 sm:p-10 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.12)] overflow-hidden"
               >
-                {/* Specular edge highlight */}
-                <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
+                {/* Silver Precision Specular Hairline */}
+                <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-neutral-300/30 to-transparent" />
 
-                <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 relative z-10">
-                  {/* Left Column: Client Avatar & Identity Profile */}
-                  <div className="w-full lg:w-4/12 flex flex-col items-center lg:items-start text-center lg:text-left shrink-0">
-                    <div className="relative group mb-5">
-                      {/* Avatar with luxury specular border */}
-                      <div className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-3xl overflow-hidden border-2 border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.8)] relative bg-[#181824]">
+                {/* Apple Pro Client Segmented Selector Bar */}
+                <div className="flex items-center justify-between gap-3 pb-6 sm:pb-8 mb-6 sm:mb-8 border-b border-white/[0.08] overflow-x-auto scrollbar-none">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    {reviews.slice(0, 6).map((r, idx) => (
+                      <button
+                        key={r.name}
+                        onClick={() => setActiveReviewIndex(idx)}
+                        className={cn(
+                          "px-3 py-1.5 rounded-full text-xs font-medium transition-all shrink-0 cursor-pointer flex items-center gap-2",
+                          activeReviewIndex === idx
+                            ? "bg-white/15 text-white border border-white/25 shadow-sm"
+                            : "bg-white/[0.03] text-neutral-400 border border-white/[0.06] hover:bg-white/[0.08] hover:text-neutral-200"
+                        )}
+                      >
+                        <img
+                          src={r.avatar}
+                          alt={r.name}
+                          className="w-4 h-4 rounded-full object-cover border border-white/20"
+                        />
+                        <span>{r.company}</span>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Navigation Chevrons & Counter */}
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-[11px] font-mono text-neutral-400 pr-1">
+                      {String(activeReviewIndex + 1).padStart(2, "0")} / {String(reviews.length).padStart(2, "0")}
+                    </span>
+                    <button
+                      onClick={() =>
+                        setActiveReviewIndex((prev) => (prev - 1 + reviews.length) % reviews.length)
+                      }
+                      className="p-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.12] border border-white/10 text-neutral-300 hover:text-white transition-all cursor-pointer"
+                      title="Previous endorsement"
+                    >
+                      <ChevronLeft size={14} />
+                    </button>
+                    <button
+                      onClick={() =>
+                        setActiveReviewIndex((prev) => (prev + 1) % reviews.length)
+                      }
+                      className="p-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.12] border border-white/10 text-neutral-300 hover:text-white transition-all cursor-pointer"
+                      title="Next endorsement"
+                    >
+                      <ChevronRight size={14} />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 md:gap-12 relative z-10">
+                  {/* Left Column: Authentic Client Profile */}
+                  <div className="w-full lg:w-4/12 flex flex-row lg:flex-col items-center lg:items-start gap-4 lg:gap-3 shrink-0 pb-6 lg:pb-0 border-b lg:border-b-0 lg:border-r border-white/[0.08] lg:pr-8">
+                    <div className="relative shrink-0">
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl overflow-hidden border border-white/20 bg-neutral-900 shadow-md">
                         <img
                           src={activeReview.avatar}
                           alt={activeReview.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="w-full h-full object-cover"
                           loading="lazy"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
                       </div>
-
-                      {/* Verified Badge */}
-                      <div className="absolute -bottom-2 -right-2 px-2.5 py-1 rounded-full bg-emerald-500 text-white font-mono text-[10px] font-bold tracking-wider flex items-center gap-1 shadow-lg border border-white/20">
-                        <ShieldCheck size={12} />
-                        <span>VERIFIED</span>
-                      </div>
+                      <span className="absolute -bottom-1 -right-1 p-1 rounded-full bg-[#0e0f13] border border-white/20 text-emerald-400 flex items-center justify-center shadow">
+                        <ShieldCheck size={13} />
+                      </span>
                     </div>
 
-                    <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-                      {activeReview.name}
-                    </h3>
-                    <p className="text-amber-400 text-sm font-semibold mt-0.5">
-                      {activeReview.role} {activeReview.company ? `• ${activeReview.company}` : ""}
-                    </p>
-                    <p className="text-white/40 text-xs font-mono tracking-wide mt-1 flex items-center gap-1.5 justify-center lg:justify-start">
-                      <span>{activeReview.location}</span>
-                    </p>
-
-                    {/* Metric Callout Pill */}
-                    {activeReview.metric && (
-                      <div className="mt-4 px-3.5 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-300 text-xs font-mono font-semibold flex items-center gap-1.5">
-                        <Sparkles size={13} className="text-amber-400" />
-                        <span>{activeReview.metric}</span>
+                    <div className="text-left">
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <h3 className="text-lg sm:text-xl font-semibold text-white tracking-tight">
+                          {activeReview.name}
+                        </h3>
                       </div>
-                    )}
+                      <p className="text-neutral-300 text-xs sm:text-sm font-medium">
+                        {activeReview.role}
+                      </p>
+                      <p className="text-neutral-400 text-xs font-mono mt-0.5">
+                        {activeReview.company} • {activeReview.location}
+                      </p>
+
+                      {activeReview.metric && (
+                        <div className="mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-neutral-200 text-[11px] font-mono">
+                          <span className="w-1 h-1 rounded-full bg-emerald-400" />
+                          <span>{activeReview.metric}</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
-                  {/* Right Column: Quote Text & Ratings & Switcher */}
+                  {/* Right Column: High-Legibility Apple Pro Quote */}
                   <div className="w-full lg:w-8/12 flex flex-col justify-between">
                     <div>
-                      <div className="flex items-center justify-between gap-4 mb-6">
-                        <div className="flex gap-1.5 text-amber-400">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-1 text-amber-400">
                           {[1, 2, 3, 4, 5].map((s) => (
-                            <Star key={s} size={20} fill="currentColor" />
+                            <Star key={s} size={14} fill="currentColor" />
                           ))}
+                          <span className="ml-1.5 text-xs font-mono text-neutral-400 font-medium">
+                            5.0 / 5.0
+                          </span>
                         </div>
                         {activeReview.projectCategory && (
-                          <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/70 text-xs font-mono">
+                          <span className="text-xs font-mono text-neutral-400 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08]">
                             {activeReview.projectCategory}
                           </span>
                         )}
@@ -901,149 +951,129 @@ export const Home = ({
                       <AnimatePresence mode="wait">
                         <motion.blockquote
                           key={activeReviewIndex}
-                          initial={{ opacity: 0, y: 10 }}
+                          initial={{ opacity: 0, y: 6 }}
                           animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-                          className="text-lg sm:text-xl md:text-2xl text-white/90 leading-relaxed font-light italic relative pl-6 border-l-2 border-amber-500/50"
+                          exit={{ opacity: 0, y: -6 }}
+                          transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+                          className="text-base sm:text-lg md:text-xl text-neutral-100 leading-relaxed font-normal font-sans"
                         >
                           "{activeReview.text}"
                         </motion.blockquote>
                       </AnimatePresence>
                     </div>
 
-                    {/* Partner Avatar Fast Switcher Dock */}
-                    <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-                      <div className="flex items-center gap-2 overflow-x-auto max-w-full pb-1">
-                        <span className="text-xs font-mono text-white/40 uppercase tracking-wider mr-1 hidden sm:inline">
-                          Select Partner:
-                        </span>
-                        {reviews.slice(0, 6).map((r, idx) => (
-                          <button
-                            key={r.name}
-                            onClick={() => setActiveReviewIndex(idx)}
-                            className={cn(
-                              "w-11 h-11 rounded-2xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer relative",
-                              activeReviewIndex === idx
-                                ? "border-amber-400 scale-110 shadow-[0_0_15px_rgba(245,158,11,0.5)] z-10"
-                                : "border-white/20 opacity-50 hover:opacity-100 hover:border-white/40"
-                            )}
-                            title={`${r.name} (${r.company || r.role})`}
-                          >
-                            <img src={r.avatar} alt={r.name} className="w-full h-full object-cover" />
-                          </button>
-                        ))}
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() =>
-                            setActiveReviewIndex((prev) => (prev - 1 + reviews.length) % reviews.length)
-                          }
-                          className="p-2.5 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 text-white transition-all cursor-pointer hover:scale-105 active:scale-95"
-                          title="Previous review"
-                        >
-                          <ChevronLeft size={16} />
-                        </button>
-                        <span className="text-xs font-mono text-white/50 px-1">
-                          {activeReviewIndex + 1} / {reviews.length}
-                        </span>
-                        <button
-                          onClick={() =>
-                            setActiveReviewIndex((prev) => (prev + 1) % reviews.length)
-                          }
-                          className="p-2.5 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 text-white transition-all cursor-pointer hover:scale-105 active:scale-95"
-                          title="Next review"
-                        >
-                          <ChevronRight size={16} />
-                        </button>
-                      </div>
+                    <div className="mt-6 pt-5 border-t border-white/[0.06] flex items-center justify-between text-xs text-neutral-400 font-mono">
+                      <span>Verified Partner Delivery</span>
+                      <span>Production Verified</span>
                     </div>
                   </div>
                 </div>
-              </SpecularCard>
+              </div>
             </div>
           );
         })()}
 
-        {/* Curated Partner Feedback Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        {/* Minimal 3-Card Partner Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 mb-8">
           {reviews.slice(1, 4).map((item) => (
             <div
               key={item.name}
-              className="p-6 sm:p-7 rounded-3xl bg-[#0b0b14]/90 border border-white/10 hover:border-white/25 transition-all duration-300 flex flex-col justify-between group shadow-lg hover:shadow-2xl hover:-translate-y-1 relative overflow-hidden backdrop-blur-xl"
+              className="p-5 sm:p-6 rounded-2xl bg-[#0f1014]/70 border border-white/[0.08] hover:border-white/20 transition-all duration-300 flex flex-col justify-between group shadow-sm"
             >
-              {/* Top ambient hover glow */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-2xl group-hover:bg-amber-500/10 transition-colors pointer-events-none" />
-
               <div>
-                {/* Header with avatar & stars */}
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between mb-3.5">
                   <div className="flex items-center gap-3">
                     <img
                       src={item.avatar}
                       alt={item.name}
-                      className="w-12 h-12 rounded-2xl object-cover border border-white/20 shadow-md shrink-0"
+                      className="w-10 h-10 rounded-xl object-cover border border-white/15 shrink-0"
                     />
                     <div>
-                      <h4 className="text-white font-bold text-sm sm:text-base leading-tight">
+                      <h4 className="text-white font-medium text-sm leading-tight">
                         {item.name}
                       </h4>
-                      <p className="text-white/50 text-xs truncate max-w-[150px]">
-                        {item.role}
+                      <p className="text-neutral-400 text-xs">
+                        {item.role} • {item.company}
                       </p>
                     </div>
                   </div>
                   <div className="flex text-amber-400">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <Star key={s} size={14} fill="currentColor" />
-                    ))}
+                    <Star size={12} fill="currentColor" />
+                    <span className="text-[11px] font-mono text-neutral-300 ml-1">5.0</span>
                   </div>
                 </div>
 
-                <p className="text-white/80 text-xs sm:text-sm leading-relaxed italic mb-4">
+                <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed mb-4">
                   "{item.text}"
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-white/40">
-                <span className="text-amber-300/80 font-semibold">{item.company || item.projectCategory}</span>
+              <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between text-[11px] font-mono text-neutral-400">
+                <span>{item.projectCategory}</span>
                 <span>{item.location}</span>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Trust Stats Bar & All Reviews Action */}
-        <div className="p-6 sm:p-8 rounded-3xl bg-white/[0.02] border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 backdrop-blur-xl">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 w-full md:w-auto text-center md:text-left">
-            <div>
-              <p className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">100%</p>
-              <p className="text-xs font-mono text-white/50 uppercase tracking-wider mt-0.5">Satisfaction</p>
+        {/* Sleek Apple HIG Pro Pill / Metric Widget (Requested Precision Specification) */}
+        <div className="flex justify-center">
+          <div className="inline-flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 md:gap-5 py-2.5 px-4 sm:px-6 md:px-8 rounded-full bg-[#101115]/90 border border-white/[0.12] backdrop-blur-2xl shadow-[0_12px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.15)]">
+            {/* 100% Satisfaction Badge */}
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+              </span>
+              <span className="text-xs sm:text-sm font-medium text-white tracking-tight">100% Satisfaction</span>
             </div>
-            <div>
-              <p className="text-2xl sm:text-3xl font-extrabold text-amber-400 tracking-tight">5.0 ★</p>
-              <p className="text-xs font-mono text-white/50 uppercase tracking-wider mt-0.5">Average Rating</p>
-            </div>
-            <div>
-              <p className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">25+</p>
-              <p className="text-xs font-mono text-white/50 uppercase tracking-wider mt-0.5">Delivered</p>
-            </div>
-            <div>
-              <p className="text-2xl sm:text-3xl font-extrabold text-emerald-400 tracking-tight">100%</p>
-              <p className="text-xs font-mono text-white/50 uppercase tracking-wider mt-0.5">Verified</p>
-            </div>
-          </div>
 
-          {setActiveTab && (
-            <button
-              onClick={() => setActiveTab("Reviews")}
-              className="px-6 py-3.5 rounded-full bg-white text-black hover:bg-neutral-200 font-bold text-xs tracking-tight transition-all flex items-center gap-2 hover:scale-105 active:scale-95 cursor-pointer shadow-lg shrink-0"
-            >
-              <span>Explore All {reviews.length} Client Reviews</span>
-              <ArrowRight size={14} />
-            </button>
-          )}
+            <span className="hidden sm:inline w-px h-3.5 bg-white/10" />
+
+            {/* 4.9 Average Rating */}
+            <div className="flex items-center gap-1.5">
+              <Star size={13} className="text-amber-400 fill-amber-400" />
+              <span className="text-xs sm:text-sm font-medium text-white tracking-tight">4.9/5.0 Average Rating</span>
+            </div>
+
+            <span className="hidden sm:inline w-px h-3.5 bg-white/10" />
+
+            {/* 200+ Projects Delivered */}
+            <div className="flex items-center gap-1.5">
+              <span className="px-2 py-0.5 rounded-full bg-white/[0.06] text-[11px] font-mono text-neutral-200 font-semibold border border-white/10">200+</span>
+              <span className="text-xs sm:text-sm font-medium text-neutral-300 tracking-tight">Projects Delivered</span>
+            </div>
+
+            <span className="hidden md:inline w-px h-3.5 bg-white/10" />
+
+            {/* 110+ International Clients */}
+            <div className="flex items-center gap-1.5">
+              <span className="px-2 py-0.5 rounded-full bg-white/[0.06] text-[11px] font-mono text-neutral-200 font-semibold border border-white/10">110+</span>
+              <span className="text-xs sm:text-sm font-medium text-neutral-300 tracking-tight">International Clients</span>
+            </div>
+
+            <span className="hidden lg:inline w-px h-3.5 bg-white/10" />
+
+            {/* 200+ Industries */}
+            <div className="flex items-center gap-1.5">
+              <span className="px-2 py-0.5 rounded-full bg-white/[0.06] text-[11px] font-mono text-neutral-300 font-semibold border border-white/10">200+</span>
+              <span className="text-xs sm:text-sm font-medium text-neutral-400 tracking-tight">Industries</span>
+            </div>
+
+            {/* View All Trigger */}
+            {setActiveTab && (
+              <>
+                <span className="hidden sm:inline w-px h-3.5 bg-white/10" />
+                <button
+                  onClick={() => setActiveTab("Reviews")}
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-neutral-200 hover:text-white transition-colors cursor-pointer pl-1 group"
+                >
+                  <span>All Reviews</span>
+                  <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </section>
 
