@@ -825,19 +825,24 @@ export const Home = ({
         {/* Subtle Ambient Refraction */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-16 bg-gradient-to-b from-white/[0.02] to-transparent blur-xl pointer-events-none" />
 
-        {/* Apple HIG Section Header & Tag Pill */}
+        {/* Section Header Matching Screenshot Styling & Requested Content */}
         <div className="text-center max-w-3xl mx-auto mb-12 relative z-10">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <LiquidCapsule color1="#F59E0B" color2="#10B981" />
+            <LiquidCapsule
+              color1="#F97316"
+              color2="#EA580C"
+              showOnMobile={true}
+              className="w-10 sm:w-12 h-4 sm:h-5 shadow-[0_0_15px_rgba(249,115,22,0.35)]"
+            />
             <span className="text-xs font-mono tracking-widest uppercase text-white/50">
-              05 // Client Endorsements & Proof
+              05 // CLIENT REVIEWS
             </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
-            Engineered for Commercial Impact.
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight mb-4 font-sans">
+            What Our Partners Say
           </h2>
-          <p className="text-white/60 text-sm md:text-base leading-relaxed">
-            Authentic verified feedback and validated outcomes from founders, CTOs, and global engineering teams.
+          <p className="text-white/60 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
+            Feedback from creators, founders, and teams we've collaborated with — engineered for commercial impact with authentic verified outcomes from global leaders.
           </p>
         </div>
 
