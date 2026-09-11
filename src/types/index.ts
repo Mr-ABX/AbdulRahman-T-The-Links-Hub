@@ -37,6 +37,7 @@ export type ProjectCategory =
   | "Pro Business Suite";
 
 export type RockLightColor = "purple" | "white";
+export type RockLightIntensity = "subtle" | "balanced" | "vibrant";
 
 export interface ProjectType {
   name: string;

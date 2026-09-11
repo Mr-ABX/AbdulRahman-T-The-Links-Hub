@@ -117,7 +117,7 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-import { Category, ProjectCategory, RockLightColor } from "./types";
+import { Category, ProjectCategory, RockLightColor, RockLightIntensity } from "./types";
 import { tabs, socialTabs, projects, reviews, companies, skills, categoryDescriptions } from "./constants/data";
 import { SkeletonCard, BentoCard } from "./components/shared/BentoCard";
 import { LiveAutomationFeed } from "./components/shared/LiveAutomationFeed";
@@ -243,6 +243,11 @@ export default function App() {
     if (val === "purple" || val === "white") return val;
     return "purple"; // Default: Cosmic Purple
   });
+  const [rocksLightIntensity, setRocksLightIntensity] = useState<RockLightIntensity>(() => {
+    const val = localStorage.getItem("abdulrahman_rocks_light_intensity_v1");
+    if (val === "subtle" || val === "balanced" || val === "vibrant") return val;
+    return "balanced"; // Default: Clean, balanced glow
+  });
 
   useEffect(() => {
     localStorage.setItem("abdulrahman_hideCursor_v3", hideCustomCursor.toString());
@@ -260,6 +265,7 @@ export default function App() {
     localStorage.setItem("abdulrahman_footer_pixel_mono_v3", footerPixelMonochrome.toString());
     localStorage.setItem("abdulrahman_rocks_light_enabled_v1", rocksLightEnabled.toString());
     localStorage.setItem("abdulrahman_rocks_light_color_v1", rocksLightColor);
+    localStorage.setItem("abdulrahman_rocks_light_intensity_v1", rocksLightIntensity);
   }, [
     hideCustomCursor,
     enableSmoothScroll,
@@ -273,6 +279,7 @@ export default function App() {
     footerPixelMonochrome,
     rocksLightEnabled,
     rocksLightColor,
+    rocksLightIntensity,
   ]);
 
   const slugify = (text: string) => {
@@ -516,6 +523,7 @@ export default function App() {
             setActiveTab={setActiveTab}
             rocksLightEnabled={rocksLightEnabled}
             rocksLightColor={rocksLightColor}
+            rocksLightIntensity={rocksLightIntensity}
           />
         );
       case "Links":
@@ -780,6 +788,8 @@ export default function App() {
         setRocksLightEnabled={setRocksLightEnabled}
         rocksLightColor={rocksLightColor}
         setRocksLightColor={setRocksLightColor}
+        rocksLightIntensity={rocksLightIntensity}
+        setRocksLightIntensity={setRocksLightIntensity}
         footerDuneShader={footerDuneShader}
         setFooterDuneShader={setFooterDuneShader}
         footerPixelMode={footerPixelMode}

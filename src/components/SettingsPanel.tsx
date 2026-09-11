@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { cn } from "../lib/utils";
 import { DuneShaderStyle, DuneInteractionMode } from "./layout/PixelDunes";
-import { RockLightColor } from "../types";
+import { RockLightColor, RockLightIntensity } from "../types";
 
 interface SettingsPanelProps {
   isOpen: boolean;
@@ -33,6 +33,8 @@ interface SettingsPanelProps {
   setRocksLightEnabled: (val: boolean) => void;
   rocksLightColor: RockLightColor;
   setRocksLightColor: (val: RockLightColor) => void;
+  rocksLightIntensity: RockLightIntensity;
+  setRocksLightIntensity: (val: RockLightIntensity) => void;
   footerDuneShader: DuneShaderStyle;
   setFooterDuneShader: (val: DuneShaderStyle) => void;
   footerPixelMode: DuneInteractionMode;
@@ -96,6 +98,8 @@ export const SettingsPanel = ({
   setRocksLightEnabled,
   rocksLightColor,
   setRocksLightColor,
+  rocksLightIntensity,
+  setRocksLightIntensity,
   footerDuneShader,
   setFooterDuneShader,
   footerPixelMode,
@@ -392,6 +396,50 @@ export const SettingsPanel = ({
                             Soft Silver Blite
                           </span>
                         </button>
+                      </div>
+
+                      {/* Intensity Level Selector */}
+                      <div className="pt-2 border-t border-white/[0.05] space-y-2">
+                        <div className="flex items-center justify-between">
+                          <label className="text-[10px] font-mono text-white/40 uppercase tracking-wider block">
+                            Luminescence Intensity
+                          </label>
+                          <span className="text-[10px] font-mono text-white/60 capitalize">
+                            {rocksLightIntensity}
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-1.5 p-1 bg-white/[0.03] border border-white/[0.06] rounded-xl">
+                          {(
+                            [
+                              { id: "subtle", label: "Subtle", desc: "Whisper" },
+                              { id: "balanced", label: "Balanced", desc: "Optimal" },
+                              { id: "vibrant", label: "Vibrant", desc: "Radiant" },
+                            ] as const
+                          ).map((item) => (
+                            <button
+                              key={item.id}
+                              id={`rock-intensity-${item.id}-btn`}
+                              type="button"
+                              onClick={() => setRocksLightIntensity(item.id)}
+                              className={cn(
+                                "py-1.5 px-2 rounded-lg text-xs font-medium flex flex-col items-center justify-center gap-0.5 transition-all duration-200 cursor-pointer text-center",
+                                rocksLightIntensity === item.id
+                                  ? rocksLightColor === "purple"
+                                    ? "bg-purple-500/25 border border-purple-400/40 text-white shadow-sm"
+                                    : "bg-white/20 border border-white/40 text-white shadow-sm"
+                                  : "text-white/40 hover:text-white/80 hover:bg-white/[0.04] border border-transparent"
+                              )}
+                            >
+                              <span className="text-[11px] leading-tight font-medium">
+                                {item.label}
+                              </span>
+                              <span className="text-[8px] font-mono opacity-50 uppercase tracking-tight">
+                                {item.desc}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </motion.div>
                   )}

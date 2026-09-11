@@ -6,7 +6,7 @@ import { ASSET_LINKS } from "../constants/assets";
 import { GitHubGraph } from "./GitHubGraph";
 import { Portfolio3D } from "./Portfolio3D";
 import { cn } from "../lib/utils";
-import { RockLightColor } from "../types";
+import { RockLightColor, RockLightIntensity } from "../types";
 import {
   ArrowRight,
   Monitor,
@@ -192,11 +192,13 @@ export const Home = ({
   setActiveTab,
   rocksLightEnabled = true,
   rocksLightColor = "purple",
+  rocksLightIntensity = "balanced",
 }: {
   projects: any[];
   setActiveTab: (tab: string) => void;
   rocksLightEnabled?: boolean;
   rocksLightColor?: RockLightColor;
+  rocksLightIntensity?: RockLightIntensity;
 }) => {
   const PROJECT_TYPE_OPTIONS = [
     "Full-Stack Web & App",
@@ -212,6 +214,61 @@ export const Home = ({
     "$10k+",
     "Flexible / Advisory",
   ];
+
+  // Dynamic Intensity-Responsive Rock Monolith Lighting Styles
+  const leftGlowGradient =
+    rocksLightColor === "purple"
+      ? rocksLightIntensity === "subtle"
+        ? "bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.12)_0%,rgba(99,102,241,0.04)_45%,transparent_70%)]"
+        : rocksLightIntensity === "vibrant"
+        ? "bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.36)_0%,rgba(99,102,241,0.18)_50%,transparent_75%)]"
+        : "bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.22)_0%,rgba(99,102,241,0.09)_45%,transparent_70%)]"
+      : rocksLightIntensity === "subtle"
+      ? "bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.08)_0%,rgba(203,213,225,0.03)_45%,transparent_70%)]"
+      : rocksLightIntensity === "vibrant"
+      ? "bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.28)_0%,rgba(203,213,225,0.14)_50%,transparent_75%)]"
+      : "bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.16)_0%,rgba(203,213,225,0.07)_45%,transparent_70%)]";
+
+  const rightGlowGradient =
+    rocksLightColor === "purple"
+      ? rocksLightIntensity === "subtle"
+        ? "bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.12)_0%,rgba(168,85,247,0.04)_45%,transparent_70%)]"
+        : rocksLightIntensity === "vibrant"
+        ? "bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.36)_0%,rgba(168,85,247,0.18)_50%,transparent_75%)]"
+        : "bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.22)_0%,rgba(168,85,247,0.09)_45%,transparent_70%)]"
+      : rocksLightIntensity === "subtle"
+      ? "bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.08)_0%,rgba(203,213,225,0.03)_45%,transparent_70%)]"
+      : rocksLightIntensity === "vibrant"
+      ? "bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.28)_0%,rgba(203,213,225,0.14)_50%,transparent_75%)]"
+      : "bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.16)_0%,rgba(203,213,225,0.07)_45%,transparent_70%)]";
+
+  const rockBaseDropShadow = !rocksLightEnabled
+    ? "drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
+    : rocksLightColor === "purple"
+    ? rocksLightIntensity === "subtle"
+      ? "drop-shadow-[0_0_8px_rgba(168,85,247,0.12)] drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
+      : rocksLightIntensity === "vibrant"
+      ? "drop-shadow-[0_0_26px_rgba(168,85,247,0.45)] drop-shadow-[0_0_8px_rgba(192,132,252,0.3)] drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
+      : "drop-shadow-[0_0_16px_rgba(168,85,247,0.28)] drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
+    : rocksLightIntensity === "subtle"
+    ? "drop-shadow-[0_0_6px_rgba(255,255,255,0.08)] drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
+    : rocksLightIntensity === "vibrant"
+    ? "drop-shadow-[0_0_22px_rgba(255,255,255,0.38)] drop-shadow-[0_0_6px_rgba(226,232,240,0.3)] drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
+    : "drop-shadow-[0_0_14px_rgba(255,255,255,0.22)] drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]";
+
+  const rockObsidianDropShadow = !rocksLightEnabled
+    ? "drop-shadow-[0_15px_35px_rgba(0,0,0,0.9)]"
+    : rocksLightColor === "purple"
+    ? rocksLightIntensity === "subtle"
+      ? "drop-shadow-[0_0_16px_rgba(168,85,247,0.25)] drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
+      : rocksLightIntensity === "vibrant"
+      ? "drop-shadow-[0_0_40px_rgba(168,85,247,0.65)] drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
+      : "drop-shadow-[0_0_28px_rgba(168,85,247,0.45)] drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
+    : rocksLightIntensity === "subtle"
+    ? "drop-shadow-[0_0_12px_rgba(255,255,255,0.15)] drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
+    : rocksLightIntensity === "vibrant"
+    ? "drop-shadow-[0_0_34px_rgba(255,255,255,0.50)] drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
+    : "drop-shadow-[0_0_24px_rgba(255,255,255,0.35)] drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]";
 
   const [inquiryType, setInquiryType] = useState("Full-Stack Web & App");
   const [customInquiry, setCustomInquiry] = useState("");
@@ -294,14 +351,12 @@ export const Home = ({
             className="hidden md:block absolute -left-5 lg:-left-12 xl:-left-20 top-1/2 -translate-y-[52%] w-44 md:w-52 lg:w-68 xl:w-76 pointer-events-auto cursor-pointer select-none z-0 group"
             title="Interact with Left Monolith Rock"
           >
-            {/* Ambient Glow Field (Controlled by Settings - Soft, Atmospheric Radial Diffusion) */}
+            {/* Ambient Glow Field (Controlled by Settings & Intensity) */}
             {rocksLightEnabled && (
               <div
                 className={cn(
-                  "absolute inset-2 -z-10 rounded-full blur-xl transition-all duration-700 pointer-events-none",
-                  rocksLightColor === "purple"
-                    ? "bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.14)_0%,rgba(99,102,241,0.06)_45%,transparent_70%)] group-hover:scale-105 group-hover:opacity-100"
-                    : "bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.09)_0%,rgba(203,213,225,0.04)_45%,transparent_70%)] group-hover:scale-105 group-hover:opacity-100"
+                  "absolute inset-2 -z-10 rounded-full blur-xl transition-all duration-700 pointer-events-none group-hover:scale-105 group-hover:opacity-100",
+                  leftGlowGradient
                 )}
               />
             )}
@@ -314,11 +369,7 @@ export const Home = ({
               transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
               className={cn(
                 "w-full h-auto object-contain filter brightness-100 contrast-105 group-hover:opacity-15 transition-all duration-300",
-                rocksLightEnabled
-                  ? rocksLightColor === "purple"
-                    ? "drop-shadow-[0_0_10px_rgba(168,85,247,0.16)] drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
-                    : "drop-shadow-[0_0_8px_rgba(255,255,255,0.10)] drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
-                  : "drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
+                rockBaseDropShadow
               )}
             />
 
@@ -331,11 +382,7 @@ export const Home = ({
                 transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
                 className={cn(
                   "w-full h-auto object-contain transition-all duration-300",
-                  rocksLightEnabled
-                    ? rocksLightColor === "purple"
-                      ? "drop-shadow-[0_0_22px_rgba(168,85,247,0.35)] drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
-                      : "drop-shadow-[0_0_18px_rgba(255,255,255,0.22)] drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
-                    : "drop-shadow-[0_15px_35px_rgba(0,0,0,0.9)]"
+                  rockObsidianDropShadow
                 )}
                 style={{
                   filter: "url(#rock-liquid-glitch) grayscale(100%) contrast(450%) brightness(12%)",
@@ -376,14 +423,12 @@ export const Home = ({
             className="hidden md:block absolute -right-5 lg:-right-12 xl:-right-20 top-1/2 -translate-y-[48%] w-44 md:w-52 lg:w-68 xl:w-76 pointer-events-auto cursor-pointer select-none z-0 group"
             title="Interact with Right Monolith Rock"
           >
-            {/* Ambient Glow Field (Controlled by Settings - Soft, Atmospheric Radial Diffusion) */}
+            {/* Ambient Glow Field (Controlled by Settings & Intensity) */}
             {rocksLightEnabled && (
               <div
                 className={cn(
-                  "absolute inset-2 -z-10 rounded-full blur-xl transition-all duration-700 pointer-events-none",
-                  rocksLightColor === "purple"
-                    ? "bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.14)_0%,rgba(168,85,247,0.06)_45%,transparent_70%)] group-hover:scale-105 group-hover:opacity-100"
-                    : "bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.09)_0%,rgba(203,213,225,0.04)_45%,transparent_70%)] group-hover:scale-105 group-hover:opacity-100"
+                  "absolute inset-2 -z-10 rounded-full blur-xl transition-all duration-700 pointer-events-none group-hover:scale-105 group-hover:opacity-100",
+                  rightGlowGradient
                 )}
               />
             )}
@@ -396,11 +441,7 @@ export const Home = ({
               transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
               className={cn(
                 "w-full h-auto object-contain filter brightness-100 contrast-105 group-hover:opacity-15 transition-all duration-300",
-                rocksLightEnabled
-                  ? rocksLightColor === "purple"
-                    ? "drop-shadow-[0_0_10px_rgba(168,85,247,0.16)] drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
-                    : "drop-shadow-[0_0_8px_rgba(255,255,255,0.10)] drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
-                  : "drop-shadow-[0_24px_45px_rgba(0,0,0,0.85)]"
+                rockBaseDropShadow
               )}
             />
 
@@ -413,11 +454,7 @@ export const Home = ({
                 transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                 className={cn(
                   "w-full h-auto object-contain transition-all duration-300",
-                  rocksLightEnabled
-                    ? rocksLightColor === "purple"
-                      ? "drop-shadow-[0_0_22px_rgba(168,85,247,0.35)] drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
-                      : "drop-shadow-[0_0_18px_rgba(255,255,255,0.22)] drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
-                    : "drop-shadow-[0_15px_35px_rgba(0,0,0,0.9)]"
+                  rockObsidianDropShadow
                 )}
                 style={{
                   filter: "url(#rock-liquid-glitch) grayscale(100%) contrast(450%) brightness(12%)",
