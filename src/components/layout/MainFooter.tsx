@@ -22,11 +22,11 @@ export const MainFooter = ({
   activeTab,
   setActiveTab,
   isInImmersiveMode,
-  footerDuneShader = "pixel",
+  footerDuneShader = "halftone",
   footerPixelMode = "lens",
   footerPixelSize = 12,
-  footerPixelGlitch = true,
-  footerPixelMonochrome = true,
+  footerPixelGlitch = false,
+  footerPixelMonochrome = false,
 }: MainFooterProps) => {
   if (isInImmersiveMode) return null;
 

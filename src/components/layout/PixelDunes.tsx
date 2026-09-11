@@ -14,11 +14,11 @@ export interface PixelDunesProps {
 
 export const PixelDunes: React.FC<PixelDunesProps> = ({
   imageSrc = "/footer-image.avif",
-  shaderStyle = "pixel",
+  shaderStyle = "halftone",
   pixelMode = "lens",
   pixelSize = 12,
-  enableGlitch = true,
-  monochrome = true,
+  enableGlitch = false,
+  monochrome = false,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -329,8 +329,8 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
     setMousePos(null);
   };
 
-  // Ultra-Soft Feathered Spotlight Mask for HD Image Layer
-  // Center is opaque (crisp HD revealed), softly feathers out over 240px to transparent
+  // Large, Ultra-Smooth Gaussian-Falloff Spotlight Mask for HD Image Layer
+  // 340px radius with 8-point Gaussian distribution curve for Apple-like soft light transitions
   const getHdLayerStyle = (): React.CSSProperties => {
     if (pixelMode === "hd") {
       return { opacity: 1 };
@@ -340,23 +340,31 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
       return { opacity: 0 };
     }
 
-    // In "lens" mode: HD is only visible inside the ultra-soft feathered spotlight
+    // In "lens" mode: HD is revealed with a natural, seamless Gaussian light falloff
     if (isHovered && mousePos) {
       const { x, y } = mousePos;
-      const maskGradient = `radial-gradient(circle 240px at ${x}px ${y}px, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0.25) 70%, transparent 100%)`;
+      const maskGradient = `radial-gradient(circle 340px at ${x}px ${y}px, ` +
+        `rgba(0,0,0,1) 0%, ` +
+        `rgba(0,0,0,0.96) 15%, ` +
+        `rgba(0,0,0,0.85) 30%, ` +
+        `rgba(0,0,0,0.64) 45%, ` +
+        `rgba(0,0,0,0.40) 60%, ` +
+        `rgba(0,0,0,0.18) 75%, ` +
+        `rgba(0,0,0,0.05) 88%, ` +
+        `transparent 100%)`;
       return {
         maskImage: maskGradient,
         WebkitMaskImage: maskGradient,
         opacity: 1,
-        transition: "opacity 0.25s ease",
+        transition: "opacity 0.25s ease-out",
       };
     }
 
-    return { opacity: 0, transition: "opacity 0.4s ease" };
+    return { opacity: 0, transition: "opacity 0.4s ease-out" };
   };
 
-  // Complementary Ultra-Soft Feathered Mask for Stylized Canvas Layer
-  // Center is subtracted (revealing HD underneath), softly blends back into full stylized effect
+  // Complementary Gaussian-Falloff Mask for Stylized Canvas Layer
+  // Seamlessly dissolves the stylized dots/pixels under the soft spotlight
   const getCanvasLayerStyle = (): React.CSSProperties => {
     if (pixelMode === "hd") {
       return { opacity: 0 };
@@ -366,19 +374,27 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
       return { opacity: 1 };
     }
 
-    // In "lens" mode: When hovered, carve out the center with matching ultra-soft feathering
+    // In "lens" mode: Carve out with matching Gaussian falloff
     if (isHovered && mousePos) {
       const { x, y } = mousePos;
-      const maskGradient = `radial-gradient(circle 240px at ${x}px ${y}px, transparent 0%, rgba(0,0,0,0.15) 35%, rgba(0,0,0,0.75) 70%, black 100%)`;
+      const maskGradient = `radial-gradient(circle 340px at ${x}px ${y}px, ` +
+        `transparent 0%, ` +
+        `rgba(0,0,0,0.04) 15%, ` +
+        `rgba(0,0,0,0.15) 30%, ` +
+        `rgba(0,0,0,0.36) 45%, ` +
+        `rgba(0,0,0,0.60) 60%, ` +
+        `rgba(0,0,0,0.82) 75%, ` +
+        `rgba(0,0,0,0.95) 88%, ` +
+        `black 100%)`;
       return {
         maskImage: maskGradient,
         WebkitMaskImage: maskGradient,
         opacity: 1,
-        transition: "opacity 0.25s ease",
+        transition: "opacity 0.25s ease-out",
       };
     }
 
-    return { opacity: 1, transition: "opacity 0.4s ease" };
+    return { opacity: 1, transition: "opacity 0.4s ease-out" };
   };
 
   // Compute CSS filter styling based on shaderStyle & monochrome settings
@@ -403,7 +419,7 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
       className="relative w-full h-full select-none cursor-crosshair group overflow-hidden pointer-events-auto"
       title="Hover across dunes to reveal crisp HD neon ridges"
     >
-      {/* 1. Base Layer: High-Definition Original Image (Lighten blended, revealed through ultra-soft spotlight) */}
+      {/* 1. Base Layer: High-Definition Original Image (Lighten blended, revealed through ultra-soft Gaussian spotlight) */}
       <img
         src={imageSrc}
         alt="Neon Desert Dunes"
@@ -423,15 +439,15 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
         }}
       />
 
-      {/* 3. Soft Ambient Spotlight Glow (Zero hard borders/rings, pure silky diffused lighting) */}
+      {/* 3. Apple-like Gaussian Ambient Soft Light Scatter (Zero hard borders, pure diffused light) */}
       {pixelMode === "lens" && isHovered && mousePos && (
         <div
-          className="absolute pointer-events-none w-[480px] h-[480px] rounded-full -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200"
+          className="absolute pointer-events-none w-[680px] h-[680px] rounded-full -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 blur-3xl opacity-80"
           style={{
             left: `${mousePos.x}px`,
             top: `${mousePos.y}px`,
             background:
-              "radial-gradient(circle, rgba(168,85,247,0.14) 0%, rgba(139,92,246,0.05) 45%, transparent 70%)",
+              "radial-gradient(circle, rgba(168,85,247,0.14) 0%, rgba(147,51,234,0.07) 35%, rgba(124,58,237,0.02) 65%, transparent 80%)",
           }}
         />
       )}

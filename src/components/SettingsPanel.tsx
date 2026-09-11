@@ -435,6 +435,7 @@ export const SettingsPanel = ({
                           </span>
                           <div className="inline-flex items-center gap-1 p-0.5 rounded-lg bg-white/[0.04] border border-white/[0.08]">
                             {[
+                              { label: "6px", value: 6, hint: "Micro" },
                               { label: "8px", value: 8, hint: "Fine" },
                               { label: "12px", value: 12, hint: "Classic" },
                               { label: "16px", value: 16, hint: "Chunky" },

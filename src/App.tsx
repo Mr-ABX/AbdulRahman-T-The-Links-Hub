@@ -201,35 +201,34 @@ export default function App() {
   );
 
   const [footerDuneShader, setFooterDuneShader] = useState<DuneShaderStyle>(() => {
-    const val = localStorage.getItem("abdulrahman_footer_dune_shader_v2");
+    const val = localStorage.getItem("abdulrahman_footer_dune_shader_v3");
     if (val === "pixel" || val === "halftone" || val === "dark") return val;
-    return "pixel"; // Default: 8-Bit Pixel Mosaic
+    return "halftone"; // Default: Halftone Dot Matrix
   });
   const [footerPixelMode, setFooterPixelMode] = useState<DuneInteractionMode>(() => {
-    const val = localStorage.getItem("abdulrahman_footer_pixel_mode_v2");
-    if (val === "pixel" || val === "full" || val === "hd" || val === "lens") {
-      if (val === "pixel") return "full";
+    const val = localStorage.getItem("abdulrahman_footer_pixel_mode_v3");
+    if (val === "full" || val === "hd" || val === "lens") {
       return val as DuneInteractionMode;
     }
-    return "lens"; // Default: most optimized & interactive spotlight
+    return "lens"; // Default: Soft Lens spotlight
   });
   const [footerPixelSize, setFooterPixelSize] = useState<number>(() => {
-    const val = localStorage.getItem("abdulrahman_footer_pixel_size_v2");
+    const val = localStorage.getItem("abdulrahman_footer_pixel_size_v3");
     if (val) {
       const parsed = parseInt(val, 10);
-      if (!isNaN(parsed)) return parsed;
+      if (!isNaN(parsed) && [6, 8, 12, 16, 20].includes(parsed)) return parsed;
     }
-    return 12; // Default: 12px for chunky, visible pixelation
+    return 12; // Default: 12px
   });
   const [footerPixelGlitch, setFooterPixelGlitch] = useState<boolean>(() => {
-    const val = localStorage.getItem("abdulrahman_footer_pixel_glitch_v1");
+    const val = localStorage.getItem("abdulrahman_footer_pixel_glitch_v3");
     if (val !== null) return val === "true";
-    return true; // Default: animated glitch enabled
+    return false; // Default: glitch is off
   });
   const [footerPixelMonochrome, setFooterPixelMonochrome] = useState<boolean>(() => {
-    const val = localStorage.getItem("abdulrahman_footer_pixel_mono_v1");
+    const val = localStorage.getItem("abdulrahman_footer_pixel_mono_v3");
     if (val !== null) return val === "true";
-    return true; // Default: dark monochromatic shade enabled
+    return false; // Default: dark monochrome is off
   });
 
   useEffect(() => {
@@ -241,11 +240,11 @@ export default function App() {
     localStorage.setItem("abdulrahman_compactHome", compactHomeView.toString());
     localStorage.setItem("abdulrahman_header_layout_v3", headerLayout);
     localStorage.setItem("abdulrahman_sidebar_collapsed", isSidebarCollapsed.toString());
-    localStorage.setItem("abdulrahman_footer_dune_shader_v2", footerDuneShader);
-    localStorage.setItem("abdulrahman_footer_pixel_mode_v2", footerPixelMode);
-    localStorage.setItem("abdulrahman_footer_pixel_size_v2", footerPixelSize.toString());
-    localStorage.setItem("abdulrahman_footer_pixel_glitch_v1", footerPixelGlitch.toString());
-    localStorage.setItem("abdulrahman_footer_pixel_mono_v1", footerPixelMonochrome.toString());
+    localStorage.setItem("abdulrahman_footer_dune_shader_v3", footerDuneShader);
+    localStorage.setItem("abdulrahman_footer_pixel_mode_v3", footerPixelMode);
+    localStorage.setItem("abdulrahman_footer_pixel_size_v3", footerPixelSize.toString());
+    localStorage.setItem("abdulrahman_footer_pixel_glitch_v3", footerPixelGlitch.toString());
+    localStorage.setItem("abdulrahman_footer_pixel_mono_v3", footerPixelMonochrome.toString());
   }, [
     hideCustomCursor,
     enableSmoothScroll,
