@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "motion/react";
+import React, { useRef, useState, useEffect } from "react";
+import { motion, useMotionValue, useSpring } from "motion/react";
 import { ArrowUpRight, Layers } from "lucide-react";
 import { ASSET_LINKS } from "../../constants/assets";
 import { cn } from "../../lib/utils";
@@ -11,6 +11,142 @@ interface MainFooterProps {
   setActiveTab: (tab: string) => void;
   isInImmersiveMode: boolean;
 }
+
+const LiquidDuneHero = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Motion values with liquid inertia
+  const mouseX = useMotionValue(-1000);
+  const mouseY = useMotionValue(-1000);
+
+  const springX = useSpring(mouseX, { stiffness: 220, damping: 24, mass: 0.8 });
+  const springY = useSpring(mouseY, { stiffness: 220, damping: 24, mass: 0.8 });
+
+  const [pos, setPos] = useState({ x: -1000, y: -1000 });
+
+  useEffect(() => {
+    const unsubX = springX.on("change", (v) => setPos((prev) => ({ ...prev, x: Math.round(v) })));
+    const unsubY = springY.on("change", (v) => setPos((prev) => ({ ...prev, y: Math.round(v) })));
+    return () => {
+      unsubX();
+      unsubY();
+    };
+  }, [springX, springY]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    mouseX.set(x);
+    mouseY.set(y);
+    if (!isHovered) setIsHovered(true);
+  };
+
+  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    mouseX.jump(x);
+    mouseY.jump(y);
+    setPos({ x, y });
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!containerRef.current || !e.touches[0]) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const touch = e.touches[0];
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+    mouseX.set(x);
+    mouseY.set(y);
+    if (!isHovered) setIsHovered(true);
+  };
+
+  const maskStyle = isHovered && pos.x > -500
+    ? {
+        WebkitMaskImage: `radial-gradient(circle 260px at ${pos.x}px ${pos.y}px, black 0%, black 45%, rgba(0,0,0,0.35) 75%, transparent 100%)`,
+        maskImage: `radial-gradient(circle 260px at ${pos.x}px ${pos.y}px, black 0%, black 45%, rgba(0,0,0,0.35) 75%, transparent 100%)`,
+      }
+    : {
+        WebkitMaskImage: "radial-gradient(circle 0px at 0px 0px, transparent 100%)",
+        maskImage: "radial-gradient(circle 0px at 0px 0px, transparent 100%)",
+      };
+
+  return (
+    <div
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchMove}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={() => setIsHovered(false)}
+      className="relative w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[480px] xl:h-[560px] select-none mt-8 sm:mt-14 md:mt-20 overflow-hidden cursor-crosshair group"
+    >
+      {/* Background Watermark Typography - Layered behind the sand dunes */}
+      <div className="absolute inset-x-0 top-[6%] sm:top-[10%] md:top-[12%] lg:top-[14%] -translate-y-[100px] flex items-center justify-center z-10 pointer-events-none px-4">
+        <span 
+          className="text-[clamp(2.2rem,9.5vw,170px)] font-extrabold tracking-tight text-white/30 uppercase leading-none whitespace-nowrap block text-center select-none"
+        >
+          ABDULRAHMAN-T
+        </span>
+      </div>
+
+      {/* Layer 1: Base High-Contrast Monochrome / Pixelated Dunes */}
+      <img
+        src="/footer-image.avif"
+        alt="Monochrome Desert Dunes"
+        style={{ filter: "url(#pixelate-b-w) contrast(1.15) brightness(0.85)" }}
+        className="absolute inset-0 z-20 w-full h-full object-cover object-bottom mix-blend-lighten pointer-events-none opacity-85 transition-opacity duration-300"
+      />
+
+      {/* Layer 2: True Color Neon Desert Dunes Revealed via Liquid Lens */}
+      <div
+        className="absolute inset-0 z-25 w-full h-full pointer-events-none transition-opacity duration-300"
+        style={{
+          opacity: isHovered ? 1 : 0,
+          ...maskStyle,
+        }}
+      >
+        <img
+          src="/footer-image.avif"
+          alt="Neon Desert Dunes Revealed"
+          className="w-full h-full object-cover object-bottom mix-blend-lighten filter brightness-110 saturate-125"
+        />
+      </div>
+
+      {/* Optical Lens Rim & Golden Aura Indicator */}
+      {isHovered && pos.x > -500 && (
+        <div
+          className="absolute z-30 pointer-events-none rounded-full transition-opacity duration-300"
+          style={{
+            width: 520,
+            height: 520,
+            left: pos.x - 260,
+            top: pos.y - 260,
+            background: "radial-gradient(circle, rgba(251,191,36,0.05) 0%, rgba(245,158,11,0.015) 60%, transparent 100%)",
+            boxShadow: "inset 0 0 35px rgba(251,191,36,0.12), 0 0 45px rgba(245,158,11,0.15)",
+            border: "1px solid rgba(251,191,36,0.22)",
+          }}
+        />
+      )}
+
+      {/* Minimal Discreet Exploration Hint Badge */}
+      <div className="absolute bottom-4 right-6 z-30 px-3 py-1 rounded-full bg-black/60 border border-white/10 backdrop-blur-md text-[10px] font-mono tracking-widest text-white/50 uppercase pointer-events-none flex items-center gap-1.5 opacity-60 group-hover:opacity-90 transition-opacity">
+        <span className="w-1.5 h-1.5 rounded-full bg-amber-400/80 animate-pulse" />
+        <span>Optical Lens // Dunes</span>
+      </div>
+    </div>
+  );
+};
 
 export const MainFooter = ({
   activeTab,
@@ -253,24 +389,8 @@ export const MainFooter = ({
         </div>
       </div>
 
-      {/* Cinematic Dune & Watermark Hero Display (Matching User Request) */}
-      <div className="relative w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[480px] xl:h-[560px] select-none mt-8 sm:mt-14 md:mt-20 pointer-events-none">
-        {/* Background Watermark Typography - Layered behind the sand dunes */}
-        <div className="absolute inset-x-0 top-[6%] sm:top-[10%] md:top-[12%] lg:top-[14%] -translate-y-[100px] flex items-center justify-center z-10 pointer-events-none px-4">
-          <span 
-            className="text-[clamp(2.2rem,9.5vw,170px)] font-extrabold tracking-tight text-white/30 uppercase leading-none whitespace-nowrap block text-center select-none"
-          >
-            ABDULRAHMAN-T
-          </span>
-        </div>
-
-        {/* Glowing Neon Desert Dunes Layer - Lighten blended so bright sand dune body sits IN FRONT and covers the text */}
-        <img
-          src="/footer-image.avif"
-          alt="Neon Desert Dunes"
-          className="relative z-20 w-full h-full object-cover object-bottom mix-blend-lighten"
-        />
-      </div>
+      {/* Cinematic Dune & Watermark Hero Display with Liquid Optical Lens Effect */}
+      <LiquidDuneHero />
     </footer>
   );
 };
