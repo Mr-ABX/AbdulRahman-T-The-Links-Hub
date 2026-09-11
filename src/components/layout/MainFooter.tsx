@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { ArrowUpRight, Layers } from "lucide-react";
 import { ASSET_LINKS } from "../../constants/assets";
 import { cn } from "../../lib/utils";
+import { PixelDunes } from "./PixelDunes";
 
 const logo2 = ASSET_LINKS.logo2Svg;
 
@@ -63,24 +64,6 @@ export const MainFooter = ({
       id="main-studio-footer"
       className="relative w-full border-t border-white/[0.08] bg-[#050508] overflow-hidden pt-16 md:pt-24 pb-0 mt-28"
     >
-      {/* Dynamic SVG Filter for Crisp Pixelation */}
-      <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
-        <filter id="pixelate-b-w" x="0%" y="0%" width="100%" height="100%">
-          <feColorMatrix
-            type="matrix"
-            values="0.33 0.33 0.33 0 0
-                    0.33 0.33 0.33 0 0
-                    0.33 0.33 0.33 0 0
-                    0    0    0    1 0"
-          />
-          <feComponentTransfer>
-            <feFuncR type="linear" slope="1.3" />
-            <feFuncG type="linear" slope="1.3" />
-            <feFuncB type="linear" slope="1.3" />
-          </feComponentTransfer>
-        </filter>
-      </svg>
-
       <div
         className={cn(
           "relative z-10 mx-auto w-full",
@@ -264,12 +247,10 @@ export const MainFooter = ({
           </span>
         </div>
 
-        {/* Glowing Neon Desert Dunes Layer - Lighten blended so bright sand dune body sits IN FRONT and covers the text */}
-        <img
-          src="/footer-image.avif"
-          alt="Neon Desert Dunes"
-          className="relative z-20 w-full h-full object-cover object-bottom mix-blend-lighten"
-        />
+        {/* Glowing Neon Desert Dunes Layer with Smart Pixel Effect - Masked strictly to dunes */}
+        <div className="relative z-20 w-full h-full pointer-events-auto">
+          <PixelDunes imageSrc="/footer-image.avif" />
+        </div>
       </div>
     </footer>
   );
