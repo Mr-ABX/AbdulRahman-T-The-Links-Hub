@@ -825,13 +825,19 @@ export const Home = ({
         {/* Subtle Ambient Refraction */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-16 bg-gradient-to-b from-white/[0.02] to-transparent blur-xl pointer-events-none" />
 
-        {/* Minimal Apple-Style Section Header (No Fluff) */}
-        <div className="max-w-xl mx-auto text-center mb-8 sm:mb-10">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium tracking-tight text-white mb-2 font-sans">
-            Client Endorsements
+        {/* Apple HIG Section Header & Tag Pill */}
+        <div className="text-center max-w-3xl mx-auto mb-12 relative z-10">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <LiquidCapsule color1="#F59E0B" color2="#10B981" />
+            <span className="text-xs font-mono tracking-widest uppercase text-white/50">
+              05 // Client Endorsements & Proof
+            </span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
+            Engineered for Commercial Impact.
           </h2>
-          <p className="text-neutral-400 text-xs sm:text-sm">
-            Verified feedback from founders, CTOs, and global engineering teams.
+          <p className="text-white/60 text-sm md:text-base leading-relaxed">
+            Authentic verified feedback and validated outcomes from founders, CTOs, and global engineering teams.
           </p>
         </div>
 
