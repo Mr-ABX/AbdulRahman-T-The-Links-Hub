@@ -246,19 +246,28 @@ export const MainFooter = ({
         </div>
       </div>
 
-      {/* Cinematic Dune & Watermark Hero Display (Matching User Request) */}
-      <div className="relative w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[480px] xl:h-[560px] select-none mt-8 sm:mt-14 md:mt-20 pointer-events-none">
-        {/* Background Watermark Typography - Layered behind the sand dunes */}
-        <div className="absolute inset-x-0 top-[6%] sm:top-[10%] md:top-[12%] lg:top-[14%] -translate-y-[100px] flex items-center justify-center z-10 pointer-events-none px-4">
+      {/* Cinematic Dune & Watermark Hero Display with Seamless Edge Blends */}
+      <div className="relative w-full h-[220px] sm:h-[320px] md:h-[420px] lg:h-[500px] xl:h-[580px] select-none mt-10 sm:mt-16 md:mt-24 pointer-events-none overflow-hidden">
+        {/* Ambient Top Shadow Divider */}
+        <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-[#050508] via-[#050508]/80 to-transparent z-20 pointer-events-none" />
+
+        {/* Background Watermark Typography - Layered behind the sand dunes with clean positioning */}
+        <div className="absolute inset-x-0 top-6 sm:top-10 md:top-14 flex items-center justify-center z-10 pointer-events-none px-4">
           <span 
-            className="text-[clamp(2.2rem,9.5vw,170px)] font-extrabold tracking-tight text-white/30 uppercase leading-none whitespace-nowrap block text-center select-none"
+            className="text-[clamp(2.5rem,10.5vw,160px)] font-black tracking-tight text-white/[0.18] uppercase leading-none whitespace-nowrap block text-center select-none drop-shadow-[0_2px_20px_rgba(0,0,0,0.8)]"
           >
             ABDULRAHMAN-T
           </span>
         </div>
 
-        {/* Glowing Neon Desert Dunes Layer with Smart Pixel Effect - Masked strictly to dunes */}
-        <div className="relative z-20 w-full h-full pointer-events-auto">
+        {/* Glowing Neon Desert Dunes Layer with Smart Pixel Effect - Masked smoothly without black borders */}
+        <div 
+          className="relative z-20 w-full h-full pointer-events-auto"
+          style={{
+            maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 90%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 90%, transparent 100%)",
+          }}
+        >
           <PixelDunes
             imageSrc="/footer-image.avif"
             shaderStyle={footerDuneShader}

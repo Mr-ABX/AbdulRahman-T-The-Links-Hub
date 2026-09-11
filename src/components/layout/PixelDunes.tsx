@@ -65,28 +65,14 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
       const ctx = canvas.getContext("2d", { willReadFrequently: true });
       if (!ctx) return;
 
-      // Calculate dimensions matching CSS "object-cover object-bottom"
+      // Calculate dimensions with true "cover" logic so it always fills 100% of the container
       const imgW = img.naturalWidth;
       const imgH = img.naturalHeight;
-      const containerRatio = width / height;
-      const imgRatio = imgW / imgH;
-
-      let drawW = width;
-      let drawH = height;
-      let offsetX = 0;
-      let offsetY = 0;
-
-      if (containerRatio > imgRatio) {
-        drawW = width;
-        drawH = width / imgRatio;
-        offsetX = 0;
-        offsetY = height - drawH; // align bottom
-      } else {
-        drawH = height;
-        drawW = height * imgRatio;
-        offsetX = (width - drawW) / 2; // center horizontally
-        offsetY = 0; // align bottom
-      }
+      const scale = Math.max(width / imgW, height / imgH);
+      const drawW = imgW * scale;
+      const drawH = imgH * scale;
+      const offsetX = (width - drawW) / 2; // Center horizontally
+      const offsetY = height - drawH; // Align to bottom
 
       const currentStep = Math.max(4, pixelSize);
       const offW = Math.max(1, Math.floor(width / currentStep));
@@ -99,7 +85,7 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
       const offCtx = offscreen.getContext("2d", { willReadFrequently: true });
       if (!offCtx) return;
 
-      // Draw scaled down to offscreen
+      // Draw scaled down to offscreen with full container coverage
       offCtx.drawImage(
         img,
         0,
@@ -121,6 +107,9 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
 
         for (let gy = 0; gy < offH; gy++) {
           const py = gy * currentStep + currentStep / 2;
+          // Smooth vertical edge attenuation (top fade)
+          const verticalFade = Math.min(1, py / (height * 0.22));
+
           for (let gx = 0; gx < offW; gx++) {
             const idx = (gy * offW + gx) * 4;
             const r = imgData[idx];
@@ -134,8 +123,16 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
             const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
             if (luminance < 0.05) continue;
 
-            const radius = Math.max(0.75, maxRadius * Math.pow(luminance, 0.75));
             let px = gx * currentStep + currentStep / 2;
+
+            // Smooth horizontal edge attenuation (left & right fade)
+            const edgeDistX = Math.min(px, width - px);
+            const horizontalFade = Math.min(1, edgeDistX / (width * 0.06));
+            const totalFade = verticalFade * horizontalFade;
+
+            if (totalFade <= 0.02) continue;
+
+            const radius = Math.max(0.75, maxRadius * Math.pow(luminance, 0.75) * totalFade);
 
             // Apply glitch shift if active
             if (applyGlitch && enableGlitch) {
@@ -152,12 +149,14 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
             ctx.beginPath();
             ctx.arc(px, py, radius, 0, Math.PI * 2);
 
+            const alpha = Math.min(1, (luminance + 0.25) * totalFade);
+
             if (monochrome) {
               // Stylized cyber-lavender dot matrix
-              ctx.fillStyle = `rgba(${180 + Math.floor(r * 0.2)}, ${160 + Math.floor(g * 0.2)}, ${220 + Math.floor(b * 0.15)}, ${Math.min(1, luminance + 0.2)})`;
+              ctx.fillStyle = `rgba(${180 + Math.floor(r * 0.2)}, ${160 + Math.floor(g * 0.2)}, ${220 + Math.floor(b * 0.15)}, ${alpha})`;
             } else {
               // Vibrant colored neon dots
-              ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${Math.min(1, luminance + 0.25)})`;
+              ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
             }
             ctx.fill();
           }
