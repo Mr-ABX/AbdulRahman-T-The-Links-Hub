@@ -57,9 +57,9 @@ export const MedusaImage = () => {
         src="/medusa.webp"
         alt="Medusa 3D Interactive"
         style={{
-          transform: "translateZ(50px)",
+          transform: "translateZ(60px)",
         }}
-        className="max-h-full max-w-full object-contain pointer-events-none drop-shadow-2xl"
+        className="max-h-full max-w-full object-contain pointer-events-none drop-shadow-2xl scale-110 sm:scale-125 transition-transform duration-300"
       />
     </motion.div>
   );

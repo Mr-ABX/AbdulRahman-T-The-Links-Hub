@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { MedusaImage } from "./MedusaImage";
 import { SpecularCard } from "./shared/SpecularCard";
 import { ASSET_LINKS } from "../constants/assets";
+import { GitHubGraph } from "./GitHubGraph";
+import { Portfolio3D } from "./Portfolio3D";
 import {
   ArrowRight,
   Monitor,
@@ -25,6 +27,7 @@ import {
   Mail,
   Clock,
   Check,
+  ChevronDown,
 } from "lucide-react";
 
 const myArea51Image = "/my-image-for-home-01.jpeg";
@@ -52,8 +55,84 @@ const HeroTitleLine = ({
   </span>
 );
 
-import { GitHubGraph } from "./GitHubGraph";
-import { Portfolio3D } from "./Portfolio3D";
+interface AppleSelectProps {
+  label: string;
+  value: string;
+  options: string[];
+  onChange: (val: string) => void;
+}
+
+const AppleSelect = ({ label, value, options, onChange }: AppleSelectProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
+  return (
+    <div className="space-y-1.5 relative" ref={dropdownRef}>
+      <label className="text-[11px] font-mono uppercase tracking-wider text-white/60 block">
+        {label}
+      </label>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full px-4 py-2.5 text-xs sm:text-sm text-white bg-white/[0.04] hover:bg-white/[0.07] rounded-full border border-white/15 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 transition-all flex items-center justify-between cursor-pointer shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]"
+      >
+        <span className="truncate">{value}</span>
+        <ChevronDown
+          size={14}
+          className={`text-white/40 transition-transform duration-200 shrink-0 ml-2 ${isOpen ? "rotate-180 text-purple-400" : ""}`}
+        />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -6, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.98 }}
+            transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
+            className="absolute top-full left-0 right-0 mt-1.5 z-50 p-1.5 rounded-2xl bg-[#0d0d18]/95 backdrop-blur-2xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.85)] flex flex-col gap-0.5 max-h-60 overflow-y-auto"
+          >
+            {options.map((opt) => {
+              const isSelected = opt === value;
+              return (
+                <button
+                  key={opt}
+                  type="button"
+                  onClick={() => {
+                    onChange(opt);
+                    setIsOpen(false);
+                  }}
+                  className={`w-full px-3.5 py-2 rounded-xl text-xs sm:text-sm text-left flex items-center justify-between transition-all cursor-pointer ${
+                    isSelected
+                      ? "bg-purple-500/20 text-white font-medium shadow-sm"
+                      : "text-white/70 hover:text-white hover:bg-white/[0.08]"
+                  }`}
+                >
+                  <span className="truncate">{opt}</span>
+                  {isSelected && <Check size={14} className="text-purple-400 shrink-0 ml-2" />}
+                </button>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 const LiquidCapsule = ({ color1, color2 }: { color1: string, color2: string }) => (
   <div className="w-12 h-5 rounded-full overflow-hidden relative shadow-[0_0_15px_rgba(255,255,255,0.1)] shrink-0 hidden sm:block">
@@ -77,12 +156,27 @@ export const Home = ({
   projects: any[];
   setActiveTab: (tab: string) => void;
 }) => {
-  const [inquiryType, setInquiryType] = useState("Discovery Strategy Call");
+  const PROJECT_TYPE_OPTIONS = [
+    "Full-Stack Web & App",
+    "UI/UX & Product Design",
+    "3D & Interactive Web",
+    "AI Automation & Cloud",
+    "Other / Custom Scope",
+  ];
+
+  const BUDGET_OPTIONS = [
+    "$2.5k – $5k",
+    "$5k – $10k",
+    "$10k+",
+    "Flexible / Advisory",
+  ];
+
+  const [inquiryType, setInquiryType] = useState("Full-Stack Web & App");
+  const [customInquiry, setCustomInquiry] = useState("");
   const [budgetRange, setBudgetRange] = useState("$5k – $10k");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    subject: "",
     message: "",
     consent: true,
   });
@@ -95,7 +189,7 @@ export const Home = ({
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-    }, 600);
+    }, 500);
   };
 
   return (
@@ -583,91 +677,83 @@ export const Home = ({
       </section>
 
       {/* 6. Apple HIG Pro Contact & Strategy Call Area */}
-      <section className="py-24 md:py-32 max-w-[1250px] mx-auto px-4 md:px-8">
-        <div className="bg-[#090912]/90 rounded-[2.5rem] md:rounded-[3rem] border border-white/10 p-6 sm:p-8 md:p-14 flex flex-col lg:flex-row gap-12 lg:gap-14 relative overflow-hidden items-stretch shadow-[0_30px_90px_rgba(0,0,0,0.95)] backdrop-blur-2xl">
-          {/* Subtle top ambient specular line */}
+      <section className="py-20 md:py-28 max-w-[1250px] mx-auto px-4 md:px-8">
+        <div className="bg-[#090912]/80 rounded-[2.5rem] md:rounded-[3rem] border border-white/10 p-6 sm:p-8 md:p-12 lg:p-14 flex flex-col lg:flex-row gap-10 lg:gap-14 relative overflow-hidden items-stretch shadow-[0_30px_90px_rgba(0,0,0,0.95)] backdrop-blur-2xl">
+          {/* Subtle ambient lighting */}
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-purple-400/40 to-transparent" />
           <div className="absolute -top-32 -left-32 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
 
-          {/* Left Column: Visual Medusa + Direct Booking Card */}
+          {/* Left Column: Floating Medusa 3D & Fast-Track Direct Channels */}
           <div className="w-full lg:w-5/12 flex flex-col justify-between gap-6 relative z-10">
             <div>
-              <div className="aspect-square sm:aspect-[4/3] lg:aspect-[4/4] rounded-3xl overflow-hidden relative border border-white/10 bg-[#05050a] flex items-center justify-center shadow-xl">
+              {/* Medusa floating freely in 3D without restrictive box background */}
+              <div className="relative w-full h-[300px] sm:h-[360px] lg:h-[400px] flex items-center justify-center">
+                {/* Radial ambient glow behind 3D Medusa */}
+                <div className="absolute inset-0 bg-radial from-purple-600/25 via-transparent to-transparent blur-3xl pointer-events-none" />
                 <MedusaImage />
-                <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[10px] font-mono text-purple-300 uppercase tracking-widest flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping" />
-                  <span>3D Interactive Core</span>
-                </div>
               </div>
 
-              {/* Direct Booking Badge Card */}
-              <div className="mt-6 p-5 rounded-2xl bg-white/[0.03] border border-white/10 flex flex-col gap-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
-                      <Calendar size={15} />
-                    </div>
-                    <div>
-                      <h4 className="text-white font-bold text-xs tracking-tight">Need a Rapid Strategy Call?</h4>
-                      <p className="text-white/50 text-[11px]">15-min free 1:1 architecture discovery</p>
-                    </div>
-                  </div>
-                  <a
-                    href="https://calendly.com/digital-b3asts/quick-free-consultation"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="px-3.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 text-[11px] font-semibold tracking-tight transition-all flex items-center gap-1 cursor-pointer shrink-0 hover:scale-105 active:scale-95"
-                  >
-                    <span>Book Call</span>
-                    <ArrowUpRight size={12} />
-                  </a>
+              {/* Direct Booking Minimal Pill */}
+              <a
+                href="https://calendly.com/digital-b3asts/quick-free-consultation"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-3 w-full py-2.5 px-4 rounded-full bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/25 hover:border-amber-500/40 text-amber-300 text-xs font-semibold tracking-tight transition-all flex items-center justify-between group shadow-sm hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
+              >
+                <div className="flex items-center gap-2">
+                  <Calendar size={14} className="text-amber-400 group-hover:scale-110 transition-transform shrink-0" />
+                  <span>Need a Rapid Strategy Call? (15-Min Free)</span>
                 </div>
-              </div>
+                <ArrowUpRight size={14} className="text-amber-400/80 group-hover:text-amber-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
+              </a>
             </div>
 
-            {/* Quick Contact Footer Badges */}
-            <div className="grid grid-cols-2 gap-3 pt-2">
+            {/* Quick Contact Action Buttons */}
+            <div className="grid grid-cols-2 gap-3 pt-1">
               <a
                 href="https://wa.me/923094506904"
                 target="_blank"
                 rel="noreferrer"
-                className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/15 text-emerald-400 text-xs font-semibold flex items-center gap-2 transition-all group"
+                className="py-2.5 px-4 rounded-full bg-[#25D366]/15 hover:bg-[#25D366]/25 border border-[#25D366]/30 hover:border-[#25D366]/50 text-[#25D366] text-xs font-semibold flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-sm group"
               >
-                <Phone size={14} className="group-hover:scale-110 transition-transform" />
-                <span className="truncate">WhatsApp Me</span>
+                <svg className="w-4 h-4 fill-current group-hover:scale-110 transition-transform shrink-0" viewBox="0 0 24 24">
+                  <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.699c.971.53 1.77.813 2.796.814 3.183 0 5.769-2.587 5.77-5.767 0-3.181-2.587-5.767-5.77-5.767zm0-1.672c4.103 0 7.439 3.336 7.439 7.439 0 4.103-3.336 7.439-7.439 7.439-1.282 0-2.483-.325-3.535-.895l-4.496 1.179 1.2-4.382c-.655-1.112-1.008-2.39-1.008-3.741 0-4.103 3.336-7.439 7.439-7.439z" />
+                </svg>
+                <span>WhatsApp</span>
               </a>
+
               <a
                 href="mailto:abdulrahmant.official@gmail.com"
-                className="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 hover:bg-indigo-500/15 text-indigo-300 text-xs font-semibold flex items-center gap-2 transition-all group"
+                className="py-2.5 px-4 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/20 hover:border-white/35 text-white text-xs font-semibold flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-sm group"
               >
-                <Mail size={14} className="group-hover:scale-110 transition-transform" />
-                <span className="truncate">Direct Email</span>
+                <Mail size={15} className="text-white/80 group-hover:scale-110 transition-transform shrink-0" />
+                <span>Direct Email</span>
               </a>
             </div>
           </div>
 
-          {/* Right Column: Apple HIG Pro Modern Form */}
+          {/* Right Column: Clean, Streamlined Apple HIG Pro Capsule Form */}
           <div className="w-full lg:w-7/12 relative z-10 flex flex-col justify-center">
             {isSubmitted ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="p-8 md:p-12 rounded-3xl bg-white/[0.02] border border-white/10 text-center flex flex-col items-center justify-center my-auto"
+                className="p-8 md:p-12 rounded-3xl bg-white/[0.02] border border-white/10 text-center flex flex-col items-center justify-center my-auto shadow-2xl"
               >
                 <div className="w-16 h-16 rounded-full bg-purple-500/20 border border-purple-500/40 text-purple-400 flex items-center justify-center mb-5 shadow-[0_0_30px_rgba(168,85,247,0.3)]">
                   <CheckCircle2 size={32} />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">Project Brief Received!</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">Project Brief Transmitted!</h3>
                 <p className="text-white/60 text-sm max-w-md leading-relaxed mb-6">
-                  Thank you, <span className="text-white font-semibold">{formData.name || "Partner"}</span>. We have logged your request for <span className="text-purple-300 font-semibold">{inquiryType}</span>. We'll reach out within 24 hours.
+                  Thank you, <span className="text-white font-semibold">{formData.name || "Partner"}</span>. We have logged your request for <span className="text-purple-300 font-semibold">{inquiryType === "Other / Custom Scope" && customInquiry ? customInquiry : inquiryType}</span>. We'll reach out within 24 hours.
                 </p>
                 <div className="flex flex-wrap gap-3 justify-center">
                   <a
                     href="https://calendly.com/digital-b3asts/quick-free-consultation"
                     target="_blank"
                     rel="noreferrer"
-                    className="px-6 py-2.5 rounded-xl bg-white text-black font-semibold text-xs transition-transform hover:scale-105 active:scale-95 flex items-center gap-2 shadow-lg"
+                    className="px-6 py-2.5 rounded-full bg-white text-black font-semibold text-xs transition-transform hover:scale-105 active:scale-95 flex items-center gap-2 shadow-lg"
                   >
                     <Calendar size={13} />
                     <span>Fast-Track with Calendly</span>
@@ -675,9 +761,10 @@ export const Home = ({
                   <button
                     onClick={() => {
                       setIsSubmitted(false);
-                      setFormData({ name: "", email: "", subject: "", message: "", consent: true });
+                      setFormData({ name: "", email: "", message: "", consent: true });
+                      setCustomInquiry("");
                     }}
-                    className="px-6 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-xs border border-white/10 transition-colors"
+                    className="px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/15 text-white font-semibold text-xs border border-white/10 transition-colors"
                   >
                     Send Another Inquiry
                   </button>
@@ -686,90 +773,64 @@ export const Home = ({
             ) : (
               <div>
                 <div className="mb-6">
-                  <div className="flex items-center gap-3 mb-3">
+                  <div className="flex items-center gap-3 mb-2.5">
                     <LiquidCapsule color1="#8B5CF6" color2="#6366F1" />
                     <span className="text-xs font-mono tracking-widest uppercase text-white/50">06 // Collaborate & Build</span>
                   </div>
                   <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
                     Start Your Project
                   </h2>
-                  <p className="text-white/60 text-xs sm:text-sm font-normal mt-2 leading-relaxed">
-                    Have a product, design system, or digital experience to engineer? Share your vision below for a direct, tailored proposal.
+                  <p className="text-white/60 text-xs sm:text-sm font-normal mt-1.5 leading-relaxed">
+                    Clean, direct collaboration. Tell us about your goals or schedule a 1:1 strategy call.
                   </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  {/* Inquiry Type Selector (Pills) */}
-                  <div>
-                    <label className="block text-[11px] font-mono uppercase tracking-wider text-white/60 mb-2.5">
-                      1. Select Inquiry Type
-                    </label>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                      {[
-                        "Discovery Strategy Call",
-                        "New Web/App Project",
-                        "UI/UX & Design System",
-                        "AI & Automation",
-                        "Consulting & Advisory",
-                        "Other Collaboration",
-                      ].map((type) => {
-                        const isSelected = inquiryType === type;
-                        return (
-                          <button
-                            key={type}
-                            type="button"
-                            onClick={() => setInquiryType(type)}
-                            className={`px-3 py-2.5 rounded-xl text-xs font-medium tracking-tight text-left transition-all border cursor-pointer flex items-center justify-between ${
-                              isSelected
-                                ? "bg-white text-black border-white font-semibold shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-                                : "bg-white/[0.03] text-white/70 border-white/10 hover:bg-white/[0.06] hover:text-white"
-                            }`}
-                          >
-                            <span className="truncate">{type}</span>
-                            {isSelected && <Check size={12} className="text-black shrink-0 ml-1" />}
-                          </button>
-                        );
-                      })}
-                    </div>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* Stylized Dropdowns: Project Type & Target Budget */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <AppleSelect
+                      label="Project Type"
+                      value={inquiryType}
+                      options={PROJECT_TYPE_OPTIONS}
+                      onChange={(val) => setInquiryType(val)}
+                    />
+
+                    <AppleSelect
+                      label="Target Budget"
+                      value={budgetRange}
+                      options={BUDGET_OPTIONS}
+                      onChange={(val) => setBudgetRange(val)}
+                    />
                   </div>
 
-                  {/* Estimated Project Scope / Budget Selector */}
-                  <div>
-                    <label className="block text-[11px] font-mono uppercase tracking-wider text-white/60 mb-2.5">
-                      2. Target Budget / Scope
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {[
-                        "< $2,500",
-                        "$2,500 – $5,000",
-                        "$5,000 – $10,000",
-                        "$10,000+",
-                        "Flexible / Discovery",
-                      ].map((budget) => {
-                        const isSelected = budgetRange === budget;
-                        return (
-                          <button
-                            key={budget}
-                            type="button"
-                            onClick={() => setBudgetRange(budget)}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all border cursor-pointer ${
-                              isSelected
-                                ? "bg-purple-500/20 text-purple-300 border-purple-500/50 shadow-[0_0_10px_rgba(168,85,247,0.3)] font-semibold"
-                                : "bg-white/[0.02] text-white/50 border-white/10 hover:bg-white/[0.05] hover:text-white/80"
-                            }`}
-                          >
-                            {budget}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
+                  {/* Optional Custom Specification Input when "Other" is chosen */}
+                  {inquiryType === "Other / Custom Scope" && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="space-y-1.5"
+                    >
+                      <label htmlFor="custom-inquiry" className="text-[11px] font-mono uppercase tracking-wider text-purple-300">
+                        Custom Scope Specification *
+                      </label>
+                      <input
+                        type="text"
+                        id="custom-inquiry"
+                        required
+                        value={customInquiry}
+                        onChange={(e) => setCustomInquiry(e.target.value)}
+                        placeholder="e.g. Fintech Mobile App, Web3 Dashboard, Brand Identity"
+                        className="w-full px-4 py-2.5 text-xs sm:text-sm text-white bg-purple-500/[0.08] rounded-full border border-purple-500/30 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 transition-all placeholder:text-white/30"
+                      />
+                    </motion.div>
+                  )}
 
-                  {/* Name & Email Fields */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Name & Work Email in sleek Apple capsule fields */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div className="space-y-1.5">
                       <label htmlFor="name-field" className="text-[11px] font-mono uppercase tracking-wider text-white/60">
-                        Full Name / Organization *
+                        Your Name / Organization *
                       </label>
                       <input
                         type="text"
@@ -777,8 +838,8 @@ export const Home = ({
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="e.g. Alex Vance, TechCorp"
-                        className="w-full px-4 py-3 text-xs sm:text-sm text-white bg-white/[0.03] rounded-xl border border-white/10 focus:outline-none focus:border-purple-400 focus:bg-white/[0.06] transition-all placeholder:text-white/20 shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]"
+                        placeholder="Alex Vance"
+                        className="w-full px-4 py-2.5 text-xs sm:text-sm text-white bg-white/[0.04] hover:bg-white/[0.07] rounded-full border border-white/15 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 transition-all placeholder:text-white/30 shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -791,44 +852,34 @@ export const Home = ({
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="alex@example.com"
-                        className="w-full px-4 py-3 text-xs sm:text-sm text-white bg-white/[0.03] rounded-xl border border-white/10 focus:outline-none focus:border-purple-400 focus:bg-white/[0.06] transition-all placeholder:text-white/20 shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]"
+                        placeholder="alex@company.com"
+                        className="w-full px-4 py-2.5 text-xs sm:text-sm text-white bg-white/[0.04] hover:bg-white/[0.07] rounded-full border border-white/15 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 transition-all placeholder:text-white/30 shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]"
                       />
                     </div>
                   </div>
 
-                  {/* Subject Field */}
+                  {/* Dynamic Auto-Expanding Message Field (1-2 lines default, expands up to 3 lines) */}
                   <div className="space-y-1.5">
-                    <label htmlFor="subject-field" className="text-[11px] font-mono uppercase tracking-wider text-white/60">
-                      Project Objective / Key Goals
-                    </label>
-                    <input
-                      type="text"
-                      id="subject-field"
-                      value={formData.subject}
-                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                      placeholder="e.g. High-conversion web platform, 3D product showcase"
-                      className="w-full px-4 py-3 text-xs sm:text-sm text-white bg-white/[0.03] rounded-xl border border-white/10 focus:outline-none focus:border-purple-400 focus:bg-white/[0.06] transition-all placeholder:text-white/20 shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]"
-                    />
-                  </div>
-
-                  {/* Message Field */}
-                  <div className="space-y-1.5">
-                    <label htmlFor="message-field" className="text-[11px] font-mono uppercase tracking-wider text-white/60">
-                      Vision & Specifics
+                    <label htmlFor="message-field" className="text-[11px] font-mono uppercase tracking-wider text-white/60 block">
+                      Message / Project Details
                     </label>
                     <textarea
                       id="message-field"
-                      rows={4}
+                      rows={1}
                       value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Tell us about your timeline, deliverables, inspirations, or any technical requirements..."
-                      className="w-full px-4 py-3 text-xs sm:text-sm text-white bg-white/[0.03] rounded-xl border border-white/10 focus:outline-none focus:border-purple-400 focus:bg-white/[0.06] transition-all placeholder:text-white/20 resize-none shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]"
+                      onChange={(e) => {
+                        setFormData({ ...formData, message: e.target.value });
+                        // Dynamically adjust height up to 3 lines (max ~80px)
+                        e.target.style.height = "auto";
+                        e.target.style.height = `${Math.min(84, Math.max(42, e.target.scrollHeight))}px`;
+                      }}
+                      placeholder="Brief outline of your goals, deliverables, or timeline..."
+                      className="w-full px-4 py-2.5 text-xs sm:text-sm text-white bg-white/[0.04] hover:bg-white/[0.07] rounded-2xl border border-white/15 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 transition-all placeholder:text-white/30 min-h-[44px] max-h-[88px] resize-none shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] leading-relaxed"
                     />
                   </div>
 
                   {/* Submit Controls & Consent */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 pt-1">
                     <label className="flex items-center gap-2.5 text-xs text-white/60 cursor-pointer select-none">
                       <input
                         type="checkbox"
@@ -836,13 +887,13 @@ export const Home = ({
                         onChange={(e) => setFormData({ ...formData, consent: e.target.checked })}
                         className="w-4 h-4 rounded border-white/20 bg-black/40 text-purple-500 focus:ring-0 focus:ring-offset-0 cursor-pointer"
                       />
-                      <span>I agree to receive project correspondence.</span>
+                      <span className="text-[11px] sm:text-xs">I agree to receive project correspondence.</span>
                     </label>
 
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-xl bg-white hover:bg-neutral-200 text-black font-semibold text-xs uppercase tracking-wider transition-all duration-200 shadow-[0_4px_25px_rgba(255,255,255,0.2)] hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-50 shrink-0"
+                      className="inline-flex items-center justify-center gap-2 px-7 py-2.5 rounded-full bg-white hover:bg-neutral-200 text-black font-semibold text-xs uppercase tracking-wider transition-all duration-200 shadow-[0_4px_25px_rgba(255,255,255,0.2)] hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-50 shrink-0"
                     >
                       {isSubmitting ? (
                         <>
