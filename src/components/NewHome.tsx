@@ -147,48 +147,103 @@ const LiquidCapsule = ({
   color2,
   className,
   showOnMobile = false,
+  animated = true,
 }: {
   color1: string;
   color2: string;
   className?: string;
   showOnMobile?: boolean;
+  animated?: boolean;
 }) => {
-  const gradientId = `gradient-${color1.replace(/[^a-zA-Z0-9]/g, "")}-${color2.replace(/[^a-zA-Z0-9]/g, "")}`;
   return (
     <div
       className={cn(
-        "w-10 sm:w-12 h-4 sm:h-5 rounded-full overflow-hidden relative shadow-[0_0_15px_rgba(255,255,255,0.12)] shrink-0",
+        "w-10 sm:w-12 h-4 sm:h-5 rounded-full overflow-hidden relative shadow-[0_0_15px_rgba(255,255,255,0.12)] shrink-0 group/capsule",
         !showOnMobile && "hidden sm:block",
         className
       )}
     >
-      <svg
-        width="48"
-        height="20"
-        viewBox="0 0 48 20"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+      {/* Dynamic Liquid Mesh Gradient Flow */}
+      <motion.div
         className="absolute inset-0 w-full h-full"
-      >
-        <rect width="48" height="20" fill={`url(#${gradientId})`} />
-        <defs>
-          <linearGradient
-            id={gradientId}
-            x1="0"
-            y1="0"
-            x2="48"
-            y2="20"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor={color1} />
-            <stop offset="1" stopColor={color2} />
-          </linearGradient>
-        </defs>
-      </svg>
-      <div
-        className="absolute inset-0 opacity-45 mix-blend-overlay"
-        style={{ filter: "url(#rock-liquid-glitch)" }}
+        style={{
+          background: `linear-gradient(120deg, ${color1} 0%, ${color2} 45%, ${color1} 75%, ${color2} 100%)`,
+          backgroundSize: "240% 240%",
+        }}
+        animate={
+          animated
+            ? {
+                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+              }
+            : undefined
+        }
+        transition={{
+          duration: 4.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
       />
+
+      {/* Floating Viscous Organic Fluid Blobs */}
+      {animated && (
+        <>
+          <motion.div
+            className="absolute -inset-1 opacity-70 mix-blend-screen pointer-events-none"
+            style={{
+              background: `radial-gradient(ellipse at 40% 40%, ${color2} 0%, transparent 65%)`,
+              borderRadius: "44% 56% 62% 38% / 40% 48% 52% 60%",
+            }}
+            animate={{
+              rotate: [0, 180, 360],
+              scale: [1, 1.18, 0.96, 1],
+              x: [-3, 3, -3],
+              y: [-1.5, 1.5, -1.5],
+            }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+
+          <motion.div
+            className="absolute -inset-1 opacity-50 mix-blend-overlay pointer-events-none"
+            style={{
+              background: `radial-gradient(ellipse at 60% 60%, ${color1} 0%, transparent 70%)`,
+              borderRadius: "58% 42% 40% 60% / 55% 60% 40% 45%",
+            }}
+            animate={{
+              rotate: [360, 180, 0],
+              scale: [1.1, 0.95, 1.15, 1.1],
+              x: [2, -2, 2],
+              y: [1, -1, 1],
+            }}
+            transition={{
+              duration: 6.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+
+          {/* Liquid Mercury / Glass Light Sheen Sweep */}
+          <motion.div
+            className="absolute inset-y-0 w-2/3 bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-[-25deg] pointer-events-none opacity-80"
+            animate={{
+              x: ["-120%", "220%"],
+            }}
+            transition={{
+              duration: 3.2,
+              repeat: Infinity,
+              ease: [0.25, 1, 0.5, 1],
+              repeatDelay: 1,
+            }}
+          />
+        </>
+      )}
+
+      {/* Top Convex Specular Highlight (Liquid Droplet / Apple HIG Lens) */}
+      <div className="absolute inset-0 rounded-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.45),inset_0_-1px_1px_rgba(0,0,0,0.5)] pointer-events-none" />
+      <div className="absolute top-0.5 inset-x-1.5 h-[1px] rounded-full bg-white/40 blur-[0.5px] pointer-events-none" />
     </div>
   );
 };
@@ -331,24 +386,39 @@ export const Home = ({
           className="mb-8"
         >
           <div className="inline-flex items-center gap-2.5 pl-2 pr-4 py-1.5 rounded-full bg-[#0d0d18]/90 hover:bg-[#141424]/95 border border-white/[0.14] hover:border-white/25 backdrop-blur-2xl transition-all duration-300 group cursor-default shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_10px_30px_rgba(0,0,0,0.6)]">
-            {/* Zoomed Avatar - Framed to Face with Translucent Glass Rim (Harsh White Border Removed) */}
-            <div className="w-6 h-6 rounded-full bg-black/60 border border-white/20 overflow-hidden flex items-center justify-center shrink-0 shadow-inner relative">
-              <img
-                src="/my-image-for-home-01.jpeg"
-                alt="Abdulrahman"
-                className="w-full h-full object-cover scale-[1.38] object-[50%_20%]"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = ASSET_LINKS.myPfp;
+            {/* Zoomed Avatar with Fluid Ring Ambient Accent */}
+            <div className="relative shrink-0">
+              <motion.div
+                className="absolute -inset-0.5 rounded-full bg-gradient-to-tr from-slate-400/30 via-slate-200/45 to-slate-400/25 blur-[1.5px] pointer-events-none"
+                animate={{
+                  opacity: [0.35, 0.75, 0.35],
+                  rotate: [0, 180, 360],
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "linear",
                 }}
               />
+              <div className="w-6 h-6 rounded-full bg-black/60 border border-white/25 overflow-hidden flex items-center justify-center shrink-0 shadow-inner relative z-10 group-hover:border-white/40 transition-colors">
+                <img
+                  src="/my-image-for-home-01.jpeg"
+                  alt="Abdulrahman"
+                  className="w-full h-full object-cover scale-[1.38] object-[50%_20%] group-hover:scale-[1.45] transition-transform duration-500"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = ASSET_LINKS.myPfp;
+                  }}
+                />
+              </div>
             </div>
 
-            {/* Apple-style Dark & Metallic Silver Liquid Capsule */}
+            {/* Apple-style Dark & Metallic Silver Liquid Capsule with Active Viscous Fluid Waves */}
             <LiquidCapsule
               color1="#1E293B"
               color2="#CBD5E1"
               showOnMobile={true}
-              className="w-8 sm:w-9 h-3.5 sm:h-4 shadow-[0_0_12px_rgba(203,213,225,0.25)] border border-white/10"
+              animated={true}
+              className="w-8 sm:w-9 h-3.5 sm:h-4 shadow-[0_0_14px_rgba(203,213,225,0.35)] border border-white/15 group-hover:shadow-[0_0_20px_rgba(203,213,225,0.55)] transition-shadow"
             />
 
             <span className="font-mono text-[11px] font-semibold tracking-[0.18em] uppercase text-white/90 group-hover:text-white transition-colors">
