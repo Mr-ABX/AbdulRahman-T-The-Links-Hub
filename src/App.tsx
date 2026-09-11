@@ -622,13 +622,10 @@ export default function App() {
   return (
     <div
       className={cn(
-        "min-h-screen mesh-gradient flex flex-col items-center selection:bg-indigo-500/30 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]",
+        "min-h-screen mesh-gradient flex flex-col items-center selection:bg-indigo-500/30 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] w-full overflow-x-hidden p-0 relative",
         isVerticalNav
           ? isSidebarCollapsed ? "pl-0 md:pl-16" : "pl-0 md:pl-64"
           : "pl-0",
-        isInImmersiveMode || activeTab === "Home" || activeTab === "Vortex"
-          ? "py-0 px-0 relative top-0"
-          : "pt-20 pb-12 px-4 md:pt-24 md:pb-16",
       )}
     >
       <SplashScreen />
@@ -734,13 +731,13 @@ export default function App() {
       {/* Main Content */}
       <main
         className={cn(
-          "w-full transition-all duration-500 relative z-10",
+          "w-full flex-1 transition-all duration-500 relative z-10",
           headerLayout === "vertical" && !isInImmersiveMode && activeTab !== "Links" && activeTab !== "Vortex" && activeTab === "Home"
             ? "mt-16 md:mt-0"
             : "",
           isInImmersiveMode || activeTab === "Home" || activeTab === "Vortex"
             ? "max-w-full"
-            : "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8",
+            : "max-w-[1380px] mx-auto pt-24 md:pt-32 pb-12 px-4 sm:px-6 lg:px-8",
         )}
       >
         <AnimatePresence mode="wait">

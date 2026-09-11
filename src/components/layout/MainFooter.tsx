@@ -75,12 +75,7 @@ export const MainFooter = ({
       className="relative w-full border-t border-white/[0.08] bg-[#050508] overflow-hidden pt-16 md:pt-24 pb-0 mt-28"
     >
       <div
-        className={cn(
-          "relative z-10 mx-auto w-full",
-          activeTab === "Home" || activeTab === "Vortex"
-            ? "max-w-[1340px] px-6 sm:px-8 md:px-12"
-            : "max-w-6xl px-6",
-        )}
+        className="relative z-10 mx-auto w-full max-w-[1380px] px-6 sm:px-8 md:px-12"
       >
         {/* Top Section: Left Branding & Right 4 Columns */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
