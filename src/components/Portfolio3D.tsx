@@ -14,6 +14,8 @@ import {
   Play,
   Globe,
   Video,
+  Lock,
+  GraduationCap,
 } from "lucide-react";
 import { projects } from "../constants/data";
 
@@ -22,8 +24,14 @@ interface Portfolio3DProps {
 }
 
 export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
-  // Select top 5 featured projects
-  const featuredProjects = projects.slice(0, 5);
+  // Curate top featured projects with guaranteed live embeds, rotating order starting with Infni-T
+  const featuredProjects = [
+    projects.find((p) => p.name.includes("Infni-T")) || projects[0],
+    projects.find((p) => p.name.includes("MSN Global Trainings")) || projects[1],
+    projects.find((p) => p.name.includes("Vibelex")) || projects[2],
+    projects.find((p) => p.name.includes("Cinematic Motion")) || projects[3],
+    projects.find((p) => p.name.includes("NodeRaptor")) || projects[4],
+  ].filter(Boolean);
   const total = featuredProjects.length;
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -220,7 +228,88 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                   className="relative flex-1 bg-black/80 overflow-hidden flex items-center justify-center p-2.5 preview-viewport"
                 >
                   <div className="w-full h-full rounded-2xl overflow-hidden border border-white/10 bg-[#05050a] relative">
-                    {project.previewUrl ? (
+                    {project.name.includes("MSN Global") ? (
+                      <div className="w-full h-full flex flex-col justify-between p-5 sm:p-6 bg-gradient-to-br from-[#0c0c16] via-[#150f29] to-[#090912] relative overflow-hidden text-left">
+                        {/* Background subtle mesh glow */}
+                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-rose-500/20 rounded-full blur-3xl pointer-events-none" />
+                        <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl pointer-events-none" />
+                        
+                        {/* Top Simulated Browser Bar */}
+                        <div className="w-full flex items-center justify-between py-2 px-3 rounded-xl bg-white/[0.04] border border-white/10 backdrop-blur-md">
+                          <div className="flex items-center gap-1.5">
+                            <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+                            <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+                            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                          </div>
+                          <div className="flex items-center gap-1.5 text-[10px] font-mono text-white/60 bg-black/50 px-3 py-1 rounded-full border border-white/10">
+                            <Lock size={10} className="text-emerald-400" />
+                            <span>trainings.msn-global.com</span>
+                          </div>
+                          <span className="text-[9px] font-mono text-white/40 uppercase">LIVE</span>
+                        </div>
+
+                        {/* Center Hero Info */}
+                        <div className="w-full my-auto flex flex-col gap-2.5 z-10 py-2">
+                          <div className="flex items-center gap-2">
+                            <span className="px-2.5 py-0.5 rounded-full bg-rose-500/20 border border-rose-500/40 text-rose-300 text-[10px] font-mono uppercase tracking-widest font-semibold flex items-center gap-1">
+                              <GraduationCap size={12} />
+                              Enterprise Academy
+                            </span>
+                            <span className="text-[10px] font-mono text-white/40">Apple HIG Design System</span>
+                          </div>
+                          <h4 className="text-lg sm:text-2xl font-extrabold text-white tracking-tight leading-tight">
+                            MSN Global Trainings Portal
+                          </h4>
+                          <p className="text-xs text-white/70 max-w-lg leading-relaxed line-clamp-2 sm:line-clamp-none">
+                            A premier corporate learning academy with interactive curriculum syllabus, fast lead funnels, and high-conversion enterprise UX.
+                          </p>
+
+                          <div className="grid grid-cols-3 gap-2 mt-1 pt-2 border-t border-white/10">
+                            <div className="p-2 rounded-xl bg-white/[0.03] border border-white/5">
+                              <p className="text-[9px] text-white/40 font-mono">ENROLLMENT</p>
+                              <p className="text-xs sm:text-sm font-bold text-rose-400">+340%</p>
+                            </div>
+                            <div className="p-2 rounded-xl bg-white/[0.03] border border-white/5">
+                              <p className="text-[9px] text-white/40 font-mono">AVG SESSION</p>
+                              <p className="text-xs sm:text-sm font-bold text-white">4.8m</p>
+                            </div>
+                            <div className="p-2 rounded-xl bg-white/[0.03] border border-white/5">
+                              <p className="text-[9px] text-white/40 font-mono">SATISFACTION</p>
+                              <p className="text-xs sm:text-sm font-bold text-emerald-400">99.2%</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Bottom Actions */}
+                        <div className="w-full flex items-center justify-between pt-2 border-t border-white/10 z-10">
+                          <span className="text-[10px] font-mono text-white/40">Live Production URL</span>
+                          <div className="flex items-center gap-2">
+                            {setActiveTab && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setActiveTab("CaseStudies");
+                                }}
+                                className="px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 text-xs font-semibold flex items-center gap-1 transition-colors border border-rose-500/30 cursor-pointer"
+                              >
+                                <Sparkles size={11} />
+                                <span>Case Study</span>
+                              </button>
+                            )}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                openExternal("http://trainings.msn-global.com/");
+                              }}
+                              className="px-3.5 py-1.5 rounded-lg bg-white text-black hover:bg-neutral-200 text-xs font-bold flex items-center gap-1 transition-transform hover:scale-105 cursor-pointer shadow-md"
+                            >
+                              <span>Open Live Portal</span>
+                              <ExternalLink size={11} />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : project.previewUrl ? (
                       <iframe
                         src={getEmbedUrl(project, isCenter)}
                         className={`w-full h-full border-0 ${isCenter ? "pointer-events-auto" : "pointer-events-none"}`}

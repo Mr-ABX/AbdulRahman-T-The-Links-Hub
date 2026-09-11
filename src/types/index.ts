@@ -58,6 +58,19 @@ export interface ProjectType {
   caseStudyId?: string;
 }
 
+export interface ReviewType {
+  name: string;
+  role: string;
+  location: string;
+  company?: string;
+  avatar: string;
+  projectCategory?: string;
+  metric?: string;
+  text: string;
+  rating: number;
+  featured?: boolean;
+}
+
 export interface BentoCardProps {
   children: React.ReactNode;
   className?: string;
