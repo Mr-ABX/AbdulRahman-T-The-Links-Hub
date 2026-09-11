@@ -11,12 +11,20 @@ interface MainFooterProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   isInImmersiveMode: boolean;
+  footerPixelMode?: "lens" | "pixel" | "hd";
+  footerPixelSize?: number;
+  footerPixelGlitch?: boolean;
+  footerPixelMonochrome?: boolean;
 }
 
 export const MainFooter = ({
   activeTab,
   setActiveTab,
   isInImmersiveMode,
+  footerPixelMode = "lens",
+  footerPixelSize = 8,
+  footerPixelGlitch = true,
+  footerPixelMonochrome = true,
 }: MainFooterProps) => {
   if (isInImmersiveMode) return null;
 
@@ -249,7 +257,13 @@ export const MainFooter = ({
 
         {/* Glowing Neon Desert Dunes Layer with Smart Pixel Effect - Masked strictly to dunes */}
         <div className="relative z-20 w-full h-full pointer-events-auto">
-          <PixelDunes imageSrc="/footer-image.avif" />
+          <PixelDunes
+            imageSrc="/footer-image.avif"
+            pixelMode={footerPixelMode}
+            pixelSize={footerPixelSize}
+            enableGlitch={footerPixelGlitch}
+            monochrome={footerPixelMonochrome}
+          />
         </div>
       </div>
     </footer>

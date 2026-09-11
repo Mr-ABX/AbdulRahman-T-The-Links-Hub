@@ -199,6 +199,30 @@ export default function App() {
     () => localStorage.getItem("abdulrahman_sidebar_collapsed") === "true"
   );
 
+  const [footerPixelMode, setFooterPixelMode] = useState<"lens" | "pixel" | "hd">(() => {
+    const val = localStorage.getItem("abdulrahman_footer_pixel_mode_v1");
+    if (val === "pixel" || val === "hd" || val === "lens") return val;
+    return "lens"; // Default: most optimized & interactive
+  });
+  const [footerPixelSize, setFooterPixelSize] = useState<number>(() => {
+    const val = localStorage.getItem("abdulrahman_footer_pixel_size_v1");
+    if (val) {
+      const parsed = parseInt(val, 10);
+      if (!isNaN(parsed)) return parsed;
+    }
+    return 8; // Default: 8px classic
+  });
+  const [footerPixelGlitch, setFooterPixelGlitch] = useState<boolean>(() => {
+    const val = localStorage.getItem("abdulrahman_footer_pixel_glitch_v1");
+    if (val !== null) return val === "true";
+    return true; // Default: animated glitch enabled
+  });
+  const [footerPixelMonochrome, setFooterPixelMonochrome] = useState<boolean>(() => {
+    const val = localStorage.getItem("abdulrahman_footer_pixel_mono_v1");
+    if (val !== null) return val === "true";
+    return true; // Default: dark monochromatic shade enabled
+  });
+
   useEffect(() => {
     localStorage.setItem("abdulrahman_hideCursor_v3", hideCustomCursor.toString());
     localStorage.setItem(
@@ -208,7 +232,21 @@ export default function App() {
     localStorage.setItem("abdulrahman_compactHome", compactHomeView.toString());
     localStorage.setItem("abdulrahman_header_layout_v3", headerLayout);
     localStorage.setItem("abdulrahman_sidebar_collapsed", isSidebarCollapsed.toString());
-  }, [hideCustomCursor, enableSmoothScroll, compactHomeView, headerLayout, isSidebarCollapsed]);
+    localStorage.setItem("abdulrahman_footer_pixel_mode_v1", footerPixelMode);
+    localStorage.setItem("abdulrahman_footer_pixel_size_v1", footerPixelSize.toString());
+    localStorage.setItem("abdulrahman_footer_pixel_glitch_v1", footerPixelGlitch.toString());
+    localStorage.setItem("abdulrahman_footer_pixel_mono_v1", footerPixelMonochrome.toString());
+  }, [
+    hideCustomCursor,
+    enableSmoothScroll,
+    compactHomeView,
+    headerLayout,
+    isSidebarCollapsed,
+    footerPixelMode,
+    footerPixelSize,
+    footerPixelGlitch,
+    footerPixelMonochrome,
+  ]);
 
   const slugify = (text: string) => {
     return text
@@ -695,12 +733,24 @@ export default function App() {
         setCompactHomeView={setCompactHomeView}
         headerLayout={headerLayout}
         setHeaderLayout={setHeaderLayout}
+        footerPixelMode={footerPixelMode}
+        setFooterPixelMode={setFooterPixelMode}
+        footerPixelSize={footerPixelSize}
+        setFooterPixelSize={setFooterPixelSize}
+        footerPixelGlitch={footerPixelGlitch}
+        setFooterPixelGlitch={setFooterPixelGlitch}
+        footerPixelMonochrome={footerPixelMonochrome}
+        setFooterPixelMonochrome={setFooterPixelMonochrome}
       />
       
       <MainFooter
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         isInImmersiveMode={isInImmersiveMode}
+        footerPixelMode={footerPixelMode}
+        footerPixelSize={footerPixelSize}
+        footerPixelGlitch={footerPixelGlitch}
+        footerPixelMonochrome={footerPixelMonochrome}
       />
     </div>
   );

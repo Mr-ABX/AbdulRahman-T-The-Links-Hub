@@ -1,12 +1,19 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { Sparkles, Eye, Grid } from "lucide-react";
 
-interface PixelDunesProps {
+export interface PixelDunesProps {
   imageSrc?: string;
+  pixelMode?: "lens" | "pixel" | "hd";
+  pixelSize?: number;
+  enableGlitch?: boolean;
+  monochrome?: boolean;
 }
 
 export const PixelDunes: React.FC<PixelDunesProps> = ({
   imageSrc = "/footer-image.avif",
+  pixelMode = "lens",
+  pixelSize = 8,
+  enableGlitch = true,
+  monochrome = true,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -14,80 +21,139 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
 
   const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [pixelMode, setPixelMode] = useState<"pixel" | "lens" | "hd">("lens");
-  const [pixelSize, setPixelSize] = useState<number>(8); // 8px blocks for crisp retro aesthetic
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isGlitching, setIsGlitching] = useState(false);
+  const glitchParamsRef = useRef<{
+    slice1Y: number;
+    slice1H: number;
+    slice1Shift: number;
+    slice2Y: number;
+    slice2H: number;
+    slice2Shift: number;
+  }>({
+    slice1Y: 0.4,
+    slice1H: 0.1,
+    slice1Shift: 8,
+    slice2Y: 0.7,
+    slice2H: 0.08,
+    slice2Shift: -10,
+  });
+
+  const isVisibleInViewportRef = useRef(false);
 
   // Render the pixelated version of the dunes to canvas
-  const renderPixelCanvas = useCallback(() => {
-    const canvas = canvasRef.current;
-    const container = containerRef.current;
-    const img = imgRef.current;
-    if (!canvas || !container || !img || !img.complete || img.naturalWidth === 0) return;
+  const renderPixelCanvas = useCallback(
+    (applyGlitch = false) => {
+      const canvas = canvasRef.current;
+      const container = containerRef.current;
+      const img = imgRef.current;
+      if (!canvas || !container || !img || !img.complete || img.naturalWidth === 0) return;
 
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-    if (width === 0 || height === 0) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      if (width === 0 || height === 0) return;
 
-    canvas.width = width;
-    canvas.height = height;
+      if (canvas.width !== width || canvas.height !== height) {
+        canvas.width = width;
+        canvas.height = height;
+      }
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
 
-    // Calculate dimensions matching CSS "object-cover object-bottom"
-    const imgW = img.naturalWidth;
-    const imgH = img.naturalHeight;
-    const containerRatio = width / height;
-    const imgRatio = imgW / imgH;
+      // Calculate dimensions matching CSS "object-cover object-bottom"
+      const imgW = img.naturalWidth;
+      const imgH = img.naturalHeight;
+      const containerRatio = width / height;
+      const imgRatio = imgW / imgH;
 
-    let drawW = width;
-    let drawH = height;
-    let offsetX = 0;
-    let offsetY = 0;
+      let drawW = width;
+      let drawH = height;
+      let offsetX = 0;
+      let offsetY = 0;
 
-    if (containerRatio > imgRatio) {
-      // Container is wider than image aspect ratio
-      drawW = width;
-      drawH = width / imgRatio;
-      offsetX = 0;
-      offsetY = height - drawH; // align bottom
-    } else {
-      // Container is narrower/taller than image aspect ratio
-      drawH = height;
-      drawW = height * imgRatio;
-      offsetX = (width - drawW) / 2; // center horizontally
-      offsetY = 0; // align bottom
-    }
+      if (containerRatio > imgRatio) {
+        drawW = width;
+        drawH = width / imgRatio;
+        offsetX = 0;
+        offsetY = height - drawH; // align bottom
+      } else {
+        drawH = height;
+        drawW = height * imgRatio;
+        offsetX = (width - drawW) / 2; // center horizontally
+        offsetY = 0; // align bottom
+      }
 
-    // Downsample onto offscreen canvas for authentic mosaic pixel blocks
-    const offW = Math.max(1, Math.floor(width / pixelSize));
-    const offH = Math.max(1, Math.floor(height / pixelSize));
+      // Downsample onto offscreen canvas for authentic mosaic pixel blocks
+      const currentPixelSize = Math.max(2, pixelSize);
+      const offW = Math.max(1, Math.floor(width / currentPixelSize));
+      const offH = Math.max(1, Math.floor(height / currentPixelSize));
 
-    const offscreen = document.createElement("canvas");
-    offscreen.width = offW;
-    offscreen.height = offH;
-    const offCtx = offscreen.getContext("2d");
-    if (!offCtx) return;
+      const offscreen = document.createElement("canvas");
+      offscreen.width = offW;
+      offscreen.height = offH;
+      const offCtx = offscreen.getContext("2d");
+      if (!offCtx) return;
 
-    // Draw scaled down
-    offCtx.drawImage(
-      img,
-      0,
-      0,
-      imgW,
-      imgH,
-      offsetX / pixelSize,
-      offsetY / pixelSize,
-      drawW / pixelSize,
-      drawH / pixelSize
-    );
+      // Draw scaled down
+      offCtx.drawImage(
+        img,
+        0,
+        0,
+        imgW,
+        imgH,
+        offsetX / currentPixelSize,
+        offsetY / currentPixelSize,
+        drawW / currentPixelSize,
+        drawH / currentPixelSize
+      );
 
-    // Upscale back without smoothing for razor-sharp pixel blocks
-    ctx.clearRect(0, 0, width, height);
-    ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(offscreen, 0, 0, offW, offH, 0, 0, width, height);
-  }, [pixelSize]);
+      // Upscale back without smoothing for razor-sharp pixel blocks
+      ctx.clearRect(0, 0, width, height);
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(offscreen, 0, 0, offW, offH, 0, 0, width, height);
+
+      // Apply subtle horizontal glitch slice displacements if glitching
+      if (applyGlitch && enableGlitch) {
+        const { slice1Y, slice1H, slice1Shift, slice2Y, slice2H, slice2Shift } =
+          glitchParamsRef.current;
+
+        // Slice 1
+        const s1Y = Math.floor(height * slice1Y);
+        const s1H = Math.floor(height * slice1H);
+        if (s1H > 0) {
+          ctx.drawImage(
+            offscreen,
+            0,
+            Math.floor((s1Y / height) * offH),
+            offW,
+            Math.floor((s1H / height) * offH),
+            slice1Shift,
+            s1Y,
+            width,
+            s1H
+          );
+        }
+
+        // Slice 2
+        const s2Y = Math.floor(height * slice2Y);
+        const s2H = Math.floor(height * slice2H);
+        if (s2H > 0) {
+          ctx.drawImage(
+            offscreen,
+            0,
+            Math.floor((s2Y / height) * offH),
+            offW,
+            Math.floor((s2H / height) * offH),
+            slice2Shift,
+            s2Y,
+            width,
+            s2H
+          );
+        }
+      }
+    },
+    [pixelSize, enableGlitch]
+  );
 
   // Load image asset
   useEffect(() => {
@@ -95,8 +161,7 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
     img.src = imageSrc;
     img.onload = () => {
       imgRef.current = img;
-      setIsLoaded(true);
-      renderPixelCanvas();
+      renderPixelCanvas(false);
     };
 
     return () => {
@@ -113,7 +178,7 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
     const observer = new ResizeObserver(() => {
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
-        renderPixelCanvas();
+        renderPixelCanvas(false);
       }, 100);
     });
 
@@ -123,6 +188,78 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
       clearTimeout(debounceTimer);
     };
   }, [renderPixelCanvas]);
+
+  // IntersectionObserver to only animate glitch when footer is visible
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisibleInViewportRef.current = entry.isIntersecting;
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
+  // Periodic Glitch Pulse Timer (3.5s - 5s interval, lasting ~200ms)
+  useEffect(() => {
+    if (!enableGlitch || pixelMode === "hd") return;
+
+    let timeoutId: ReturnType<typeof setTimeout>;
+    let isMounted = true;
+
+    const triggerGlitch = () => {
+      if (!isMounted) return;
+
+      // Only execute if footer is currently in viewport
+      if (isVisibleInViewportRef.current) {
+        // Randomize slice coordinates for natural digital glitching
+        glitchParamsRef.current = {
+          slice1Y: 0.35 + Math.random() * 0.35,
+          slice1H: 0.04 + Math.random() * 0.08,
+          slice1Shift: (Math.random() > 0.5 ? 1 : -1) * (6 + Math.random() * 14),
+          slice2Y: 0.65 + Math.random() * 0.25,
+          slice2H: 0.03 + Math.random() * 0.07,
+          slice2Shift: (Math.random() > 0.5 ? 1 : -1) * (8 + Math.random() * 12),
+        };
+
+        setIsGlitching(true);
+        renderPixelCanvas(true);
+
+        // Frame 2 of glitch jitter after 80ms
+        setTimeout(() => {
+          if (!isMounted) return;
+          glitchParamsRef.current.slice1Shift *= -0.6;
+          glitchParamsRef.current.slice2Shift *= -0.5;
+          renderPixelCanvas(true);
+        }, 80);
+
+        // Reset to normal sharp pixel canvas after 180ms
+        setTimeout(() => {
+          if (!isMounted) return;
+          setIsGlitching(false);
+          renderPixelCanvas(false);
+        }, 200);
+      }
+
+      // Schedule next pulse (between 3.5 and 5.5 seconds)
+      const nextDelay = 3500 + Math.random() * 2000;
+      timeoutId = setTimeout(triggerGlitch, nextDelay);
+    };
+
+    timeoutId = setTimeout(triggerGlitch, 2800);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
+    };
+  }, [enableGlitch, pixelMode, renderPixelCanvas]);
 
   // Mouse move handler for interactive lens
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -142,19 +279,17 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
   // Compute CSS mask for the pixelated layer based on active mode
   const getMaskStyle = () => {
     if (pixelMode === "hd") {
-      // In HD mode, pixel canvas is completely hidden
       return { opacity: 0 };
     }
 
     if (pixelMode === "pixel") {
-      // In pure pixel mode, canvas is 100% visible across all dunes
       return { opacity: 1 };
     }
 
     // In "lens" mode: when hovered, reveal HD under cursor radius
     if (isHovered && mousePos) {
       const { x, y } = mousePos;
-      const maskGradient = `radial-gradient(circle 180px at ${x}px ${y}px, transparent 0%, transparent 45%, black 85%)`;
+      const maskGradient = `radial-gradient(circle 200px at ${x}px ${y}px, transparent 0%, transparent 40%, black 85%)`;
       return {
         maskImage: maskGradient,
         WebkitMaskImage: maskGradient,
@@ -164,6 +299,14 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
     }
 
     return { opacity: 1, transition: "opacity 0.4s ease" };
+  };
+
+  // Compute monochromatic styling for stylized dark digital aesthetic
+  const getMonochromeStyle = () => {
+    if (!monochrome) return {};
+    return {
+      filter: "brightness(0.72) contrast(1.22) saturate(0.25)",
+    };
   };
 
   return (
@@ -189,92 +332,28 @@ export const PixelDunes: React.FC<PixelDunesProps> = ({
       {/* Top Layer: Dynamic Pixelated Canvas (mix-blend-lighten ensures only the dune neon light is pixelated) */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full pointer-events-none mix-blend-lighten"
-        style={getMaskStyle()}
+        className={`absolute inset-0 w-full h-full pointer-events-none mix-blend-lighten transition-transform duration-100 ${
+          isGlitching ? "translate-x-[1.5px] scale-[1.002]" : "translate-x-0 scale-100"
+        }`}
+        style={{
+          ...getMaskStyle(),
+          ...getMonochromeStyle(),
+        }}
       />
 
       {/* Interactive Cursor Spotlight Ring (shown in lens mode when hovering) */}
       {pixelMode === "lens" && isHovered && mousePos && (
         <div
-          className="absolute pointer-events-none w-[360px] h-[360px] rounded-full border border-purple-400/20 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-150 shadow-[0_0_50px_rgba(168,85,247,0.15)]"
+          className="absolute pointer-events-none w-[400px] h-[400px] rounded-full border border-purple-400/25 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-150 shadow-[0_0_60px_rgba(168,85,247,0.18)]"
           style={{
             left: `${mousePos.x}px`,
             top: `${mousePos.y}px`,
           }}
         >
           {/* Subtle crosshair indicator */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white/40 shadow-[0_0_10px_white]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white/50 shadow-[0_0_12px_white]" />
         </div>
       )}
-
-      {/* Apple HIG Pro Minimal Control Capsule */}
-      <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-8 z-30 flex items-center gap-1.5 p-1 rounded-full bg-[#08080f]/80 backdrop-blur-xl border border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.8)] opacity-60 hover:opacity-100 transition-all duration-200">
-        <button
-          onClick={() => setPixelMode("pixel")}
-          className={`px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider flex items-center gap-1 transition-all cursor-pointer ${
-            pixelMode === "pixel"
-              ? "bg-purple-500/25 text-purple-300 border border-purple-500/40 shadow-sm"
-              : "text-white/40 hover:text-white/80"
-          }`}
-          title="Pure Pixelated Dunes"
-        >
-          <Grid size={11} />
-          <span className="hidden sm:inline">8-Bit Pixel</span>
-        </button>
-
-        <button
-          onClick={() => setPixelMode("lens")}
-          className={`px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider flex items-center gap-1 transition-all cursor-pointer ${
-            pixelMode === "lens"
-              ? "bg-purple-500/25 text-purple-300 border border-purple-500/40 shadow-sm"
-              : "text-white/40 hover:text-white/80"
-          }`}
-          title="Interactive Lens (Hover to Reveal HD)"
-        >
-          <Sparkles size={11} />
-          <span>Interactive Lens</span>
-        </button>
-
-        <button
-          onClick={() => setPixelMode("hd")}
-          className={`px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider flex items-center gap-1 transition-all cursor-pointer ${
-            pixelMode === "hd"
-              ? "bg-purple-500/25 text-purple-300 border border-purple-500/40 shadow-sm"
-              : "text-white/40 hover:text-white/80"
-          }`}
-          title="Crisp High-Definition Dunes"
-        >
-          <Eye size={11} />
-          <span className="hidden sm:inline">Original HD</span>
-        </button>
-
-        {/* Pixel Size Modifier (only shown when pixel or lens mode is active) */}
-        {pixelMode !== "hd" && (
-          <div className="flex items-center gap-1 pl-1 border-l border-white/10 text-[9px] font-mono text-white/50">
-            <button
-              onClick={() => setPixelSize(6)}
-              className={`px-1.5 py-0.5 rounded cursor-pointer ${pixelSize === 6 ? "text-purple-300 font-bold bg-white/10" : "hover:text-white"}`}
-              title="Fine Pixels (6px)"
-            >
-              6px
-            </button>
-            <button
-              onClick={() => setPixelSize(8)}
-              className={`px-1.5 py-0.5 rounded cursor-pointer ${pixelSize === 8 ? "text-purple-300 font-bold bg-white/10" : "hover:text-white"}`}
-              title="Classic Pixels (8px)"
-            >
-              8px
-            </button>
-            <button
-              onClick={() => setPixelSize(12)}
-              className={`px-1.5 py-0.5 rounded cursor-pointer ${pixelSize === 12 ? "text-purple-300 font-bold bg-white/10" : "hover:text-white"}`}
-              title="Chunky Retro Pixels (12px)"
-            >
-              12px
-            </button>
-          </div>
-        )}
-      </div>
     </div>
   );
 };
