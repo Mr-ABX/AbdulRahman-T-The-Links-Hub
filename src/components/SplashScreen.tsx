@@ -1,161 +1,195 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface SplashScreenProps {
   onComplete?: () => void;
 }
 
 export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
-  const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
+  const [isParting, setIsParting] = useState(false);
 
   useEffect(() => {
-    // Check if splash screen was already shown in this session
-    const hasSeenSplash = sessionStorage.getItem("abdulrahman_splash_seen");
-    if (hasSeenSplash === "true") {
+    // 1. Brief cinematic pause in centered touch state
+    const partTimer = setTimeout(() => {
+      setIsParting(true);
+    }, 650);
+
+    // 2. Complete transition and hand off to main view
+    const completeTimer = setTimeout(() => {
       setIsVisible(false);
       onComplete?.();
-      return;
-    }
+    }, 2000);
 
-    // Animate progress smooth counter
-    const startTime = Date.now();
-    const duration = 1800; // 1.8 seconds
-
-    const interval = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const currentProgress = Math.min(100, Math.floor((elapsed / duration) * 100));
-      setProgress(currentProgress);
-
-      if (currentProgress >= 100) {
-        clearInterval(interval);
-        setTimeout(() => {
-          setIsVisible(false);
-          sessionStorage.setItem("abdulrahman_splash_seen", "true");
-          onComplete?.();
-        }, 300);
-      }
-    }, 20);
-
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(partTimer);
+      clearTimeout(completeTimer);
+    };
   }, [onComplete]);
 
   const handleSkip = () => {
-    setIsVisible(false);
-    sessionStorage.setItem("abdulrahman_splash_seen", "true");
-    onComplete?.();
+    setIsParting(true);
+    setTimeout(() => {
+      setIsVisible(false);
+      onComplete?.();
+    }, 150);
   };
 
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          key="splash-screen"
+          key="rock-parting-splash"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.05 }}
-          transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-          className="fixed inset-0 z-[9999] bg-[#07070c] flex flex-col items-center justify-center overflow-hidden selection:bg-purple-500/30"
+          animate={{ opacity: isParting ? 0 : 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            duration: 0.75,
+            delay: isParting ? 0.35 : 0,
+            ease: [0.23, 1, 0.32, 1],
+          }}
+          className="fixed inset-0 z-[9999] bg-[#06060a] flex items-center justify-center overflow-hidden pointer-events-auto select-none"
         >
-          {/* Ambient Background Radial Glows */}
-          <div className="absolute w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[140px] pointer-events-none animate-pulse" />
-          <div className="absolute w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
-
-          {/* SVG Liquid Filter Definition */}
-          <svg className="hidden">
-            <defs>
-              <filter id="splash-liquid">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-                <feColorMatrix
-                  in="blur"
-                  mode="matrix"
-                  values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-                  result="splash-liquid"
-                />
-                <feBlend in="SourceGraphic" in2="splash-liquid" />
-              </filter>
-            </defs>
-          </svg>
-
-          {/* Central Liquid Morphing Capsule */}
-          <div className="relative flex flex-col items-center justify-center">
-            <div className="relative mb-8 flex items-center justify-center">
-              {/* Outer Glowing Liquid Rings */}
-              <motion.div
-                animate={{
-                  rotate: [0, 180, 360],
-                  scale: [1, 1.08, 1],
-                }}
-                transition={{
-                  duration: 6,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-                className="w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-gradient-to-tr from-purple-500/30 via-blue-500/20 to-emerald-400/30 border border-white/20 p-1 flex items-center justify-center shadow-[0_0_50px_rgba(168,85,247,0.3)] backdrop-blur-xl"
-              >
-                {/* Inner Morphing Liquid Core */}
-                <motion.div
-                  animate={{
-                    borderRadius: [
-                      "40% 60% 70% 30% / 40% 50% 60% 50%",
-                      "60% 40% 30% 70% / 50% 30% 70% 50%",
-                      "40% 60% 70% 30% / 40% 50% 60% 50%",
-                    ],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  className="w-full h-full bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-500 flex items-center justify-center relative overflow-hidden"
-                >
-                  <Sparkles size={28} className="text-white animate-pulse" />
-                </motion.div>
-              </motion.div>
-            </div>
-
-            {/* Brand Typography & Subtitle */}
+          {/* Ambient Deep Atmospheric Glows */}
+          <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              className="text-center space-y-2 mb-10"
-            >
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white uppercase font-sans">
-                Abdulrahman Toor
-              </h1>
-              <div className="flex items-center justify-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping" />
-                <p className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.3em] text-white/50">
-                  Area 51 Studio & Lab
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Micro Progress Bar & Ticker */}
-            <div className="w-48 sm:w-64 space-y-2">
-              <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden p-0.5 border border-white/5">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-purple-500 via-indigo-400 to-cyan-400 rounded-full"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-              <div className="flex items-center justify-between text-[10px] font-mono text-white/40 uppercase tracking-widest px-1">
-                <span>Initializing Studio</span>
-                <span className="text-purple-400 font-bold">{progress}%</span>
-              </div>
-            </div>
+              animate={{
+                scale: isParting ? 1.6 : 1,
+                opacity: isParting ? 0 : 0.35,
+              }}
+              transition={{ duration: 1.1, ease: [0.23, 1, 0.32, 1] }}
+              className="w-[450px] sm:w-[650px] h-[450px] sm:h-[650px] rounded-full bg-purple-600/25 blur-[120px] -translate-y-6"
+            />
+            <motion.div
+              animate={{
+                scale: isParting ? 1.8 : 1,
+                opacity: isParting ? 0 : 0.2,
+              }}
+              transition={{ duration: 1.1, ease: [0.23, 1, 0.32, 1] }}
+              className="w-[300px] sm:w-[480px] h-[300px] sm:h-[480px] rounded-full bg-blue-600/20 blur-[100px] translate-y-12"
+            />
           </div>
 
-          {/* Skip Option */}
+          {/* Vignette Boundary */}
+          <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_40%,#06060a_95%)]" />
+
+          {/* Center Stage: The Twin Monolith Rocks */}
+          <div className="relative w-full max-w-[1200px] h-full flex items-center justify-center px-4">
+            {/* Left Monolith Rock */}
+            <motion.div
+              initial={{ x: 28, scale: 1.1, rotate: -2, opacity: 0.95 }}
+              animate={
+                isParting
+                  ? {
+                      x: "-52vw",
+                      scale: 0.88,
+                      rotate: -7,
+                      opacity: 0,
+                    }
+                  : {
+                      x: 28,
+                      scale: [1.1, 1.12, 1.1],
+                      rotate: [-2, -2.5, -2],
+                      opacity: 1,
+                    }
+              }
+              transition={
+                isParting
+                  ? {
+                      duration: 1.15,
+                      ease: [0.23, 1, 0.32, 1],
+                    }
+                  : {
+                      duration: 2.5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }
+              }
+              className="w-52 sm:w-68 md:w-84 lg:w-[420px] pointer-events-none z-20 shrink-0"
+            >
+              <img
+                src="/rock-left-1000.webp"
+                alt="Left Monolith Rock"
+                className="w-full h-auto object-contain drop-shadow-[0_25px_60px_rgba(0,0,0,0.95)] filter brightness-100 contrast-105"
+              />
+            </motion.div>
+
+            {/* Center Gate Rift Lighting & Monogram (Fades as rocks part) */}
+            <motion.div
+              animate={{
+                opacity: isParting ? 0 : 1,
+                scale: isParting ? 0.8 : 1,
+              }}
+              transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
+              className="absolute z-30 flex flex-col items-center justify-center pointer-events-none -translate-y-2 sm:-translate-y-4"
+            >
+              {/* Vertical light rift seam between the rocks */}
+              <div className="w-[1.5px] h-20 sm:h-28 bg-gradient-to-b from-transparent via-purple-400 to-transparent opacity-60 blur-[0.5px] mb-4 animate-pulse" />
+
+              {/* Apple HIG Minimalist Studio Badge */}
+              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-black/60 border border-white/20 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.8)]">
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping" />
+                <span className="font-mono text-[10px] sm:text-[11px] font-semibold tracking-[0.25em] uppercase text-white/90">
+                  STUDIO // ABDULRAHMAN-T
+                </span>
+              </div>
+              <span className="text-[9px] font-mono uppercase tracking-[0.3em] text-white/40 mt-2">
+                INITIALIZING LAB
+              </span>
+            </motion.div>
+
+            {/* Right Monolith Rock */}
+            <motion.div
+              initial={{ x: -28, scale: 1.1, rotate: 2, opacity: 0.95 }}
+              animate={
+                isParting
+                  ? {
+                      x: "52vw",
+                      scale: 0.88,
+                      rotate: 7,
+                      opacity: 0,
+                    }
+                  : {
+                      x: -28,
+                      scale: [1.1, 1.12, 1.1],
+                      rotate: [2, 2.5, 2],
+                      opacity: 1,
+                    }
+              }
+              transition={
+                isParting
+                  ? {
+                      duration: 1.15,
+                      ease: [0.23, 1, 0.32, 1],
+                    }
+                  : {
+                      duration: 2.5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }
+              }
+              className="w-52 sm:w-68 md:w-84 lg:w-[420px] pointer-events-none z-20 shrink-0"
+            >
+              <img
+                src="/rock-right-1000.webp"
+                alt="Right Monolith Rock"
+                className="w-full h-auto object-contain drop-shadow-[0_25px_60px_rgba(0,0,0,0.95)] filter brightness-100 contrast-105"
+              />
+            </motion.div>
+          </div>
+
+          {/* Minimal Skip Control (Apple HIG Capsule) */}
           <motion.button
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.6 }}
+            animate={{ opacity: isParting ? 0 : 0.6 }}
             whileHover={{ opacity: 1, scale: 1.05 }}
+            whileTap={{ scale: 0.96 }}
             onClick={handleSkip}
-            className="absolute bottom-8 text-[11px] font-mono uppercase tracking-widest text-white/40 hover:text-white border border-white/10 px-4 py-1.5 rounded-full transition-all duration-200 cursor-pointer"
+            className="absolute bottom-6 right-6 z-40 px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.09] border border-white/10 text-[10px] font-mono uppercase tracking-widest text-white/60 hover:text-white transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
           >
-            Skip Intro →
+            <span>Skip</span>
+            <ArrowRight size={11} />
           </motion.button>
         </motion.div>
       )}
