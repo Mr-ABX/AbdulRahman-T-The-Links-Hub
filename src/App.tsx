@@ -102,6 +102,7 @@ import { SettingsPanel } from "./components/SettingsPanel";
 import { VerticalHeader } from "./components/VerticalHeader";
 
 import { MainFooter } from "./components/layout/MainFooter";
+import { DuneShaderStyle, DuneInteractionMode } from "./components/layout/PixelDunes";
 
 import { ASSET_LINKS } from "./constants/assets";
 
@@ -199,18 +200,26 @@ export default function App() {
     () => localStorage.getItem("abdulrahman_sidebar_collapsed") === "true"
   );
 
-  const [footerPixelMode, setFooterPixelMode] = useState<"lens" | "pixel" | "hd">(() => {
-    const val = localStorage.getItem("abdulrahman_footer_pixel_mode_v1");
-    if (val === "pixel" || val === "hd" || val === "lens") return val;
-    return "lens"; // Default: most optimized & interactive
+  const [footerDuneShader, setFooterDuneShader] = useState<DuneShaderStyle>(() => {
+    const val = localStorage.getItem("abdulrahman_footer_dune_shader_v2");
+    if (val === "pixel" || val === "halftone" || val === "dark") return val;
+    return "pixel"; // Default: 8-Bit Pixel Mosaic
+  });
+  const [footerPixelMode, setFooterPixelMode] = useState<DuneInteractionMode>(() => {
+    const val = localStorage.getItem("abdulrahman_footer_pixel_mode_v2");
+    if (val === "pixel" || val === "full" || val === "hd" || val === "lens") {
+      if (val === "pixel") return "full";
+      return val as DuneInteractionMode;
+    }
+    return "lens"; // Default: most optimized & interactive spotlight
   });
   const [footerPixelSize, setFooterPixelSize] = useState<number>(() => {
-    const val = localStorage.getItem("abdulrahman_footer_pixel_size_v1");
+    const val = localStorage.getItem("abdulrahman_footer_pixel_size_v2");
     if (val) {
       const parsed = parseInt(val, 10);
       if (!isNaN(parsed)) return parsed;
     }
-    return 8; // Default: 8px classic
+    return 12; // Default: 12px for chunky, visible pixelation
   });
   const [footerPixelGlitch, setFooterPixelGlitch] = useState<boolean>(() => {
     const val = localStorage.getItem("abdulrahman_footer_pixel_glitch_v1");
@@ -232,8 +241,9 @@ export default function App() {
     localStorage.setItem("abdulrahman_compactHome", compactHomeView.toString());
     localStorage.setItem("abdulrahman_header_layout_v3", headerLayout);
     localStorage.setItem("abdulrahman_sidebar_collapsed", isSidebarCollapsed.toString());
-    localStorage.setItem("abdulrahman_footer_pixel_mode_v1", footerPixelMode);
-    localStorage.setItem("abdulrahman_footer_pixel_size_v1", footerPixelSize.toString());
+    localStorage.setItem("abdulrahman_footer_dune_shader_v2", footerDuneShader);
+    localStorage.setItem("abdulrahman_footer_pixel_mode_v2", footerPixelMode);
+    localStorage.setItem("abdulrahman_footer_pixel_size_v2", footerPixelSize.toString());
     localStorage.setItem("abdulrahman_footer_pixel_glitch_v1", footerPixelGlitch.toString());
     localStorage.setItem("abdulrahman_footer_pixel_mono_v1", footerPixelMonochrome.toString());
   }, [
@@ -242,6 +252,7 @@ export default function App() {
     compactHomeView,
     headerLayout,
     isSidebarCollapsed,
+    footerDuneShader,
     footerPixelMode,
     footerPixelSize,
     footerPixelGlitch,
@@ -733,6 +744,8 @@ export default function App() {
         setCompactHomeView={setCompactHomeView}
         headerLayout={headerLayout}
         setHeaderLayout={setHeaderLayout}
+        footerDuneShader={footerDuneShader}
+        setFooterDuneShader={setFooterDuneShader}
         footerPixelMode={footerPixelMode}
         setFooterPixelMode={setFooterPixelMode}
         footerPixelSize={footerPixelSize}
@@ -747,6 +760,7 @@ export default function App() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         isInImmersiveMode={isInImmersiveMode}
+        footerDuneShader={footerDuneShader}
         footerPixelMode={footerPixelMode}
         footerPixelSize={footerPixelSize}
         footerPixelGlitch={footerPixelGlitch}

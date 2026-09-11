@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import { ArrowUpRight, Layers } from "lucide-react";
 import { ASSET_LINKS } from "../../constants/assets";
 import { cn } from "../../lib/utils";
-import { PixelDunes } from "./PixelDunes";
+import { PixelDunes, DuneShaderStyle, DuneInteractionMode } from "./PixelDunes";
 
 const logo2 = ASSET_LINKS.logo2Svg;
 
@@ -11,7 +11,8 @@ interface MainFooterProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   isInImmersiveMode: boolean;
-  footerPixelMode?: "lens" | "pixel" | "hd";
+  footerDuneShader?: DuneShaderStyle;
+  footerPixelMode?: DuneInteractionMode;
   footerPixelSize?: number;
   footerPixelGlitch?: boolean;
   footerPixelMonochrome?: boolean;
@@ -21,8 +22,9 @@ export const MainFooter = ({
   activeTab,
   setActiveTab,
   isInImmersiveMode,
+  footerDuneShader = "pixel",
   footerPixelMode = "lens",
-  footerPixelSize = 8,
+  footerPixelSize = 12,
   footerPixelGlitch = true,
   footerPixelMonochrome = true,
 }: MainFooterProps) => {
@@ -259,6 +261,7 @@ export const MainFooter = ({
         <div className="relative z-20 w-full h-full pointer-events-auto">
           <PixelDunes
             imageSrc="/footer-image.avif"
+            shaderStyle={footerDuneShader}
             pixelMode={footerPixelMode}
             pixelSize={footerPixelSize}
             enableGlitch={footerPixelGlitch}

@@ -1,7 +1,8 @@
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { X, Sliders, MousePointer, Compass, LayoutGrid, MonitorSmartphone, Sparkles, Grid, Eye } from "lucide-react";
+import { X, Sliders, MousePointer, Compass, LayoutGrid, MonitorSmartphone, Sparkles, Grid, Eye, CircleDot, Moon } from "lucide-react";
 import { cn } from "../lib/utils";
+import { DuneShaderStyle, DuneInteractionMode } from "./layout/PixelDunes";
 
 interface SettingsPanelProps {
   isOpen: boolean;
@@ -14,8 +15,10 @@ interface SettingsPanelProps {
   setCompactHomeView: (val: boolean) => void;
   headerLayout: "horizontal" | "vertical";
   setHeaderLayout: (val: "horizontal" | "vertical") => void;
-  footerPixelMode: "lens" | "pixel" | "hd";
-  setFooterPixelMode: (val: "lens" | "pixel" | "hd") => void;
+  footerDuneShader: DuneShaderStyle;
+  setFooterDuneShader: (val: DuneShaderStyle) => void;
+  footerPixelMode: DuneInteractionMode;
+  setFooterPixelMode: (val: DuneInteractionMode) => void;
   footerPixelSize: number;
   setFooterPixelSize: (val: number) => void;
   footerPixelGlitch: boolean;
@@ -71,6 +74,8 @@ export const SettingsPanel = ({
   setCompactHomeView,
   headerLayout,
   setHeaderLayout,
+  footerDuneShader,
+  setFooterDuneShader,
   footerPixelMode,
   setFooterPixelMode,
   footerPixelSize,
@@ -248,7 +253,7 @@ export const SettingsPanel = ({
                   />
                 </div>
 
-                {/* 5. Footer Dunes Visuals & Pixel FX Section */}
+                {/* 5. Footer Dunes Visuals & Shader FX Section */}
                 <div className="p-4 rounded-2xl liquid-glass-subtle border border-white/[0.09] space-y-3.5 shadow-sm">
                   <div className="flex items-start gap-3">
                     <Sparkles className="text-purple-400 shrink-0 mt-0.5" size={16} strokeWidth={1.35} />
@@ -258,76 +263,143 @@ export const SettingsPanel = ({
                           Footer Dunes Visuals
                         </h4>
                         <span className="px-1.5 py-0.5 rounded text-[8px] font-mono uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                          Pixel FX
+                          Shader FX
                         </span>
                       </div>
                       <p className="text-[11px] text-white/50 leading-relaxed font-light">
-                        Configure the dunes shader mode, glitch animation, and pixel density.
+                        Choose between retro halftone dots, 8-bit pixels, or obsidian dark silhouette dunes.
                       </p>
                     </div>
                   </div>
 
-                  {/* Mode 3-Way Selector */}
-                  <div className="grid grid-cols-3 gap-1.5 pt-0.5">
-                    <button
-                      id="footer-mode-lens-btn"
-                      type="button"
-                      onClick={() => setFooterPixelMode("lens")}
-                      className={cn(
-                        "p-2 rounded-xl border text-xs font-medium flex flex-col items-center gap-0.5 transition-all duration-200 cursor-pointer text-center",
-                        footerPixelMode === "lens"
-                          ? "bg-purple-500/20 border-purple-500/40 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]"
-                          : "bg-white/[0.02] border-transparent text-white/40 hover:text-white/80 hover:bg-white/[0.05]"
-                      )}
-                    >
-                      <span className="text-[10px] flex items-center gap-1 font-medium">
-                        <Sparkles size={10} className={footerPixelMode === "lens" ? "text-purple-300" : "text-white/40"} />
-                        <span>Lens</span>
-                      </span>
-                      <span className="text-[8px] text-white/35 uppercase tracking-wider font-mono">Default</span>
-                    </button>
+                  {/* 1. Shader Effect Style (Pixel, Halftone Dots, Obsidian Dark) */}
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-mono text-white/40 uppercase tracking-wider block">
+                      Visual Style
+                    </label>
+                    <div className="grid grid-cols-3 gap-1.5">
+                      <button
+                        id="dune-shader-pixel-btn"
+                        type="button"
+                        onClick={() => setFooterDuneShader("pixel")}
+                        className={cn(
+                          "p-2 rounded-xl border text-xs font-medium flex flex-col items-center gap-0.5 transition-all duration-200 cursor-pointer text-center",
+                          footerDuneShader === "pixel"
+                            ? "bg-purple-500/20 border-purple-500/40 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]"
+                            : "bg-white/[0.02] border-transparent text-white/40 hover:text-white/80 hover:bg-white/[0.05]"
+                        )}
+                      >
+                        <span className="text-[10px] flex items-center gap-1 font-medium">
+                          <Grid size={11} className={footerDuneShader === "pixel" ? "text-purple-300" : "text-white/40"} />
+                          <span>8-Bit Pixel</span>
+                        </span>
+                        <span className="text-[8px] text-white/35 uppercase tracking-wider font-mono">Mosaic</span>
+                      </button>
 
-                    <button
-                      id="footer-mode-pixel-btn"
-                      type="button"
-                      onClick={() => setFooterPixelMode("pixel")}
-                      className={cn(
-                        "p-2 rounded-xl border text-xs font-medium flex flex-col items-center gap-0.5 transition-all duration-200 cursor-pointer text-center",
-                        footerPixelMode === "pixel"
-                          ? "bg-purple-500/20 border-purple-500/40 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]"
-                          : "bg-white/[0.02] border-transparent text-white/40 hover:text-white/80 hover:bg-white/[0.05]"
-                      )}
-                    >
-                      <span className="text-[10px] flex items-center gap-1 font-medium">
-                        <Grid size={10} className={footerPixelMode === "pixel" ? "text-purple-300" : "text-white/40"} />
-                        <span>8-Bit Pixel</span>
-                      </span>
-                      <span className="text-[8px] text-white/35 uppercase tracking-wider font-mono">Mosaic</span>
-                    </button>
+                      <button
+                        id="dune-shader-halftone-btn"
+                        type="button"
+                        onClick={() => setFooterDuneShader("halftone")}
+                        className={cn(
+                          "p-2 rounded-xl border text-xs font-medium flex flex-col items-center gap-0.5 transition-all duration-200 cursor-pointer text-center",
+                          footerDuneShader === "halftone"
+                            ? "bg-purple-500/20 border-purple-500/40 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]"
+                            : "bg-white/[0.02] border-transparent text-white/40 hover:text-white/80 hover:bg-white/[0.05]"
+                        )}
+                      >
+                        <span className="text-[10px] flex items-center gap-1 font-medium">
+                          <CircleDot size={11} className={footerDuneShader === "halftone" ? "text-purple-300" : "text-white/40"} />
+                          <span>Halftone</span>
+                        </span>
+                        <span className="text-[8px] text-white/35 uppercase tracking-wider font-mono">Dot Matrix</span>
+                      </button>
 
-                    <button
-                      id="footer-mode-hd-btn"
-                      type="button"
-                      onClick={() => setFooterPixelMode("hd")}
-                      className={cn(
-                        "p-2 rounded-xl border text-xs font-medium flex flex-col items-center gap-0.5 transition-all duration-200 cursor-pointer text-center",
-                        footerPixelMode === "hd"
-                          ? "bg-purple-500/20 border-purple-500/40 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]"
-                          : "bg-white/[0.02] border-transparent text-white/40 hover:text-white/80 hover:bg-white/[0.05]"
-                      )}
-                    >
-                      <span className="text-[10px] flex items-center gap-1 font-medium">
-                        <Eye size={10} className={footerPixelMode === "hd" ? "text-purple-300" : "text-white/40"} />
-                        <span>Original</span>
-                      </span>
-                      <span className="text-[8px] text-white/35 uppercase tracking-wider font-mono">Crisp HD</span>
-                    </button>
+                      <button
+                        id="dune-shader-dark-btn"
+                        type="button"
+                        onClick={() => setFooterDuneShader("dark")}
+                        className={cn(
+                          "p-2 rounded-xl border text-xs font-medium flex flex-col items-center gap-0.5 transition-all duration-200 cursor-pointer text-center",
+                          footerDuneShader === "dark"
+                            ? "bg-purple-500/20 border-purple-500/40 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]"
+                            : "bg-white/[0.02] border-transparent text-white/40 hover:text-white/80 hover:bg-white/[0.05]"
+                        )}
+                      >
+                        <span className="text-[10px] flex items-center gap-1 font-medium">
+                          <Moon size={11} className={footerDuneShader === "dark" ? "text-purple-300" : "text-white/40"} />
+                          <span>Dark Mode</span>
+                        </span>
+                        <span className="text-[8px] text-white/35 uppercase tracking-wider font-mono">Silhouette</span>
+                      </button>
+                    </div>
                   </div>
 
-                  {/* Pixel Specific Options (Glitch Animation, Dark Monochrome Shade, Pixel Density) */}
+                  {/* 2. Interaction Mode (Soft Spotlight Lens, Full Effect, Original HD) */}
+                  <div className="space-y-1.5 pt-1">
+                    <label className="text-[10px] font-mono text-white/40 uppercase tracking-wider block">
+                      Spotlight & Display Mode
+                    </label>
+                    <div className="grid grid-cols-3 gap-1.5">
+                      <button
+                        id="footer-mode-lens-btn"
+                        type="button"
+                        onClick={() => setFooterPixelMode("lens")}
+                        className={cn(
+                          "p-2 rounded-xl border text-xs font-medium flex flex-col items-center gap-0.5 transition-all duration-200 cursor-pointer text-center",
+                          footerPixelMode === "lens"
+                            ? "bg-purple-500/20 border-purple-500/40 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]"
+                            : "bg-white/[0.02] border-transparent text-white/40 hover:text-white/80 hover:bg-white/[0.05]"
+                        )}
+                      >
+                        <span className="text-[10px] flex items-center gap-1 font-medium">
+                          <Sparkles size={10} className={footerPixelMode === "lens" ? "text-purple-300" : "text-white/40"} />
+                          <span>Soft Lens</span>
+                        </span>
+                        <span className="text-[8px] text-white/35 uppercase tracking-wider font-mono">Hover HD</span>
+                      </button>
+
+                      <button
+                        id="footer-mode-full-btn"
+                        type="button"
+                        onClick={() => setFooterPixelMode("full")}
+                        className={cn(
+                          "p-2 rounded-xl border text-xs font-medium flex flex-col items-center gap-0.5 transition-all duration-200 cursor-pointer text-center",
+                          footerPixelMode === "full"
+                            ? "bg-purple-500/20 border-purple-500/40 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]"
+                            : "bg-white/[0.02] border-transparent text-white/40 hover:text-white/80 hover:bg-white/[0.05]"
+                        )}
+                      >
+                        <span className="text-[10px] flex items-center gap-1 font-medium">
+                          <Grid size={10} className={footerPixelMode === "full" ? "text-purple-300" : "text-white/40"} />
+                          <span>Full FX</span>
+                        </span>
+                        <span className="text-[8px] text-white/35 uppercase tracking-wider font-mono">Constant</span>
+                      </button>
+
+                      <button
+                        id="footer-mode-hd-btn"
+                        type="button"
+                        onClick={() => setFooterPixelMode("hd")}
+                        className={cn(
+                          "p-2 rounded-xl border text-xs font-medium flex flex-col items-center gap-0.5 transition-all duration-200 cursor-pointer text-center",
+                          footerPixelMode === "hd"
+                            ? "bg-purple-500/20 border-purple-500/40 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]"
+                            : "bg-white/[0.02] border-transparent text-white/40 hover:text-white/80 hover:bg-white/[0.05]"
+                        )}
+                      >
+                        <span className="text-[10px] flex items-center gap-1 font-medium">
+                          <Eye size={10} className={footerPixelMode === "hd" ? "text-purple-300" : "text-white/40"} />
+                          <span>Original</span>
+                        </span>
+                        <span className="text-[8px] text-white/35 uppercase tracking-wider font-mono">Crisp HD</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* 3. Detailed Modifiers (Glitch Animation, Dark Monochromatic Shade, Density) */}
                   {footerPixelMode !== "hd" && (
                     <div className="space-y-3 pt-2.5 border-t border-white/[0.06]">
-                      {/* 1. Glitch & Micro-Shimmer Animation Toggle */}
+                      {/* Glitch & Micro-Shimmer Animation Toggle */}
                       <div className="flex items-center justify-between">
                         <div className="space-y-0.5">
                           <p className="text-[11px] font-medium text-white/90">Glitch & Micro-Shimmer</p>
@@ -340,46 +412,53 @@ export const SettingsPanel = ({
                         />
                       </div>
 
-                      {/* 2. Dark Monochromatic Shade Toggle */}
-                      <div className="flex items-center justify-between">
-                        <div className="space-y-0.5">
-                          <p className="text-[11px] font-medium text-white/90">Dark Monochromatic Shade</p>
-                          <p className="text-[10px] text-white/45">Stylized obsidian tint; hover reveals vivid HD</p>
+                      {/* Dark Monochromatic Shade Toggle (if not in Obsidian dark mode) */}
+                      {footerDuneShader !== "dark" && (
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-0.5">
+                            <p className="text-[11px] font-medium text-white/90">Dark Monochromatic Shade</p>
+                            <p className="text-[10px] text-white/45">Stylized obsidian tint; hover reveals vivid HD</p>
+                          </div>
+                          <AppleSwitch
+                            id="toggle-dunes-mono-switch"
+                            checked={footerPixelMonochrome}
+                            onChange={() => setFooterPixelMonochrome(!footerPixelMonochrome)}
+                          />
                         </div>
-                        <AppleSwitch
-                          id="toggle-dunes-mono-switch"
-                          checked={footerPixelMonochrome}
-                          onChange={() => setFooterPixelMonochrome(!footerPixelMonochrome)}
-                        />
-                      </div>
+                      )}
 
-                      {/* 3. Pixel Density Selector */}
-                      <div className="flex items-center justify-between pt-0.5">
-                        <span className="text-[10px] font-mono text-white/50 uppercase tracking-wider">Pixel Block Size</span>
-                        <div className="inline-flex items-center gap-1 p-0.5 rounded-lg bg-white/[0.04] border border-white/[0.08]">
-                          {[
-                            { label: "6px", value: 6, hint: "Fine" },
-                            { label: "8px", value: 8, hint: "Classic" },
-                            { label: "12px", value: 12, hint: "Chunky" },
-                          ].map((item) => (
-                            <button
-                              key={item.value}
-                              id={`pixel-density-${item.value}-btn`}
-                              type="button"
-                              onClick={() => setFooterPixelSize(item.value)}
-                              className={cn(
-                                "px-2.5 py-0.5 rounded-md text-[10px] font-mono transition-all cursor-pointer",
-                                footerPixelSize === item.value
-                                  ? "bg-purple-500/30 text-purple-200 font-semibold border border-purple-500/40 shadow-xs"
-                                  : "text-white/40 hover:text-white"
-                              )}
-                              title={`${item.label} (${item.hint})`}
-                            >
-                              {item.label}
-                            </button>
-                          ))}
+                      {/* Pattern Density / Block Size (for Pixel & Halftone) */}
+                      {footerDuneShader !== "dark" && (
+                        <div className="flex items-center justify-between pt-0.5">
+                          <span className="text-[10px] font-mono text-white/50 uppercase tracking-wider">
+                            {footerDuneShader === "halftone" ? "Dot Grid Spacing" : "Pixel Block Size"}
+                          </span>
+                          <div className="inline-flex items-center gap-1 p-0.5 rounded-lg bg-white/[0.04] border border-white/[0.08]">
+                            {[
+                              { label: "8px", value: 8, hint: "Fine" },
+                              { label: "12px", value: 12, hint: "Classic" },
+                              { label: "16px", value: 16, hint: "Chunky" },
+                              { label: "20px", value: 20, hint: "Bold" },
+                            ].map((item) => (
+                              <button
+                                key={item.value}
+                                id={`pixel-density-${item.value}-btn`}
+                                type="button"
+                                onClick={() => setFooterPixelSize(item.value)}
+                                className={cn(
+                                  "px-2 py-0.5 rounded-md text-[10px] font-mono transition-all cursor-pointer",
+                                  footerPixelSize === item.value
+                                    ? "bg-purple-500/30 text-purple-200 font-semibold border border-purple-500/40 shadow-xs"
+                                    : "text-white/40 hover:text-white"
+                                )}
+                                title={`${item.label} (${item.hint})`}
+                              >
+                                {item.label}
+                              </button>
+                            ))}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   )}
                 </div>
