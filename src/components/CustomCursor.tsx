@@ -5,6 +5,7 @@ export const CustomCursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isSuppressed, setIsSuppressed] = useState(false);
 
   useEffect(() => {
     let animationFrameId: number;
@@ -14,7 +15,9 @@ export const CustomCursor = () => {
     let currentY = 0;
 
     const updateMousePosition = (e: MouseEvent) => {
-      if (!isVisible) setIsVisible(true);
+      if (!isSuppressed && !isVisible) {
+        setIsVisible(true);
+      }
       targetX = e.clientX;
       targetY = e.clientY;
       if (cursorRef.current) {
@@ -34,7 +37,25 @@ export const CustomCursor = () => {
     };
     
     const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+
+      // Check if cursor entered an iframe or an interactive preview area
+      const isIframeOrPreview = 
+        target.tagName.toLowerCase() === 'iframe' || 
+        target.closest('iframe') ||
+        target.closest('[data-hide-cursor="true"]') ||
+        target.closest('.preview-viewport');
+        
+      if (isIframeOrPreview) {
+        setIsVisible(false);
+        setIsSuppressed(true);
+        return;
+      } else if (isSuppressed) {
+        setIsSuppressed(false);
+        setIsVisible(true);
+      }
+
       const isClickable = 
         target.tagName.toLowerCase() === 'button' || 
         target.tagName.toLowerCase() === 'a' ||
@@ -47,12 +68,36 @@ export const CustomCursor = () => {
     };
 
     const handleMouseLeave = () => setIsVisible(false);
-    const handleMouseEnter = () => setIsVisible(true);
+    const handleMouseEnter = () => {
+      if (!isSuppressed) setIsVisible(true);
+    };
+
+    const handleHideCustomCursor = () => {
+      setIsSuppressed(true);
+      setIsVisible(false);
+    };
+
+    const handleShowCustomCursor = () => {
+      setIsSuppressed(false);
+      setIsVisible(true);
+    };
+
+    const handleWindowBlur = () => {
+      setIsVisible(false);
+    };
+
+    const handleWindowFocus = () => {
+      if (!isSuppressed) setIsVisible(true);
+    };
 
     window.addEventListener('mousemove', updateMousePosition, { passive: true });
     window.addEventListener('mouseover', handleMouseOver, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
+    window.addEventListener('blur', handleWindowBlur);
+    window.addEventListener('focus', handleWindowFocus);
+    window.addEventListener('hide-custom-cursor', handleHideCustomCursor);
+    window.addEventListener('show-custom-cursor', handleShowCustomCursor);
     
     // Start animation loop
     render();
@@ -62,15 +107,19 @@ export const CustomCursor = () => {
       window.removeEventListener('mouseover', handleMouseOver);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
+      window.removeEventListener('blur', handleWindowBlur);
+      window.removeEventListener('focus', handleWindowFocus);
+      window.removeEventListener('hide-custom-cursor', handleHideCustomCursor);
+      window.removeEventListener('show-custom-cursor', handleShowCustomCursor);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [isVisible]);
+  }, [isVisible, isSuppressed]);
 
   return (
     <div
       ref={cursorRef}
       className="fixed top-0 left-0 w-8 h-8 pointer-events-none z-[99999] mix-blend-difference hidden md:flex items-center justify-center will-change-transform"
-      style={{ opacity: isVisible ? 1 : 0, transition: 'opacity 0.3s ease' }}
+      style={{ opacity: isVisible && !isSuppressed ? 1 : 0, transition: 'opacity 0.2s ease' }}
     >
       {/* Hover State: Expanded Circle */}
       <motion.div

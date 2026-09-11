@@ -202,7 +202,16 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                 </div>
 
                 {/* Card Preview Viewport */}
-                <div className="relative flex-1 bg-black/80 overflow-hidden flex items-center justify-center p-2.5">
+                <div 
+                  data-hide-cursor="true"
+                  onMouseEnter={() => {
+                    if (isCenter) window.dispatchEvent(new CustomEvent('hide-custom-cursor'));
+                  }}
+                  onMouseLeave={() => {
+                    window.dispatchEvent(new CustomEvent('show-custom-cursor'));
+                  }}
+                  className="relative flex-1 bg-black/80 overflow-hidden flex items-center justify-center p-2.5 preview-viewport"
+                >
                   <div className="w-full h-full rounded-2xl overflow-hidden border border-white/10 bg-[#05050a] relative">
                     {project.previewUrl ? (
                       <iframe
@@ -320,7 +329,12 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
               </button>
 
               {/* Preview Half */}
-              <div className="w-full md:w-1/2 h-[320px] md:h-auto bg-black relative flex items-center justify-center border-b md:border-b-0 md:border-r border-white/10">
+              <div 
+                data-hide-cursor="true"
+                onMouseEnter={() => window.dispatchEvent(new CustomEvent('hide-custom-cursor'))}
+                onMouseLeave={() => window.dispatchEvent(new CustomEvent('show-custom-cursor'))}
+                className="w-full md:w-1/2 h-[320px] md:h-auto bg-black relative flex items-center justify-center border-b md:border-b-0 md:border-r border-white/10 preview-viewport"
+              >
                 {selectedProject.previewUrl ? (
                   <iframe
                     src={getEmbedUrl(selectedProject, true)}
