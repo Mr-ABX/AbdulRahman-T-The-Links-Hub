@@ -200,12 +200,12 @@ export const ClientJourney: React.FC = () => {
     });
   }, [scrollYProgress]);
 
-  // Dynamic connector opacity as liquid advances to each exact vertical node checkpoint
+    // Dynamic connector opacity & scale as liquid advances to each exact vertical node checkpoint
   // (Assuming nodes are roughly at 12%, 37%, 62%, 87% of the timeline height)
-  const step1Beam = useTransform(fluidProgress, [0.08, 0.15], [0, 1]);
-  const step2Beam = useTransform(fluidProgress, [0.32, 0.39], [0, 1]);
-  const step3Beam = useTransform(fluidProgress, [0.57, 0.64], [0, 1]);
-  const step4Beam = useTransform(fluidProgress, [0.82, 0.89], [0, 1]);
+  const step1Beam = useTransform(fluidProgress, [0.08, 0.16], [0, 1]);
+  const step2Beam = useTransform(fluidProgress, [0.33, 0.41], [0, 1]);
+  const step3Beam = useTransform(fluidProgress, [0.58, 0.66], [0, 1]);
+  const step4Beam = useTransform(fluidProgress, [0.83, 0.91], [0, 1]);
   const stepBeams = [step1Beam, step2Beam, step3Beam, step4Beam];
 
   return (
@@ -273,80 +273,21 @@ export const ClientJourney: React.FC = () => {
         </div>
       </div>
 
-      {/* 2. Main Procedural Timeline with Random Organic Curvy Liquid Beam */}
+      {/* 2. Main Procedural Timeline */}
       <div ref={timelineRef} className="relative min-h-[1200px] z-10">
-        {/* DESKTOP PROCEDURAL LIQUID STREAM SVG (md+)
-            - NO background stroke/track (completely invisible path ahead of time)
-            - NO stroke borders or outline around the liquid
-            - NO glowing drop-shadows
-            - Random, organic brush-stroke curves centered strictly in the middle 2 columns
+        
+        {/* APPLE HIG THICK SILVER LIQUID BEAM (Vertical Track & Fill) 
+            - Replaces distorted SVG paths with a perfect, distortion-free HTML cylinder
+            - Drops dynamically down with scroll (Height maps 0% to 100%)
+            - Silver gradient fills a matte titanium track
         */}
-        <div className="hidden md:block absolute inset-0 w-full h-full pointer-events-none">
-          <svg
-            viewBox="0 0 100 100"
-            fill="none"
-            preserveAspectRatio="none"
-            className="w-full h-full"
-          >
-            <defs>
-              <linearGradient id="organic-liquid-beam" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#CBD5E1" />
-                <stop offset="20%" stopColor="#38BDF8" />
-                <stop offset="40%" stopColor="#818CF8" />
-                <stop offset="60%" stopColor="#34D399" />
-                <stop offset="80%" stopColor="#A78BFA" />
-                <stop offset="100%" stopColor="#E2E8F0" />
-              </linearGradient>
-            </defs>
-
-            {/* ORGANIC RANDOM BRUSH-STROKE LIQUID BEAM
-                Twists, swoops, and curves naturally through the center spine:
-                Using vector-effect="non-scaling-stroke" so it stays perfectly 6px wide.
-                X values oscillate gently between 47 and 53 (staying safe from overlapping cards).
-            */}
-            <motion.path
-              d="M 50,0 C 47,8 54,16 48,25 C 42,34 53,42 50,50 C 47,58 55,66 49,75 C 43,84 53,92 50,100"
-              stroke="url(#organic-liquid-beam)"
-              strokeWidth="6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              vectorEffect="non-scaling-stroke"
-              style={{
-                pathLength: fluidProgress,
-              }}
-            />
-          </svg>
-        </div>
-
-        {/* MOBILE LIQUID BEAM (sm and below) - Completely invisible path until revealed */}
-        <div className="block md:hidden absolute inset-y-0 left-5 w-8 pointer-events-none">
-          <svg
-            viewBox="0 0 100 100"
-            fill="none"
-            preserveAspectRatio="none"
-            className="w-full h-full"
-          >
-            <defs>
-              <linearGradient id="organic-mobile-beam" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#CBD5E1" />
-                <stop offset="25%" stopColor="#38BDF8" />
-                <stop offset="50%" stopColor="#818CF8" />
-                <stop offset="75%" stopColor="#34D399" />
-                <stop offset="100%" stopColor="#A78BFA" />
-              </linearGradient>
-            </defs>
-            <motion.path
-              d="M 50,0 C 30,15 70,30 50,50 C 30,70 70,85 50,100"
-              stroke="url(#organic-mobile-beam)"
-              strokeWidth="5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              vectorEffect="non-scaling-stroke"
-              style={{
-                pathLength: fluidProgress,
-              }}
-            />
-          </svg>
+        <div className="absolute left-[24px] md:left-1/2 md:-translate-x-1/2 top-4 bottom-4 w-1.5 md:w-2 bg-slate-800/30 rounded-full border border-slate-700/30 shadow-[inset_0_1px_4px_rgba(0,0,0,0.5)] overflow-hidden z-0">
+          <motion.div 
+            className="w-full bg-gradient-to-b from-slate-100 via-slate-300 to-slate-400 rounded-full shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),inset_0_-1px_2px_rgba(0,0,0,0.2)]"
+            style={{ 
+              height: useTransform(fluidProgress, [0, 1], ["0%", "100%"]) 
+            }}
+          />
         </div>
 
         {/* 3. Alternating Milestones with Embedded Card Icons & Click-to-Flip Modal */}
@@ -364,9 +305,17 @@ export const ClientJourney: React.FC = () => {
                 onMouseEnter={() => setHoveredIndex(idx)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
+                {/* Mobile Connector (visible only on sm screens) - Draws horizontally from the left track to the card */}
+                <div className="md:hidden absolute top-1/2 -translate-y-1/2 left-[28px] w-6 h-1 bg-slate-800/40 rounded-r-full overflow-hidden pointer-events-none">
+                  <motion.div
+                    className="w-full h-full bg-gradient-to-r from-slate-300 to-slate-100 rounded-r-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)] origin-left"
+                    style={{ scaleX: stepBeams[idx] }}
+                  />
+                </div>
+
                 {/* Left Column Card (Steps 01 & 03) */}
                 {isLeft ? (
-                  <div className="col-span-1 pl-10 md:pl-0 md:col-span-5 md:text-right">
+                  <div className="col-span-1 pl-12 md:pl-0 md:col-span-5 md:text-right">
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -431,50 +380,48 @@ export const ClientJourney: React.FC = () => {
                   <div className="hidden md:block md:col-span-5" />
                 )}
 
-                {/* Center Spine with Dynamic Dotted Connectors */}
+                {/* Center Spine with Dynamic Silver Beam Connectors */}
                 <div className="hidden md:flex md:col-span-2 relative items-center justify-center pointer-events-none h-full">
                   {isLeft ? (
                     <>
-                      {/* Dotted line stretching from center to left card */}
+                      {/* Empty matte track stretching to the left card */}
+                      <div className="absolute top-1/2 -translate-y-1/2 right-1/2 w-1/2 h-1.5 bg-slate-800/30 rounded-l-full border border-slate-700/30 shadow-[inset_0_1px_4px_rgba(0,0,0,0.5)] overflow-hidden" />
+                      
+                      {/* Thick silver liquid filling from the center OUT towards the left card */}
                       <motion.div
-                        className="absolute top-1/2 -translate-y-1/2 right-1/2 w-1/2 h-[2px] border-t-[2px] border-dashed border-slate-500/40"
-                        style={{ opacity: stepBeams[idx] }}
+                        className="absolute top-1/2 -translate-y-1/2 right-1/2 w-1/2 h-1.5 bg-gradient-to-l from-slate-300 to-slate-100 rounded-l-full origin-right shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]"
+                        style={{ scaleX: stepBeams[idx] }}
                       />
-                      {/* Dot touching the card */}
+                      
+                      {/* Silver connection dot that lights up when the liquid hits the card edge */}
                       <motion.div
-                        className="absolute top-1/2 -translate-y-1/2 left-0 w-2 h-2 rounded-full shadow-sm"
-                        style={{ backgroundColor: step.accent, opacity: stepBeams[idx] }}
+                        className="absolute top-1/2 -translate-y-1/2 left-0 w-3 h-3 rounded-full bg-slate-100 border-[2.5px] border-slate-300 shadow-[0_0_10px_rgba(203,213,225,0.6)] z-10"
+                        style={{ scale: stepBeams[idx], opacity: stepBeams[idx] }}
                       />
                     </>
                   ) : (
                     <>
-                      {/* Dotted line stretching from center to right card */}
+                      {/* Empty matte track stretching to the right card */}
+                      <div className="absolute top-1/2 -translate-y-1/2 left-1/2 w-1/2 h-1.5 bg-slate-800/30 rounded-r-full border border-slate-700/30 shadow-[inset_0_1px_4px_rgba(0,0,0,0.5)] overflow-hidden" />
+                      
+                      {/* Thick silver liquid filling from the center OUT towards the right card */}
                       <motion.div
-                        className="absolute top-1/2 -translate-y-1/2 left-1/2 w-1/2 h-[2px] border-t-[2px] border-dashed border-slate-500/40"
-                        style={{ opacity: stepBeams[idx] }}
+                        className="absolute top-1/2 -translate-y-1/2 left-1/2 w-1/2 h-1.5 bg-gradient-to-r from-slate-300 to-slate-100 rounded-r-full origin-left shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]"
+                        style={{ scaleX: stepBeams[idx] }}
                       />
-                      {/* Dot touching the card */}
+                      
+                      {/* Silver connection dot that lights up when the liquid hits the card edge */}
                       <motion.div
-                        className="absolute top-1/2 -translate-y-1/2 right-0 w-2 h-2 rounded-full shadow-sm"
-                        style={{ backgroundColor: step.accent, opacity: stepBeams[idx] }}
+                        className="absolute top-1/2 -translate-y-1/2 right-0 w-3 h-3 rounded-full bg-slate-100 border-[2.5px] border-slate-300 shadow-[0_0_10px_rgba(203,213,225,0.6)] z-10"
+                        style={{ scale: stepBeams[idx], opacity: stepBeams[idx] }}
                       />
                     </>
                   )}
-
-                  {/* Central Node that lights up when liquid hits it */}
-                  <motion.div
-                    className="w-3.5 h-3.5 rounded-full bg-[#0a0b10] border-[1.5px] z-10"
-                    style={{
-                      borderColor: step.accent,
-                      boxShadow: `0 0 14px ${step.accent}80`,
-                      opacity: stepBeams[idx]
-                    }}
-                  />
                 </div>
 
                 {/* Right Column Card (Steps 02 & 04) */}
                 {!isLeft ? (
-                  <div className="col-span-1 pl-10 md:pl-0 md:col-span-5 text-left">
+                  <div className="col-span-1 pl-12 md:pl-0 md:col-span-5 md:text-left">
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
