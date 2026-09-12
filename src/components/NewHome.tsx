@@ -5,6 +5,7 @@ import { SpecularCard } from "./shared/SpecularCard";
 import { ASSET_LINKS } from "../constants/assets";
 import { GitHubGraph } from "./GitHubGraph";
 import { Portfolio3D } from "./Portfolio3D";
+import { ClientJourney } from "./ClientJourney";
 import { cn } from "../lib/utils";
 import { RockLightColor, RockLightIntensity } from "../types";
 import { reviews } from "../constants/data";
@@ -1081,7 +1082,10 @@ export const Home = ({
         </div>
       </section>
 
-      {/* 6. Apple HIG Pro Contact & Strategy Call Area */}
+      {/* 6. Interactive Client Journey & Onboarding Path */}
+      <ClientJourney />
+
+      {/* 7. Apple HIG Pro Contact & Strategy Call Area */}
       <section className="py-20 md:py-28 max-w-[1250px] mx-auto px-4 md:px-8">
         <div className="bg-[#090912]/80 rounded-[2.5rem] md:rounded-[3rem] border border-white/10 p-6 sm:p-8 md:p-12 lg:p-14 flex flex-col lg:flex-row gap-10 lg:gap-14 relative overflow-hidden items-stretch shadow-[0_30px_90px_rgba(0,0,0,0.95)] backdrop-blur-2xl">
           {/* Subtle ambient lighting */}
@@ -1180,7 +1184,7 @@ export const Home = ({
                 <div className="mb-6">
                   <div className="flex items-center gap-3 mb-2.5">
                     <LiquidCapsule color1="#8B5CF6" color2="#6366F1" />
-                    <span className="text-xs font-mono tracking-widest uppercase text-white/50">06 // Collaborate & Build</span>
+                    <span className="text-xs font-mono tracking-widest uppercase text-white/50">07 // Collaborate & Build</span>
                   </div>
                   <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
                     Start Your Project
