@@ -347,19 +347,19 @@ export const ClientJourney: React.FC = () => {
                 {isLeft ? (
                   <div className="col-span-1 pl-16 sm:pl-20 md:pl-0 md:col-span-5 md:text-right pr-4 md:pr-0">
                     <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: "-60px" }}
-                      transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
+                      initial={{ opacity: 0, x: -36, y: 24, scale: 0.95, filter: "blur(6px)" }}
+                      whileInView={{ opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }}
+                      viewport={{ once: true, margin: "-80px" }}
+                      transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: 0.04 }}
                       onClick={() => openStepModal(step)}
                       className={`group/card relative p-5 sm:p-6 md:p-7 rounded-[1.8rem] bg-gradient-to-b from-[#13151f]/95 via-[#0e1017]/95 to-[#090a10]/95 backdrop-blur-2xl border transition-all duration-300 shadow-[0_16px_40px_rgba(0,0,0,0.65)] cursor-pointer select-none ${
                         isHovered
-                          ? "border-slate-300/50 -translate-y-1 shadow-[0_24px_60px_rgba(0,0,0,0.85)]"
+                          ? "border-slate-300/50 -translate-y-1.5 shadow-[0_24px_60px_rgba(255,255,255,0.08)]"
                           : "border-white/[0.14] hover:border-white/30"
                       }`}
                     >
-                      {/* Apple HIG Brushed Silver Specular Top Rim */}
-                      <div className="absolute top-0 inset-x-8 h-px bg-gradient-to-r from-transparent via-slate-200/50 to-transparent" />
+                      {/* Apple HIG Brushed Silver Specular Top Rim & Light Sweep */}
+                      <div className="absolute top-0 inset-x-8 h-px bg-gradient-to-r from-transparent via-slate-200/60 to-transparent group-hover/card:via-white transition-opacity" />
 
                       {/* Header Capsule: Icon ON the card + Badge + Timeframe */}
                       <div className="flex items-center gap-2 mb-3.5 md:justify-end">
@@ -372,7 +372,7 @@ export const ClientJourney: React.FC = () => {
                         </span>
                         {/* Icon embedded directly on card */}
                         <div
-                          className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border border-white/10 bg-white/[0.05]"
+                          className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border border-white/10 bg-white/[0.05] group-hover/card:scale-110 transition-transform"
                           style={{ color: step.accent }}
                         >
                           <StepIcon size={14} />
@@ -394,7 +394,7 @@ export const ClientJourney: React.FC = () => {
 
                       {/* Action Pill: Triggers Pop-Up Flippable Card */}
                       <div className="flex items-center md:justify-end pt-1">
-                        <span className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-200 group-hover/card:text-white px-3 py-1.5 rounded-full bg-white/[0.06] group-hover/card:bg-white/[0.12] border border-white/15 transition-all">
+                        <span className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-200 group-hover/card:text-white px-3 py-1.5 rounded-full bg-white/[0.06] group-hover/card:bg-white/[0.12] border border-white/15 transition-all shadow-sm">
                           <span>Inspect &amp; Flip Details</span>
                           <ArrowUpRight size={13} className="text-slate-400 group-hover/card:text-white group-hover/card:translate-x-0.5 transition-transform" />
                         </span>
@@ -448,25 +448,25 @@ export const ClientJourney: React.FC = () => {
                 {!isLeft ? (
                   <div className="col-span-1 pl-16 sm:pl-20 md:pl-0 md:col-span-5 md:text-left pr-4 md:pr-0">
                     <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: "-60px" }}
-                      transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
+                      initial={{ opacity: 0, x: 36, y: 24, scale: 0.95, filter: "blur(6px)" }}
+                      whileInView={{ opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }}
+                      viewport={{ once: true, margin: "-80px" }}
+                      transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: 0.04 }}
                       onClick={() => openStepModal(step)}
                       className={`group/card relative p-5 sm:p-6 md:p-7 rounded-[1.8rem] bg-gradient-to-b from-[#13151f]/95 via-[#0e1017]/95 to-[#090a10]/95 backdrop-blur-2xl border transition-all duration-300 shadow-[0_16px_40px_rgba(0,0,0,0.65)] cursor-pointer select-none ${
                         isHovered
-                          ? "border-slate-300/50 -translate-y-1 shadow-[0_24px_60px_rgba(0,0,0,0.85)]"
+                          ? "border-slate-300/50 -translate-y-1.5 shadow-[0_24px_60px_rgba(255,255,255,0.08)]"
                           : "border-white/[0.14] hover:border-white/30"
                       }`}
                     >
-                      {/* Apple HIG Brushed Silver Specular Top Rim */}
-                      <div className="absolute top-0 inset-x-8 h-px bg-gradient-to-r from-transparent via-slate-200/50 to-transparent" />
+                      {/* Apple HIG Brushed Silver Specular Top Rim & Light Sweep */}
+                      <div className="absolute top-0 inset-x-8 h-px bg-gradient-to-r from-transparent via-slate-200/60 to-transparent group-hover/card:via-white transition-opacity" />
 
                       {/* Header Capsule: Icon ON the card + Badge + Timeframe */}
                       <div className="flex items-center gap-2 mb-3.5">
                         {/* Icon embedded directly on card */}
                         <div
-                          className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border border-white/10 bg-white/[0.05]"
+                          className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border border-white/10 bg-white/[0.05] group-hover/card:scale-110 transition-transform"
                           style={{ color: step.accent }}
                         >
                           <StepIcon size={14} />
@@ -495,7 +495,7 @@ export const ClientJourney: React.FC = () => {
 
                       {/* Action Pill: Triggers Pop-Up Flippable Card */}
                       <div className="flex items-center pt-1">
-                        <span className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-200 group-hover/card:text-white px-3 py-1.5 rounded-full bg-white/[0.06] group-hover/card:bg-white/[0.12] border border-white/15 transition-all">
+                        <span className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-200 group-hover/card:text-white px-3 py-1.5 rounded-full bg-white/[0.06] group-hover/card:bg-white/[0.12] border border-white/15 transition-all shadow-sm">
                           <span>Inspect &amp; Flip Details</span>
                           <ArrowUpRight size={13} className="text-slate-400 group-hover/card:text-white group-hover/card:translate-x-0.5 transition-transform" />
                         </span>
@@ -533,10 +533,10 @@ export const ClientJourney: React.FC = () => {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0, y: 36, scale: 0.95, filter: "blur(8px)" }}
+            whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
             className="rounded-[2.2rem] bg-gradient-to-b from-[#141622]/95 via-[#0e1017]/95 to-[#08090f]/95 border border-slate-300/20 p-7 sm:p-9 md:p-11 shadow-[0_24px_70px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.15)] text-center relative overflow-hidden backdrop-blur-2xl"
           >
             {/* Top Specular Silver Ray */}
