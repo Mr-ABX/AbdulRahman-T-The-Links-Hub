@@ -281,13 +281,35 @@ export const ClientJourney: React.FC = () => {
             - Drops dynamically down with scroll (Height maps 0% to 100%)
             - Silver gradient fills a matte titanium track
         */}
-        <div className="absolute left-[24px] md:left-1/2 md:-translate-x-1/2 top-4 bottom-4 w-1.5 md:w-2 bg-slate-800/30 rounded-full border border-slate-700/30 shadow-[inset_0_1px_4px_rgba(0,0,0,0.5)] overflow-hidden z-0">
-          <motion.div 
-            className="w-full bg-gradient-to-b from-slate-100 via-slate-300 to-slate-400 rounded-full shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),inset_0_-1px_2px_rgba(0,0,0,0.2)]"
-            style={{ 
-              height: useTransform(fluidProgress, [0, 1], ["0%", "100%"]) 
-            }}
-          />
+        {/* Curvy Invisible SVG Path with Silver Liquid Fill */}
+        <div className="absolute left-[24px] md:left-1/2 -translate-x-1/2 top-0 bottom-0 w-[60px] md:w-[120px] z-0 pointer-events-none flex justify-center">
+          <svg
+            className="w-full h-full overflow-visible"
+            viewBox="0 0 100 1200"
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <linearGradient id="silverLiquid" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#f8fafc" />
+                <stop offset="25%" stopColor="#94a3b8" />
+                <stop offset="50%" stopColor="#e2e8f0" />
+                <stop offset="75%" stopColor="#94a3b8" />
+                <stop offset="100%" stopColor="#cbd5e1" />
+              </linearGradient>
+            </defs>
+            <motion.path
+              d="M 50 0 C 80 200, 20 400, 50 600 C 80 800, 20 1000, 50 1200"
+              fill="none"
+              stroke="url(#silverLiquid)"
+              strokeWidth="6"
+              strokeLinecap="round"
+              vectorEffect="non-scaling-stroke"
+              className="drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
+              style={{
+                pathLength: fluidProgress,
+              }}
+            />
+          </svg>
         </div>
 
         {/* 3. Alternating Milestones with Embedded Card Icons & Click-to-Flip Modal */}
@@ -306,7 +328,7 @@ export const ClientJourney: React.FC = () => {
                 onMouseLeave={() => setHoveredIndex(null)}
               >
                 {/* Mobile Connector (visible only on sm screens) - Draws horizontally from the left track to the card */}
-                <div className="md:hidden absolute top-1/2 -translate-y-1/2 left-[28px] w-6 h-1 bg-slate-800/40 rounded-r-full overflow-hidden pointer-events-none">
+                <div className="md:hidden absolute top-1/2 -translate-y-1/2 left-[28px] w-6 h-1 bg-transparent rounded-r-full overflow-hidden pointer-events-none">
                   <motion.div
                     className="w-full h-full bg-gradient-to-r from-slate-300 to-slate-100 rounded-r-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)] origin-left"
                     style={{ scaleX: stepBeams[idx] }}
@@ -384,8 +406,8 @@ export const ClientJourney: React.FC = () => {
                 <div className="hidden md:flex md:col-span-2 relative items-center justify-center pointer-events-none h-full">
                   {isLeft ? (
                     <>
-                      {/* Empty matte track stretching to the left card */}
-                      <div className="absolute top-1/2 -translate-y-1/2 right-1/2 w-1/2 h-1.5 bg-slate-800/30 rounded-l-full border border-slate-700/30 shadow-[inset_0_1px_4px_rgba(0,0,0,0.5)] overflow-hidden" />
+                      {/* Empty matte track stretching to the left card - Made transparent as requested */}
+                      <div className="absolute top-1/2 -translate-y-1/2 right-1/2 w-1/2 h-1.5 bg-transparent rounded-l-full overflow-hidden" />
                       
                       {/* Thick silver liquid filling from the center OUT towards the left card */}
                       <motion.div
@@ -401,8 +423,8 @@ export const ClientJourney: React.FC = () => {
                     </>
                   ) : (
                     <>
-                      {/* Empty matte track stretching to the right card */}
-                      <div className="absolute top-1/2 -translate-y-1/2 left-1/2 w-1/2 h-1.5 bg-slate-800/30 rounded-r-full border border-slate-700/30 shadow-[inset_0_1px_4px_rgba(0,0,0,0.5)] overflow-hidden" />
+                      {/* Empty matte track stretching to the right card - Made transparent as requested */}
+                      <div className="absolute top-1/2 -translate-y-1/2 left-1/2 w-1/2 h-1.5 bg-transparent rounded-r-full overflow-hidden" />
                       
                       {/* Thick silver liquid filling from the center OUT towards the right card */}
                       <motion.div
