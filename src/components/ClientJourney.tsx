@@ -180,7 +180,7 @@ export const ClientJourney: React.FC = () => {
   // Scroll tracking: Beam starts moving when the starting node is in the vertical center of the screen
   const { scrollYProgress } = useScroll({
     target: timelineRef,
-    offset: ["start center", "end 85%"],
+    offset: ["start 65%", "end 85%"],
   });
 
   // Apple HIG Liquid Spring physics
@@ -200,11 +200,13 @@ export const ClientJourney: React.FC = () => {
     });
   }, [scrollYProgress]);
 
-  // Dynamic connector opacity as liquid advances to each node checkpoint
-  const step1Beam = useTransform(fluidProgress, [0.08, 0.20], [0, 1]);
-  const step2Beam = useTransform(fluidProgress, [0.32, 0.44], [0, 1]);
-  const step3Beam = useTransform(fluidProgress, [0.56, 0.68], [0, 1]);
-  const step4Beam = useTransform(fluidProgress, [0.80, 0.92], [0, 1]);
+  // Dynamic connector opacity as liquid advances to each exact vertical node checkpoint
+  // (Assuming nodes are roughly at 12%, 37%, 62%, 87% of the timeline height)
+  const step1Beam = useTransform(fluidProgress, [0.08, 0.15], [0, 1]);
+  const step2Beam = useTransform(fluidProgress, [0.32, 0.39], [0, 1]);
+  const step3Beam = useTransform(fluidProgress, [0.57, 0.64], [0, 1]);
+  const step4Beam = useTransform(fluidProgress, [0.82, 0.89], [0, 1]);
+  const stepBeams = [step1Beam, step2Beam, step3Beam, step4Beam];
 
   return (
     <section
@@ -277,84 +279,41 @@ export const ClientJourney: React.FC = () => {
             - NO background stroke/track (completely invisible path ahead of time)
             - NO stroke borders or outline around the liquid
             - NO glowing drop-shadows
-            - Random, organic brush-stroke curves with playful twists and sweeping bends
-            - Precise connector alignment directly to each card's inner edge
+            - Random, organic brush-stroke curves centered strictly in the middle 2 columns
         */}
         <div className="hidden md:block absolute inset-0 w-full h-full pointer-events-none">
           <svg
-            viewBox="0 0 1000 1200"
+            viewBox="0 0 100 100"
             fill="none"
             preserveAspectRatio="none"
             className="w-full h-full"
           >
             <defs>
-              {/* Smooth Liquid Gradient (No glow, rich metallic & pill iridescent transition) */}
               <linearGradient id="organic-liquid-beam" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#E2E8F0" />
-                <stop offset="18%" stopColor="#38BDF8" />
-                <stop offset="38%" stopColor="#818CF8" />
-                <stop offset="62%" stopColor="#34D399" />
-                <stop offset="85%" stopColor="#A78BFA" />
-                <stop offset="100%" stopColor="#F1F5F9" />
+                <stop offset="0%" stopColor="#CBD5E1" />
+                <stop offset="20%" stopColor="#38BDF8" />
+                <stop offset="40%" stopColor="#818CF8" />
+                <stop offset="60%" stopColor="#34D399" />
+                <stop offset="80%" stopColor="#A78BFA" />
+                <stop offset="100%" stopColor="#E2E8F0" />
               </linearGradient>
             </defs>
 
             {/* ORGANIC RANDOM BRUSH-STROKE LIQUID BEAM
-                Twists, swoops, and curves naturally through the canvas:
-                - Starts at top center (500, 10)
-                - Sweeps left near Card 1 (x=440) at y=200
-                - Swings out into a playful right twist (x=640)
-                - Loops back to touch Card 2 (x=560) at y=490
-                - Sweeps left in a wide organic wave (x=390)
-                - Curves inward to touch Card 3 (x=440) at y=780
-                - Curves through an elegant S-turn toward Card 4 (x=560) at y=1060
-                - Cascades down to finish at (500, 1180)
+                Twists, swoops, and curves naturally through the center spine:
+                Using vector-effect="non-scaling-stroke" so it stays perfectly 6px wide.
+                X values oscillate gently between 47 and 53 (staying safe from overlapping cards).
             */}
             <motion.path
-              d="M 500,10 C 400,60 380,120 440,190 C 440,195 440,200 440,200 C 490,260 620,290 640,360 C 660,430 520,440 560,490 C 600,550 420,600 390,670 C 370,730 400,750 440,780 C 480,840 620,880 610,960 C 600,1020 540,1030 560,1060 C 580,1110 520,1150 500,1180"
+              d="M 50,0 C 47,8 54,16 48,25 C 42,34 53,42 50,50 C 47,58 55,66 49,75 C 43,84 53,92 50,100"
               stroke="url(#organic-liquid-beam)"
-              strokeWidth="7"
+              strokeWidth="6"
               strokeLinecap="round"
               strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
               style={{
                 pathLength: fluidProgress,
               }}
-            />
-
-            {/* STEP 1 CONNECTOR DOT & POINTER (Exactly aligned to Card 1 inner edge at x=440, y=200) */}
-            <motion.circle
-              cx="440"
-              cy="200"
-              r="4.5"
-              fill="#38BDF8"
-              style={{ opacity: step1Beam }}
-            />
-
-            {/* STEP 2 CONNECTOR DOT & POINTER (Exactly aligned to Card 2 inner edge at x=560, y=490) */}
-            <motion.circle
-              cx="560"
-              cy="490"
-              r="4.5"
-              fill="#818CF8"
-              style={{ opacity: step2Beam }}
-            />
-
-            {/* STEP 3 CONNECTOR DOT & POINTER (Exactly aligned to Card 3 inner edge at x=440, y=780) */}
-            <motion.circle
-              cx="440"
-              cy="780"
-              r="4.5"
-              fill="#34D399"
-              style={{ opacity: step3Beam }}
-            />
-
-            {/* STEP 4 CONNECTOR DOT & POINTER (Exactly aligned to Card 4 inner edge at x=560, y=1060) */}
-            <motion.circle
-              cx="560"
-              cy="1060"
-              r="4.5"
-              fill="#A78BFA"
-              style={{ opacity: step4Beam }}
             />
           </svg>
         </div>
@@ -362,14 +321,14 @@ export const ClientJourney: React.FC = () => {
         {/* MOBILE LIQUID BEAM (sm and below) - Completely invisible path until revealed */}
         <div className="block md:hidden absolute inset-y-0 left-5 w-8 pointer-events-none">
           <svg
-            viewBox="0 0 32 1200"
+            viewBox="0 0 100 100"
             fill="none"
             preserveAspectRatio="none"
             className="w-full h-full"
           >
             <defs>
               <linearGradient id="organic-mobile-beam" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#E2E8F0" />
+                <stop offset="0%" stopColor="#CBD5E1" />
                 <stop offset="25%" stopColor="#38BDF8" />
                 <stop offset="50%" stopColor="#818CF8" />
                 <stop offset="75%" stopColor="#34D399" />
@@ -377,11 +336,12 @@ export const ClientJourney: React.FC = () => {
               </linearGradient>
             </defs>
             <motion.path
-              d="M 16,10 C 28,70 6,130 16,200 C 28,280 6,380 16,490 C 28,590 6,690 16,780 C 28,880 6,970 16,1060 C 26,1120 16,1170 16,1180"
+              d="M 50,0 C 30,15 70,30 50,50 C 30,70 70,85 50,100"
               stroke="url(#organic-mobile-beam)"
               strokeWidth="5"
               strokeLinecap="round"
               strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
               style={{
                 pathLength: fluidProgress,
               }}
@@ -471,8 +431,46 @@ export const ClientJourney: React.FC = () => {
                   <div className="hidden md:block md:col-span-5" />
                 )}
 
-                {/* Empty Center Spine (Beam flows naturally through here without bulky center icons) */}
-                <div className="hidden md:block md:col-span-2" />
+                {/* Center Spine with Dynamic Dotted Connectors */}
+                <div className="hidden md:flex md:col-span-2 relative items-center justify-center pointer-events-none h-full">
+                  {isLeft ? (
+                    <>
+                      {/* Dotted line stretching from center to left card */}
+                      <motion.div
+                        className="absolute top-1/2 -translate-y-1/2 right-1/2 w-1/2 h-[2px] border-t-[2px] border-dashed border-slate-500/40"
+                        style={{ opacity: stepBeams[idx] }}
+                      />
+                      {/* Dot touching the card */}
+                      <motion.div
+                        className="absolute top-1/2 -translate-y-1/2 left-0 w-2 h-2 rounded-full shadow-sm"
+                        style={{ backgroundColor: step.accent, opacity: stepBeams[idx] }}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      {/* Dotted line stretching from center to right card */}
+                      <motion.div
+                        className="absolute top-1/2 -translate-y-1/2 left-1/2 w-1/2 h-[2px] border-t-[2px] border-dashed border-slate-500/40"
+                        style={{ opacity: stepBeams[idx] }}
+                      />
+                      {/* Dot touching the card */}
+                      <motion.div
+                        className="absolute top-1/2 -translate-y-1/2 right-0 w-2 h-2 rounded-full shadow-sm"
+                        style={{ backgroundColor: step.accent, opacity: stepBeams[idx] }}
+                      />
+                    </>
+                  )}
+
+                  {/* Central Node that lights up when liquid hits it */}
+                  <motion.div
+                    className="w-3.5 h-3.5 rounded-full bg-[#0a0b10] border-[1.5px] z-10"
+                    style={{
+                      borderColor: step.accent,
+                      boxShadow: `0 0 14px ${step.accent}80`,
+                      opacity: stepBeams[idx]
+                    }}
+                  />
+                </div>
 
                 {/* Right Column Card (Steps 02 & 04) */}
                 {!isLeft ? (
