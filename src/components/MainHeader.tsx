@@ -56,8 +56,8 @@ export const MainHeader = ({
             "relative pointer-events-auto flex items-center justify-between transition-all duration-600 ease-[cubic-bezier(0.23,1,0.32,1)]",
             "liquid-glass",
             isScrolled
-              ? "mt-3 md:mt-4 rounded-full max-w-[92%] sm:max-w-2xl md:max-w-4xl px-3 md:px-5 py-2 border border-white/[0.12] shadow-[0_24px_50px_-12px_rgba(0,0,0,0.85),inset_0_1px_0_0_rgba(255,255,255,0.18)]"
-              : "-mt-[1px] rounded-b-[24px] md:rounded-b-[28px] rounded-t-none max-w-[96%] sm:max-w-3xl md:max-w-5xl px-4 md:px-6 py-2.5 md:py-3 border-b border-x border-white/[0.1] !border-t-0 !border-t-transparent shadow-[0_16px_36px_-10px_rgba(0,0,0,0.7)]",
+              ? "mt-3 md:mt-4 rounded-full max-w-[92%] sm:max-w-3xl md:max-w-4xl px-2 py-2 border border-white/[0.12] shadow-[0_32px_60px_-15px_rgba(0,0,0,0.85),inset_0_1px_0_0_rgba(255,255,255,0.22)]"
+              : "-mt-[1px] rounded-b-[24px] md:rounded-b-[28px] rounded-t-none max-w-[96%] sm:max-w-3xl md:max-w-5xl px-2.5 md:px-3 py-2.5 md:py-3 border-b border-x border-white/[0.1] !border-t-0 !border-t-transparent shadow-[0_16px_36px_-10px_rgba(0,0,0,0.7)]",
           )}
           style={isScrolled ? undefined : { borderTop: "none", borderTopColor: "transparent", borderTopWidth: 0 }}
         >
@@ -124,7 +124,7 @@ export const MainHeader = ({
           </motion.div>
 
           {/* Logo & Spin Transition */}
-          <div className="flex items-center gap-3 pl-1 md:pl-2 pr-3 shrink-0">
+          <div className="flex items-center gap-3 pr-3 shrink-0">
             <motion.button
               id="header-logo-btn"
               onClick={() => handleTabClick("Home")}
@@ -158,7 +158,7 @@ export const MainHeader = ({
           </div>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center gap-1 lg:gap-1.5">
+          <div className="hidden md:flex items-center justify-center gap-1 lg:gap-1.5 px-2">
             {navGroups.map((group) =>
               group.tab ? (
                 <button
@@ -270,7 +270,7 @@ export const MainHeader = ({
           </div>
 
           {/* Right Action: Apple Pill CTA & Settings */}
-          <div className="flex items-center gap-2 pl-2 md:pl-3 shrink-0">
+          <div className="flex items-center gap-2 pl-2 shrink-0">
             <button
               id="header-cta-hire-me"
               onClick={() => handleTabClick("Connect")}
