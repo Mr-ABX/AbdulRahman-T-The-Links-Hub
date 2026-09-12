@@ -270,86 +270,34 @@ export const ClientJourney: React.FC = () => {
       {/* 2. Main Procedural Timeline */}
       <div ref={timelineRef} className="relative z-10 flex flex-col pt-8 pb-16">
         
+        {/* 
+          GIT COMMIT NOTE: 
+          Refactored ClientJourney timeline pathway.
+          1. Removed static background track lines (pathway is 100% invisible when unfilled).
+          2. Active silver stroke dynamically fills vertically from top to bottom on scroll using spring physics.
+          3. Center x=50% vertical alignment connects all milestone nodes and bottom CTA card with 0px offset.
+        */}
+
         {/* APPLE HIG SMOOTH SILVER LIQUID BEAM (Global Desktop Track) */}
-        <div className="hidden md:block absolute inset-0 pointer-events-none z-0">
-          <svg
-            className="w-full h-full overflow-visible"
-            viewBox="0 0 1000 1000"
-            preserveAspectRatio="none"
-          >
-            <defs>
-              <linearGradient id="silverLiquidDesktop" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-                <stop offset="25%" stopColor="#cbd5e1" stopOpacity="1" />
-                <stop offset="50%" stopColor="#f8fafc" stopOpacity="1" />
-                <stop offset="75%" stopColor="#94a3b8" stopOpacity="1" />
-                <stop offset="100%" stopColor="#ffffff" stopOpacity="1" />
-              </linearGradient>
-            </defs>
-            {/* Base guide track line connecting all card nodes and CTA card */}
-            <path
-              d="M 500 0 L 500 975"
-              fill="none"
-              stroke="rgba(255, 255, 255, 0.14)"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              vectorEffect="non-scaling-stroke"
-            />
-            {/* Dynamic animated silver liquid filling path */}
-            <motion.path
-              d="M 500 0 L 500 975"
-              fill="none"
-              stroke="url(#silverLiquidDesktop)"
-              strokeWidth="4"
-              strokeLinecap="round"
-              vectorEffect="non-scaling-stroke"
-              className="drop-shadow-[0_0_12px_rgba(255,255,255,0.9)]"
-              style={{
-                pathLength: fluidProgress,
-              }}
-            />
-          </svg>
+        <div className="hidden md:block absolute left-1/2 -translate-x-1/2 top-0 bottom-[120px] w-[3.5px] pointer-events-none z-0">
+          <motion.div
+            className="w-full h-full bg-gradient-to-b from-white via-slate-200 to-slate-400 rounded-full shadow-[0_0_14px_rgba(255,255,255,0.95)]"
+            style={{
+              scaleY: fluidProgress,
+              originY: 0,
+            }}
+          />
         </div>
 
         {/* APPLE HIG SMOOTH SILVER LIQUID BEAM (Global Mobile Track) */}
-        <div className="block md:hidden absolute left-[36px] sm:left-[48px] top-0 bottom-0 w-[4px] pointer-events-none z-0 -translate-x-1/2">
-          <svg
-            className="w-full h-full overflow-visible"
-            viewBox="0 0 100 1000"
-            preserveAspectRatio="none"
-          >
-            <defs>
-              <linearGradient id="silverLiquidMobile" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-                <stop offset="25%" stopColor="#cbd5e1" stopOpacity="1" />
-                <stop offset="50%" stopColor="#f8fafc" stopOpacity="1" />
-                <stop offset="75%" stopColor="#94a3b8" stopOpacity="1" />
-                <stop offset="100%" stopColor="#ffffff" stopOpacity="1" />
-              </linearGradient>
-            </defs>
-            {/* Base guide track line */}
-            <path
-              d="M 50 0 L 50 975"
-              fill="none"
-              stroke="rgba(255, 255, 255, 0.14)"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              vectorEffect="non-scaling-stroke"
-            />
-            {/* Dynamic animated silver liquid filling path */}
-            <motion.path
-              d="M 50 0 L 50 975"
-              fill="none"
-              stroke="url(#silverLiquidMobile)"
-              strokeWidth="4"
-              strokeLinecap="round"
-              vectorEffect="non-scaling-stroke"
-              className="drop-shadow-[0_0_12px_rgba(255,255,255,0.9)]"
-              style={{
-                pathLength: fluidProgress,
-              }}
-            />
-          </svg>
+        <div className="block md:hidden absolute left-[36px] sm:left-[48px] -translate-x-1/2 top-0 bottom-[120px] w-[3.5px] pointer-events-none z-0">
+          <motion.div
+            className="w-full h-full bg-gradient-to-b from-white via-slate-200 to-slate-400 rounded-full shadow-[0_0_14px_rgba(255,255,255,0.95)]"
+            style={{
+              scaleY: fluidProgress,
+              originY: 0,
+            }}
+          />
         </div>
 
         {/* 3. Alternating Milestones with Embedded Card Icons & Click-to-Flip Modal */}
