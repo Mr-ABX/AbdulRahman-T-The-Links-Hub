@@ -1021,64 +1021,53 @@ export const Home = ({
           );
         })()}
 
-        {/* Sleek Apple HIG Pro Metric Capsule Widget */}
-        <div className="flex justify-center">
-          <div className="inline-flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 md:gap-5 py-2.5 px-4 sm:px-6 md:px-8 rounded-full bg-[#101115]/90 border border-white/[0.12] backdrop-blur-2xl shadow-[0_12px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.15)]">
-            {/* 100% Satisfaction Badge */}
-            <div className="flex items-center gap-2">
+        {/* Responsive Modular Metric Pills + Dedicated Review Action */}
+        <div className="flex flex-col items-center gap-3.5 max-w-4xl mx-auto px-4">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
+            {/* 100% Satisfaction Pill */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#101117]/90 hover:bg-[#151722] border border-white/[0.12] backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.4)] transition-all">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
               </span>
-              <span className="text-xs sm:text-sm font-medium text-white tracking-tight">100% Satisfaction</span>
+              <span className="text-xs font-medium text-white tracking-tight">100% Satisfaction</span>
             </div>
 
-            <span className="hidden sm:inline w-px h-3.5 bg-white/10" />
-
-            {/* 4.9 Average Rating */}
-            <div className="flex items-center gap-1.5">
-              <Star size={13} className="text-amber-400 fill-amber-400" />
-              <span className="text-xs sm:text-sm font-medium text-white tracking-tight">4.9/5.0 Average Rating</span>
+            {/* 4.9 Average Rating Pill */}
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#101117]/90 hover:bg-[#151722] border border-white/[0.12] backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.4)] transition-all">
+              <Star size={12} className="text-amber-400 fill-amber-400" />
+              <span className="text-xs font-medium text-white tracking-tight">4.9 / 5.0 Rating</span>
             </div>
 
-            <span className="hidden sm:inline w-px h-3.5 bg-white/10" />
-
-            {/* 200+ Projects Delivered */}
-            <div className="flex items-center gap-1.5">
-              <span className="px-2 py-0.5 rounded-full bg-white/[0.06] text-[11px] font-mono text-neutral-200 font-semibold border border-white/10">200+</span>
-              <span className="text-xs sm:text-sm font-medium text-neutral-300 tracking-tight">Projects Delivered</span>
+            {/* 200+ Projects Delivered Pill */}
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#101117]/90 hover:bg-[#151722] border border-white/[0.12] backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.4)] transition-all">
+              <span className="px-1.5 py-0.5 rounded-full bg-white/[0.08] text-[10px] font-mono text-neutral-200 font-bold border border-white/10">200+</span>
+              <span className="text-xs font-medium text-neutral-300 tracking-tight">Projects Delivered</span>
             </div>
 
-            <span className="hidden md:inline w-px h-3.5 bg-white/10" />
-
-            {/* 110+ International Clients */}
-            <div className="flex items-center gap-1.5">
-              <span className="px-2 py-0.5 rounded-full bg-white/[0.06] text-[11px] font-mono text-neutral-200 font-semibold border border-white/10">110+</span>
-              <span className="text-xs sm:text-sm font-medium text-neutral-300 tracking-tight">International Clients</span>
+            {/* 110+ International Clients Pill */}
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#101117]/90 hover:bg-[#151722] border border-white/[0.12] backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.4)] transition-all">
+              <span className="px-1.5 py-0.5 rounded-full bg-white/[0.08] text-[10px] font-mono text-neutral-200 font-bold border border-white/10">110+</span>
+              <span className="text-xs font-medium text-neutral-300 tracking-tight">Global Clients</span>
             </div>
 
-            <span className="hidden lg:inline w-px h-3.5 bg-white/10" />
-
-            {/* 200+ Industries */}
-            <div className="flex items-center gap-1.5">
-              <span className="px-2 py-0.5 rounded-full bg-white/[0.06] text-[11px] font-mono text-neutral-300 font-semibold border border-white/10">200+</span>
-              <span className="text-xs sm:text-sm font-medium text-neutral-400 tracking-tight">Industries</span>
+            {/* 200+ Industries Pill */}
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#101117]/90 hover:bg-[#151722] border border-white/[0.12] backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.4)] transition-all">
+              <span className="px-1.5 py-0.5 rounded-full bg-white/[0.08] text-[10px] font-mono text-neutral-300 font-bold border border-white/10">200+</span>
+              <span className="text-xs font-medium text-neutral-400 tracking-tight">Industries</span>
             </div>
-
-            {/* View All Trigger */}
-            {setActiveTab && (
-              <>
-                <span className="hidden sm:inline w-px h-3.5 bg-white/10" />
-                <button
-                  onClick={() => setActiveTab("Reviews")}
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-neutral-200 hover:text-white transition-colors cursor-pointer pl-1 group"
-                >
-                  <span>All Reviews</span>
-                  <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
-                </button>
-              </>
-            )}
           </div>
+
+          {/* Underneath: Sleek Dedicated "Explore All Reviews" Button */}
+          {setActiveTab && (
+            <button
+              onClick={() => setActiveTab("Reviews")}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.1] border border-white/[0.12] hover:border-white/25 text-xs font-medium text-neutral-300 hover:text-white transition-all cursor-pointer group shadow-sm hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <span>Explore All Verified Client Reviews</span>
+              <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform text-white/70" />
+            </button>
+          )}
         </div>
       </section>
 
