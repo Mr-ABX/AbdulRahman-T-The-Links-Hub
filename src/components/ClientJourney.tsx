@@ -1,152 +1,193 @@
 import React, { useRef, useState } from "react";
-import { motion, useScroll, useTransform, useSpring } from "motion/react";
+import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import {
-  Calendar,
-  Zap,
+  Search,
+  Compass,
+  Code2,
   Rocket,
-  Layers,
+  Calendar,
+  MessageSquare,
+  ArrowRight,
   CheckCircle2,
   Clock,
-  ArrowRight,
-  MessageSquare,
-  Sparkles,
   ShieldCheck,
+  Zap,
+  Layers,
+  Video,
+  FileCode2,
   ChevronRight,
+  Sparkles,
 } from "lucide-react";
 
-interface JourneyMilestone {
+interface JourneyStep {
   id: string;
-  step: string;
-  title: string;
-  tag: string;
+  stepNum: string;
+  category: string;
+  name: string;
+  badge: string;
   timeframe: string;
+  headline: string;
   description: string;
-  highlights: string[];
-  agencyContrast: string;
+  deliverables: { icon: React.ElementType; label: string }[];
+  clientPeaceOfMind: string;
+  agencyDifference: string;
   icon: React.ElementType;
   accent: string;
-  glow: string;
+  accentGradient: string;
 }
 
-const MILESTONES: JourneyMilestone[] = [
+const JOURNEY_STEPS: JourneyStep[] = [
   {
-    id: "step-1",
-    step: "01",
-    title: "Low-Stress Discovery",
-    tag: "Stage 01 • Zero Jargon",
-    timeframe: "20-Min Casual Strategy Chat",
+    id: "discovery",
+    stepNum: "01",
+    category: "ALIGNMENT",
+    name: "Discovery",
+    badge: "Stage 01 • Low Stress",
+    timeframe: "20-Min Strategy Call",
+    headline: "Zero jargon. Real architectural clarity in minutes.",
     description:
-      "A relaxed, conversational call. You share your goal or challenge — I translate it into technical feasibility, timeline, and a clear fixed roadmap.",
-    highlights: [
-      "No prep or technical brief required",
-      "Instant architectural feasibility check",
-      "Transparent fixed quote delivered within 24 hours",
+      "A friendly, conversational deep dive. We unpack your product goals, map technical constraints, and define the exact scope — no preparation or 40-page briefs required.",
+    deliverables: [
+      { icon: Compass, label: "Technical feasibility assessment" },
+      { icon: Clock, label: "Detailed timeline & milestone breakdown" },
+      { icon: ShieldCheck, label: "Guaranteed fixed-price proposal" },
     ],
-    agencyContrast: "Vs. Agency: 3 weeks of junior sales reps & 40-page questionnaires",
-    icon: Calendar,
-    accent: "#F59E0B",
-    glow: "rgba(245, 158, 11, 0.4)",
+    clientPeaceOfMind: "Zero sales pitch. You leave with an actionable technical plan whether we build together or not.",
+    agencyDifference: "Vs. 3 weeks of junior sales reps and generic boilerplate decks",
+    icon: Search,
+    accent: "#38BDF8", // Frost Sky
+    accentGradient: "linear-gradient(135deg, #38BDF8, #818CF8)",
   },
   {
-    id: "step-2",
-    step: "02",
-    title: "Interactive Staging Preview",
-    tag: "Stage 02 • Rapid Clarity",
-    timeframe: "Days 2 – 5 • First Working Link",
+    id: "strategy",
+    stepNum: "02",
+    category: "ARCHITECTURE",
+    name: "Strategy",
+    badge: "Stage 02 • Rapid Clarity",
+    timeframe: "Days 2 – 5 • Interactive Prototype",
+    headline: "A clickable build on your phone within days, not months.",
     description:
-      "You shouldn't wait months to touch your product. Experience a live clickable build directly on your phone and browser before deep coding begins.",
-    highlights: [
-      "Tactile UI & spatial layout in days",
-      "Dial in animations, typography & feel early",
-      "Zero guessing from static Figma/PDF screens",
+      "Instead of static PDF mockups, you receive a real interactive staging URL. Experience spatial typography, gestures, and responsive flows early so there are no surprises.",
+    deliverables: [
+      { icon: Layers, label: "Live clickable staging link (mobile & web)" },
+      { icon: Zap, label: "System architecture & database schema" },
+      { icon: Sparkles, label: "Apple HIG micro-interaction design system" },
     ],
-    agencyContrast: "Vs. Agency: Weeks of disconnected static mockups",
-    icon: Layers,
-    accent: "#06B6D4",
-    glow: "rgba(6, 182, 212, 0.4)",
+    clientPeaceOfMind: "Touch and test the core experience before a single deep backend line is written.",
+    agencyDifference: "Vs. Weeks of disconnected Figma screens that don't match real code",
+    icon: Compass,
+    accent: "#818CF8", // Indigo Frost
+    accentGradient: "linear-gradient(135deg, #818CF8, #C084FC)",
   },
   {
-    id: "step-3",
-    step: "03",
-    title: "Direct Async Development",
-    tag: "Stage 03 • Pure Velocity",
-    timeframe: "High-Velocity Sprints • Daily Syncs",
+    id: "execution",
+    stepNum: "03",
+    category: "VELOCITY",
+    name: "Execution",
+    badge: "Stage 03 • Direct Access",
+    timeframe: "Sprint Velocity • Daily Updates",
+    headline: "Direct 1-on-1 contact with your lead architect.",
     description:
-      "Work directly with the engineer building your platform. Private Telegram/WhatsApp channel with video Loom walkthroughs and rapid iterations.",
-    highlights: [
-      "Direct 1-on-1 contact (sub-hour responses)",
-      "Weekly staging deployments you can test live",
-      "Zero account managers or bureaucratic lag",
+      "No account managers or telephone games. You get a private Slack or Telegram channel with asynchronous Loom video walkthroughs and daily milestone deployments.",
+    deliverables: [
+      { icon: Video, label: "Recorded async video walkthroughs for each sprint" },
+      { icon: FileCode2, label: "Private GitHub repository with live changelogs" },
+      { icon: MessageSquare, label: "Sub-hour direct responses on Slack/WhatsApp" },
     ],
-    agencyContrast: "Vs. Agency: Slow telephone game through middle managers",
-    icon: Zap,
-    accent: "#10B981",
-    glow: "rgba(16, 185, 129, 0.4)",
+    clientPeaceOfMind: "Watch your product evolve in real time with continuous staging builds you can inspect.",
+    agencyDifference: "Vs. Slow bureaucratic ticket queues and junior offshore handoffs",
+    icon: Code2,
+    accent: "#34D399", // Emerald Mint
+    accentGradient: "linear-gradient(135deg, #34D399, #06B6D4)",
   },
   {
-    id: "step-4",
-    step: "04",
-    title: "Turnkey Launch & 30-Day Shield",
-    tag: "Stage 04 • Total Peace of Mind",
-    timeframe: "Production Day • Complete Ownership",
+    id: "delivery",
+    stepNum: "04",
+    category: "LAUNCH & IP",
+    name: "Delivery",
+    badge: "Stage 04 • Turnkey Handover",
+    timeframe: "Production Launch • 30-Day Shield",
+    headline: "Flawless deployment with 100% intellectual property transfer.",
     description:
-      "Production deployment to your cloud or domain, 95+ performance scores, full source code handover, and 30 days of complimentary safety warranty.",
-    highlights: [
-      "100% intellectual property & code ownership",
-      "Production cloud rollout with zero downtime",
-      "30-day post-launch support and bug warranty",
+      "Zero-downtime production deployment, 95+ Google Lighthouse scores, complete documentation, and 30 days of comprehensive post-launch warranty support.",
+    deliverables: [
+      { icon: Rocket, label: "Zero-downtime production cloud rollout" },
+      { icon: ShieldCheck, label: "100% code, domain & asset ownership transfer" },
+      { icon: CheckCircle2, label: "30-day bug-free safety warranty & maintenance" },
     ],
-    agencyContrast: "Vs. Agency: Expensive retainers and proprietary hosting lock-ins",
+    clientPeaceOfMind: "You own every line of code with clean documentation, ready to scale independently.",
+    agencyDifference: "Vs. Costly lock-in retainers and hostage hosting fees",
     icon: Rocket,
-    accent: "#A855F7",
-    glow: "rgba(168, 85, 247, 0.4)",
+    accent: "#A78BFA", // Violet Titanium
+    accentGradient: "linear-gradient(135deg, #A78BFA, #F472B6)",
   },
 ];
 
 export const ClientJourney: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  // Track scroll progression through the timeline section
+  // Scroll tracking across the section
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 75%", "end 75%"],
+    offset: ["start 65%", "end 80%"],
   });
 
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 70,
-    damping: 20,
+  // Apple HIG Dual Liquid Springs: Leading fast stroke + Delayed trailing stroke
+  const leadProgress = useSpring(scrollYProgress, {
+    stiffness: 85,
+    damping: 24,
     restDelta: 0.001,
   });
 
-  // Transform scroll progress to SVG path length & glow opacity
-  const beamOpacity = useTransform(smoothProgress, [0, 0.05], [0.3, 1]);
+  const trailProgress = useSpring(scrollYProgress, {
+    stiffness: 42,
+    damping: 28,
+    restDelta: 0.001,
+  });
+
+  // Responsive active step indicator derived from scroll
+  React.useEffect(() => {
+    return scrollYProgress.on("change", (v) => {
+      if (v < 0.25) setActiveStepIndex(0);
+      else if (v < 0.5) setActiveStepIndex(1);
+      else if (v < 0.75) setActiveStepIndex(2);
+      else setActiveStepIndex(3);
+    });
+  }, [scrollYProgress]);
+
+  // Dynamic connector opacity based on scroll
+  const step1Beam = useTransform(leadProgress, [0.08, 0.22], [0, 1]);
+  const step2Beam = useTransform(leadProgress, [0.32, 0.46], [0, 1]);
+  const step3Beam = useTransform(leadProgress, [0.56, 0.7], [0, 1]);
+  const step4Beam = useTransform(leadProgress, [0.8, 0.94], [0, 1]);
 
   return (
     <section
-      id="client-journey"
+      id="onboarding-process"
       ref={containerRef}
-      className="py-24 md:py-36 max-w-[1300px] mx-auto px-4 md:px-8 border-t border-white/[0.08] relative overflow-hidden"
+      className="py-24 md:py-36 max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 border-t border-white/[0.08] relative overflow-hidden"
     >
-      {/* Ambient background refraction */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-cyan-600/[0.04] rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-purple-600/[0.04] rounded-full blur-[120px] pointer-events-none" />
+      {/* Background Soft Specular Lighting (Apple HIG Ambient Light) */}
+      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[720px] h-[340px] bg-gradient-to-b from-sky-500/[0.03] to-transparent rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-16 right-1/4 w-[480px] h-[480px] bg-purple-500/[0.02] rounded-full blur-[140px] pointer-events-none" />
 
-      {/* Apple HIG Section Header */}
+      {/* 1. Apple HIG Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-20 md:mb-28 relative z-10">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="w-10 sm:w-12 h-4 sm:h-5 rounded-full overflow-hidden relative shadow-[0_0_16px_rgba(6,182,212,0.4)] shrink-0 border border-white/15">
+          <div className="w-10 sm:w-12 h-4 sm:h-5 rounded-full overflow-hidden relative shadow-[0_0_12px_rgba(56,189,248,0.25)] shrink-0 border border-white/20">
             <motion.div
               className="absolute inset-0 w-full h-full"
               style={{
-                background: "linear-gradient(120deg, #06B6D4 0%, #3B82F6 40%, #10B981 75%, #A855F7 100%)",
-                backgroundSize: "220% 220%",
+                background: "linear-gradient(120deg, #38BDF8 0%, #818CF8 35%, #34D399 70%, #A78BFA 100%)",
+                backgroundSize: "200% 200%",
               }}
               animate={{
                 backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
               }}
               transition={{
-                duration: 5,
+                duration: 6,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
@@ -154,7 +195,7 @@ export const ClientJourney: React.FC = () => {
             <div className="absolute inset-0 rounded-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)]" />
           </div>
           <span className="text-xs font-mono tracking-widest uppercase text-white/50">
-            06 // THE CLIENT JOURNEY & WORKFLOW
+            06 // ONBOARDING & PROCESS
           </span>
         </div>
 
@@ -162,199 +203,281 @@ export const ClientJourney: React.FC = () => {
           The Frictionless Path to Launch.
         </h2>
         <p className="text-white/60 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
-          No bureaucracy, no confusing technical speak, and no surprise costs. Follow the interactive beam to see how we progress from initial conversation to finished product.
+          From first conversation to turnkey handover. Clean architecture, direct communication, and rapid weekly milestones designed around absolute peace of mind.
         </p>
 
-        {/* Quick Comfort Badges */}
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-6">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-[11px] font-mono text-emerald-400">
-            <CheckCircle2 size={12} /> 100% Transparent
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-[11px] font-mono text-cyan-400">
-            <Zap size={12} /> Direct Engineer Access
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-[11px] font-mono text-amber-400">
-            <Clock size={12} /> Live Preview in Days
-          </span>
+        {/* Apple HIG Quick Stage Badges */}
+        <div className="inline-flex items-center justify-center p-1 mt-6 rounded-full bg-[#12131b]/80 border border-white/[0.08] backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+          {JOURNEY_STEPS.map((s, idx) => (
+            <button
+              key={s.id}
+              onClick={() => {
+                const el = document.getElementById(`step-card-${s.id}`);
+                el?.scrollIntoView({ behavior: "smooth", block: "center" });
+              }}
+              className={`px-3 sm:px-4 py-1.5 rounded-full text-xs font-medium tracking-tight transition-all cursor-pointer flex items-center gap-1.5 ${
+                activeStepIndex === idx
+                  ? "bg-white text-black font-semibold shadow-sm"
+                  : "text-white/50 hover:text-white/80"
+              }`}
+            >
+              <span className="text-[10px] font-mono opacity-60">0{idx + 1}</span>
+              <span>{s.name}</span>
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Main Timeline Stage with Curvy Liquid S-Curve Path */}
-      <div className="relative min-h-[1100px] z-10">
-        {/* DESKTOP CURVY LIQUID SPLINE SVG (md+) */}
+      {/* 2. Main Procedural Timeline with Dual Liquid Strokes */}
+      <div className="relative min-h-[1200px] z-10">
+        {/* DESKTOP PROCEDURAL SVG CANVAS (md+) */}
         <div className="hidden md:block absolute inset-0 w-full h-full pointer-events-none">
           <svg
-            viewBox="0 0 1000 1250"
+            viewBox="0 0 1000 1280"
             fill="none"
             preserveAspectRatio="none"
             className="w-full h-full"
           >
             <defs>
-              {/* Dynamic Gradient along the fluid wave */}
-              <linearGradient id="curvy-liquid-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#F59E0B" />
-                <stop offset="28%" stopColor="#06B6D4" />
-                <stop offset="62%" stopColor="#10B981" />
-                <stop offset="92%" stopColor="#A855F7" />
-                <stop offset="100%" stopColor="#EC4899" />
+              {/* Refined Apple Pro Metallic Fluid Gradients */}
+              <linearGradient id="liquid-lead-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#38BDF8" />
+                <stop offset="30%" stopColor="#818CF8" />
+                <stop offset="65%" stopColor="#34D399" />
+                <stop offset="100%" stopColor="#A78BFA" />
               </linearGradient>
 
-              {/* Specular fluid glow filter */}
-              <filter id="liquid-glow" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="6" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
+              <linearGradient id="liquid-trail-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.4" />
+                <stop offset="30%" stopColor="#818CF8" stopOpacity="0.4" />
+                <stop offset="65%" stopColor="#34D399" stopOpacity="0.4" />
+                <stop offset="100%" stopColor="#A78BFA" stopOpacity="0.4" />
+              </linearGradient>
             </defs>
 
-            {/* Background Static Fluid Wave Guide Track (Abstract Curvy Stroke) */}
-            <path
-              d="M 500,20 C 400,90 260,110 260,200 C 260,330 740,330 740,460 C 740,590 260,590 260,720 C 260,850 740,850 740,980 C 740,1090 500,1120 500,1210"
-              stroke="rgba(255, 255, 255, 0.07)"
+            {/* Note: Dotted guide lines have been made completely invisible as requested for pure immersive minimalism */}
+
+            {/* SECONDARY TRAILING LIQUID STROKE (Moves with smooth viscous delay) */}
+            <motion.path
+              d="M 500,20 C 420,95 440,140 500,200 C 560,260 580,380 500,450 C 420,520 440,640 500,700 C 560,760 580,880 500,950 C 440,1020 480,1100 500,1180"
+              stroke="url(#liquid-trail-grad)"
+              strokeWidth="5"
+              strokeLinecap="round"
+              style={{
+                pathLength: trailProgress,
+              }}
+            />
+
+            {/* PRIMARY LEADING METALLIC LIQUID STROKE (Crisp, moves first, non-glowing clean stroke) */}
+            <motion.path
+              d="M 500,20 C 420,95 440,140 500,200 C 560,260 580,380 500,450 C 420,520 440,640 500,700 C 560,760 580,880 500,950 C 440,1020 480,1100 500,1180"
+              stroke="url(#liquid-lead-grad)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              style={{
+                pathLength: leadProgress,
+              }}
+            />
+
+            {/* STEP 1 CONNECTOR WHISKER: Node (500, 200) -> Left Card (440, 200) */}
+            <motion.path
+              d="M 500,200 L 440,200"
+              stroke="#38BDF8"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              style={{ opacity: step1Beam }}
+            />
+            <motion.circle
+              cx="440"
+              cy="200"
+              r="2.5"
+              fill="#38BDF8"
+              style={{ opacity: step1Beam }}
+            />
+
+            {/* STEP 2 CONNECTOR WHISKER: Node (500, 450) -> Right Card (560, 450) */}
+            <motion.path
+              d="M 500,450 L 560,450"
+              stroke="#818CF8"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              style={{ opacity: step2Beam }}
+            />
+            <motion.circle
+              cx="560"
+              cy="450"
+              r="2.5"
+              fill="#818CF8"
+              style={{ opacity: step2Beam }}
+            />
+
+            {/* STEP 3 CONNECTOR WHISKER: Node (500, 700) -> Left Card (440, 700) */}
+            <motion.path
+              d="M 500,700 L 440,700"
+              stroke="#34D399"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              style={{ opacity: step3Beam }}
+            />
+            <motion.circle
+              cx="440"
+              cy="700"
+              r="2.5"
+              fill="#34D399"
+              style={{ opacity: step3Beam }}
+            />
+
+            {/* STEP 4 CONNECTOR WHISKER: Node (500, 950) -> Right Card (560, 950) */}
+            <motion.path
+              d="M 500,950 L 560,950"
+              stroke="#A78BFA"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              style={{ opacity: step4Beam }}
+            />
+            <motion.circle
+              cx="560"
+              cy="950"
+              r="2.5"
+              fill="#A78BFA"
+              style={{ opacity: step4Beam }}
+            />
+          </svg>
+        </div>
+
+        {/* MOBILE PROCEDURAL SVG CANVAS (sm and below) */}
+        <div className="block md:hidden absolute inset-y-0 left-5 w-8 pointer-events-none">
+          <svg
+            viewBox="0 0 32 1280"
+            fill="none"
+            preserveAspectRatio="none"
+            className="w-full h-full"
+          >
+            <defs>
+              <linearGradient id="liquid-mobile-lead" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#38BDF8" />
+                <stop offset="35%" stopColor="#818CF8" />
+                <stop offset="70%" stopColor="#34D399" />
+                <stop offset="100%" stopColor="#A78BFA" />
+              </linearGradient>
+            </defs>
+            {/* Trailing secondary stroke */}
+            <motion.path
+              d="M 16,10 C 24,80 8,140 16,200 C 24,270 8,380 16,450 C 24,530 8,640 16,700 C 24,780 8,890 16,950 C 24,1030 16,1120 16,1180"
+              stroke="rgba(56, 189, 248, 0.25)"
               strokeWidth="4"
               strokeLinecap="round"
-              strokeDasharray="8 10"
-            />
-
-            {/* Ambient Diffuse Fluid Glow Trail */}
-            <motion.path
-              d="M 500,20 C 400,90 260,110 260,200 C 260,330 740,330 740,460 C 740,590 260,590 260,720 C 260,850 740,850 740,980 C 740,1090 500,1120 500,1210"
-              stroke="url(#curvy-liquid-grad)"
-              strokeWidth="14"
-              strokeLinecap="round"
-              opacity={0.25}
               style={{
-                pathLength: smoothProgress,
-                opacity: beamOpacity,
+                pathLength: trailProgress,
               }}
-              filter="url(#liquid-glow)"
             />
-
-            {/* Core Active Liquid Neon Beam (Draws Procedurally with Scroll) */}
+            {/* Leading primary crisp stroke */}
             <motion.path
-              d="M 500,20 C 400,90 260,110 260,200 C 260,330 740,330 740,460 C 740,590 260,590 260,720 C 260,850 740,850 740,980 C 740,1090 500,1120 500,1210"
-              stroke="url(#curvy-liquid-grad)"
-              strokeWidth="3.5"
+              d="M 16,10 C 24,80 8,140 16,200 C 24,270 8,380 16,450 C 24,530 8,640 16,700 C 24,780 8,890 16,950 C 24,1030 16,1120 16,1180"
+              stroke="url(#liquid-mobile-lead)"
+              strokeWidth="2"
               strokeLinecap="round"
               style={{
-                pathLength: smoothProgress,
+                pathLength: leadProgress,
               }}
             />
           </svg>
         </div>
 
-        {/* MOBILE CURVY LIQUID SPLINE SVG (sm and below) */}
-        <div className="block md:hidden absolute inset-y-0 left-6 w-12 pointer-events-none">
-          <svg
-            viewBox="0 0 48 1250"
-            fill="none"
-            preserveAspectRatio="none"
-            className="w-full h-full"
-          >
-            <defs>
-              <linearGradient id="curvy-liquid-mobile" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#F59E0B" />
-                <stop offset="30%" stopColor="#06B6D4" />
-                <stop offset="65%" stopColor="#10B981" />
-                <stop offset="100%" stopColor="#A855F7" />
-              </linearGradient>
-            </defs>
-            {/* Guide Track */}
-            <path
-              d="M 24,10 C 38,90 10,130 24,200 C 38,270 10,390 24,460 C 38,530 10,650 24,720 C 38,790 10,910 24,980 C 38,1050 24,1150 24,1210"
-              stroke="rgba(255,255,255,0.08)"
-              strokeWidth="3"
-              strokeDasharray="6 8"
-            />
-            {/* Glowing Active Mobile Stream */}
-            <motion.path
-              d="M 24,10 C 38,90 10,130 24,200 C 38,270 10,390 24,460 C 38,530 10,650 24,720 C 38,790 10,910 24,980 C 38,1050 24,1150 24,1210"
-              stroke="url(#curvy-liquid-mobile)"
-              strokeWidth="3"
-              strokeLinecap="round"
-              style={{
-                pathLength: smoothProgress,
-              }}
-            />
-          </svg>
-        </div>
-
-        {/* Milestones Layout: Alternating Cards on Desktop, Left-Rail Stream on Mobile */}
+        {/* 3. Alternating Milestones with Creative Checkpoint Bridge Interactivity */}
         <div className="space-y-16 md:space-y-24 relative z-10 pt-4">
-          {MILESTONES.map((item, idx) => {
+          {JOURNEY_STEPS.map((step, idx) => {
             const isLeft = idx % 2 === 0;
-            const Icon = item.icon;
+            const StepIcon = step.icon;
             const isHovered = hoveredIndex === idx;
 
             return (
               <div
-                key={item.id}
+                key={step.id}
+                id={`step-card-${step.id}`}
                 className="relative grid grid-cols-1 md:grid-cols-12 items-center gap-6 md:gap-12"
                 onMouseEnter={() => setHoveredIndex(idx)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
-                {/* Desktop Left-aligned Card */}
+                {/* Left Column Card (Steps 01 & 03) */}
                 {isLeft ? (
                   <div className="col-span-1 pl-12 md:pl-0 md:col-span-5 md:text-right">
                     <motion.div
-                      initial={{ opacity: 0, x: -30 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, margin: "-100px" }}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-80px" }}
                       transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-                      className={`relative p-6 sm:p-7 rounded-3xl bg-gradient-to-b from-[#12131b] to-[#090a10] border transition-all duration-300 shadow-[0_20px_50px_rgba(0,0,0,0.7)] ${
+                      className={`relative p-6 sm:p-7 md:p-8 rounded-[2rem] bg-[#0c0d13]/85 backdrop-blur-2xl border transition-all duration-300 shadow-[0_16px_40px_rgba(0,0,0,0.6)] ${
                         isHovered
-                          ? "border-white/30 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_25px_rgba(6,182,212,0.15)] scale-[1.01]"
-                          : "border-white/[0.1] hover:border-white/20"
+                          ? "border-white/25 -translate-y-1 shadow-[0_24px_60px_rgba(0,0,0,0.85)]"
+                          : "border-white/[0.08] hover:border-white/15"
                       }`}
                     >
-                      {/* Top Specular Edge */}
-                      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                      {/* Top Specular Edge Highlight (Apple HIG signature) */}
+                      <div className="absolute top-0 inset-x-8 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
-                      {/* Header Badge */}
-                      <div className="flex items-center gap-2 mb-3 md:justify-end">
+                      {/* Header Capsule */}
+                      <div className="flex items-center gap-2 mb-3.5 md:justify-end">
+                        <span className="text-[11px] font-mono uppercase tracking-widest text-white/40">
+                          {step.category}
+                        </span>
+                        <span className="w-1 h-1 rounded-full bg-white/20" />
                         <span
                           className="px-2.5 py-0.5 rounded-full text-[11px] font-mono tracking-wider uppercase font-semibold border"
                           style={{
-                            backgroundColor: `${item.accent}15`,
-                            color: item.accent,
-                            borderColor: `${item.accent}30`,
+                            backgroundColor: `${step.accent}12`,
+                            color: step.accent,
+                            borderColor: `${step.accent}30`,
                           }}
                         >
-                          {item.tag}
+                          {step.badge}
                         </span>
                       </div>
 
-                      <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-1">
-                        {item.title}
+                      {/* Title & Timeframe */}
+                      <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-1 font-sans">
+                        {step.stepNum}. {step.name}
                       </h3>
-                      <div className="text-xs font-mono text-cyan-400 mb-3 md:justify-end flex items-center gap-1.5">
-                        <Clock size={12} />
-                        <span>{item.timeframe}</span>
+                      <div className="text-xs font-mono text-white/60 mb-3 md:justify-end flex items-center gap-1.5">
+                        <Clock size={12} className="text-sky-400" />
+                        <span>{step.timeframe}</span>
                       </div>
 
-                      <p className="text-white/70 text-xs sm:text-sm leading-relaxed mb-4">
-                        {item.description}
+                      {/* Headline & Description */}
+                      <p className="text-white/90 text-sm font-medium leading-relaxed mb-2">
+                        {step.headline}
+                      </p>
+                      <p className="text-white/60 text-xs sm:text-sm leading-relaxed mb-5">
+                        {step.description}
                       </p>
 
-                      {/* Checklist */}
-                      <div className="space-y-1.5 mb-4 text-left">
-                        {item.highlights.map((h, i) => (
-                          <div key={i} className="flex items-start gap-2 text-xs text-neutral-300">
-                            <CheckCircle2
-                              size={13}
-                              className="shrink-0 mt-0.5"
-                              style={{ color: item.accent }}
-                            />
-                            <span>{h}</span>
-                          </div>
-                        ))}
+                      {/* Deliverables Widget Box */}
+                      <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/[0.06] text-left mb-4 space-y-2">
+                        <div className="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1">
+                          Key Deliverables
+                        </div>
+                        {step.deliverables.map((item, dIdx) => {
+                          const ItemIcon = item.icon;
+                          return (
+                            <div key={dIdx} className="flex items-center gap-2.5 text-xs text-neutral-200">
+                              <div
+                                className="w-5 h-5 rounded-md flex items-center justify-center shrink-0"
+                                style={{ backgroundColor: `${step.accent}15`, color: step.accent }}
+                              >
+                                <ItemIcon size={12} />
+                              </div>
+                              <span className="font-normal text-white/80">{item.label}</span>
+                            </div>
+                          );
+                        })}
                       </div>
 
-                      {/* Micro Agency Contrast Chip */}
-                      <div className="pt-3 border-t border-white/[0.08] text-[11px] font-mono text-white/50 text-left">
-                        {item.agencyContrast}
+                      {/* Peace of Mind Highlight Callout */}
+                      <div className="pt-3 border-t border-white/[0.06] flex items-start gap-2 text-left">
+                        <ShieldCheck size={14} className="text-emerald-400 shrink-0 mt-0.5" />
+                        <span className="text-[11px] text-white/60 leading-normal">
+                          <strong className="text-white/90 font-medium">Peace of Mind:</strong> {step.clientPeaceOfMind}
+                        </span>
                       </div>
                     </motion.div>
                   </div>
@@ -362,105 +485,125 @@ export const ClientJourney: React.FC = () => {
                   <div className="hidden md:block md:col-span-5" />
                 )}
 
-                {/* Central Waypoint Node on the Curvy Stream */}
-                <div className="absolute left-2 md:relative md:left-0 md:col-span-2 flex items-center justify-center pointer-events-auto">
-                  <div className="relative group/node cursor-pointer">
-                    {/* Pulsing Ripple */}
-                    <motion.div
-                      className="absolute -inset-3 rounded-full opacity-60 pointer-events-none blur-[4px]"
-                      style={{ backgroundColor: item.glow }}
-                      animate={{
-                        scale: [1, 1.3, 1],
-                        opacity: [0.4, 0.8, 0.4],
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: idx * 0.4,
+                {/* Central Waypoint Checkpoint Node (Threaded Directly on Curve) */}
+                <div className="absolute left-1 md:relative md:left-0 md:col-span-2 flex items-center justify-center pointer-events-auto">
+                  <div
+                    className="relative group/node cursor-pointer"
+                    onClick={() => {
+                      const el = document.getElementById(`step-card-${step.id}`);
+                      el?.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }}
+                  >
+                    {/* Active Optical Aura on Hover */}
+                    <div
+                      className={`absolute -inset-2.5 rounded-full transition-opacity duration-300 pointer-events-none ${
+                        isHovered ? "opacity-100" : "opacity-0"
+                      }`}
+                      style={{
+                        background: `radial-gradient(circle, ${step.accent}30 0%, transparent 70%)`,
                       }}
                     />
 
-                    {/* Outer Metallic Ring */}
+                    {/* Apple HIG Pro Metallic Node Capsule */}
                     <div
-                      className={`w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-[#0d0e15] border flex items-center justify-center relative z-10 transition-transform duration-300 shadow-[0_0_20px_rgba(0,0,0,0.8)] ${
-                        isHovered ? "scale-110" : "scale-100"
+                      className={`w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-[#0a0b10] border flex items-center justify-center relative z-10 transition-all duration-300 ${
+                        isHovered
+                          ? "scale-110 border-white/40 shadow-[0_4px_20px_rgba(0,0,0,0.8)]"
+                          : "border-white/20 shadow-[0_2px_12px_rgba(0,0,0,0.6)]"
                       }`}
                       style={{
-                        borderColor: isHovered ? item.accent : "rgba(255,255,255,0.2)",
-                        boxShadow: isHovered ? `0 0 25px ${item.glow}` : undefined,
+                        borderColor: isHovered ? step.accent : undefined,
                       }}
                     >
-                      <Icon size={18} style={{ color: item.accent }} />
+                      <StepIcon size={18} style={{ color: step.accent }} />
                     </div>
 
-                    {/* Step Number Flag on Node */}
-                    <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-mono font-bold text-white/70 tracking-widest uppercase">
-                      {item.step}
+                    {/* Number Indicator Beneath Node */}
+                    <div className="hidden md:block absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-mono font-bold text-white/50 tracking-widest uppercase">
+                      {step.stepNum}
                     </div>
                   </div>
                 </div>
 
-                {/* Right-aligned Card */}
+                {/* Right Column Card (Steps 02 & 04) */}
                 {!isLeft ? (
                   <div className="col-span-1 pl-12 md:pl-0 md:col-span-5 text-left">
                     <motion.div
-                      initial={{ opacity: 0, x: 30 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, margin: "-100px" }}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-80px" }}
                       transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-                      className={`relative p-6 sm:p-7 rounded-3xl bg-gradient-to-b from-[#12131b] to-[#090a10] border transition-all duration-300 shadow-[0_20px_50px_rgba(0,0,0,0.7)] ${
+                      className={`relative p-6 sm:p-7 md:p-8 rounded-[2rem] bg-[#0c0d13]/85 backdrop-blur-2xl border transition-all duration-300 shadow-[0_16px_40px_rgba(0,0,0,0.6)] ${
                         isHovered
-                          ? "border-white/30 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_25px_rgba(6,182,212,0.15)] scale-[1.01]"
-                          : "border-white/[0.1] hover:border-white/20"
+                          ? "border-white/25 -translate-y-1 shadow-[0_24px_60px_rgba(0,0,0,0.85)]"
+                          : "border-white/[0.08] hover:border-white/15"
                       }`}
                     >
-                      {/* Top Specular Edge */}
-                      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                      {/* Top Specular Edge Highlight */}
+                      <div className="absolute top-0 inset-x-8 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
-                      {/* Header Badge */}
-                      <div className="flex items-center gap-2 mb-3">
+                      {/* Header Capsule */}
+                      <div className="flex items-center gap-2 mb-3.5">
+                        <span className="text-[11px] font-mono uppercase tracking-widest text-white/40">
+                          {step.category}
+                        </span>
+                        <span className="w-1 h-1 rounded-full bg-white/20" />
                         <span
                           className="px-2.5 py-0.5 rounded-full text-[11px] font-mono tracking-wider uppercase font-semibold border"
                           style={{
-                            backgroundColor: `${item.accent}15`,
-                            color: item.accent,
-                            borderColor: `${item.accent}30`,
+                            backgroundColor: `${step.accent}12`,
+                            color: step.accent,
+                            borderColor: `${step.accent}30`,
                           }}
                         >
-                          {item.tag}
+                          {step.badge}
                         </span>
                       </div>
 
-                      <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-1">
-                        {item.title}
+                      {/* Title & Timeframe */}
+                      <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-1 font-sans">
+                        {step.stepNum}. {step.name}
                       </h3>
-                      <div className="text-xs font-mono text-cyan-400 mb-3 flex items-center gap-1.5">
-                        <Clock size={12} />
-                        <span>{item.timeframe}</span>
+                      <div className="text-xs font-mono text-white/60 mb-3 flex items-center gap-1.5">
+                        <Clock size={12} className="text-sky-400" />
+                        <span>{step.timeframe}</span>
                       </div>
 
-                      <p className="text-white/70 text-xs sm:text-sm leading-relaxed mb-4">
-                        {item.description}
+                      {/* Headline & Description */}
+                      <p className="text-white/90 text-sm font-medium leading-relaxed mb-2">
+                        {step.headline}
+                      </p>
+                      <p className="text-white/60 text-xs sm:text-sm leading-relaxed mb-5">
+                        {step.description}
                       </p>
 
-                      {/* Checklist */}
-                      <div className="space-y-1.5 mb-4">
-                        {item.highlights.map((h, i) => (
-                          <div key={i} className="flex items-start gap-2 text-xs text-neutral-300">
-                            <CheckCircle2
-                              size={13}
-                              className="shrink-0 mt-0.5"
-                              style={{ color: item.accent }}
-                            />
-                            <span>{h}</span>
-                          </div>
-                        ))}
+                      {/* Deliverables Widget Box */}
+                      <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/[0.06] text-left mb-4 space-y-2">
+                        <div className="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1">
+                          Key Deliverables
+                        </div>
+                        {step.deliverables.map((item, dIdx) => {
+                          const ItemIcon = item.icon;
+                          return (
+                            <div key={dIdx} className="flex items-center gap-2.5 text-xs text-neutral-200">
+                              <div
+                                className="w-5 h-5 rounded-md flex items-center justify-center shrink-0"
+                                style={{ backgroundColor: `${step.accent}15`, color: step.accent }}
+                              >
+                                <ItemIcon size={12} />
+                              </div>
+                              <span className="font-normal text-white/80">{item.label}</span>
+                            </div>
+                          );
+                        })}
                       </div>
 
-                      {/* Micro Agency Contrast Chip */}
-                      <div className="pt-3 border-t border-white/[0.08] text-[11px] font-mono text-white/50">
-                        {item.agencyContrast}
+                      {/* Peace of Mind Highlight Callout */}
+                      <div className="pt-3 border-t border-white/[0.06] flex items-start gap-2 text-left">
+                        <ShieldCheck size={14} className="text-emerald-400 shrink-0 mt-0.5" />
+                        <span className="text-[11px] text-white/60 leading-normal">
+                          <strong className="text-white/90 font-medium">Peace of Mind:</strong> {step.clientPeaceOfMind}
+                        </span>
                       </div>
                     </motion.div>
                   </div>
@@ -472,66 +615,65 @@ export const ClientJourney: React.FC = () => {
           })}
         </div>
 
-        {/* Terminal Station / High-Conversion CTA Pod (Where the Path Terminates) */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mt-20 md:mt-28 relative rounded-3xl bg-gradient-to-b from-[#141520] via-[#0d0e16] to-[#07080c] border border-white/[0.14] p-7 sm:p-9 md:p-11 shadow-[0_30px_80px_rgba(0,0,0,0.9),inset_0_1px_1px_rgba(255,255,255,0.15)] text-center max-w-3xl mx-auto overflow-hidden group"
-        >
-          {/* Top Edge Specular Shimmer */}
-          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
+        {/* 4. Final Sticky / Seamless CTA Station */}
+        <div className="mt-20 md:mt-28 relative max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="rounded-[2.2rem] bg-gradient-to-b from-[#12131d]/95 via-[#0c0d14]/95 to-[#07080d]/95 border border-white/[0.12] p-7 sm:p-9 md:p-11 shadow-[0_24px_70px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.12)] text-center relative overflow-hidden backdrop-blur-2xl"
+          >
+            {/* Top Specular Ray */}
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-sky-400/40 to-transparent" />
 
-          {/* Ambient Glow */}
-          <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-64 h-32 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-sky-400 uppercase tracking-widest mb-4">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Available for 2 Select Projects this Quarter</span>
+            </div>
 
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-amber-400 uppercase tracking-widest mb-4">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            <span>2 Project Openings for This Quarter</span>
-          </div>
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight mb-3 font-sans">
+              Start Your Project with Complete Confidence.
+            </h3>
 
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight mb-3 font-sans">
-            Ready for a Frictionless Experience?
-          </h3>
+            <p className="text-white/60 text-xs sm:text-sm md:text-base leading-relaxed max-w-xl mx-auto mb-8">
+              Book a no-pressure 20-minute discovery call to discuss your goals, test feasibility, and receive an exact fixed scope within 24 hours.
+            </p>
 
-          <p className="text-white/60 text-xs sm:text-sm md:text-base leading-relaxed max-w-xl mx-auto mb-8">
-            Schedule a relaxed 20-minute strategy call. No pressure, no obligations — we’ll map out your technical scope and deliver an exact roadmap within 24 hours.
-          </p>
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+              <a
+                href="https://calendly.com/digital-b3asts/quick-free-consultation"
+                target="_blank"
+                rel="noreferrer"
+                className="px-6 py-3.5 rounded-full bg-white text-black font-semibold text-xs sm:text-sm hover:bg-neutral-200 transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+              >
+                <Calendar size={15} />
+                <span>Book 20-Min Discovery Call</span>
+                <ArrowRight size={15} />
+              </a>
 
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-            <a
-              href="https://calendly.com/digital-b3asts/quick-free-consultation"
-              target="_blank"
-              rel="noreferrer"
-              className="px-6 py-3.5 rounded-full bg-white text-black font-semibold text-xs sm:text-sm hover:bg-neutral-200 transition-all flex items-center gap-2 shadow-[0_0_25px_rgba(255,255,255,0.25)] hover:scale-[1.03] active:scale-[0.98] cursor-pointer"
-            >
-              <Calendar size={15} />
-              <span>Book 20-Min Discovery Call</span>
-              <ArrowRight size={15} />
-            </a>
+              <a
+                href="https://wa.me/923094506904"
+                target="_blank"
+                rel="noreferrer"
+                className="px-5 py-3.5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-white font-medium text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <MessageSquare size={15} className="text-[#25D366]" />
+                <span>Chat Directly on WhatsApp</span>
+              </a>
+            </div>
 
-            <a
-              href="https://wa.me/923094506904"
-              target="_blank"
-              rel="noreferrer"
-              className="px-5 py-3.5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-white font-medium text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer hover:scale-[1.03] active:scale-[0.98]"
-            >
-              <MessageSquare size={15} className="text-[#25D366]" />
-              <span>Chat Directly on WhatsApp</span>
-            </a>
-          </div>
-
-          <div className="mt-6 flex items-center justify-center gap-6 text-[11px] font-mono text-white/40">
-            <span className="flex items-center gap-1">
-              <ShieldCheck size={13} className="text-emerald-400" /> Fixed Price
-            </span>
-            <span>•</span>
-            <span>NDA Protected</span>
-            <span>•</span>
-            <span>Sub-24h Response</span>
-          </div>
-        </motion.div>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-[11px] font-mono text-white/40">
+              <span className="flex items-center gap-1">
+                <ShieldCheck size={13} className="text-emerald-400" /> Fixed Price Quote
+              </span>
+              <span>•</span>
+              <span>NDA Protected</span>
+              <span>•</span>
+              <span>Sub-24h Response</span>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
