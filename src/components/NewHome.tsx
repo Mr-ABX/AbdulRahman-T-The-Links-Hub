@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useAnimationFrame, useMotionValue, useTransform } from "motion/react";
 import { MedusaImage } from "./MedusaImage";
 import { SpecularCard } from "./shared/SpecularCard";
 import { ASSET_LINKS } from "../constants/assets";
@@ -245,6 +245,56 @@ const LiquidCapsule = ({
       {/* Top Convex Specular Highlight (Liquid Droplet / Apple HIG Lens) */}
       <div className="absolute inset-0 rounded-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.45),inset_0_-1px_1px_rgba(0,0,0,0.5)] pointer-events-none" />
       <div className="absolute top-0.5 inset-x-1.5 h-[1px] rounded-full bg-white/40 blur-[0.5px] pointer-events-none" />
+    </div>
+  );
+};
+
+const SmoothMarquee = ({ 
+  children, 
+  direction = -1, 
+  baseSpeed = 2 
+}: { 
+  children: React.ReactNode; 
+  direction?: number; 
+  baseSpeed?: number;
+}) => {
+  const [hover, setHover] = useState(false);
+  const x = useMotionValue(0);
+
+  useAnimationFrame((t, delta) => {
+    // Determine the movement delta based on baseSpeed and direction.
+    let moveBy = direction * baseSpeed * (delta / 16.666); 
+    
+    // Slow down smoothly when hovered, rather than pausing abruptly.
+    if (hover) {
+      moveBy *= 0.15; // Reduces speed by 85%
+    }
+    
+    let newX = x.get() + moveBy;
+    
+    // Seamless wrapping logic (assumes children are duplicated exactly to fill twice the space)
+    // When translating by -50%, it seamlessly resets to 0%.
+    if (direction === -1 && newX <= -50) {
+      newX += 50;
+    } else if (direction === 1 && newX >= 0) {
+      newX -= 50;
+    }
+    
+    x.set(newX);
+  });
+
+  return (
+    <div 
+      className="relative flex overflow-x-hidden w-full"
+      onMouseEnter={() => setHover(true)} 
+      onMouseLeave={() => setHover(false)}
+    >
+      <motion.div 
+        className="flex items-center whitespace-nowrap shrink-0"
+        style={{ x: useTransform(x, v => `${v}%`) }}
+      >
+        {children}
+      </motion.div>
     </div>
   );
 };
@@ -1314,55 +1364,51 @@ export const Home = ({
       </section>
 
       {/* Dual Opposite Infinite Looping Marquees */}
-      <div className="py-10 md:py-14 overflow-hidden relative border-t border-white/10 select-none bg-[#07070d]/80 backdrop-blur-xl flex flex-col gap-4 sm:gap-6 marquee-group">
+      <div className="py-10 md:py-14 overflow-hidden relative border-t border-white/10 select-none bg-[#07070d]/80 backdrop-blur-xl flex flex-col gap-4 sm:gap-6">
         {/* Track 1: Scrolling Right to Left */}
-        <div className="relative flex overflow-x-hidden">
-          <div className="flex items-center whitespace-nowrap shrink-0 animate-marquee">
-            {[...Array(4)].map((_, i) => (
-              <div key={`track1-${i}`} className="flex items-center gap-6 md:gap-10 pr-6 md:pr-10">
-                <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-white">
-                  BRINGS YOUR SITE TO LIFE WITH
-                </span>
-                <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-purple-300 italic">
-                  CREATIVITY
-                </span>
-                <span className="text-white/20 text-xl sm:text-3xl font-mono">✦</span>
-                <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-white/90">
-                  ARCHITECTING NEXT-GEN EXPERIENCES
-                </span>
-                <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-indigo-300 italic">
-                  SPATIAL 3D & AUDIO
-                </span>
-                <span className="text-white/20 text-xl sm:text-3xl font-mono">✦</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <SmoothMarquee direction={-1} baseSpeed={2.5}>
+          {[...Array(4)].map((_, i) => (
+            <div key={`track1-${i}`} className="flex items-center gap-6 md:gap-10 pr-6 md:pr-10">
+              <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-white">
+                BRINGS YOUR SITE TO LIFE WITH
+              </span>
+              <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-purple-300 italic">
+                CREATIVITY
+              </span>
+              <span className="text-white/20 text-xl sm:text-3xl font-mono">✦</span>
+              <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-white/90">
+                ARCHITECTING NEXT-GEN EXPERIENCES
+              </span>
+              <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-indigo-300 italic">
+                SPATIAL 3D & AUDIO
+              </span>
+              <span className="text-white/20 text-xl sm:text-3xl font-mono">✦</span>
+            </div>
+          ))}
+        </SmoothMarquee>
 
         {/* Track 2: Scrolling Left to Right (Opposite Direction) */}
-        <div className="relative flex overflow-x-hidden">
-          <div className="flex items-center whitespace-nowrap shrink-0 animate-marquee-reverse">
-            {[...Array(4)].map((_, i) => (
-              <div key={`track2-${i}`} className="flex items-center gap-6 md:gap-10 pr-6 md:pr-10">
-                <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-white/80">
-                  AI AUTOMATION & FULL-STACK CLOUD
-                </span>
-                <span className="text-white/20 text-xl sm:text-3xl font-mono">✦</span>
-                <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-emerald-300 italic">
-                  HIGH-CONVERSION DESIGN
-                </span>
-                <span className="text-white/20 text-xl sm:text-3xl font-mono">✦</span>
-                <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-white">
-                  100% PRODUCTION READY
-                </span>
-                <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-amber-300 italic">
-                  BESPOKE DIGITAL LABS
-                </span>
-                <span className="text-white/20 text-xl sm:text-3xl font-mono">✦</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <SmoothMarquee direction={1} baseSpeed={2.5}>
+          {[...Array(4)].map((_, i) => (
+            <div key={`track2-${i}`} className="flex items-center gap-6 md:gap-10 pr-6 md:pr-10">
+              <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-white/80">
+                AI AUTOMATION & FULL-STACK CLOUD
+              </span>
+              <span className="text-white/20 text-xl sm:text-3xl font-mono">✦</span>
+              <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-emerald-300 italic">
+                HIGH-CONVERSION DESIGN
+              </span>
+              <span className="text-white/20 text-xl sm:text-3xl font-mono">✦</span>
+              <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-white">
+                100% PRODUCTION READY
+              </span>
+              <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-amber-300 italic">
+                BESPOKE DIGITAL LABS
+              </span>
+              <span className="text-white/20 text-xl sm:text-3xl font-mono">✦</span>
+            </div>
+          ))}
+        </SmoothMarquee>
       </div>
     </div>
   );
