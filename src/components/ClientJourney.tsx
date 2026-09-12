@@ -180,13 +180,13 @@ export const ClientJourney: React.FC = () => {
   // Scroll tracking: Beam starts moving when the starting node is in the vertical center of the screen
   const { scrollYProgress } = useScroll({
     target: timelineRef,
-    offset: ["start 65%", "end 85%"],
+    offset: ["start center", "end 80%"],
   });
 
-  // Apple HIG Liquid Spring physics
+  // Smooth out the scroll slightly, but keep it tight so it perfectly tracks the user
   const fluidProgress = useSpring(scrollYProgress, {
-    stiffness: 70,
-    damping: 22,
+    stiffness: 200,
+    damping: 30,
     restDelta: 0.001,
   });
 
@@ -200,13 +200,7 @@ export const ClientJourney: React.FC = () => {
     });
   }, [scrollYProgress]);
 
-    // Dynamic connector opacity & scale as liquid advances to each exact vertical node checkpoint
-  // (Assuming nodes are roughly at 12%, 37%, 62%, 87% of the timeline height)
-  const step1Beam = useTransform(fluidProgress, [0.08, 0.16], [0, 1]);
-  const step2Beam = useTransform(fluidProgress, [0.33, 0.41], [0, 1]);
-  const step3Beam = useTransform(fluidProgress, [0.58, 0.66], [0, 1]);
-  const step4Beam = useTransform(fluidProgress, [0.83, 0.91], [0, 1]);
-  const stepBeams = [step1Beam, step2Beam, step3Beam, step4Beam];
+  // Dynamic beam rendering is handled locally in each step
 
   return (
     <section
@@ -274,70 +268,75 @@ export const ClientJourney: React.FC = () => {
       </div>
 
       {/* 2. Main Procedural Timeline */}
-      <div ref={timelineRef} className="relative min-h-[1200px] z-10">
+      <div ref={timelineRef} className="relative z-10 flex flex-col pt-8 pb-16">
         
-        {/* APPLE HIG THICK SILVER LIQUID BEAM (Vertical Track & Fill) 
-            - Replaces distorted SVG paths with a perfect, distortion-free HTML cylinder
-            - Drops dynamically down with scroll (Height maps 0% to 100%)
-            - Silver gradient fills a matte titanium track
-        */}
-        {/* Curvy Invisible SVG Path with Silver Liquid Fill */}
-        <div className="absolute left-[24px] md:left-1/2 -translate-x-1/2 top-0 bottom-0 w-[60px] md:w-[120px] z-0 pointer-events-none flex justify-center">
-          <svg
-            className="w-full h-full overflow-visible"
-            viewBox="0 0 100 1200"
-            preserveAspectRatio="none"
-          >
-            <defs>
-              <linearGradient id="silverLiquid" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#f8fafc" />
-                <stop offset="25%" stopColor="#94a3b8" />
-                <stop offset="50%" stopColor="#e2e8f0" />
-                <stop offset="75%" stopColor="#94a3b8" />
-                <stop offset="100%" stopColor="#cbd5e1" />
-              </linearGradient>
-            </defs>
-            <motion.path
-              d="M 50 0 C 80 200, 20 400, 50 600 C 80 800, 20 1000, 50 1200"
-              fill="none"
-              stroke="url(#silverLiquid)"
-              strokeWidth="6"
-              strokeLinecap="round"
-              vectorEffect="non-scaling-stroke"
-              className="drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
-              style={{
-                pathLength: fluidProgress,
-              }}
-            />
-          </svg>
-        </div>
-
         {/* 3. Alternating Milestones with Embedded Card Icons & Click-to-Flip Modal */}
-        <div className="space-y-16 md:space-y-24 relative z-10 pt-4">
+        <div className="flex flex-col relative z-10">
           {JOURNEY_STEPS.map((step, idx) => {
             const isLeft = idx % 2 === 0;
             const StepIcon = step.icon;
             const isHovered = hoveredIndex === idx;
 
+            // Calculate precise animation timing for this specific row using its vertical boundaries
+            const totalSteps = JOURNEY_STEPS.length;
+            const rowStart = idx * (1 / totalSteps);
+            const rowEnd = (idx + 1) * (1 / totalSteps);
+            
+            // Map the global scroll progress strictly to this row's lifecycle
+            const localProgress = useTransform(fluidProgress, [rowStart, rowEnd], [0, 1]);
+            
+            // The horizontal beam shoots out *exactly* when the vertical beam reaches the middle of this row (y=50%)
+            const rowMiddle = rowStart + (1 / (totalSteps * 2));
+            const beamProgress = useTransform(fluidProgress, [rowMiddle, rowMiddle + 0.05], [0, 1]);
+
             return (
               <div
                 key={step.id}
                 id={`step-card-${step.id}`}
-                className="relative grid grid-cols-1 md:grid-cols-12 items-center gap-6 md:gap-8 min-h-[220px]"
+                className="relative grid grid-cols-1 md:grid-cols-12 items-center min-h-[300px] sm:min-h-[350px] w-full py-12"
                 onMouseEnter={() => setHoveredIndex(idx)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
-                {/* Mobile Connector (visible only on sm screens) - Draws horizontally from the left track to the card */}
-                <div className="md:hidden absolute top-1/2 -translate-y-1/2 left-[28px] w-6 h-1 bg-transparent rounded-r-full overflow-hidden pointer-events-none">
+                {/* Mobile Track Container (Only visible on SM screens) */}
+                <div className="md:hidden absolute left-[12px] sm:left-[24px] top-0 bottom-0 w-[48px] pointer-events-none flex flex-col justify-center">
+                  <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full overflow-visible">
+                    <defs>
+                      <linearGradient id={`silverLiquidMob-${idx}`} x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#f8fafc" />
+                        <stop offset="50%" stopColor="#e2e8f0" />
+                        <stop offset="100%" stopColor="#cbd5e1" />
+                      </linearGradient>
+                    </defs>
+                    <motion.path
+                      d={isLeft 
+                        ? "M 50 0 C 50 25, 90 25, 50 50 C 10 75, 50 75, 50 100"
+                        : "M 50 0 C 50 25, 10 25, 50 50 C 90 75, 50 75, 50 100"
+                      }
+                      fill="none"
+                      stroke={`url(#silverLiquidMob-${idx})`}
+                      strokeWidth="5"
+                      strokeLinecap="round"
+                      vectorEffect="non-scaling-stroke"
+                      className="drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]"
+                      style={{ pathLength: localProgress }}
+                    />
+                  </svg>
+                  
+                  {/* Mobile Horizontal Beam */}
                   <motion.div
-                    className="w-full h-full bg-gradient-to-r from-slate-300 to-slate-100 rounded-r-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)] origin-left"
-                    style={{ scaleX: stepBeams[idx] }}
+                    className="absolute top-1/2 -translate-y-1/2 left-[24px] w-8 h-[3px] bg-gradient-to-r from-slate-400 to-slate-200 rounded-full shadow-[0_0_8px_rgba(255,255,255,0.4)] origin-left"
+                    style={{ scaleX: beamProgress }}
+                  />
+                  {/* Connection Dot */}
+                  <motion.div
+                    className="absolute top-1/2 -translate-y-1/2 left-[50px] w-2.5 h-2.5 rounded-full bg-slate-100 border-[2px] border-slate-400 shadow-[0_0_8px_rgba(255,255,255,0.6)] z-10"
+                    style={{ scale: beamProgress, opacity: beamProgress }}
                   />
                 </div>
 
                 {/* Left Column Card (Steps 01 & 03) */}
                 {isLeft ? (
-                  <div className="col-span-1 pl-12 md:pl-0 md:col-span-5 md:text-right">
+                  <div className="col-span-1 pl-16 sm:pl-20 md:pl-0 md:col-span-5 md:text-right pr-4 md:pr-0">
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -380,13 +379,8 @@ export const ClientJourney: React.FC = () => {
                       </h3>
 
                       {/* Sharp, Punchy Main One-Liner */}
-                      <p className="text-white font-medium text-sm sm:text-base leading-snug mb-1.5 mt-2">
+                      <p className="text-slate-300 font-medium text-sm sm:text-base leading-snug mb-5 mt-2">
                         {step.headline}
-                      </p>
-
-                      {/* Relatable, Easy-To-Understand One-Liner Subtext */}
-                      <p className="text-slate-300/70 text-xs sm:text-sm leading-relaxed mb-4">
-                        {step.oneLinerSub}
                       </p>
 
                       {/* Action Pill: Triggers Pop-Up Flippable Card */}
@@ -403,39 +397,57 @@ export const ClientJourney: React.FC = () => {
                 )}
 
                 {/* Center Spine with Dynamic Silver Beam Connectors */}
-                <div className="hidden md:flex md:col-span-2 relative items-center justify-center pointer-events-none h-full">
+                <div className="hidden md:flex md:col-span-2 relative items-center justify-center pointer-events-none h-full w-full">
+                  {/* Tileable Wavy Vertical SVG Track */}
+                  <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full overflow-visible">
+                    <defs>
+                      <linearGradient id={`silverLiquidDesk-${idx}`} x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#f8fafc" />
+                        <stop offset="50%" stopColor="#e2e8f0" />
+                        <stop offset="100%" stopColor="#cbd5e1" />
+                      </linearGradient>
+                    </defs>
+                    <motion.path
+                      d={isLeft 
+                        ? "M 50 0 C 50 25, 90 25, 50 50 C 10 75, 50 75, 50 100"
+                        : "M 50 0 C 50 25, 10 25, 50 50 C 90 75, 50 75, 50 100"
+                      }
+                      fill="none"
+                      stroke={`url(#silverLiquidDesk-${idx})`}
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                      vectorEffect="non-scaling-stroke"
+                      className="drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]"
+                      style={{ pathLength: localProgress }}
+                    />
+                  </svg>
+
                   {isLeft ? (
                     <>
-                      {/* Empty matte track stretching to the left card - Made transparent as requested */}
-                      <div className="absolute top-1/2 -translate-y-1/2 right-1/2 w-1/2 h-1.5 bg-transparent rounded-l-full overflow-hidden" />
-                      
                       {/* Thick silver liquid filling from the center OUT towards the left card */}
                       <motion.div
-                        className="absolute top-1/2 -translate-y-1/2 right-1/2 w-1/2 h-1.5 bg-gradient-to-l from-slate-300 to-slate-100 rounded-l-full origin-right shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]"
-                        style={{ scaleX: stepBeams[idx] }}
+                        className="absolute top-1/2 -translate-y-1/2 right-1/2 w-1/2 h-[3px] bg-gradient-to-l from-slate-300 to-slate-100 rounded-l-full origin-right shadow-[0_0_8px_rgba(255,255,255,0.4)]"
+                        style={{ scaleX: beamProgress }}
                       />
                       
                       {/* Silver connection dot that lights up when the liquid hits the card edge */}
                       <motion.div
-                        className="absolute top-1/2 -translate-y-1/2 left-0 w-3 h-3 rounded-full bg-slate-100 border-[2.5px] border-slate-300 shadow-[0_0_10px_rgba(203,213,225,0.6)] z-10"
-                        style={{ scale: stepBeams[idx], opacity: stepBeams[idx] }}
+                        className="absolute top-1/2 -translate-y-1/2 left-0 w-3 h-3 rounded-full bg-slate-100 border-[2px] border-slate-400 shadow-[0_0_10px_rgba(255,255,255,0.6)] z-10"
+                        style={{ scale: beamProgress, opacity: beamProgress }}
                       />
                     </>
                   ) : (
                     <>
-                      {/* Empty matte track stretching to the right card - Made transparent as requested */}
-                      <div className="absolute top-1/2 -translate-y-1/2 left-1/2 w-1/2 h-1.5 bg-transparent rounded-r-full overflow-hidden" />
-                      
                       {/* Thick silver liquid filling from the center OUT towards the right card */}
                       <motion.div
-                        className="absolute top-1/2 -translate-y-1/2 left-1/2 w-1/2 h-1.5 bg-gradient-to-r from-slate-300 to-slate-100 rounded-r-full origin-left shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]"
-                        style={{ scaleX: stepBeams[idx] }}
+                        className="absolute top-1/2 -translate-y-1/2 left-1/2 w-1/2 h-[3px] bg-gradient-to-r from-slate-300 to-slate-100 rounded-r-full origin-left shadow-[0_0_8px_rgba(255,255,255,0.4)]"
+                        style={{ scaleX: beamProgress }}
                       />
                       
                       {/* Silver connection dot that lights up when the liquid hits the card edge */}
                       <motion.div
-                        className="absolute top-1/2 -translate-y-1/2 right-0 w-3 h-3 rounded-full bg-slate-100 border-[2.5px] border-slate-300 shadow-[0_0_10px_rgba(203,213,225,0.6)] z-10"
-                        style={{ scale: stepBeams[idx], opacity: stepBeams[idx] }}
+                        className="absolute top-1/2 -translate-y-1/2 right-0 w-3 h-3 rounded-full bg-slate-100 border-[2px] border-slate-400 shadow-[0_0_10px_rgba(255,255,255,0.6)] z-10"
+                        style={{ scale: beamProgress, opacity: beamProgress }}
                       />
                     </>
                   )}
@@ -443,7 +455,7 @@ export const ClientJourney: React.FC = () => {
 
                 {/* Right Column Card (Steps 02 & 04) */}
                 {!isLeft ? (
-                  <div className="col-span-1 pl-12 md:pl-0 md:col-span-5 md:text-left">
+                  <div className="col-span-1 pl-16 sm:pl-20 md:pl-0 md:col-span-5 md:text-left pr-4 md:pr-0">
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -486,13 +498,8 @@ export const ClientJourney: React.FC = () => {
                       </h3>
 
                       {/* Sharp, Punchy Main One-Liner */}
-                      <p className="text-white font-medium text-sm sm:text-base leading-snug mb-1.5 mt-2">
+                      <p className="text-slate-300 font-medium text-sm sm:text-base leading-snug mb-5 mt-2">
                         {step.headline}
-                      </p>
-
-                      {/* Relatable, Easy-To-Understand One-Liner Subtext */}
-                      <p className="text-slate-300/70 text-xs sm:text-sm leading-relaxed mb-4">
-                        {step.oneLinerSub}
                       </p>
 
                       {/* Action Pill: Triggers Pop-Up Flippable Card */}
