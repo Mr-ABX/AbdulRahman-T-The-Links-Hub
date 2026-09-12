@@ -47,6 +47,7 @@ import {
   Wand2,
   Send,
   Compass,
+  FolderDown,
 } from "lucide-react";
 import { ProjectType, ReviewType } from "../types";
 
@@ -74,7 +75,8 @@ type Category =
   | "Blog"
   | "Feed"
   | "Toolspedia"
-  | "Flagships";
+  | "Flagships"
+  | "Resources";
 
 export const categoryDescriptions: Record<string, string> = {
   All: "Explore my complete portfolio of projects, apps, and experiments.",
@@ -109,6 +111,7 @@ export const tabs: { name: Category; icon: React.ReactNode }[] = [
   { name: "Academy", icon: <GraduationCap size={16} strokeWidth={1.35} /> },
   { name: "Music", icon: <Headphones size={16} strokeWidth={1.35} /> },
   { name: "Blog", icon: <FileText size={16} strokeWidth={1.35} /> },
+  { name: "Resources", icon: <FolderDown size={16} strokeWidth={1.35} /> },
   { name: "Feed", icon: <Rss size={16} strokeWidth={1.35} /> },
   { name: "Toolspedia", icon: <Wrench size={16} strokeWidth={1.35} /> },
 ];

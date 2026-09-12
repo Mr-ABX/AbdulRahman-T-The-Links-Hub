@@ -56,6 +56,7 @@ export const MainFooter = ({
   const insightsLinks = [
     { name: "Journal", tab: "Journal" },
     { name: "Academy", tab: "Academy" },
+    { name: "Free Resources", tab: "Resources", badge: "Coming Soon" },
     { name: "AI Music", tab: "Music" },
     { name: "Blog", tab: "Blog" },
     { name: "Feed", tab: "Feed" },

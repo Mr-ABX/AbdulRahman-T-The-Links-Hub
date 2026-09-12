@@ -99,6 +99,7 @@ import { SuccessPage } from "./components/pages/SuccessPage";
 import { ServicesPage } from "./components/pages/ServicesPage";
 import { PromptsPage } from "./components/pages/PromptsPage";
 import { CommunityPage } from "./components/pages/CommunityPage";
+import { ResourcesPage } from "./components/pages/ResourcesPage";
 import { SettingsPanel } from "./components/SettingsPanel";
 import { VerticalHeader } from "./components/VerticalHeader";
 
@@ -153,6 +154,7 @@ export default function App() {
     if (path.startsWith("/feed")) return "Feed";
     if (path.startsWith("/toolspedia")) return "Toolspedia";
     if (path.startsWith("/flagships")) return "Flagships";
+    if (path.startsWith("/resources") || path.startsWith("/free-resources")) return "Resources";
     return "Home";
   }, [location.pathname]);
 
@@ -614,6 +616,8 @@ export default function App() {
         return <PromptsPage />;
       case "Community":
         return <CommunityPage />;
+      case "Resources":
+        return <ResourcesPage setActiveTab={setActiveTab} />;
     }
   };
 

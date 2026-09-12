@@ -32,7 +32,7 @@ export const VerticalHeader = ({
     { label: "Home", tab: "Home" },
     { label: "Platform", items: ["Vortex", "Store", "Links", "Prompts", "Apps", "Toolspedia"] },
     { label: "Work", items: ["CaseStudies", "Flagships", "Projects", "Services", "Automation"] },
-    { label: "Insights", items: ["Journal", "Academy", "Music", "Blog", "Feed", "Ebooks"] },
+    { label: "Insights", items: ["Journal", "Academy", "Resources", "Music", "Blog", "Feed", "Ebooks"] },
     { label: "About", items: ["About", "Reviews", "Connect", "Community"] },
   ];
 
@@ -156,6 +156,7 @@ export const VerticalHeader = ({
                           item === "Blog" ? "My Blog" : 
                           item === "Feed" ? "Release Feed" : 
                           item === "Toolspedia" ? "Tools Pedia" : 
+                          item === "Resources" ? "Free Resources" : 
                           tabInfo?.name || item;
                         const icon = tabInfo?.icon || <Layout size={14} strokeWidth={1.35} />;
                         const isActive = activeTab === item;
@@ -176,7 +177,16 @@ export const VerticalHeader = ({
                             <span className={cn("transition-colors flex shrink-0", isActive ? "text-white" : "text-white/45")}>
                               {icon}
                             </span>
-                            {!isCollapsed && <span className="truncate">{displayName}</span>}
+                            {!isCollapsed && (
+                              <>
+                                <span className="truncate flex-1">{displayName}</span>
+                                {item === "Resources" && (
+                                  <span className="text-[8px] font-mono px-1.5 py-0.5 rounded bg-amber-400/15 text-amber-300 border border-amber-400/25 shrink-0">
+                                    Soon
+                                  </span>
+                                )}
+                              </>
+                            )}
                           </button>
                         );
                       })}

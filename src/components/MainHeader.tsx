@@ -35,7 +35,7 @@ export const MainHeader = ({
     { label: "Home", tab: "Home" },
     { label: "Platform", items: ["Vortex", "Store", "Links", "Prompts", "Apps", "Toolspedia"] },
     { label: "Work", items: ["CaseStudies", "Flagships", "Projects", "Services", "Automation"] },
-    { label: "Insights", items: ["Journal", "Academy", "Music", "Blog", "Feed", "Ebooks"] },
+    { label: "Insights", items: ["Journal", "Academy", "Resources", "Music", "Blog", "Feed", "Ebooks"] },
     { label: "About", items: ["About", "Reviews", "Connect", "Community"] },
   ];
 
@@ -248,8 +248,15 @@ export const MainHeader = ({
                                     ? "Release Feed"
                                     : item === "Toolspedia"
                                     ? "Tools Pedia"
+                                    : item === "Resources"
+                                    ? "Free Resources"
                                     : tabInfo?.name || item}
                                 </span>
+                                {item === "Resources" && (
+                                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-400/15 text-amber-300 border border-amber-400/25 shrink-0">
+                                    Soon
+                                  </span>
+                                )}
                               </button>
                             );
                           })}
@@ -377,8 +384,15 @@ export const MainHeader = ({
                                 ? "Release Feed"
                                 : item === "Toolspedia"
                                 ? "Tools Pedia"
+                                : item === "Resources"
+                                ? "Free Resources"
                                 : tabInfo?.name || item}
                             </span>
+                            {item === "Resources" && (
+                              <span className="text-[8px] font-mono px-1 py-0.5 rounded bg-amber-400/15 text-amber-300 border border-amber-400/25 shrink-0 ml-auto">
+                                Soon
+                              </span>
+                            )}
                           </button>
                         );
                       })
