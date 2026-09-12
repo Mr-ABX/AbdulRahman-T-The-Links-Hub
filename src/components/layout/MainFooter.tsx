@@ -73,7 +73,7 @@ export const MainFooter = ({
   return (
     <footer
       id="main-studio-footer"
-      className="relative w-full border-t border-white/[0.08] bg-[#050508] overflow-hidden pt-16 md:pt-24 pb-0 mt-28"
+      className="relative w-full border-t border-white/[0.08] bg-[#050508] overflow-hidden pt-16 md:pt-24 pb-0"
     >
       <div
         className="relative z-10 mx-auto w-full max-w-[1380px] px-6 sm:px-8 md:px-12"

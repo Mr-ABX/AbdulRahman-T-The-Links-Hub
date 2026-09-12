@@ -133,11 +133,16 @@
   }
 
   .animate-marquee {
-    animation: marquee 40s linear infinite;
+    animation: marquee 80s linear infinite;
   }
 
   .animate-marquee-reverse {
-    animation: marquee-reverse 40s linear infinite;
+    animation: marquee-reverse 90s linear infinite;
+  }
+
+  .marquee-group:hover .animate-marquee,
+  .marquee-group:hover .animate-marquee-reverse {
+    animation-play-state: paused;
   }
 
   @keyframes border-spin {

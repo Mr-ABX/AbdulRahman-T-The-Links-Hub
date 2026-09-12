@@ -1314,14 +1314,10 @@ export const Home = ({
       </section>
 
       {/* Dual Opposite Infinite Looping Marquees */}
-      <div className="py-10 md:py-14 overflow-hidden relative border-t border-b border-white/10 select-none bg-[#07070d]/80 backdrop-blur-xl flex flex-col gap-4 sm:gap-6">
+      <div className="py-10 md:py-14 overflow-hidden relative border-t border-white/10 select-none bg-[#07070d]/80 backdrop-blur-xl flex flex-col gap-4 sm:gap-6 marquee-group">
         {/* Track 1: Scrolling Right to Left */}
         <div className="relative flex overflow-x-hidden">
-          <motion.div
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{ ease: "linear", duration: 28, repeat: Infinity }}
-            className="flex items-center whitespace-nowrap shrink-0"
-          >
+          <div className="flex items-center whitespace-nowrap shrink-0 animate-marquee">
             {[...Array(4)].map((_, i) => (
               <div key={`track1-${i}`} className="flex items-center gap-6 md:gap-10 pr-6 md:pr-10">
                 <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-white">
@@ -1340,16 +1336,12 @@ export const Home = ({
                 <span className="text-white/20 text-xl sm:text-3xl font-mono">✦</span>
               </div>
             ))}
-          </motion.div>
+          </div>
         </div>
 
         {/* Track 2: Scrolling Left to Right (Opposite Direction) */}
         <div className="relative flex overflow-x-hidden">
-          <motion.div
-            animate={{ x: ["-50%", "0%"] }}
-            transition={{ ease: "linear", duration: 32, repeat: Infinity }}
-            className="flex items-center whitespace-nowrap shrink-0"
-          >
+          <div className="flex items-center whitespace-nowrap shrink-0 animate-marquee-reverse">
             {[...Array(4)].map((_, i) => (
               <div key={`track2-${i}`} className="flex items-center gap-6 md:gap-10 pr-6 md:pr-10">
                 <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-white/80">
@@ -1369,7 +1361,7 @@ export const Home = ({
                 <span className="text-white/20 text-xl sm:text-3xl font-mono">✦</span>
               </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>
