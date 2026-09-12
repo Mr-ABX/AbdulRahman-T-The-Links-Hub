@@ -180,13 +180,13 @@ export const ClientJourney: React.FC = () => {
   // Scroll tracking: Beam starts moving when the starting node is in the vertical center of the screen
   const { scrollYProgress } = useScroll({
     target: timelineRef,
-    offset: ["start 65%", "end 65%"],
+    offset: ["start 60%", "end 80%"],
   });
 
-  // Smooth out the scroll slightly, but keep it tight so it perfectly tracks the user
+  // Smooth Apple HIG Liquid Spring physics
   const fluidProgress = useSpring(scrollYProgress, {
-    stiffness: 150,
-    damping: 25,
+    stiffness: 120,
+    damping: 24,
     restDelta: 0.001,
   });
 
@@ -270,31 +270,63 @@ export const ClientJourney: React.FC = () => {
       {/* 2. Main Procedural Timeline */}
       <div ref={timelineRef} className="relative z-10 flex flex-col pt-8 pb-16">
         
-        {/* APPLE HIG THICK SILVER LIQUID BEAM (Global Vertical Track) */}
-        {/* Drops dynamically down with scroll, spanning the entire timeline seamlessly */}
-        <div className="absolute left-[36px] sm:left-[48px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[6px] z-0 pointer-events-none flex justify-center">
+        {/* APPLE HIG SMOOTH SILVER LIQUID BEAM (Global Desktop Track) */}
+        <div className="hidden md:block absolute inset-0 pointer-events-none z-0">
           <svg
             className="w-full h-full overflow-visible"
-            viewBox="0 0 100 100"
+            viewBox="0 0 1000 1000"
             preserveAspectRatio="none"
           >
             <defs>
-              <linearGradient id="silverLiquidGlobal" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#f8fafc" />
-                <stop offset="25%" stopColor="#94a3b8" />
-                <stop offset="50%" stopColor="#e2e8f0" />
-                <stop offset="75%" stopColor="#94a3b8" />
-                <stop offset="100%" stopColor="#cbd5e1" />
+              <linearGradient id="silverLiquidDesktop" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
+                <stop offset="25%" stopColor="#94a3b8" stopOpacity="1" />
+                <stop offset="50%" stopColor="#f8fafc" stopOpacity="1" />
+                <stop offset="75%" stopColor="#cbd5e1" stopOpacity="1" />
+                <stop offset="100%" stopColor="#ffffff" stopOpacity="1" />
               </linearGradient>
             </defs>
             <motion.path
-              d="M 50 0 L 50 100"
+              d="M 500 0 C 460 60, 460 190, 500 250 C 540 310, 540 440, 500 500 C 460 560, 460 690, 500 750 C 540 810, 540 940, 500 1000"
               fill="none"
-              stroke="url(#silverLiquidGlobal)"
-              strokeWidth="100"
+              stroke="url(#silverLiquidDesktop)"
+              strokeWidth="5"
               strokeLinecap="round"
+              strokeLinejoin="round"
               vectorEffect="non-scaling-stroke"
-              className="drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]"
+              className="drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
+              style={{
+                pathLength: fluidProgress,
+              }}
+            />
+          </svg>
+        </div>
+
+        {/* APPLE HIG SMOOTH SILVER LIQUID BEAM (Global Mobile Track) */}
+        <div className="block md:hidden absolute left-[12px] sm:left-[24px] top-0 bottom-0 w-[48px] pointer-events-none z-0">
+          <svg
+            className="w-full h-full overflow-visible"
+            viewBox="0 0 100 1000"
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <linearGradient id="silverLiquidMobile" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
+                <stop offset="25%" stopColor="#94a3b8" stopOpacity="1" />
+                <stop offset="50%" stopColor="#f8fafc" stopOpacity="1" />
+                <stop offset="75%" stopColor="#cbd5e1" stopOpacity="1" />
+                <stop offset="100%" stopColor="#ffffff" stopOpacity="1" />
+              </linearGradient>
+            </defs>
+            <motion.path
+              d="M 50 0 C 25 60, 25 190, 50 250 C 75 310, 75 440, 50 500 C 25 560, 25 690, 50 750 C 75 810, 75 940, 50 1000"
+              fill="none"
+              stroke="url(#silverLiquidMobile)"
+              strokeWidth="5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
+              className="drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
               style={{
                 pathLength: fluidProgress,
               }}
@@ -403,17 +435,23 @@ export const ClientJourney: React.FC = () => {
 
                 {/* Center Spine with Dynamic Silver Beam Connectors */}
                 <div className="hidden md:flex md:col-span-2 relative items-center justify-center pointer-events-none h-full w-full">
+                  {/* Central Node Dot on Curvy Liquid Line */}
+                  <motion.div
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-slate-100 border-[2px] border-white shadow-[0_0_12px_rgba(255,255,255,0.9)] z-20"
+                    style={{ scale: beamProgress, opacity: beamProgress }}
+                  />
+
                   {isLeft ? (
                     <>
                       {/* Thick silver liquid filling from the center OUT towards the left card */}
                       <motion.div
-                        className="absolute top-1/2 -translate-y-1/2 right-1/2 w-1/2 h-[3px] bg-gradient-to-l from-slate-300 to-slate-100 rounded-l-full origin-right shadow-[0_0_8px_rgba(255,255,255,0.4)]"
+                        className="absolute top-1/2 -translate-y-1/2 right-1/2 w-1/2 h-[3px] bg-gradient-to-l from-slate-100 via-slate-300 to-slate-200 rounded-l-full origin-right shadow-[0_0_8px_rgba(255,255,255,0.6)]"
                         style={{ scaleX: beamProgress }}
                       />
                       
                       {/* Silver connection dot that lights up when the liquid hits the card edge */}
                       <motion.div
-                        className="absolute top-1/2 -translate-y-1/2 left-0 w-3 h-3 rounded-full bg-slate-100 border-[2px] border-slate-400 shadow-[0_0_10px_rgba(255,255,255,0.6)] z-10"
+                        className="absolute top-1/2 -translate-y-1/2 left-0 w-3 h-3 rounded-full bg-slate-100 border-[2px] border-slate-300 shadow-[0_0_10px_rgba(255,255,255,0.8)] z-10"
                         style={{ scale: beamProgress, opacity: beamProgress }}
                       />
                     </>
@@ -421,13 +459,13 @@ export const ClientJourney: React.FC = () => {
                     <>
                       {/* Thick silver liquid filling from the center OUT towards the right card */}
                       <motion.div
-                        className="absolute top-1/2 -translate-y-1/2 left-1/2 w-1/2 h-[3px] bg-gradient-to-r from-slate-300 to-slate-100 rounded-r-full origin-left shadow-[0_0_8px_rgba(255,255,255,0.4)]"
+                        className="absolute top-1/2 -translate-y-1/2 left-1/2 w-1/2 h-[3px] bg-gradient-to-r from-slate-100 via-slate-300 to-slate-200 rounded-r-full origin-left shadow-[0_0_8px_rgba(255,255,255,0.6)]"
                         style={{ scaleX: beamProgress }}
                       />
                       
                       {/* Silver connection dot that lights up when the liquid hits the card edge */}
                       <motion.div
-                        className="absolute top-1/2 -translate-y-1/2 right-0 w-3 h-3 rounded-full bg-slate-100 border-[2px] border-slate-400 shadow-[0_0_10px_rgba(255,255,255,0.6)] z-10"
+                        className="absolute top-1/2 -translate-y-1/2 right-0 w-3 h-3 rounded-full bg-slate-100 border-[2px] border-slate-300 shadow-[0_0_10px_rgba(255,255,255,0.8)] z-10"
                         style={{ scale: beamProgress, opacity: beamProgress }}
                       />
                     </>
