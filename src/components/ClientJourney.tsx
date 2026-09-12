@@ -177,25 +177,25 @@ export const ClientJourney: React.FC = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedModalStep]);
 
-  // Scroll tracking: Beam starts moving when the starting node enters the viewport center
+  // Scroll tracking: Beam tip stays pinned to viewport center as user scrolls through timeline
   const { scrollYProgress } = useScroll({
     target: timelineRef,
-    offset: ["start 65%", "end 45%"],
+    offset: ["start center", "end 80%"],
   });
 
-  // Smooth Apple HIG Liquid Spring physics (responsive & real-time tracking)
+  // Responsive, fluid Apple HIG Liquid Spring physics with zero lag
   const fluidProgress = useSpring(scrollYProgress, {
-    stiffness: 280,
-    damping: 30,
+    stiffness: 220,
+    damping: 28,
     restDelta: 0.001,
   });
 
   // Derived active step indicator
   React.useEffect(() => {
     return fluidProgress.on("change", (v) => {
-      if (v < 0.22) setActiveStepIndex(0);
-      else if (v < 0.42) setActiveStepIndex(1);
-      else if (v < 0.62) setActiveStepIndex(2);
+      if (v < 0.25) setActiveStepIndex(0);
+      else if (v < 0.50) setActiveStepIndex(1);
+      else if (v < 0.75) setActiveStepIndex(2);
       else setActiveStepIndex(3);
     });
   }, [fluidProgress]);
@@ -280,32 +280,21 @@ export const ClientJourney: React.FC = () => {
             <defs>
               <linearGradient id="silverLiquidDesktop" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-                <stop offset="25%" stopColor="#94a3b8" stopOpacity="1" />
+                <stop offset="25%" stopColor="#cbd5e1" stopOpacity="1" />
                 <stop offset="50%" stopColor="#f8fafc" stopOpacity="1" />
-                <stop offset="75%" stopColor="#cbd5e1" stopOpacity="1" />
+                <stop offset="75%" stopColor="#94a3b8" stopOpacity="1" />
                 <stop offset="100%" stopColor="#ffffff" stopOpacity="1" />
               </linearGradient>
             </defs>
-            {/* Base faint guide path */}
-            <path
-              d="M 500 0 C 470 50, 470 90, 500 130 C 530 170, 530 280, 500 330 C 470 380, 470 490, 500 540 C 530 590, 530 700, 500 750 L 500 960"
-              fill="none"
-              stroke="rgba(255, 255, 255, 0.12)"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              vectorEffect="non-scaling-stroke"
-            />
-            {/* Dynamic animated liquid filling path */}
+            {/* Dynamic animated liquid filling path (No background guide path - 100% invisible when unfilled) */}
             <motion.path
-              d="M 500 0 C 470 50, 470 90, 500 130 C 530 170, 530 280, 500 330 C 470 380, 470 490, 500 540 C 530 590, 530 700, 500 750 L 500 960"
+              d="M 500 0 L 500 960"
               fill="none"
               stroke="url(#silverLiquidDesktop)"
-              strokeWidth="5"
+              strokeWidth="4"
               strokeLinecap="round"
-              strokeLinejoin="round"
               vectorEffect="non-scaling-stroke"
-              className="drop-shadow-[0_0_14px_rgba(255,255,255,0.95)]"
+              className="drop-shadow-[0_0_12px_rgba(255,255,255,0.9)]"
               style={{
                 pathLength: fluidProgress,
               }}
@@ -314,7 +303,7 @@ export const ClientJourney: React.FC = () => {
         </div>
 
         {/* APPLE HIG SMOOTH SILVER LIQUID BEAM (Global Mobile Track) */}
-        <div className="block md:hidden absolute left-[12px] sm:left-[24px] top-0 bottom-0 w-[48px] pointer-events-none z-0">
+        <div className="block md:hidden absolute left-[36px] sm:left-[48px] top-0 bottom-0 w-[4px] pointer-events-none z-0 -translate-x-1/2">
           <svg
             className="w-full h-full overflow-visible"
             viewBox="0 0 100 1000"
@@ -323,32 +312,21 @@ export const ClientJourney: React.FC = () => {
             <defs>
               <linearGradient id="silverLiquidMobile" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-                <stop offset="25%" stopColor="#94a3b8" stopOpacity="1" />
+                <stop offset="25%" stopColor="#cbd5e1" stopOpacity="1" />
                 <stop offset="50%" stopColor="#f8fafc" stopOpacity="1" />
-                <stop offset="75%" stopColor="#cbd5e1" stopOpacity="1" />
+                <stop offset="75%" stopColor="#94a3b8" stopOpacity="1" />
                 <stop offset="100%" stopColor="#ffffff" stopOpacity="1" />
               </linearGradient>
             </defs>
-            {/* Base faint guide path */}
-            <path
-              d="M 50 0 C 30 50, 30 90, 50 130 C 70 170, 70 280, 50 330 C 30 380, 30 490, 50 540 C 70 590, 70 700, 50 750 L 50 960"
-              fill="none"
-              stroke="rgba(255, 255, 255, 0.12)"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              vectorEffect="non-scaling-stroke"
-            />
-            {/* Dynamic animated liquid filling path */}
+            {/* Dynamic animated liquid filling path (No background guide path - 100% invisible when unfilled) */}
             <motion.path
-              d="M 50 0 C 30 50, 30 90, 50 130 C 70 170, 70 280, 50 330 C 30 380, 30 490, 50 540 C 70 590, 70 700, 50 750 L 50 960"
+              d="M 50 0 L 50 960"
               fill="none"
               stroke="url(#silverLiquidMobile)"
-              strokeWidth="5"
+              strokeWidth="4"
               strokeLinecap="round"
-              strokeLinejoin="round"
               vectorEffect="non-scaling-stroke"
-              className="drop-shadow-[0_0_14px_rgba(255,255,255,0.95)]"
+              className="drop-shadow-[0_0_12px_rgba(255,255,255,0.9)]"
               style={{
                 pathLength: fluidProgress,
               }}
@@ -365,10 +343,10 @@ export const ClientJourney: React.FC = () => {
 
             // Precise animation timing thresholds for each step's row
             const stepThresholds = [
-              { start: 0.07, end: 0.17 },
-              { start: 0.27, end: 0.37 },
-              { start: 0.48, end: 0.58 },
-              { start: 0.69, end: 0.79 },
+              { start: 0.02, end: 0.12 },
+              { start: 0.22, end: 0.34 },
+              { start: 0.44, end: 0.56 },
+              { start: 0.66, end: 0.78 },
             ];
             const currentThreshold = stepThresholds[idx] || { start: 0.8, end: 0.9 };
             const beamProgress = useTransform(
