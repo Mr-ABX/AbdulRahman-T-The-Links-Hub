@@ -180,13 +180,13 @@ export const ClientJourney: React.FC = () => {
   // Scroll tracking: Beam starts moving when the starting node is in the vertical center of the screen
   const { scrollYProgress } = useScroll({
     target: timelineRef,
-    offset: ["start center", "end 80%"],
+    offset: ["start 65%", "end 65%"],
   });
 
   // Smooth out the scroll slightly, but keep it tight so it perfectly tracks the user
   const fluidProgress = useSpring(scrollYProgress, {
-    stiffness: 200,
-    damping: 30,
+    stiffness: 150,
+    damping: 25,
     restDelta: 0.001,
   });
 
@@ -270,6 +270,38 @@ export const ClientJourney: React.FC = () => {
       {/* 2. Main Procedural Timeline */}
       <div ref={timelineRef} className="relative z-10 flex flex-col pt-8 pb-16">
         
+        {/* APPLE HIG THICK SILVER LIQUID BEAM (Global Vertical Track) */}
+        {/* Drops dynamically down with scroll, spanning the entire timeline seamlessly */}
+        <div className="absolute left-[36px] sm:left-[48px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[6px] z-0 pointer-events-none flex justify-center">
+          <svg
+            className="w-full h-full overflow-visible"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <linearGradient id="silverLiquidGlobal" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#f8fafc" />
+                <stop offset="25%" stopColor="#94a3b8" />
+                <stop offset="50%" stopColor="#e2e8f0" />
+                <stop offset="75%" stopColor="#94a3b8" />
+                <stop offset="100%" stopColor="#cbd5e1" />
+              </linearGradient>
+            </defs>
+            <motion.path
+              d="M 50 0 L 50 100"
+              fill="none"
+              stroke="url(#silverLiquidGlobal)"
+              strokeWidth="100"
+              strokeLinecap="round"
+              vectorEffect="non-scaling-stroke"
+              className="drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]"
+              style={{
+                pathLength: fluidProgress,
+              }}
+            />
+          </svg>
+        </div>
+
         {/* 3. Alternating Milestones with Embedded Card Icons & Click-to-Flip Modal */}
         <div className="flex flex-col relative z-10">
           {JOURNEY_STEPS.map((step, idx) => {
@@ -280,14 +312,10 @@ export const ClientJourney: React.FC = () => {
             // Calculate precise animation timing for this specific row using its vertical boundaries
             const totalSteps = JOURNEY_STEPS.length;
             const rowStart = idx * (1 / totalSteps);
-            const rowEnd = (idx + 1) * (1 / totalSteps);
-            
-            // Map the global scroll progress strictly to this row's lifecycle
-            const localProgress = useTransform(fluidProgress, [rowStart, rowEnd], [0, 1]);
             
             // The horizontal beam shoots out *exactly* when the vertical beam reaches the middle of this row (y=50%)
             const rowMiddle = rowStart + (1 / (totalSteps * 2));
-            const beamProgress = useTransform(fluidProgress, [rowMiddle, rowMiddle + 0.05], [0, 1]);
+            const beamProgress = useTransform(fluidProgress, [rowMiddle - 0.05, rowMiddle + 0.05], [0, 1]);
 
             return (
               <div
@@ -298,30 +326,7 @@ export const ClientJourney: React.FC = () => {
                 onMouseLeave={() => setHoveredIndex(null)}
               >
                 {/* Mobile Track Container (Only visible on SM screens) */}
-                <div className="md:hidden absolute left-[12px] sm:left-[24px] top-0 bottom-0 w-[48px] pointer-events-none flex flex-col justify-center">
-                  <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full overflow-visible">
-                    <defs>
-                      <linearGradient id={`silverLiquidMob-${idx}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="#f8fafc" />
-                        <stop offset="50%" stopColor="#e2e8f0" />
-                        <stop offset="100%" stopColor="#cbd5e1" />
-                      </linearGradient>
-                    </defs>
-                    <motion.path
-                      d={isLeft 
-                        ? "M 50 0 C 50 25, 90 25, 50 50 C 10 75, 50 75, 50 100"
-                        : "M 50 0 C 50 25, 10 25, 50 50 C 90 75, 50 75, 50 100"
-                      }
-                      fill="none"
-                      stroke={`url(#silverLiquidMob-${idx})`}
-                      strokeWidth="5"
-                      strokeLinecap="round"
-                      vectorEffect="non-scaling-stroke"
-                      className="drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]"
-                      style={{ pathLength: localProgress }}
-                    />
-                  </svg>
-                  
+                <div className="md:hidden absolute left-[36px] sm:left-[48px] top-0 bottom-0 w-[48px] pointer-events-none flex flex-col justify-center">
                   {/* Mobile Horizontal Beam */}
                   <motion.div
                     className="absolute top-1/2 -translate-y-1/2 left-[24px] w-8 h-[3px] bg-gradient-to-r from-slate-400 to-slate-200 rounded-full shadow-[0_0_8px_rgba(255,255,255,0.4)] origin-left"
@@ -398,30 +403,6 @@ export const ClientJourney: React.FC = () => {
 
                 {/* Center Spine with Dynamic Silver Beam Connectors */}
                 <div className="hidden md:flex md:col-span-2 relative items-center justify-center pointer-events-none h-full w-full">
-                  {/* Tileable Wavy Vertical SVG Track */}
-                  <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full overflow-visible">
-                    <defs>
-                      <linearGradient id={`silverLiquidDesk-${idx}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="#f8fafc" />
-                        <stop offset="50%" stopColor="#e2e8f0" />
-                        <stop offset="100%" stopColor="#cbd5e1" />
-                      </linearGradient>
-                    </defs>
-                    <motion.path
-                      d={isLeft 
-                        ? "M 50 0 C 50 25, 90 25, 50 50 C 10 75, 50 75, 50 100"
-                        : "M 50 0 C 50 25, 10 25, 50 50 C 90 75, 50 75, 50 100"
-                      }
-                      fill="none"
-                      stroke={`url(#silverLiquidDesk-${idx})`}
-                      strokeWidth="6"
-                      strokeLinecap="round"
-                      vectorEffect="non-scaling-stroke"
-                      className="drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]"
-                      style={{ pathLength: localProgress }}
-                    />
-                  </svg>
-
                   {isLeft ? (
                     <>
                       {/* Thick silver liquid filling from the center OUT towards the left card */}
