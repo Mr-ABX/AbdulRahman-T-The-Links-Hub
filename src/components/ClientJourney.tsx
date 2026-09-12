@@ -16,8 +16,10 @@ import {
   Video,
   FileCode2,
   Sparkles,
-  ChevronDown,
-  ChevronUp,
+  X,
+  RotateCw,
+  ArrowUpRight,
+  Check,
 } from "lucide-react";
 
 interface JourneyStep {
@@ -33,6 +35,7 @@ interface JourneyStep {
   deliverables: { icon: React.ElementType; label: string }[];
   clientPeaceOfMind: string;
   agencyDifference: string;
+  techHighlights: string[];
   icon: React.ElementType;
   accent: string;
 }
@@ -54,8 +57,13 @@ const JOURNEY_STEPS: JourneyStep[] = [
       { icon: Clock, label: "Detailed timeline & milestone breakdown" },
       { icon: ShieldCheck, label: "Guaranteed fixed-price proposal" },
     ],
-    clientPeaceOfMind: "Zero sales pressure. You keep the technical plan whether we build together or not.",
-    agencyDifference: "Vs. 3 weeks of junior account reps and generic sales decks",
+    clientPeaceOfMind: "Zero sales pressure. You keep the complete technical plan whether we build together or not.",
+    agencyDifference: "Vs. 3 weeks of junior account reps and generic sales pitch decks",
+    techHighlights: [
+      "Fixed-price contract with zero hidden change orders",
+      "Exact architectural stack recommendation",
+      "Production timeline with concrete sprint gates",
+    ],
     icon: Search,
     accent: "#38BDF8", // Frost Sky
   },
@@ -73,10 +81,15 @@ const JOURNEY_STEPS: JourneyStep[] = [
     deliverables: [
       { icon: Layers, label: "Live clickable staging URL (mobile & desktop)" },
       { icon: Zap, label: "System architecture & database schema" },
-      { icon: Sparkles, label: "Apple HIG micro-interaction design system" },
+      { icon: Sparkles, label: "Apple HIG micro-interaction design tokens" },
     ],
     clientPeaceOfMind: "Test and approve the core experience before a single deep backend line is committed.",
-    agencyDifference: "Vs. Weeks of static Figma designs that don't match the actual code",
+    agencyDifference: "Vs. Weeks of static Figma screens that never match the actual shipped code",
+    techHighlights: [
+      "Deployed to private preview container for instant access",
+      "Spring-physics gesture validation on physical devices",
+      "Verified database models & schema relationships",
+    ],
     icon: Compass,
     accent: "#818CF8", // Indigo Frost
   },
@@ -98,6 +111,11 @@ const JOURNEY_STEPS: JourneyStep[] = [
     ],
     clientPeaceOfMind: "Total transparency with working staging builds deployed continuously.",
     agencyDifference: "Vs. Slow bureaucratic ticket queues and offshore handoffs",
+    techHighlights: [
+      "Daily automated staging CI/CD builds",
+      "Direct engineer Slack/WhatsApp channel with <1h reply SLA",
+      "Async Loom video breakdowns for rapid feedback loops",
+    ],
     icon: Code2,
     accent: "#34D399", // Emerald Mint
   },
@@ -119,6 +137,11 @@ const JOURNEY_STEPS: JourneyStep[] = [
     ],
     clientPeaceOfMind: "You own every single line of code with clean documentation, ready to scale independently.",
     agencyDifference: "Vs. Costly lock-in retainers and proprietary hosting hostage fees",
+    techHighlights: [
+      "95+ Google Lighthouse performance & accessibility score",
+      "Complete documentation & deployment environment runbook",
+      "30-day warranty coverage for all bug fixes and updates",
+    ],
     icon: Rocket,
     accent: "#A78BFA", // Violet Titanium
   },
@@ -128,38 +151,46 @@ export const ClientJourney: React.FC = () => {
   const timelineRef = useRef<HTMLDivElement>(null);
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
 
-  // Toggle card detail expansion
-  const toggleCardExpansion = (id: string, e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    setExpandedCards((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
+  // Pop-up Flippable Card Modal State
+  const [selectedModalStep, setSelectedModalStep] = useState<JourneyStep | null>(null);
+  const [isCardFlipped, setIsCardFlipped] = useState<boolean>(false);
+
+  const openStepModal = (step: JourneyStep) => {
+    setSelectedModalStep(step);
+    setIsCardFlipped(false);
   };
 
-  // Scroll tracking: Trigger begins when the timeline starting point reaches the vertical CENTER of the viewport
+  const closeStepModal = () => {
+    setSelectedModalStep(null);
+    setIsCardFlipped(false);
+  };
+
+  // Keyboard escape listener
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && selectedModalStep) {
+        closeStepModal();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedModalStep]);
+
+  // Scroll tracking: Beam starts moving when the starting node is in the vertical center of the screen
   const { scrollYProgress } = useScroll({
     target: timelineRef,
     offset: ["start center", "end 85%"],
   });
 
-  // Apple HIG Liquid Spring: Viscous fluid physics with smooth inertia
+  // Apple HIG Liquid Spring physics
   const fluidProgress = useSpring(scrollYProgress, {
     stiffness: 70,
     damping: 22,
     restDelta: 0.001,
   });
 
-  // Secondary delayed fluid trail for viscous organic motion
-  const trailProgress = useSpring(scrollYProgress, {
-    stiffness: 45,
-    damping: 26,
-    restDelta: 0.001,
-  });
-
-  // Responsive active step indicator derived from scroll progress
+  // Derived active step indicator
   React.useEffect(() => {
     return scrollYProgress.on("change", (v) => {
       if (v < 0.25) setActiveStepIndex(0);
@@ -169,19 +200,19 @@ export const ClientJourney: React.FC = () => {
     });
   }, [scrollYProgress]);
 
-  // Dynamic connector opacity when the liquid stream flows past each node
-  const step1Beam = useTransform(fluidProgress, [0.08, 0.22], [0, 1]);
-  const step2Beam = useTransform(fluidProgress, [0.32, 0.46], [0, 1]);
-  const step3Beam = useTransform(fluidProgress, [0.56, 0.70], [0, 1]);
-  const step4Beam = useTransform(fluidProgress, [0.80, 0.94], [0, 1]);
+  // Dynamic connector opacity as liquid advances to each node checkpoint
+  const step1Beam = useTransform(fluidProgress, [0.08, 0.20], [0, 1]);
+  const step2Beam = useTransform(fluidProgress, [0.32, 0.44], [0, 1]);
+  const step3Beam = useTransform(fluidProgress, [0.56, 0.68], [0, 1]);
+  const step4Beam = useTransform(fluidProgress, [0.80, 0.92], [0, 1]);
 
   return (
     <section
       id="onboarding-process"
       className="py-24 md:py-36 max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 border-t border-white/[0.08] relative overflow-hidden"
     >
-      {/* Background Soft Specular Lighting (Apple HIG Ambient Silver & Iridescent Lights) */}
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[720px] h-[340px] bg-gradient-to-b from-slate-200/[0.04] via-sky-500/[0.02] to-transparent rounded-full blur-[140px] pointer-events-none" />
+      {/* Background Soft Specular Lighting (Apple HIG Ambient Silver) */}
+      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[720px] h-[340px] bg-slate-300/[0.03] rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-16 right-1/4 w-[480px] h-[480px] bg-slate-300/[0.02] rounded-full blur-[140px] pointer-events-none" />
 
       {/* 1. Apple HIG Section Header */}
@@ -240,171 +271,104 @@ export const ClientJourney: React.FC = () => {
         </div>
       </div>
 
-      {/* 2. Main Procedural Timeline with Organic Curvy Liquid Silver Stream */}
+      {/* 2. Main Procedural Timeline with Random Organic Curvy Liquid Beam */}
       <div ref={timelineRef} className="relative min-h-[1200px] z-10">
-        {/* DESKTOP PROCEDURAL LIQUID STREAM SVG (md+) */}
+        {/* DESKTOP PROCEDURAL LIQUID STREAM SVG (md+)
+            - NO background stroke/track (completely invisible path ahead of time)
+            - NO stroke borders or outline around the liquid
+            - NO glowing drop-shadows
+            - Random, organic brush-stroke curves with playful twists and sweeping bends
+            - Precise connector alignment directly to each card's inner edge
+        */}
         <div className="hidden md:block absolute inset-0 w-full h-full pointer-events-none">
           <svg
-            viewBox="0 0 1000 1280"
+            viewBox="0 0 1000 1200"
             fill="none"
             preserveAspectRatio="none"
             className="w-full h-full"
           >
             <defs>
-              {/* Liquid Silver Metallic + Pill Iridescent Color Flow */}
-              <linearGradient id="liquid-silver-stream" x1="0%" y1="0%" x2="0%" y2="100%">
+              {/* Smooth Liquid Gradient (No glow, rich metallic & pill iridescent transition) */}
+              <linearGradient id="organic-liquid-beam" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#E2E8F0" />
-                <stop offset="15%" stopColor="#38BDF8" />
-                <stop offset="35%" stopColor="#F8FAFC" />
-                <stop offset="45%" stopColor="#818CF8" />
-                <stop offset="65%" stopColor="#34D399" />
-                <stop offset="80%" stopColor="#F1F5F9" />
-                <stop offset="92%" stopColor="#A78BFA" />
-                <stop offset="100%" stopColor="#E2E8F0" />
-              </linearGradient>
-
-              {/* Specular Liquid Chrome Core */}
-              <linearGradient id="liquid-specular-core" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.9" />
-                <stop offset="25%" stopColor="#BAE6FD" stopOpacity="0.95" />
-                <stop offset="50%" stopColor="#FFFFFF" stopOpacity="0.9" />
-                <stop offset="75%" stopColor="#DDD6FE" stopOpacity="0.95" />
-                <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.9" />
-              </linearGradient>
-
-              {/* Viscous Soft Liquid Trail */}
-              <linearGradient id="liquid-trail-subtle" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#94A3B8" stopOpacity="0.25" />
-                <stop offset="30%" stopColor="#38BDF8" stopOpacity="0.3" />
-                <stop offset="65%" stopColor="#34D399" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="#A78BFA" stopOpacity="0.3" />
+                <stop offset="18%" stopColor="#38BDF8" />
+                <stop offset="38%" stopColor="#818CF8" />
+                <stop offset="62%" stopColor="#34D399" />
+                <stop offset="85%" stopColor="#A78BFA" />
+                <stop offset="100%" stopColor="#F1F5F9" />
               </linearGradient>
             </defs>
 
-            {/* CURVY ORGANIC LIQUID STREAM PATH
-                Natural sweeping S-curves that flow smoothly through the 4 milestone nodes
-                (500,20) -> curves left to (450,110) -> (500,200) -> curves right to (560,330)
-                -> curves left to (440,430) -> (500,480) -> curves right to (570,610)
-                -> (500,720) -> curves left to (430,850) -> (500,960) -> cascades to (500,1180)
+            {/* ORGANIC RANDOM BRUSH-STROKE LIQUID BEAM
+                Twists, swoops, and curves naturally through the canvas:
+                - Starts at top center (500, 10)
+                - Sweeps left near Card 1 (x=440) at y=200
+                - Swings out into a playful right twist (x=640)
+                - Loops back to touch Card 2 (x=560) at y=490
+                - Sweeps left in a wide organic wave (x=390)
+                - Curves inward to touch Card 3 (x=440) at y=780
+                - Curves through an elegant S-turn toward Card 4 (x=560) at y=1060
+                - Cascades down to finish at (500, 1180)
             */}
-
-            {/* 1. Base Liquid Channel (Subtle silver groove) */}
-            <path
-              d="M 500,20 C 440,80 430,140 500,200 C 580,270 575,390 500,480 C 420,570 425,640 500,720 C 580,810 575,890 500,960 C 430,1030 460,1110 500,1180"
-              stroke="rgba(226, 232, 240, 0.07)"
-              strokeWidth="14"
-              strokeLinecap="round"
-            />
-
-            {/* 2. Trailing Viscous Liquid Layer (A bit thicker, glides with soft organic lag) */}
             <motion.path
-              d="M 500,20 C 440,80 430,140 500,200 C 580,270 575,390 500,480 C 420,570 425,640 500,720 C 580,810 575,890 500,960 C 430,1030 460,1110 500,1180"
-              stroke="url(#liquid-trail-subtle)"
-              strokeWidth="10"
+              d="M 500,10 C 400,60 380,120 440,190 C 440,195 440,200 440,200 C 490,260 620,290 640,360 C 660,430 520,440 560,490 C 600,550 420,600 390,670 C 370,730 400,750 440,780 C 480,840 620,880 610,960 C 600,1020 540,1030 560,1060 C 580,1110 520,1150 500,1180"
+              stroke="url(#organic-liquid-beam)"
+              strokeWidth="7"
               strokeLinecap="round"
-              style={{
-                pathLength: trailProgress,
-              }}
-            />
-
-            {/* 3. Primary Liquid Silver & Iridescent Body (Smooth liquid ribbon, NOT a harsh glowing stroke) */}
-            <motion.path
-              d="M 500,20 C 440,80 430,140 500,200 C 580,270 575,390 500,480 C 420,570 425,640 500,720 C 580,810 575,890 500,960 C 430,1030 460,1110 500,1180"
-              stroke="url(#liquid-silver-stream)"
-              strokeWidth="6"
-              strokeLinecap="round"
+              strokeLinejoin="round"
               style={{
                 pathLength: fluidProgress,
               }}
             />
 
-            {/* 4. Specular Chrome Liquid Core (Apple Pro high-precision liquid reflection) */}
-            <motion.path
-              d="M 500,20 C 440,80 430,140 500,200 C 580,270 575,390 500,480 C 420,570 425,640 500,720 C 580,810 575,890 500,960 C 430,1030 460,1110 500,1180"
-              stroke="url(#liquid-specular-core)"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              style={{
-                pathLength: fluidProgress,
-              }}
-            />
-
-            {/* STEP 1 CONNECTOR WHISKER: Node (500, 200) -> Left Card (440, 200) */}
-            <motion.path
-              d="M 500,200 L 440,200"
-              stroke="#E2E8F0"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              style={{ opacity: step1Beam }}
-            />
+            {/* STEP 1 CONNECTOR DOT & POINTER (Exactly aligned to Card 1 inner edge at x=440, y=200) */}
             <motion.circle
               cx="440"
               cy="200"
-              r="2.5"
+              r="4.5"
               fill="#38BDF8"
               style={{ opacity: step1Beam }}
             />
 
-            {/* STEP 2 CONNECTOR WHISKER: Node (500, 480) -> Right Card (560, 480) */}
-            <motion.path
-              d="M 500,480 L 560,480"
-              stroke="#E2E8F0"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              style={{ opacity: step2Beam }}
-            />
+            {/* STEP 2 CONNECTOR DOT & POINTER (Exactly aligned to Card 2 inner edge at x=560, y=490) */}
             <motion.circle
               cx="560"
-              cy="480"
-              r="2.5"
+              cy="490"
+              r="4.5"
               fill="#818CF8"
               style={{ opacity: step2Beam }}
             />
 
-            {/* STEP 3 CONNECTOR WHISKER: Node (500, 720) -> Left Card (440, 720) */}
-            <motion.path
-              d="M 500,720 L 440,720"
-              stroke="#E2E8F0"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              style={{ opacity: step3Beam }}
-            />
+            {/* STEP 3 CONNECTOR DOT & POINTER (Exactly aligned to Card 3 inner edge at x=440, y=780) */}
             <motion.circle
               cx="440"
-              cy="720"
-              r="2.5"
+              cy="780"
+              r="4.5"
               fill="#34D399"
               style={{ opacity: step3Beam }}
             />
 
-            {/* STEP 4 CONNECTOR WHISKER: Node (500, 960) -> Right Card (560, 960) */}
-            <motion.path
-              d="M 500,960 L 560,960"
-              stroke="#E2E8F0"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              style={{ opacity: step4Beam }}
-            />
+            {/* STEP 4 CONNECTOR DOT & POINTER (Exactly aligned to Card 4 inner edge at x=560, y=1060) */}
             <motion.circle
               cx="560"
-              cy="960"
-              r="2.5"
+              cy="1060"
+              r="4.5"
               fill="#A78BFA"
               style={{ opacity: step4Beam }}
             />
           </svg>
         </div>
 
-        {/* MOBILE PROCEDURAL LIQUID STREAM (sm and below) */}
+        {/* MOBILE LIQUID BEAM (sm and below) - Completely invisible path until revealed */}
         <div className="block md:hidden absolute inset-y-0 left-5 w-8 pointer-events-none">
           <svg
-            viewBox="0 0 32 1280"
+            viewBox="0 0 32 1200"
             fill="none"
             preserveAspectRatio="none"
             className="w-full h-full"
           >
             <defs>
-              <linearGradient id="liquid-mobile-stream" x1="0%" y1="0%" x2="0%" y2="100%">
+              <linearGradient id="organic-mobile-beam" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#E2E8F0" />
                 <stop offset="25%" stopColor="#38BDF8" />
                 <stop offset="50%" stopColor="#818CF8" />
@@ -412,29 +376,12 @@ export const ClientJourney: React.FC = () => {
                 <stop offset="100%" stopColor="#A78BFA" />
               </linearGradient>
             </defs>
-            {/* Soft liquid channel */}
-            <path
-              d="M 16,10 C 26,80 6,140 16,200 C 26,290 6,380 16,480 C 26,590 6,650 16,720 C 26,820 6,890 16,960 C 26,1040 16,1120 16,1180"
-              stroke="rgba(226, 232, 240, 0.08)"
-              strokeWidth="10"
-              strokeLinecap="round"
-            />
-            {/* Fluid body */}
             <motion.path
-              d="M 16,10 C 26,80 6,140 16,200 C 26,290 6,380 16,480 C 26,590 6,650 16,720 C 26,820 6,890 16,960 C 26,1040 16,1120 16,1180"
-              stroke="url(#liquid-mobile-stream)"
+              d="M 16,10 C 28,70 6,130 16,200 C 28,280 6,380 16,490 C 28,590 6,690 16,780 C 28,880 6,970 16,1060 C 26,1120 16,1170 16,1180"
+              stroke="url(#organic-mobile-beam)"
               strokeWidth="5"
               strokeLinecap="round"
-              style={{
-                pathLength: fluidProgress,
-              }}
-            />
-            {/* Core highlight */}
-            <motion.path
-              d="M 16,10 C 26,80 6,140 16,200 C 26,290 6,380 16,480 C 26,590 6,650 16,720 C 26,820 6,890 16,960 C 26,1040 16,1120 16,1180"
-              stroke="#FFFFFF"
-              strokeWidth="1.8"
-              strokeLinecap="round"
+              strokeLinejoin="round"
               style={{
                 pathLength: fluidProgress,
               }}
@@ -442,43 +389,41 @@ export const ClientJourney: React.FC = () => {
           </svg>
         </div>
 
-        {/* 3. Alternating Milestones: Sharp One-Liners on Surface, Click to Reveal Full Details */}
+        {/* 3. Alternating Milestones with Embedded Card Icons & Click-to-Flip Modal */}
         <div className="space-y-16 md:space-y-24 relative z-10 pt-4">
           {JOURNEY_STEPS.map((step, idx) => {
             const isLeft = idx % 2 === 0;
             const StepIcon = step.icon;
             const isHovered = hoveredIndex === idx;
-            const isExpanded = !!expandedCards[step.id];
 
             return (
               <div
                 key={step.id}
                 id={`step-card-${step.id}`}
-                className="relative grid grid-cols-1 md:grid-cols-12 items-center gap-6 md:gap-12"
+                className="relative grid grid-cols-1 md:grid-cols-12 items-center gap-6 md:gap-8 min-h-[220px]"
                 onMouseEnter={() => setHoveredIndex(idx)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
                 {/* Left Column Card (Steps 01 & 03) */}
                 {isLeft ? (
-                  <div className="col-span-1 pl-12 md:pl-0 md:col-span-5 md:text-right">
+                  <div className="col-span-1 pl-10 md:pl-0 md:col-span-5 md:text-right">
                     <motion.div
-                      layout
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "-60px" }}
                       transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
-                      onClick={() => toggleCardExpansion(step.id)}
+                      onClick={() => openStepModal(step)}
                       className={`group/card relative p-5 sm:p-6 md:p-7 rounded-[1.8rem] bg-gradient-to-b from-[#13151f]/95 via-[#0e1017]/95 to-[#090a10]/95 backdrop-blur-2xl border transition-all duration-300 shadow-[0_16px_40px_rgba(0,0,0,0.65)] cursor-pointer select-none ${
                         isHovered
-                          ? "border-slate-300/40 -translate-y-0.5 shadow-[0_22px_55px_rgba(0,0,0,0.85)]"
-                          : "border-white/[0.14] hover:border-white/25"
+                          ? "border-slate-300/50 -translate-y-1 shadow-[0_24px_60px_rgba(0,0,0,0.85)]"
+                          : "border-white/[0.14] hover:border-white/30"
                       }`}
                     >
                       {/* Apple HIG Brushed Silver Specular Top Rim */}
-                      <div className="absolute top-0 inset-x-8 h-px bg-gradient-to-r from-transparent via-slate-200/40 to-transparent" />
+                      <div className="absolute top-0 inset-x-8 h-px bg-gradient-to-r from-transparent via-slate-200/50 to-transparent" />
 
-                      {/* Header Capsule: Silver Badge + Timeframe */}
-                      <div className="flex items-center gap-2 mb-3 md:justify-end">
+                      {/* Header Capsule: Icon ON the card + Badge + Timeframe */}
+                      <div className="flex items-center gap-2 mb-3.5 md:justify-end">
                         <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
                           {step.category}
                         </span>
@@ -486,9 +431,16 @@ export const ClientJourney: React.FC = () => {
                         <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono tracking-wider uppercase font-semibold bg-slate-800/80 text-slate-200 border border-slate-600/40">
                           {step.badge}
                         </span>
+                        {/* Icon embedded directly on card */}
+                        <div
+                          className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border border-white/10 bg-white/[0.05]"
+                          style={{ color: step.accent }}
+                        >
+                          <StepIcon size={14} />
+                        </div>
                       </div>
 
-                      {/* Title */}
+                      {/* Title & Timeframe */}
                       <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight mb-1 font-sans flex items-center md:justify-end gap-2">
                         <span>{step.stepNum}. {step.name}</span>
                         <span className="text-xs font-mono font-normal text-slate-400 bg-white/[0.04] px-2 py-0.5 rounded-md border border-white/[0.08]">
@@ -496,142 +448,59 @@ export const ClientJourney: React.FC = () => {
                         </span>
                       </h3>
 
-                      {/* Sharp, Punchy Main One-Liner (Not content-heavy!) */}
+                      {/* Sharp, Punchy Main One-Liner */}
                       <p className="text-white font-medium text-sm sm:text-base leading-snug mb-1.5 mt-2">
                         {step.headline}
                       </p>
 
                       {/* Relatable, Easy-To-Understand One-Liner Subtext */}
-                      <p className="text-slate-300/70 text-xs sm:text-sm leading-relaxed mb-3">
+                      <p className="text-slate-300/70 text-xs sm:text-sm leading-relaxed mb-4">
                         {step.oneLinerSub}
                       </p>
 
-                      {/* Sleek Action Affordance (Click to view full details) */}
+                      {/* Action Pill: Triggers Pop-Up Flippable Card */}
                       <div className="flex items-center md:justify-end pt-1">
-                        <button
-                          type="button"
-                          onClick={(e) => toggleCardExpansion(step.id, e)}
-                          className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-300 hover:text-white px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 transition-colors"
-                        >
-                          <span>{isExpanded ? "Hide Details" : "View Details & Scope"}</span>
-                          {isExpanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
-                        </button>
+                        <span className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-200 group-hover/card:text-white px-3 py-1.5 rounded-full bg-white/[0.06] group-hover/card:bg-white/[0.12] border border-white/15 transition-all">
+                          <span>Inspect &amp; Flip Details</span>
+                          <ArrowUpRight size={13} className="text-slate-400 group-hover/card:text-white group-hover/card:translate-x-0.5 transition-transform" />
+                        </span>
                       </div>
-
-                      {/* EXPANDABLE DEEP CONTENT (Only shown when user clicks card) */}
-                      <AnimatePresence>
-                        {isExpanded && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: "auto" }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
-                            className="overflow-hidden pt-4 mt-3 border-t border-white/[0.08] text-left space-y-3.5"
-                          >
-                            <p className="text-slate-300 text-xs leading-relaxed">
-                              {step.description}
-                            </p>
-
-                            {/* Deliverables Widget Box */}
-                            <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] space-y-2">
-                              <div className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
-                                Key Deliverables
-                              </div>
-                              {step.deliverables.map((item, dIdx) => {
-                                const ItemIcon = item.icon;
-                                return (
-                                  <div key={dIdx} className="flex items-center gap-2 text-xs text-slate-200">
-                                    <div
-                                      className="w-5 h-5 rounded flex items-center justify-center shrink-0 bg-white/[0.08] text-slate-200"
-                                    >
-                                      <ItemIcon size={12} />
-                                    </div>
-                                    <span className="font-normal text-slate-300">{item.label}</span>
-                                  </div>
-                                );
-                              })}
-                            </div>
-
-                            {/* Peace of Mind Callout */}
-                            <div className="p-2.5 rounded-lg bg-emerald-500/[0.06] border border-emerald-500/20 flex items-start gap-2">
-                              <ShieldCheck size={14} className="text-emerald-400 shrink-0 mt-0.5" />
-                              <span className="text-[11px] text-slate-300 leading-snug">
-                                <strong className="text-white font-medium">Peace of Mind:</strong> {step.clientPeaceOfMind}
-                              </span>
-                            </div>
-
-                            {/* Agency Difference */}
-                            <div className="text-[11px] font-mono text-slate-400 italic">
-                              {step.agencyDifference}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
                     </motion.div>
                   </div>
                 ) : (
                   <div className="hidden md:block md:col-span-5" />
                 )}
 
-                {/* Central Waypoint Checkpoint Node (Liquid Metallic Capsule) */}
-                <div className="absolute left-1 md:relative md:left-0 md:col-span-2 flex items-center justify-center pointer-events-auto">
-                  <div
-                    className="relative group/node cursor-pointer"
-                    onClick={() => {
-                      toggleCardExpansion(step.id);
-                      const el = document.getElementById(`step-card-${step.id}`);
-                      el?.scrollIntoView({ behavior: "smooth", block: "center" });
-                    }}
-                  >
-                    {/* Active Optical Aura on Hover */}
-                    <div
-                      className={`absolute -inset-2.5 rounded-full transition-opacity duration-300 pointer-events-none ${
-                        isHovered ? "opacity-100" : "opacity-0"
-                      }`}
-                      style={{
-                        background: `radial-gradient(circle, rgba(226, 232, 240, 0.25) 0%, transparent 70%)`,
-                      }}
-                    />
-
-                    {/* Apple Pro Silver Titanium Node Capsule */}
-                    <div
-                      className={`w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-[#0d0e15] border flex items-center justify-center relative z-10 transition-all duration-300 ${
-                        isHovered
-                          ? "scale-110 border-slate-200 shadow-[0_4px_20px_rgba(0,0,0,0.8)]"
-                          : "border-slate-400/40 shadow-[0_2px_12px_rgba(0,0,0,0.6)]"
-                      }`}
-                    >
-                      <StepIcon size={18} className="text-slate-200" />
-                    </div>
-
-                    {/* Number Indicator Beneath Node */}
-                    <div className="hidden md:block absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-mono font-bold text-slate-400 tracking-widest uppercase">
-                      {step.stepNum}
-                    </div>
-                  </div>
-                </div>
+                {/* Empty Center Spine (Beam flows naturally through here without bulky center icons) */}
+                <div className="hidden md:block md:col-span-2" />
 
                 {/* Right Column Card (Steps 02 & 04) */}
                 {!isLeft ? (
-                  <div className="col-span-1 pl-12 md:pl-0 md:col-span-5 text-left">
+                  <div className="col-span-1 pl-10 md:pl-0 md:col-span-5 text-left">
                     <motion.div
-                      layout
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "-60px" }}
                       transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
-                      onClick={() => toggleCardExpansion(step.id)}
+                      onClick={() => openStepModal(step)}
                       className={`group/card relative p-5 sm:p-6 md:p-7 rounded-[1.8rem] bg-gradient-to-b from-[#13151f]/95 via-[#0e1017]/95 to-[#090a10]/95 backdrop-blur-2xl border transition-all duration-300 shadow-[0_16px_40px_rgba(0,0,0,0.65)] cursor-pointer select-none ${
                         isHovered
-                          ? "border-slate-300/40 -translate-y-0.5 shadow-[0_22px_55px_rgba(0,0,0,0.85)]"
-                          : "border-white/[0.14] hover:border-white/25"
+                          ? "border-slate-300/50 -translate-y-1 shadow-[0_24px_60px_rgba(0,0,0,0.85)]"
+                          : "border-white/[0.14] hover:border-white/30"
                       }`}
                     >
                       {/* Apple HIG Brushed Silver Specular Top Rim */}
-                      <div className="absolute top-0 inset-x-8 h-px bg-gradient-to-r from-transparent via-slate-200/40 to-transparent" />
+                      <div className="absolute top-0 inset-x-8 h-px bg-gradient-to-r from-transparent via-slate-200/50 to-transparent" />
 
-                      {/* Header Capsule: Silver Badge + Timeframe */}
-                      <div className="flex items-center gap-2 mb-3">
+                      {/* Header Capsule: Icon ON the card + Badge + Timeframe */}
+                      <div className="flex items-center gap-2 mb-3.5">
+                        {/* Icon embedded directly on card */}
+                        <div
+                          className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border border-white/10 bg-white/[0.05]"
+                          style={{ color: step.accent }}
+                        >
+                          <StepIcon size={14} />
+                        </div>
                         <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
                           {step.category}
                         </span>
@@ -641,7 +510,7 @@ export const ClientJourney: React.FC = () => {
                         </span>
                       </div>
 
-                      {/* Title */}
+                      {/* Title & Timeframe */}
                       <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight mb-1 font-sans flex items-center gap-2">
                         <span>{step.stepNum}. {step.name}</span>
                         <span className="text-xs font-mono font-normal text-slate-400 bg-white/[0.04] px-2 py-0.5 rounded-md border border-white/[0.08]">
@@ -649,77 +518,23 @@ export const ClientJourney: React.FC = () => {
                         </span>
                       </h3>
 
-                      {/* Sharp, Punchy Main One-Liner (Not content-heavy!) */}
+                      {/* Sharp, Punchy Main One-Liner */}
                       <p className="text-white font-medium text-sm sm:text-base leading-snug mb-1.5 mt-2">
                         {step.headline}
                       </p>
 
                       {/* Relatable, Easy-To-Understand One-Liner Subtext */}
-                      <p className="text-slate-300/70 text-xs sm:text-sm leading-relaxed mb-3">
+                      <p className="text-slate-300/70 text-xs sm:text-sm leading-relaxed mb-4">
                         {step.oneLinerSub}
                       </p>
 
-                      {/* Sleek Action Affordance (Click to view full details) */}
+                      {/* Action Pill: Triggers Pop-Up Flippable Card */}
                       <div className="flex items-center pt-1">
-                        <button
-                          type="button"
-                          onClick={(e) => toggleCardExpansion(step.id, e)}
-                          className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-300 hover:text-white px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 transition-colors"
-                        >
-                          <span>{isExpanded ? "Hide Details" : "View Details & Scope"}</span>
-                          {isExpanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
-                        </button>
+                        <span className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-200 group-hover/card:text-white px-3 py-1.5 rounded-full bg-white/[0.06] group-hover/card:bg-white/[0.12] border border-white/15 transition-all">
+                          <span>Inspect &amp; Flip Details</span>
+                          <ArrowUpRight size={13} className="text-slate-400 group-hover/card:text-white group-hover/card:translate-x-0.5 transition-transform" />
+                        </span>
                       </div>
-
-                      {/* EXPANDABLE DEEP CONTENT (Only shown when user clicks card) */}
-                      <AnimatePresence>
-                        {isExpanded && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: "auto" }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
-                            className="overflow-hidden pt-4 mt-3 border-t border-white/[0.08] text-left space-y-3.5"
-                          >
-                            <p className="text-slate-300 text-xs leading-relaxed">
-                              {step.description}
-                            </p>
-
-                            {/* Deliverables Widget Box */}
-                            <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] space-y-2">
-                              <div className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
-                                Key Deliverables
-                              </div>
-                              {step.deliverables.map((item, dIdx) => {
-                                const ItemIcon = item.icon;
-                                return (
-                                  <div key={dIdx} className="flex items-center gap-2 text-xs text-slate-200">
-                                    <div
-                                      className="w-5 h-5 rounded flex items-center justify-center shrink-0 bg-white/[0.08] text-slate-200"
-                                    >
-                                      <ItemIcon size={12} />
-                                    </div>
-                                    <span className="font-normal text-slate-300">{item.label}</span>
-                                  </div>
-                                );
-                              })}
-                            </div>
-
-                            {/* Peace of Mind Callout */}
-                            <div className="p-2.5 rounded-lg bg-emerald-500/[0.06] border border-emerald-500/20 flex items-start gap-2">
-                              <ShieldCheck size={14} className="text-emerald-400 shrink-0 mt-0.5" />
-                              <span className="text-[11px] text-slate-300 leading-snug">
-                                <strong className="text-white font-medium">Peace of Mind:</strong> {step.clientPeaceOfMind}
-                              </span>
-                            </div>
-
-                            {/* Agency Difference */}
-                            <div className="text-[11px] font-mono text-slate-400 italic">
-                              {step.agencyDifference}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
                     </motion.div>
                   </div>
                 ) : (
@@ -790,6 +605,212 @@ export const ClientJourney: React.FC = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* 5. POP-UP FLIPPABLE CARD MODAL (Apple Pro Silver 3D Flip Card) */}
+      <AnimatePresence>
+        {selectedModalStep && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+            {/* Backdrop Blur */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closeStepModal}
+              className="absolute inset-0 bg-black/80 backdrop-blur-2xl"
+            />
+
+            {/* Modal Stage: 3D Flip Card Container */}
+            <div className="relative z-10 w-full max-w-xl [perspective:1400px]">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  y: 0,
+                  rotateY: isCardFlipped ? 180 : 0,
+                }}
+                exit={{ opacity: 0, scale: 0.95, y: 15 }}
+                transition={{
+                  rotateY: { duration: 0.65, ease: [0.23, 1, 0.32, 1] },
+                  default: { duration: 0.35, ease: [0.23, 1, 0.32, 1] },
+                }}
+                className="w-full relative [transform-style:preserve-3d]"
+              >
+                {/* ----------------- FRONT OF CARD: Overview & Deliverables ----------------- */}
+                <div className="w-full rounded-[2.2rem] border border-slate-300/30 bg-gradient-to-b from-[#151724]/98 via-[#0e1018]/98 to-[#090a10]/98 p-6 sm:p-8 text-left shadow-[0_30px_90px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.2)] [backface-visibility:hidden] relative overflow-hidden">
+                  {/* Top Brushed Silver Specular Reflection */}
+                  <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-200/60 to-transparent" />
+
+                  {/* Header Row */}
+                  <div className="flex items-center justify-between gap-3 mb-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
+                        {selectedModalStep.category}
+                      </span>
+                      <span className="w-1 h-1 rounded-full bg-slate-500" />
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono tracking-wider uppercase font-semibold bg-slate-800/90 text-slate-200 border border-slate-600/40">
+                        {selectedModalStep.badge}
+                      </span>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={closeStepModal}
+                      className="w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.15] border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-colors cursor-pointer"
+                    >
+                      <X size={15} />
+                    </button>
+                  </div>
+
+                  {/* Title & Timeframe */}
+                  <div className="flex items-center gap-3 mb-2">
+                    <div
+                      className="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center shrink-0"
+                      style={{ color: selectedModalStep.accent }}
+                    >
+                      {React.createElement(selectedModalStep.icon, { size: 20 })}
+                    </div>
+                    <div>
+                      <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight font-sans">
+                        {selectedModalStep.stepNum}. {selectedModalStep.name}
+                      </h3>
+                      <div className="flex items-center gap-1.5 text-xs font-mono text-slate-400">
+                        <Clock size={11} className="text-sky-400" />
+                        <span>{selectedModalStep.timeframe}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Headline & Description */}
+                  <p className="text-white font-medium text-sm sm:text-base leading-snug mt-3 mb-2">
+                    {selectedModalStep.headline}
+                  </p>
+                  <p className="text-slate-300/80 text-xs sm:text-sm leading-relaxed mb-5">
+                    {selectedModalStep.description}
+                  </p>
+
+                  {/* Key Deliverables Section */}
+                  <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] space-y-2.5 mb-5">
+                    <div className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
+                      Core Deliverables
+                    </div>
+                    {selectedModalStep.deliverables.map((item, dIdx) => {
+                      const ItemIcon = item.icon;
+                      return (
+                        <div key={dIdx} className="flex items-center gap-2.5 text-xs text-slate-200">
+                          <div className="w-5 h-5 rounded-md flex items-center justify-center shrink-0 bg-white/[0.08] text-slate-200">
+                            <ItemIcon size={12} />
+                          </div>
+                          <span className="font-normal text-slate-300">{item.label}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Bottom Interactive Flip Action Bar */}
+                  <div className="flex items-center justify-between pt-2 border-t border-white/[0.08]">
+                    <div className="text-[11px] font-mono text-slate-400 flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                      <span>Card 1 of 2 (Overview)</span>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setIsCardFlipped(true)}
+                      className="px-4 py-2 rounded-full bg-white/[0.08] hover:bg-white/[0.16] border border-white/20 text-white text-xs font-medium flex items-center gap-2 transition-all hover:scale-[1.02] cursor-pointer"
+                    >
+                      <span>Flip for Safeguards &amp; Architecture</span>
+                      <RotateCw size={13} className="text-slate-300" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* ----------------- BACK OF CARD: Architecture, Comparison & Peace of Mind ----------------- */}
+                <div className="w-full absolute inset-0 rounded-[2.2rem] border border-slate-300/30 bg-gradient-to-b from-[#151724]/98 via-[#0e1018]/98 to-[#090a10]/98 p-6 sm:p-8 text-left shadow-[0_30px_90px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.2)] [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col justify-between overflow-hidden">
+                  {/* Top Brushed Silver Specular Reflection */}
+                  <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-200/60 to-transparent" />
+
+                  <div>
+                    {/* Header Row */}
+                    <div className="flex items-center justify-between gap-3 mb-4">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono tracking-wider uppercase font-semibold bg-slate-800/90 text-slate-200 border border-slate-600/40">
+                          {selectedModalStep.stepNum} // Safeguards &amp; Specs
+                        </span>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={closeStepModal}
+                        className="w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.15] border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-colors cursor-pointer"
+                      >
+                        <X size={15} />
+                      </button>
+                    </div>
+
+                    <h4 className="text-lg sm:text-xl font-bold text-white tracking-tight mb-3 font-sans">
+                      Architecture &amp; Client Guarantee
+                    </h4>
+
+                    {/* Peace of Mind Policy */}
+                    <div className="p-3.5 rounded-xl bg-emerald-500/[0.06] border border-emerald-500/25 flex items-start gap-2.5 mb-3.5">
+                      <ShieldCheck size={16} className="text-emerald-400 shrink-0 mt-0.5" />
+                      <div>
+                        <div className="text-xs font-semibold text-emerald-300 mb-0.5">
+                          Guaranteed Peace of Mind
+                        </div>
+                        <p className="text-[12px] text-slate-300 leading-relaxed">
+                          {selectedModalStep.clientPeaceOfMind}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Agency Difference Contrast */}
+                    <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] mb-3.5">
+                      <div className="text-[10px] font-mono uppercase tracking-widest text-rose-400/90 mb-1">
+                        The Agency Difference
+                      </div>
+                      <p className="text-xs text-slate-300 font-mono">
+                        {selectedModalStep.agencyDifference}
+                      </p>
+                    </div>
+
+                    {/* Technical Highlights Protocol */}
+                    <div className="space-y-1.5">
+                      <div className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
+                        Technical Safeguards
+                      </div>
+                      {selectedModalStep.techHighlights.map((highlight, hIdx) => (
+                        <div key={hIdx} className="flex items-center gap-2 text-xs text-slate-300">
+                          <Check size={12} className="text-sky-400 shrink-0" />
+                          <span>{highlight}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Bottom Interactive Flip Action Bar */}
+                  <div className="flex items-center justify-between pt-3 mt-4 border-t border-white/[0.08]">
+                    <div className="text-[11px] font-mono text-slate-400 flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                      <span>Card 2 of 2 (Safeguards)</span>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setIsCardFlipped(false)}
+                      className="px-4 py-2 rounded-full bg-white/[0.08] hover:bg-white/[0.16] border border-white/20 text-white text-xs font-medium flex items-center gap-2 transition-all hover:scale-[1.02] cursor-pointer"
+                    >
+                      <RotateCw size={13} className="text-slate-300" />
+                      <span>Flip Back to Overview</span>
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
