@@ -267,7 +267,7 @@ const SmoothMarquee = ({
     
     // Slow down smoothly when hovered, rather than pausing abruptly.
     if (hover) {
-      moveBy *= 0.15; // Reduces speed by 85%
+      moveBy *= 0.08; // Reduces speed down to 8% of original
     }
     
     let newX = x.get() + moveBy;
@@ -1366,7 +1366,7 @@ export const Home = ({
       {/* Dual Opposite Infinite Looping Marquees */}
       <div className="py-10 md:py-14 overflow-hidden relative border-t border-white/10 select-none bg-[#07070d]/80 backdrop-blur-xl flex flex-col gap-4 sm:gap-6">
         {/* Track 1: Scrolling Right to Left */}
-        <SmoothMarquee direction={-1} baseSpeed={0.03}>
+        <SmoothMarquee direction={-1} baseSpeed={0.018}>
           {[...Array(4)].map((_, i) => (
             <div key={`track1-${i}`} className="flex items-center gap-6 md:gap-10 pr-6 md:pr-10">
               <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-white">
@@ -1388,7 +1388,7 @@ export const Home = ({
         </SmoothMarquee>
 
         {/* Track 2: Scrolling Left to Right (Opposite Direction) */}
-        <SmoothMarquee direction={1} baseSpeed={0.03}>
+        <SmoothMarquee direction={1} baseSpeed={0.018}>
           {[...Array(4)].map((_, i) => (
             <div key={`track2-${i}`} className="flex items-center gap-6 md:gap-10 pr-6 md:pr-10">
               <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[900] tracking-tight uppercase text-white/80">
