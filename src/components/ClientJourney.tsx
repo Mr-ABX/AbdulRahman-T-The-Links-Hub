@@ -286,9 +286,18 @@ export const ClientJourney: React.FC = () => {
                 <stop offset="100%" stopColor="#ffffff" stopOpacity="1" />
               </linearGradient>
             </defs>
-            {/* Dynamic animated liquid filling path (No background guide path - 100% invisible when unfilled) */}
+            {/* Base guide track line connecting all card nodes and CTA card */}
+            <path
+              d="M 500 0 L 500 975"
+              fill="none"
+              stroke="rgba(255, 255, 255, 0.14)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              vectorEffect="non-scaling-stroke"
+            />
+            {/* Dynamic animated silver liquid filling path */}
             <motion.path
-              d="M 500 0 L 500 960"
+              d="M 500 0 L 500 975"
               fill="none"
               stroke="url(#silverLiquidDesktop)"
               strokeWidth="4"
@@ -318,9 +327,18 @@ export const ClientJourney: React.FC = () => {
                 <stop offset="100%" stopColor="#ffffff" stopOpacity="1" />
               </linearGradient>
             </defs>
-            {/* Dynamic animated liquid filling path (No background guide path - 100% invisible when unfilled) */}
+            {/* Base guide track line */}
+            <path
+              d="M 50 0 L 50 975"
+              fill="none"
+              stroke="rgba(255, 255, 255, 0.14)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              vectorEffect="non-scaling-stroke"
+            />
+            {/* Dynamic animated silver liquid filling path */}
             <motion.path
-              d="M 50 0 L 50 960"
+              d="M 50 0 L 50 975"
               fill="none"
               stroke="url(#silverLiquidMobile)"
               strokeWidth="4"
