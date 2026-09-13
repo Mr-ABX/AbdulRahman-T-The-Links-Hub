@@ -10,16 +10,15 @@ import {
   Workflow,
   Sparkles,
   ShieldCheck,
-  Zap,
 } from "lucide-react";
 
-// 3D Visual Artworks
-import shapeGreenFluid from "../../assets/images/shape_green_fluid_1789329793443.jpg";
-import shapeOrangeRibbed from "../../assets/images/shape_orange_ribbed_1789327939534.jpg";
-import shapeYellowCrystal from "../../assets/images/shape_yellow_crystal_1789327951530.jpg";
-import shapeMagentaLoop from "../../assets/images/shape_magenta_loop_1789327963097.jpg";
-import shapeBlueCloud from "../../assets/images/shape_blue_cloud_1789327973174.jpg";
-import shapePurpleBlob from "../../assets/images/shape_purple_blob_1789329803990.jpg";
+// True Transparent PNG 3D Shapes
+import shapeGreenFluid from "../../assets/images/shape_green_fluid_1789329793443.png";
+import shapeOrangeRibbed from "../../assets/images/shape_orange_ribbed_1789327939534.png";
+import shapeYellowCrystal from "../../assets/images/shape_yellow_crystal_1789327951530.png";
+import shapeMagentaLoop from "../../assets/images/shape_magenta_loop_1789327963097.png";
+import shapePurpleBlob from "../../assets/images/shape_purple_blob_1789329803990.png";
+import shapeBlueCloud from "../../assets/images/shape_blue_cloud_1789327973174.png";
 
 interface ServiceItem {
   id: string;
@@ -32,7 +31,6 @@ interface ServiceItem {
   shortDesc: string;
   fullDesc: string;
   accent: string;
-  glowGradient: string;
   subServices: string[];
   idealFor: string;
 }
@@ -40,16 +38,15 @@ interface ServiceItem {
 const SERVICES_DATA: ServiceItem[] = [
   {
     id: "web-saas-design",
-    tag: "WEB & SAAS DESIGN",
+    tag: "WEB DESIGN",
     dotColor: "#22c55e",
-    title: "WEB & SAAS INTERFACES",
+    title: "Web & SaaS Interfaces",
     startingPrice: "$2,800",
     turnaround: "1 — 2 Weeks",
     image: shapeGreenFluid,
-    shortDesc: "Custom websites and SaaS interfaces built with Apple-grade fluid typography and responsive micro-interactions.",
+    shortDesc: "Custom web applications and interactive SaaS platforms built with Apple HIG fluid UX and clean architecture.",
     fullDesc: "We design and engineer high-performance web products, SaaS platforms, and interactive applications with React 19, Next.js, and fluid physics.",
     accent: "#22c55e",
-    glowGradient: "from-emerald-500/15 via-emerald-500/5 to-transparent",
     subServices: [
       "Custom React 19 / Next.js architecture with TypeScript",
       "Tailwind CSS styling with responsive micro-interactions",
@@ -63,14 +60,13 @@ const SERVICES_DATA: ServiceItem[] = [
     id: "ai-automation",
     tag: "AI AUTOMATION",
     dotColor: "#f97316",
-    title: "AUTONOMOUS AGENTS",
+    title: "Autonomous AI Agents",
     startingPrice: "$2,400",
     turnaround: "1 — 2 Weeks",
     image: shapeOrangeRibbed,
     shortDesc: "Custom autonomous agent pipelines and n8n workflows that handle heavy operations without manual effort.",
     fullDesc: "Eliminate repetitive operations with tailored multi-agent pipelines, automated CRM syncing, and reliable LLM-powered backend processing loops.",
     accent: "#f97316",
-    glowGradient: "from-orange-500/15 via-orange-500/5 to-transparent",
     subServices: [
       "Custom n8n / Make.com enterprise workflow architecture",
       "Autonomous AI Agent swarms with memory & tool calling",
@@ -84,14 +80,13 @@ const SERVICES_DATA: ServiceItem[] = [
     id: "ai-strategy",
     tag: "AI STRATEGY",
     dotColor: "#eab308",
-    title: "ARCHITECTURE & ROADMAP",
+    title: "Architecture & Roadmap",
     startingPrice: "$1,600",
     turnaround: "3 — 7 Days",
     image: shapeYellowCrystal,
     shortDesc: "Cohesive AI blueprints, cost-optimized token economics, and de-risked engineering roadmaps.",
     fullDesc: "Clear guidance on model architectures, vector database selection, cost estimation, and private data security before writing production code.",
     accent: "#eab308",
-    glowGradient: "from-amber-500/15 via-amber-500/5 to-transparent",
     subServices: [
       "System architecture review & model feasibility analysis",
       "Cost-optimized token economics & LLM latency budgeting",
@@ -105,14 +100,13 @@ const SERVICES_DATA: ServiceItem[] = [
     id: "growth-engines",
     tag: "GROWTH ENGINES",
     dotColor: "#ec4899",
-    title: "GROWTH & ACQUISITION",
+    title: "Growth & Acquisition",
     startingPrice: "$2,200",
     turnaround: "1 — 2 Weeks",
     image: shapeMagentaLoop,
     shortDesc: "High-converting acquisition funnels with automated lead enrichment, scoring, and real-time alerts.",
     fullDesc: "We build data-driven acquisition engines combining frictionless interactive UX with instant lead qualification and CRM enrichment workflows.",
     accent: "#ec4899",
-    glowGradient: "from-pink-500/15 via-pink-500/5 to-transparent",
     subServices: [
       "High-converting landing pages with interactive cost estimators",
       "Automated lead enrichment (Clearbit / Apollo / LinkedIn data)",
@@ -124,16 +118,15 @@ const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: "backend-systems",
-    tag: "BACKEND SYSTEMS",
+    tag: "BACKEND APIS",
     dotColor: "#a855f7",
-    title: "HIGH-THROUGHPUT APIS",
+    title: "High-Throughput APIs",
     startingPrice: "$3,400",
     turnaround: "2 — 3 Weeks",
     image: shapePurpleBlob,
     shortDesc: "Zero-downtime APIs, background queues, and database optimizations engineered for scale.",
     fullDesc: "Robust server architectures built to handle heavy concurrent loads, webhooks, asynchronous background job queues, and bulletproof data caching.",
     accent: "#a855f7",
-    glowGradient: "from-purple-500/15 via-purple-500/5 to-transparent",
     subServices: [
       "REST & GraphQL API design with automated OpenAPI documentation",
       "Background worker queues (BullMQ / Redis / Cloud Tasks)",
@@ -147,14 +140,13 @@ const SERVICES_DATA: ServiceItem[] = [
     id: "a-la-carte",
     tag: "À LA CARTE",
     dotColor: "#3b82f6",
-    title: "BESPOKE SPRINTS",
+    title: "Bespoke Sprints",
     startingPrice: "$1,200",
     turnaround: "3 — 5 Days",
     image: shapeBlueCloud,
     shortDesc: "Targeted engineering sprints for specialized technical needs, security audits, and quick refactors.",
     fullDesc: "Flexible, high-velocity engineering sprints for specialized technical needs, performance refactors, custom integrations, or architecture audits.",
     accent: "#3b82f6",
-    glowGradient: "from-blue-500/15 via-blue-500/5 to-transparent",
     subServices: [
       "Custom REST / GraphQL API engineering and webhook ingestion",
       "Performance optimization & Core Web Vitals remediation",
@@ -184,9 +176,9 @@ export const ServicesPage: React.FC = () => {
       
       {/* Background Dot Matrix */}
       <div 
-        className="absolute inset-0 pointer-events-none -z-10 opacity-35"
+        className="absolute inset-0 pointer-events-none -z-10 opacity-30"
         style={{
-          backgroundImage: "radial-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px)",
           backgroundSize: "24px 24px"
         }}
       />
@@ -249,7 +241,7 @@ export const ServicesPage: React.FC = () => {
           </div>
         </div>
 
-        {/* 3. The Balanced 2-Row Grid with Liquid Hover Glow & Vertical/Horizontal Dividers */}
+        {/* 3. The 2-Row Vertical Rectangular Grid with Left-Aligned Transparent Shapes & Full Card Liquid Hover */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y md:divide-y-0 bg-black relative">
           {SERVICES_DATA.map((service, index) => {
             const isTopRow = index < 3;
@@ -259,31 +251,33 @@ export const ServicesPage: React.FC = () => {
               <motion.div
                 key={service.id}
                 onClick={() => setSelectedService(service)}
-                className={`group relative flex flex-col justify-between p-6 sm:p-7 md:p-8 hover:bg-white/[0.02] transition-all duration-500 cursor-pointer select-none overflow-hidden ${
+                className={`group relative flex flex-col justify-between p-6 sm:p-7 md:p-8 hover:bg-white/[0.02] transition-all duration-500 cursor-pointer select-none overflow-hidden min-h-[380px] sm:min-h-[400px] ${
                   isTopRow ? "lg:border-b lg:border-white/20" : ""
                 } ${isNotLastInRow ? "lg:border-r lg:border-white/20" : ""}`}
               >
                 {/* 
-                  UNIQUE COLOR LIQUID HOVER EFFECT:
-                  Smooth radial/conic gradient fluid aura expanding across the full card on hover
+                  FULL CARD LIQUID GLOW HOVER:
+                  Deep, vibrant, flowing liquid aura expanding across the ENTIRE card surface on hover
                 */}
                 <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none -z-0"
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-700 pointer-events-none -z-0"
                   style={{
-                    background: `radial-gradient(circle at 50% 35%, ${service.accent}22 0%, ${service.accent}08 45%, transparent 75%)`,
+                    background: `radial-gradient(ellipse 90% 70% at 20% 30%, ${service.accent}33 0%, ${service.accent}15 45%, ${service.accent}05 75%, transparent 100%)`,
                   }}
                 />
 
-                {/* Subtle Top Specular Rim */}
+                {/* Top Specular Accent Border */}
                 <div 
-                  className="absolute top-0 inset-x-8 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  className="absolute top-0 inset-x-4 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                   style={{
-                    background: `linear-gradient(90deg, transparent, ${service.accent}88, transparent)`
+                    background: `linear-gradient(90deg, transparent, ${service.accent}, transparent)`
                   }}
                 />
 
-                <div className="relative z-10">
-                  {/* Top Header Tag & Micro Indicator */}
+                {/* Top Half: Tag + Left-Aligned Transparent 3D Shape + Title */}
+                <div className="relative z-10 text-left">
+                  
+                  {/* Category Tag Header */}
                   <div className="flex items-center justify-between gap-2 mb-4">
                     <div className="flex items-center gap-2 font-mono text-[11px] sm:text-xs tracking-wider uppercase font-semibold text-white/90">
                       <span
@@ -293,63 +287,62 @@ export const ServicesPage: React.FC = () => {
                       <span>{service.tag}</span>
                     </div>
                     
-                    <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-white/[0.06] border border-white/10 text-white/80 group-hover:border-white/30 transition-colors">
+                    <span className="font-mono text-[10px] px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-white/70 group-hover:border-white/30 transition-colors">
                       {service.turnaround}
                     </span>
                   </div>
 
-                  {/* 3D Shape Asset - Compact 88px dimension with Transparent Blending (mix-blend-lighten) */}
-                  <div className="relative w-full h-28 sm:h-32 flex items-center justify-center my-2">
+                  {/* Left-Aligned Transparent PNG 3D Shape (Zero Background Box) */}
+                  <div className="relative w-full flex items-center justify-start my-3 sm:my-4">
                     {/* Ambient Glow behind shape */}
                     <div 
-                      className="absolute w-20 h-20 rounded-full blur-xl opacity-0 group-hover:opacity-60 transition-opacity duration-500"
+                      className="absolute left-2 w-16 h-16 rounded-full blur-xl opacity-0 group-hover:opacity-75 transition-opacity duration-500"
                       style={{ backgroundColor: service.accent }}
                     />
                     
                     <motion.div
-                      className="relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center"
-                      whileHover={{ scale: 1.1, y: -4, rotate: 2 }}
+                      className="relative w-20 h-20 sm:w-22 sm:h-22 flex items-center justify-center shrink-0"
+                      whileHover={{ scale: 1.12, y: -4, rotate: 3 }}
                       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                     >
                       <img
                         src={service.image}
                         alt={service.title}
-                        className="w-full h-full object-contain mix-blend-lighten filter drop-shadow-[0_8px_20px_rgba(0,0,0,0.85)]"
+                        className="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.9)]"
                         loading="lazy"
                       />
                     </motion.div>
                   </div>
 
-                  {/* Title & Short Description */}
-                  <div className="mt-2">
-                    <div className="flex items-center justify-between gap-1 mb-1.5">
-                      <h3 className="text-base sm:text-lg font-bold tracking-tight text-white uppercase group-hover:text-white transition-colors">
+                  {/* Title & Concise Summary */}
+                  <div className="mt-1">
+                    <div className="flex items-center justify-between gap-1 mb-2">
+                      <h3 className="text-lg font-bold tracking-tight text-white group-hover:text-white transition-colors">
                         {service.title}
                       </h3>
-                      <ArrowUpRight size={15} className="text-white/40 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
+                      <ArrowUpRight size={16} className="text-white/40 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
                     </div>
                     
-                    <p className="text-white/60 text-xs leading-relaxed font-normal line-clamp-2">
+                    <p className="text-white/60 text-xs sm:text-sm leading-relaxed font-normal line-clamp-3">
                       {service.shortDesc}
                     </p>
                   </div>
                 </div>
 
-                {/* Bottom Prominent Pricing & Inspect Trigger */}
-                <div className="mt-5 pt-3.5 border-t border-white/10 flex items-center justify-between relative z-10">
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="text-[10px] font-mono uppercase text-white/50">Starts at</span>
+                {/* Bottom Prominent Fixed-Scope Pricing & CTA Action */}
+                <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between relative z-10">
+                  <div>
+                    <span className="block text-[10px] font-mono uppercase text-white/40 mb-0.5">Starting Investment</span>
                     <span 
-                      className="text-base font-bold font-mono tracking-tight"
-                      style={{ color: "#ffffff" }}
+                      className="text-lg font-bold font-mono tracking-tight text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] transition-all"
                     >
                       {service.startingPrice}
                     </span>
                   </div>
 
-                  <span className="inline-flex items-center gap-1 text-[11px] font-mono text-white/60 group-hover:text-white px-2.5 py-1 rounded-full bg-white/[0.04] group-hover:bg-white/[0.12] border border-white/10 transition-all">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-mono text-white/70 group-hover:text-white px-3 py-1.5 rounded-xl bg-white/[0.05] group-hover:bg-white/[0.14] border border-white/10 transition-all shadow-sm">
                     <span>Inspect</span>
-                    <span className="text-white/80">→</span>
+                    <span className="text-white">→</span>
                   </span>
                 </div>
               </motion.div>
@@ -429,13 +422,13 @@ export const ServicesPage: React.FC = () => {
                 <X size={18} />
               </button>
 
-              {/* Modal Header */}
+              {/* Modal Header with Left-Aligned Transparent Icon */}
               <div className="flex items-center gap-3.5 mb-4 pr-8">
-                <div className="w-12 h-12 rounded-xl bg-black flex items-center justify-center border border-white/10 shrink-0 overflow-hidden">
+                <div className="w-12 h-12 flex items-center justify-center shrink-0">
                   <img
                     src={selectedService.image}
                     alt={selectedService.title}
-                    className="w-full h-full object-contain mix-blend-lighten"
+                    className="w-full h-full object-contain filter drop-shadow-md"
                   />
                 </div>
                 <div>
@@ -475,7 +468,7 @@ export const ServicesPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Core Deliverables Checklist (Simplified & High-Signal) */}
+              {/* Core Deliverables Checklist */}
               <div className="mb-5">
                 <div className="text-[11px] font-mono uppercase tracking-wider text-white/50 mb-2.5 flex items-center gap-1.5">
                   <Workflow size={12} className="text-white/70" />
