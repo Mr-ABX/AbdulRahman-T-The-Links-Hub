@@ -840,259 +840,170 @@ export const Home = ({
           </p>
         </div>
 
-        {/* 2-Row Vertical Rectangular Grid with Left-Aligned Transparent PNG Shapes & Full-Card Liquid Hover Effect */}
-        <div className="border border-white/20 rounded-3xl bg-black/90 backdrop-blur-2xl overflow-hidden shadow-[0_25px_70px_rgba(0,0,0,0.9)] divide-y divide-white/20 relative z-10">
-          
-          {/* Top Row: 3 Services */}
-          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/20 bg-black">
-            {[
-              {
-                id: "home-serv-web",
-                tag: "WEB DESIGN",
-                dotColor: "#22c55e",
-                title: "Web & SaaS Interfaces",
-                startingPrice: "$2,800",
-                turnaround: "1 — 2 Weeks",
-                image: shapeGreenFluid,
-                desc: "Custom web applications and interactive SaaS platforms built with Apple HIG fluid UX and clean architecture.",
-                accent: "#22c55e",
-              },
-              {
-                id: "home-serv-ai",
-                tag: "AI AUTOMATION",
-                dotColor: "#f97316",
-                title: "Autonomous AI Agents",
-                startingPrice: "$2,400",
-                turnaround: "1 — 2 Weeks",
-                image: shapeOrangeRibbed,
-                desc: "Custom autonomous agent pipelines and n8n workflows that handle heavy operations without manual effort.",
-                accent: "#f97316",
-              },
-              {
-                id: "home-serv-strategy",
-                tag: "AI STRATEGY",
-                dotColor: "#eab308",
-                title: "Architecture & Roadmap",
-                startingPrice: "$1,600",
-                turnaround: "3 — 7 Days",
-                image: shapeYellowCrystal,
-                desc: "Cohesive AI blueprints, cost-optimized token economics, and de-risked engineering roadmaps.",
-                accent: "#eab308",
-              },
-            ].map((s, i) => (
-              <motion.div
-                key={s.id}
-                onClick={() => setActiveTab("Services")}
-                className="group relative flex flex-col justify-between p-6 sm:p-7 md:p-8 hover:bg-white/[0.02] transition-all duration-500 cursor-pointer select-none overflow-hidden min-h-[370px]"
-              >
-                {/* Full-Card Liquid Glow Aura on Hover */}
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-700 pointer-events-none"
-                  style={{
-                    background: `radial-gradient(ellipse 90% 70% at 20% 30%, ${s.accent}30 0%, ${s.accent}14 45%, ${s.accent}04 75%, transparent 100%)`,
-                  }}
-                />
+        {/* Vertical List Layout (1 Column x 6 Rows) with Left-Aligned Transparent PNG Shapes, Fluid Liquid Hover Glow & Creative CTAs */}
+        <div className="border border-white/20 rounded-3xl bg-black/95 backdrop-blur-2xl overflow-hidden shadow-[0_25px_80px_rgba(0,0,0,0.95)] divide-y divide-white/15 relative z-10">
+          {[
+            {
+              id: "home-serv-web",
+              tag: "WEB DESIGN",
+              dotColor: "#22c55e",
+              title: "Web & SaaS Interfaces",
+              startingPrice: "$2,800",
+              ctaText: "Launch Web Build",
+              image: shapeGreenFluid,
+              desc: "Custom web applications and interactive SaaS platforms engineered with Apple HIG fluid UX, responsive physics, and clean component architecture.",
+              accent: "#22c55e",
+            },
+            {
+              id: "home-serv-ai",
+              tag: "AI AUTOMATION",
+              dotColor: "#f97316",
+              title: "Autonomous AI Agents",
+              startingPrice: "$2,400",
+              ctaText: "Deploy Agents",
+              image: shapeOrangeRibbed,
+              desc: "Custom autonomous agent pipelines and n8n workflows that handle heavy operations, multi-tool actions, and CRM synchronizations without manual effort.",
+              accent: "#f97316",
+            },
+            {
+              id: "home-serv-strategy",
+              tag: "AI STRATEGY",
+              dotColor: "#eab308",
+              title: "Architecture & Roadmap",
+              startingPrice: "$1,600",
+              ctaText: "Get AI Roadmap",
+              image: shapeYellowCrystal,
+              desc: "Cohesive AI blueprints, cost-optimized token economics, private RAG security frameworks, and de-risked engineering specifications.",
+              accent: "#eab308",
+            },
+            {
+              id: "home-serv-growth",
+              tag: "GROWTH ENGINES",
+              dotColor: "#ec4899",
+              title: "Growth & Acquisition",
+              startingPrice: "$2,200",
+              ctaText: "Scale Pipeline",
+              image: shapeMagentaLoop,
+              desc: "High-converting acquisition funnels with automated lead enrichment, real-time qualification triggers, and instant notification bots.",
+              accent: "#ec4899",
+            },
+            {
+              id: "home-serv-backend",
+              tag: "BACKEND APIS",
+              dotColor: "#a855f7",
+              title: "High-Throughput APIs",
+              startingPrice: "$3,400",
+              ctaText: "Engineer Backend",
+              image: shapePurpleBlob,
+              desc: "Zero-downtime REST/GraphQL APIs, asynchronous background worker queues (BullMQ/Redis), and database optimizations engineered for high scale.",
+              accent: "#a855f7",
+            },
+            {
+              id: "home-serv-alacarte",
+              tag: "À LA CARTE",
+              dotColor: "#3b82f6",
+              title: "Bespoke Sprints",
+              startingPrice: "$1,200",
+              ctaText: "Book Fast Sprint",
+              image: shapeBlueCloud,
+              desc: "Targeted engineering sprints for specialized technical needs, security audits, database refactoring, payment gateways, and rapid performance remediation.",
+              accent: "#3b82f6",
+            },
+          ].map((s) => (
+            <motion.div
+              key={s.id}
+              onClick={() => setActiveTab("Services")}
+              className="group relative flex flex-col md:flex-row md:items-center justify-between p-6 sm:p-7 md:p-8 hover:bg-white/[0.02] transition-all duration-500 cursor-pointer select-none overflow-hidden gap-6"
+            >
+              {/* 
+                FULL-CARD LIQUID COLOR HOVER GLOW:
+                Each row radiates a unique smooth liquid color wash expanding dynamically across the entire card container
+              */}
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-700 pointer-events-none -z-0"
+                style={{
+                  background: `radial-gradient(ellipse 110% 90% at 20% 50%, ${s.accent}28 0%, ${s.accent}12 40%, ${s.accent}03 70%, transparent 100%)`,
+                }}
+              />
 
-                {/* Top Specular Accent Border */}
-                <div 
-                  className="absolute top-0 inset-x-4 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    background: `linear-gradient(90deg, transparent, ${s.accent}, transparent)`
-                  }}
-                />
+              {/* Top/Left Specular Accent Highlight Line */}
+              <div 
+                className="absolute top-0 inset-x-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                style={{
+                  background: `linear-gradient(90deg, transparent, ${s.accent}aa, transparent)`
+                }}
+              />
 
-                {/* Content Header & Left-Aligned Transparent 3D Shape */}
-                <div className="relative z-10 text-left">
-                  <div className="flex items-center justify-between gap-2 mb-4">
-                    <div className="flex items-center gap-2 font-mono text-[11px] sm:text-xs tracking-wider uppercase font-semibold text-white/90">
-                      <span
-                        className="w-2.5 h-2.5 rounded-[2px] shrink-0"
-                        style={{ backgroundColor: s.dotColor }}
-                      />
-                      <span>{s.tag}</span>
-                    </div>
-                    
-                    <span className="font-mono text-[10px] px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-white/70 group-hover:border-white/30 transition-colors">
-                      {s.turnaround}
-                    </span>
-                  </div>
-
-                  {/* Left-Aligned Transparent PNG 3D Icon */}
-                  <div className="relative w-full flex items-center justify-start my-3 sm:my-4">
-                    <div 
-                      className="absolute left-1 w-16 h-16 rounded-full blur-xl opacity-0 group-hover:opacity-75 transition-opacity duration-500"
-                      style={{ backgroundColor: s.accent }}
+              {/* Left & Middle Block: 3D Transparent Shape + Tag + Title + Description */}
+              <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-5 md:gap-7 flex-1">
+                
+                {/* Left-Aligned Transparent PNG 3D Shape */}
+                <div className="relative w-16 h-16 sm:w-20 sm:h-20 shrink-0 flex items-center justify-center">
+                  <div 
+                    className="absolute inset-0 rounded-full blur-xl opacity-0 group-hover:opacity-80 transition-opacity duration-500"
+                    style={{ backgroundColor: s.accent }}
+                  />
+                  <motion.div
+                    className="relative w-full h-full flex items-center justify-center"
+                    whileHover={{ scale: 1.15, y: -2, rotate: 3 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <img
+                      src={s.image}
+                      alt={s.title}
+                      className="w-full h-full object-contain filter drop-shadow-[0_8px_18px_rgba(0,0,0,0.95)]"
+                      loading="lazy"
                     />
-                    
-                    <motion.div
-                      className="relative w-20 h-20 sm:w-22 sm:h-22 flex items-center justify-center shrink-0"
-                      whileHover={{ scale: 1.12, y: -4, rotate: 3 }}
-                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                      <img
-                        src={s.image}
-                        alt={s.title}
-                        className="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.9)]"
-                        loading="lazy"
-                      />
-                    </motion.div>
-                  </div>
-
-                  <div className="mt-1">
-                    <div className="flex items-center justify-between gap-1 mb-2">
-                      <h3 className="text-lg font-bold tracking-tight text-white group-hover:text-white transition-colors">
-                        {s.title}
-                      </h3>
-                      <ArrowUpRight size={16} className="text-white/40 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
-                    </div>
-                    <p className="text-white/60 text-xs sm:text-sm leading-relaxed font-normal line-clamp-3">
-                      {s.desc}
-                    </p>
-                  </div>
+                  </motion.div>
                 </div>
 
-                {/* Bottom Pricing & Inspect Action */}
-                <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between relative z-10">
-                  <div>
-                    <span className="block text-[10px] font-mono uppercase text-white/40 mb-0.5">Starting Investment</span>
-                    <span className="text-lg font-bold font-mono tracking-tight text-white">
-                      {s.startingPrice}
-                    </span>
+                {/* Typography & Details */}
+                <div className="flex-1 text-left">
+                  {/* Tag & Dot */}
+                  <div className="flex items-center gap-2 font-mono text-[11px] sm:text-xs tracking-wider uppercase font-semibold text-white/90 mb-1.5">
+                    <span
+                      className="w-2.5 h-2.5 rounded-[2px] shrink-0"
+                      style={{ backgroundColor: s.dotColor }}
+                    />
+                    <span>{s.tag}</span>
                   </div>
-                  <span className="inline-flex items-center gap-1.5 text-xs font-mono text-white/70 group-hover:text-white px-3 py-1.5 rounded-xl bg-white/[0.05] group-hover:bg-white/[0.14] border border-white/10 transition-all shadow-sm">
-                    <span>Inspect</span>
-                    <span className="text-white">→</span>
+
+                  {/* Title */}
+                  <h3 className="text-lg sm:text-xl font-bold tracking-tight text-white group-hover:text-white mb-1.5 flex items-center gap-2">
+                    <span>{s.title}</span>
+                    <ArrowUpRight size={16} className="text-white/40 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
+                  </h3>
+
+                  {/* Concise Description */}
+                  <p className="text-white/60 text-xs sm:text-sm leading-relaxed font-normal max-w-2xl line-clamp-2 sm:line-clamp-none">
+                    {s.desc}
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Block: Starting Price + Creative Interactive CTA */}
+              <div className="relative z-10 flex items-center justify-between md:justify-end gap-6 md:gap-8 pt-4 md:pt-0 border-t md:border-t-0 border-white/10 shrink-0">
+                <div className="text-left md:text-right">
+                  <span className="block text-[10px] font-mono uppercase text-white/45 mb-0.5">Starting Investment</span>
+                  <span className="text-lg sm:text-xl font-bold font-mono tracking-tight text-white">
+                    {s.startingPrice}
                   </span>
                 </div>
-              </motion.div>
-            ))}
-          </div>
 
-          {/* Bottom Row: 3 Services */}
-          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/20 bg-black">
-            {[
-              {
-                id: "home-serv-growth",
-                tag: "GROWTH ENGINES",
-                dotColor: "#ec4899",
-                title: "Growth & Acquisition",
-                startingPrice: "$2,200",
-                turnaround: "1 — 2 Weeks",
-                image: shapeMagentaLoop,
-                desc: "High-converting acquisition funnels with automated lead enrichment, scoring, and real-time alerts.",
-                accent: "#ec4899",
-              },
-              {
-                id: "home-serv-backend",
-                tag: "BACKEND APIS",
-                dotColor: "#a855f7",
-                title: "High-Throughput APIs",
-                startingPrice: "$3,400",
-                turnaround: "2 — 3 Weeks",
-                image: shapePurpleBlob,
-                desc: "Zero-downtime APIs, background queues, and database optimizations engineered for scale.",
-                accent: "#a855f7",
-              },
-              {
-                id: "home-serv-alacarte",
-                tag: "À LA CARTE",
-                dotColor: "#3b82f6",
-                title: "Bespoke Sprints",
-                startingPrice: "$1,200",
-                turnaround: "3 — 5 Days",
-                image: shapeBlueCloud,
-                desc: "Targeted engineering sprints for specialized technical needs, security audits, and quick refactors.",
-                accent: "#3b82f6",
-              },
-            ].map((s, i) => (
-              <motion.div
-                key={s.id}
-                onClick={() => setActiveTab("Services")}
-                className="group relative flex flex-col justify-between p-6 sm:p-7 md:p-8 hover:bg-white/[0.02] transition-all duration-500 cursor-pointer select-none overflow-hidden min-h-[370px]"
-              >
-                {/* Full-Card Liquid Glow Aura on Hover */}
+                {/* Creative CTA Button with Subtle Fluid Glow & Border Transition */}
                 <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-700 pointer-events-none"
+                  className="px-4 py-2.5 rounded-xl font-mono text-xs font-semibold text-white/90 group-hover:text-white transition-all duration-300 flex items-center gap-2 shadow-sm border border-white/15 group-hover:border-transparent group-hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]"
                   style={{
-                    background: `radial-gradient(ellipse 90% 70% at 20% 30%, ${s.accent}30 0%, ${s.accent}14 45%, ${s.accent}04 75%, transparent 100%)`,
+                    backgroundColor: "rgba(255, 255, 255, 0.06)",
                   }}
-                />
-
-                {/* Top Specular Accent Border */}
-                <div 
-                  className="absolute top-0 inset-x-4 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    background: `linear-gradient(90deg, transparent, ${s.accent}, transparent)`
-                  }}
-                />
-
-                {/* Content Header & Left-Aligned Transparent 3D Shape */}
-                <div className="relative z-10 text-left">
-                  <div className="flex items-center justify-between gap-2 mb-4">
-                    <div className="flex items-center gap-2 font-mono text-[11px] sm:text-xs tracking-wider uppercase font-semibold text-white/90">
-                      <span
-                        className="w-2.5 h-2.5 rounded-[2px] shrink-0"
-                        style={{ backgroundColor: s.dotColor }}
-                      />
-                      <span>{s.tag}</span>
-                    </div>
-                    
-                    <span className="font-mono text-[10px] px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-white/70 group-hover:border-white/30 transition-colors">
-                      {s.turnaround}
-                    </span>
-                  </div>
-
-                  {/* Left-Aligned Transparent PNG 3D Icon */}
-                  <div className="relative w-full flex items-center justify-start my-3 sm:my-4">
-                    <div 
-                      className="absolute left-1 w-16 h-16 rounded-full blur-xl opacity-0 group-hover:opacity-75 transition-opacity duration-500"
-                      style={{ backgroundColor: s.accent }}
-                    />
-                    
-                    <motion.div
-                      className="relative w-20 h-20 sm:w-22 sm:h-22 flex items-center justify-center shrink-0"
-                      whileHover={{ scale: 1.12, y: -4, rotate: 3 }}
-                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                      <img
-                        src={s.image}
-                        alt={s.title}
-                        className="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.9)]"
-                        loading="lazy"
-                      />
-                    </motion.div>
-                  </div>
-
-                  <div className="mt-1">
-                    <div className="flex items-center justify-between gap-1 mb-2">
-                      <h3 className="text-lg font-bold tracking-tight text-white group-hover:text-white transition-colors">
-                        {s.title}
-                      </h3>
-                      <ArrowUpRight size={16} className="text-white/40 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
-                    </div>
-                    <p className="text-white/60 text-xs sm:text-sm leading-relaxed font-normal line-clamp-3">
-                      {s.desc}
-                    </p>
-                  </div>
+                >
+                  <span className="group-hover:tracking-wider transition-all duration-300">{s.ctaText}</span>
+                  <span className="text-sm transition-transform duration-300 group-hover:translate-x-1">→</span>
                 </div>
+              </div>
 
-                {/* Bottom Pricing & Inspect Action */}
-                <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between relative z-10">
-                  <div>
-                    <span className="block text-[10px] font-mono uppercase text-white/40 mb-0.5">Starting Investment</span>
-                    <span className="text-lg font-bold font-mono tracking-tight text-white">
-                      {s.startingPrice}
-                    </span>
-                  </div>
-                  <span className="inline-flex items-center gap-1.5 text-xs font-mono text-white/70 group-hover:text-white px-3 py-1.5 rounded-xl bg-white/[0.05] group-hover:bg-white/[0.14] border border-white/10 transition-all shadow-sm">
-                    <span>Inspect</span>
-                    <span className="text-white">→</span>
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
+            </motion.div>
+          ))}
         </div>
 
         <div className="mt-12 text-center">
