@@ -10,17 +10,18 @@ import {
   Workflow,
   Sparkles,
   ShieldCheck,
+  Zap,
 } from "lucide-react";
-import { cn } from "../../lib/utils";
 
 // 3D Visual Artworks
-import shapeGreenBlob from "../../assets/images/shape_green_blob_1789327926420.jpg";
+import shapeGreenFluid from "../../assets/images/shape_green_fluid_1789329793443.jpg";
 import shapeOrangeRibbed from "../../assets/images/shape_orange_ribbed_1789327939534.jpg";
 import shapeYellowCrystal from "../../assets/images/shape_yellow_crystal_1789327951530.jpg";
 import shapeMagentaLoop from "../../assets/images/shape_magenta_loop_1789327963097.jpg";
 import shapeBlueCloud from "../../assets/images/shape_blue_cloud_1789327973174.jpg";
+import shapePurpleBlob from "../../assets/images/shape_purple_blob_1789329803990.jpg";
 
-interface ServiceColumn {
+interface ServiceItem {
   id: string;
   tag: string;
   dotColor: string;
@@ -31,22 +32,24 @@ interface ServiceColumn {
   shortDesc: string;
   fullDesc: string;
   accent: string;
+  glowGradient: string;
   subServices: string[];
   idealFor: string;
 }
 
-const SERVICES_COLUMNS: ServiceColumn[] = [
+const SERVICES_DATA: ServiceItem[] = [
   {
-    id: "web-design",
-    tag: "WEB DESIGN",
+    id: "web-saas-design",
+    tag: "WEB & SAAS DESIGN",
     dotColor: "#22c55e",
-    title: "WEB & SAAS DESIGN",
+    title: "WEB & SAAS INTERFACES",
     startingPrice: "$2,800",
     turnaround: "1 — 2 Weeks",
-    image: shapeGreenBlob,
-    shortDesc: "Custom websites and SaaS interfaces for businesses, entrepreneurs, and creators with sleek, user-focused designs.",
-    fullDesc: "We design and engineer high-performance web products, SaaS applications, and interactive platforms with Apple-grade fluid UX and clean component architecture.",
+    image: shapeGreenFluid,
+    shortDesc: "Custom websites and SaaS interfaces built with Apple-grade fluid typography and responsive micro-interactions.",
+    fullDesc: "We design and engineer high-performance web products, SaaS platforms, and interactive applications with React 19, Next.js, and fluid physics.",
     accent: "#22c55e",
+    glowGradient: "from-emerald-500/15 via-emerald-500/5 to-transparent",
     subServices: [
       "Custom React 19 / Next.js architecture with TypeScript",
       "Tailwind CSS styling with responsive micro-interactions",
@@ -65,8 +68,9 @@ const SERVICES_COLUMNS: ServiceColumn[] = [
     turnaround: "1 — 2 Weeks",
     image: shapeOrangeRibbed,
     shortDesc: "Custom autonomous agent pipelines and n8n workflows that handle heavy operations without manual effort.",
-    fullDesc: "Eliminate repetitive manual tasks with tailored multi-agent pipelines, automated CRM syncing, and reliable LLM-powered backend processing loops.",
+    fullDesc: "Eliminate repetitive operations with tailored multi-agent pipelines, automated CRM syncing, and reliable LLM-powered backend processing loops.",
     accent: "#f97316",
+    glowGradient: "from-orange-500/15 via-orange-500/5 to-transparent",
     subServices: [
       "Custom n8n / Make.com enterprise workflow architecture",
       "Autonomous AI Agent swarms with memory & tool calling",
@@ -84,9 +88,10 @@ const SERVICES_COLUMNS: ServiceColumn[] = [
     startingPrice: "$1,600",
     turnaround: "3 — 7 Days",
     image: shapeYellowCrystal,
-    shortDesc: "Elevate your tech stack with cohesive AI blueprints, cost-optimized token economics, and de-risked roadmaps.",
-    fullDesc: "Clear, battle-tested guidance on model architectures, vector database selection, cost estimation, and private data security before writing production code.",
+    shortDesc: "Cohesive AI blueprints, cost-optimized token economics, and de-risked engineering roadmaps.",
+    fullDesc: "Clear guidance on model architectures, vector database selection, cost estimation, and private data security before writing production code.",
     accent: "#eab308",
+    glowGradient: "from-amber-500/15 via-amber-500/5 to-transparent",
     subServices: [
       "System architecture review & model feasibility analysis",
       "Cost-optimized token economics & LLM latency budgeting",
@@ -97,16 +102,17 @@ const SERVICES_COLUMNS: ServiceColumn[] = [
     idealFor: "Leadership teams wanting a definitive, de-risked AI adoption strategy before building.",
   },
   {
-    id: "marketing",
+    id: "growth-engines",
     tag: "GROWTH ENGINES",
     dotColor: "#ec4899",
     title: "GROWTH & ACQUISITION",
     startingPrice: "$2,200",
     turnaround: "1 — 2 Weeks",
     image: shapeMagentaLoop,
-    shortDesc: "Engage high-value leads with automated enrichment, conversion funnels, and real-time qualification triggers.",
+    shortDesc: "High-converting acquisition funnels with automated lead enrichment, scoring, and real-time alerts.",
     fullDesc: "We build data-driven acquisition engines combining frictionless interactive UX with instant lead qualification and CRM enrichment workflows.",
     accent: "#ec4899",
+    glowGradient: "from-pink-500/15 via-pink-500/5 to-transparent",
     subServices: [
       "High-converting landing pages with interactive cost estimators",
       "Automated lead enrichment (Clearbit / Apollo / LinkedIn data)",
@@ -117,16 +123,38 @@ const SERVICES_COLUMNS: ServiceColumn[] = [
     idealFor: "B2B businesses looking to double qualified lead velocity without hiring more SDRs.",
   },
   {
+    id: "backend-systems",
+    tag: "BACKEND SYSTEMS",
+    dotColor: "#a855f7",
+    title: "HIGH-THROUGHPUT APIS",
+    startingPrice: "$3,400",
+    turnaround: "2 — 3 Weeks",
+    image: shapePurpleBlob,
+    shortDesc: "Zero-downtime APIs, background queues, and database optimizations engineered for scale.",
+    fullDesc: "Robust server architectures built to handle heavy concurrent loads, webhooks, asynchronous background job queues, and bulletproof data caching.",
+    accent: "#a855f7",
+    glowGradient: "from-purple-500/15 via-purple-500/5 to-transparent",
+    subServices: [
+      "REST & GraphQL API design with automated OpenAPI documentation",
+      "Background worker queues (BullMQ / Redis / Cloud Tasks)",
+      "Database optimization, index tuning & data migration scripts",
+      "Third-party webhook ingestion & rate-limiting guards",
+      "Comprehensive telemetry, error alerting & logging setup",
+    ],
+    idealFor: "Companies scaling beyond initial prototypes who need solid, fault-tolerant infrastructure.",
+  },
+  {
     id: "a-la-carte",
     tag: "À LA CARTE",
     dotColor: "#3b82f6",
-    title: "BESPOKE & ADVISORY",
+    title: "BESPOKE SPRINTS",
     startingPrice: "$1,200",
     turnaround: "3 — 5 Days",
     image: shapeBlueCloud,
-    shortDesc: "Get targeted help with focused engineering sprints like API development, security audits, or performance tuning.",
+    shortDesc: "Targeted engineering sprints for specialized technical needs, security audits, and quick refactors.",
     fullDesc: "Flexible, high-velocity engineering sprints for specialized technical needs, performance refactors, custom integrations, or architecture audits.",
     accent: "#3b82f6",
+    glowGradient: "from-blue-500/15 via-blue-500/5 to-transparent",
     subServices: [
       "Custom REST / GraphQL API engineering and webhook ingestion",
       "Performance optimization & Core Web Vitals remediation",
@@ -142,7 +170,7 @@ const CALENDLY_URL = "https://calendly.com/digital-b3asts/quick-free-consultatio
 const WHATSAPP_PHONE = "923094506904";
 
 export const ServicesPage: React.FC = () => {
-  const [selectedService, setSelectedService] = useState<ServiceColumn | null>(null);
+  const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
 
   const handleOpenWhatsApp = (serviceTitle?: string) => {
     const text = serviceTitle
@@ -154,7 +182,7 @@ export const ServicesPage: React.FC = () => {
   return (
     <div className="relative min-h-screen text-white pb-16 max-w-[1240px] mx-auto">
       
-      {/* Background Dot Matrix (Exact reference style) */}
+      {/* Background Dot Matrix */}
       <div 
         className="absolute inset-0 pointer-events-none -z-10 opacity-35"
         style={{
@@ -163,7 +191,7 @@ export const ServicesPage: React.FC = () => {
         }}
       />
 
-      {/* Main Structural Frame (Direct match to reference design layout) */}
+      {/* Main Structural Frame */}
       <div className="relative border border-white/20 rounded-2xl sm:rounded-3xl bg-black/95 backdrop-blur-2xl overflow-hidden shadow-[0_25px_80px_rgba(0,0,0,0.95)]">
         
         {/* 1. Continuous Ticker / Marquee Bar */}
@@ -221,73 +249,112 @@ export const ServicesPage: React.FC = () => {
           </div>
         </div>
 
-        {/* 3. The 5-Column Grid with Vertical Dividers (Exact Match to Reference Layout) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 divide-y md:divide-y-0 md:divide-x divide-white/20 bg-black">
-          {SERVICES_COLUMNS.map((service, index) => (
-            <motion.div
-              key={service.id}
-              onClick={() => setSelectedService(service)}
-              className="group relative flex flex-col justify-between p-6 sm:p-7 md:p-6 lg:p-7 hover:bg-white/[0.03] transition-all duration-300 cursor-pointer select-none"
-            >
-              {/* Top Tag with Colored Square Indicator Dot */}
-              <div className="flex items-center justify-between gap-2 mb-8">
-                <div className="flex items-center gap-2 font-mono text-[11px] sm:text-xs tracking-wider uppercase font-semibold text-white/90">
-                  <span
-                    className="w-2.5 h-2.5 rounded-[2px] shrink-0"
-                    style={{ backgroundColor: service.dotColor }}
-                  />
-                  <span>{service.tag}</span>
-                </div>
-                
-                {/* Starting Price Pill (Apple HIG Minimalist) */}
-                <span className="font-mono text-[11px] px-2 py-0.5 rounded bg-white/[0.06] border border-white/10 text-white/80 group-hover:border-white/30 transition-colors">
-                  From {service.startingPrice}
-                </span>
-              </div>
+        {/* 3. The Balanced 2-Row Grid with Liquid Hover Glow & Vertical/Horizontal Dividers */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y md:divide-y-0 bg-black relative">
+          {SERVICES_DATA.map((service, index) => {
+            const isTopRow = index < 3;
+            const isNotLastInRow = (index + 1) % 3 !== 0;
 
-              {/* Center 3D Visual Art Shape with Fluid Hover Floating Motion */}
-              <div className="relative w-full aspect-square flex items-center justify-center my-6 sm:my-8">
-                {/* Ambient Specular Glow on Hover */}
-                <div 
-                  className="absolute inset-4 rounded-full blur-2xl opacity-0 group-hover:opacity-35 transition-opacity duration-500"
-                  style={{ backgroundColor: service.accent }}
+            return (
+              <motion.div
+                key={service.id}
+                onClick={() => setSelectedService(service)}
+                className={`group relative flex flex-col justify-between p-6 sm:p-7 md:p-8 hover:bg-white/[0.02] transition-all duration-500 cursor-pointer select-none overflow-hidden ${
+                  isTopRow ? "lg:border-b lg:border-white/20" : ""
+                } ${isNotLastInRow ? "lg:border-r lg:border-white/20" : ""}`}
+              >
+                {/* 
+                  UNIQUE COLOR LIQUID HOVER EFFECT:
+                  Smooth radial/conic gradient fluid aura expanding across the full card on hover
+                */}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none -z-0"
+                  style={{
+                    background: `radial-gradient(circle at 50% 35%, ${service.accent}22 0%, ${service.accent}08 45%, transparent 75%)`,
+                  }}
                 />
-                
-                <motion.div
-                  className="relative w-36 sm:w-40 md:w-36 lg:w-40 aspect-square rounded-2xl overflow-hidden bg-black/40"
-                  whileHover={{ scale: 1.08, y: -6 }}
-                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    className="w-full h-full object-cover rounded-2xl filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.8)]"
-                    loading="lazy"
-                  />
-                </motion.div>
-              </div>
 
-              {/* Bottom Typography & Description */}
-              <div className="pt-4">
-                <div className="flex items-center justify-between gap-1 mb-2">
-                  <h3 className="text-base sm:text-lg font-bold tracking-tight text-white group-hover:text-white uppercase">
-                    {service.title}
-                  </h3>
-                  <ArrowUpRight size={15} className="text-white/40 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
-                </div>
-                
-                <p className="text-white/60 text-xs leading-relaxed font-normal line-clamp-4">
-                  {service.shortDesc}
-                </p>
+                {/* Subtle Top Specular Rim */}
+                <div 
+                  className="absolute top-0 inset-x-8 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    background: `linear-gradient(90deg, transparent, ${service.accent}88, transparent)`
+                  }}
+                />
 
-                {/* Inspect Action Trigger */}
-                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/40 group-hover:text-white/90 transition-colors">
-                  <span>Inspect Deliverables</span>
-                  <span className="text-white/70 group-hover:text-white">→</span>
+                <div className="relative z-10">
+                  {/* Top Header Tag & Micro Indicator */}
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <div className="flex items-center gap-2 font-mono text-[11px] sm:text-xs tracking-wider uppercase font-semibold text-white/90">
+                      <span
+                        className="w-2.5 h-2.5 rounded-[2px] shrink-0"
+                        style={{ backgroundColor: service.dotColor }}
+                      />
+                      <span>{service.tag}</span>
+                    </div>
+                    
+                    <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-white/[0.06] border border-white/10 text-white/80 group-hover:border-white/30 transition-colors">
+                      {service.turnaround}
+                    </span>
+                  </div>
+
+                  {/* 3D Shape Asset - Compact 88px dimension with Transparent Blending (mix-blend-lighten) */}
+                  <div className="relative w-full h-28 sm:h-32 flex items-center justify-center my-2">
+                    {/* Ambient Glow behind shape */}
+                    <div 
+                      className="absolute w-20 h-20 rounded-full blur-xl opacity-0 group-hover:opacity-60 transition-opacity duration-500"
+                      style={{ backgroundColor: service.accent }}
+                    />
+                    
+                    <motion.div
+                      className="relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center"
+                      whileHover={{ scale: 1.1, y: -4, rotate: 2 }}
+                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      <img
+                        src={service.image}
+                        alt={service.title}
+                        className="w-full h-full object-contain mix-blend-lighten filter drop-shadow-[0_8px_20px_rgba(0,0,0,0.85)]"
+                        loading="lazy"
+                      />
+                    </motion.div>
+                  </div>
+
+                  {/* Title & Short Description */}
+                  <div className="mt-2">
+                    <div className="flex items-center justify-between gap-1 mb-1.5">
+                      <h3 className="text-base sm:text-lg font-bold tracking-tight text-white uppercase group-hover:text-white transition-colors">
+                        {service.title}
+                      </h3>
+                      <ArrowUpRight size={15} className="text-white/40 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
+                    </div>
+                    
+                    <p className="text-white/60 text-xs leading-relaxed font-normal line-clamp-2">
+                      {service.shortDesc}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+
+                {/* Bottom Prominent Pricing & Inspect Trigger */}
+                <div className="mt-5 pt-3.5 border-t border-white/10 flex items-center justify-between relative z-10">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-[10px] font-mono uppercase text-white/50">Starts at</span>
+                    <span 
+                      className="text-base font-bold font-mono tracking-tight"
+                      style={{ color: "#ffffff" }}
+                    >
+                      {service.startingPrice}
+                    </span>
+                  </div>
+
+                  <span className="inline-flex items-center gap-1 text-[11px] font-mono text-white/60 group-hover:text-white px-2.5 py-1 rounded-full bg-white/[0.04] group-hover:bg-white/[0.12] border border-white/10 transition-all">
+                    <span>Inspect</span>
+                    <span className="text-white/80">→</span>
+                  </span>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
       </div>
@@ -325,7 +392,7 @@ export const ServicesPage: React.FC = () => {
         </div>
       </div>
 
-      {/* 5. Interactive Detail Modal (Openable Card View on Click) */}
+      {/* 5. Simplified Clean Detail Modal */}
       <AnimatePresence>
         {selectedService && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
@@ -344,10 +411,15 @@ export const ServicesPage: React.FC = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.94, y: 20 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-2xl bg-gradient-to-b from-[#161826] via-[#0f111a] to-[#0a0b12] border border-white/20 rounded-3xl p-6 sm:p-8 shadow-2xl z-10 overflow-hidden text-left"
+              className="relative w-full max-w-xl bg-gradient-to-b from-[#161826] via-[#0f111a] to-[#0a0b12] border border-white/20 rounded-3xl p-6 sm:p-7 shadow-2xl z-10 overflow-hidden text-left"
             >
               {/* Top Specular Rim */}
-              <div className="absolute top-0 inset-x-8 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+              <div 
+                className="absolute top-0 inset-x-8 h-px"
+                style={{
+                  background: `linear-gradient(90deg, transparent, ${selectedService.accent}aa, transparent)`
+                }}
+              />
 
               {/* Close Button */}
               <button
@@ -357,71 +429,62 @@ export const ServicesPage: React.FC = () => {
                 <X size={18} />
               </button>
 
-              {/* Modal Header: 3D Art + Info */}
-              <div className="flex items-start gap-4 mb-5">
-                <div className="w-14 h-14 rounded-2xl overflow-hidden bg-black/50 border border-white/15 shrink-0">
+              {/* Modal Header */}
+              <div className="flex items-center gap-3.5 mb-4 pr-8">
+                <div className="w-12 h-12 rounded-xl bg-black flex items-center justify-center border border-white/10 shrink-0 overflow-hidden">
                   <img
                     src={selectedService.image}
                     alt={selectedService.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain mix-blend-lighten"
                   />
                 </div>
                 <div>
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex items-center gap-2 mb-0.5">
                     <span
                       className="w-2 h-2 rounded-[2px]"
                       style={{ backgroundColor: selectedService.dotColor }}
                     />
-                    <span className="text-[11px] font-mono text-white/50 uppercase tracking-wider">
+                    <span className="text-[10px] font-mono text-white/50 uppercase tracking-wider">
                       {selectedService.tag}
                     </span>
                   </div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                  <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">
                     {selectedService.title}
                   </h2>
                 </div>
               </div>
 
-              {/* Detailed Description */}
-              <p className="text-white/75 text-sm leading-relaxed mb-6 font-normal">
+              {/* Description */}
+              <p className="text-white/75 text-xs sm:text-sm leading-relaxed mb-5 font-normal">
                 {selectedService.fullDesc}
               </p>
 
-              {/* Pricing, Turnaround & SLA Metadata Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] mb-6">
+              {/* Prominent Pricing & SLA Banner */}
+              <div className="grid grid-cols-3 gap-2.5 p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.08] mb-5">
                 <div>
-                  <div className="text-[10px] font-mono text-white/40 uppercase mb-0.5">Investment</div>
-                  <div className="text-lg font-bold text-white tracking-tight">{selectedService.startingPrice}</div>
-                  <div className="text-[10px] text-white/40">Fixed-scope starting rate</div>
+                  <div className="text-[10px] font-mono text-white/40 uppercase">Starting From</div>
+                  <div className="text-base font-bold text-white tracking-tight">{selectedService.startingPrice}</div>
                 </div>
                 <div>
-                  <div className="text-[10px] font-mono text-white/40 uppercase mb-0.5">Turnaround</div>
-                  <div className="text-sm font-semibold text-white/90 font-mono flex items-center gap-1.5 mt-0.5">
-                    <Clock size={13} className="text-amber-300" />
-                    <span>{selectedService.turnaround}</span>
-                  </div>
-                  <div className="text-[10px] text-white/40">Sprint delivery</div>
+                  <div className="text-[10px] font-mono text-white/40 uppercase">Turnaround</div>
+                  <div className="text-xs font-semibold text-white/90 font-mono mt-0.5">{selectedService.turnaround}</div>
                 </div>
-                <div className="col-span-2 sm:col-span-1">
-                  <div className="text-[10px] font-mono text-white/40 uppercase mb-0.5">Response SLA</div>
-                  <div className="text-xs font-semibold text-emerald-400 flex items-center gap-1.5 mt-0.5 font-mono">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                    <span>&lt; 60 Min</span>
-                  </div>
-                  <div className="text-[10px] text-white/40">Mon–Fri Business Hours</div>
+                <div>
+                  <div className="text-[10px] font-mono text-white/40 uppercase">Response SLA</div>
+                  <div className="text-xs font-semibold text-emerald-400 font-mono mt-0.5">&lt; 60 Min</div>
                 </div>
               </div>
 
-              {/* Deliverables Checklist */}
-              <div className="mb-6">
-                <div className="text-xs font-mono uppercase tracking-wider text-white/60 mb-3 flex items-center gap-1.5">
-                  <Workflow size={13} className="text-white/80" />
-                  <span>Package Deliverables &amp; Inclusions</span>
+              {/* Core Deliverables Checklist (Simplified & High-Signal) */}
+              <div className="mb-5">
+                <div className="text-[11px] font-mono uppercase tracking-wider text-white/50 mb-2.5 flex items-center gap-1.5">
+                  <Workflow size={12} className="text-white/70" />
+                  <span>Key Deliverables</span>
                 </div>
-                <div className="space-y-2.5">
-                  {selectedService.subServices.map((sub, idx) => (
-                    <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-white/80">
-                      <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />
+                <div className="space-y-2">
+                  {selectedService.subServices.slice(0, 4).map((sub, idx) => (
+                    <div key={idx} className="flex items-start gap-2 text-xs text-white/80">
+                      <CheckCircle2 size={14} className="text-emerald-400 shrink-0 mt-0.5" />
                       <span>{sub}</span>
                     </div>
                   ))}
@@ -429,26 +492,26 @@ export const ServicesPage: React.FC = () => {
               </div>
 
               {/* Ideal Fit Note */}
-              <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] mb-6 text-xs text-white/60">
-                <span className="font-semibold text-white/90 font-mono mr-1.5">IDEAL FIT:</span>
+              <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] mb-5 text-[11px] text-white/60">
+                <span className="font-semibold text-white/90 font-mono mr-1">BEST FOR:</span>
                 {selectedService.idealFor}
               </div>
 
               {/* Dual Action CTAs */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
                 <button
                   onClick={() => handleOpenWhatsApp(selectedService.title)}
-                  className="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20"
+                  className="w-full py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20"
                 >
-                  <MessageCircle size={16} />
-                  <span>Chat on WhatsApp (&lt;60m reply)</span>
+                  <MessageCircle size={15} />
+                  <span>WhatsApp (&lt;60m reply)</span>
                 </button>
                 <button
                   onClick={() => window.open(CALENDLY_URL, "_blank")}
-                  className="w-full py-3 px-4 rounded-xl bg-white/[0.08] hover:bg-white/[0.14] text-white text-xs font-bold border border-white/15 transition-all flex items-center justify-center gap-2"
+                  className="w-full py-2.5 px-3 rounded-xl bg-white/[0.08] hover:bg-white/[0.14] text-white text-xs font-bold border border-white/15 transition-all flex items-center justify-center gap-2"
                 >
-                  <Calendar size={16} />
-                  <span>Book 20-Min Discovery Call</span>
+                  <Calendar size={15} />
+                  <span>Book 20-Min Call</span>
                 </button>
               </div>
             </motion.div>
