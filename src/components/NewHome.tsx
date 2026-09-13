@@ -37,7 +37,18 @@ import {
   ChevronRight,
   ShieldCheck,
   Building2,
+  Workflow,
+  X,
+  MessageCircle,
 } from "lucide-react";
+
+// True Transparent PNG 3D Shapes
+import shapeGreenFluid from "../assets/images/shape_green_fluid_1789329793443.png";
+import shapeOrangeRibbed from "../assets/images/shape_orange_ribbed_1789327939534.png";
+import shapeYellowCrystal from "../assets/images/shape_yellow_crystal_1789327951530.png";
+import shapeMagentaLoop from "../assets/images/shape_magenta_loop_1789327963097.png";
+import shapePurpleBlob from "../assets/images/shape_purple_blob_1789329803990.png";
+import shapeBlueCloud from "../assets/images/shape_blue_cloud_1789327973174.png";
 
 const myArea51Image = "/my-image-for-home-01.jpeg";
 
@@ -813,13 +824,13 @@ export const Home = ({
         </div>
       </section>
 
-      {/* 3. Services / Capabilities */}
+      {/* 3. Services / Capabilities (Matching Reference Architectural Layout & Liquid Hover) */}
       <section className="py-24 md:py-32 max-w-[1250px] mx-auto px-4 md:px-8 relative">
         {/* Apple HIG Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 relative z-10">
           <div className="flex items-center justify-center gap-3 mb-4">
             <LiquidCapsule color1="#C084FC" color2="#EC4899" />
-            <span className="text-xs font-mono tracking-widest uppercase text-white/50">03 // Capabilities & Services</span>
+            <span className="text-xs font-mono tracking-widest uppercase text-white/50">03 // Capabilities &amp; Services</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
             Engineered for Velocity. Crafted for Impact.
@@ -829,78 +840,268 @@ export const Home = ({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
-          {[
-            {
-              title: "UI/UX Design",
-              desc: "Designing captivating and user-friendly interfaces that keep your audience hooked.",
-              icon: <Monitor size={18} strokeWidth={1.35} />,
-            },
-            {
-              title: "Graphic Design",
-              desc: "Visually striking graphics that communicate your brand's message with a lasting impression.",
-              icon: <Paintbrush size={18} strokeWidth={1.35} />,
-            },
-            {
-              title: "Video & Motion Graphics",
-              desc: "Dynamics that ignite your audience's imagination and connect them on a deeper level.",
-              icon: <PlayCircle size={18} strokeWidth={1.35} />,
-            },
-            {
-              title: "Digital Strategy",
-              desc: "Digital solutions that optimize your online presence and maximize your return on effort.",
-              icon: <Target size={18} strokeWidth={1.35} />,
-            },
-            {
-              title: "Web Engineering",
-              desc: "Websites with great user experiences, drive growth and elevate your brand in the digital sphere.",
-              icon: <Rss size={18} strokeWidth={1.35} />,
-            },
-            {
-              title: "AI Automation",
-              desc: "Intelligent systems that automate tasks, scaling your operations to new heights.",
-              icon: <Brain size={18} strokeWidth={1.35} />,
-            },
-          ].map((s, i) => (
-            <motion.div
-              key={s.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08, duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-            >
-              <SpecularCard
-                id={`service-card-${s.title.toLowerCase().replace(/[^a-z0-9]/g, "-")}`}
-                className="p-7 h-full flex flex-col justify-between group cursor-default"
-                glowColor="rgba(255, 255, 255, 0.06)"
+        {/* 2-Row Vertical Rectangular Grid with Left-Aligned Transparent PNG Shapes & Full-Card Liquid Hover Effect */}
+        <div className="border border-white/20 rounded-3xl bg-black/90 backdrop-blur-2xl overflow-hidden shadow-[0_25px_70px_rgba(0,0,0,0.9)] divide-y divide-white/20 relative z-10">
+          
+          {/* Top Row: 3 Services */}
+          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/20 bg-black">
+            {[
+              {
+                id: "home-serv-web",
+                tag: "WEB DESIGN",
+                dotColor: "#22c55e",
+                title: "Web & SaaS Interfaces",
+                startingPrice: "$2,800",
+                turnaround: "1 — 2 Weeks",
+                image: shapeGreenFluid,
+                desc: "Custom web applications and interactive SaaS platforms built with Apple HIG fluid UX and clean architecture.",
+                accent: "#22c55e",
+              },
+              {
+                id: "home-serv-ai",
+                tag: "AI AUTOMATION",
+                dotColor: "#f97316",
+                title: "Autonomous AI Agents",
+                startingPrice: "$2,400",
+                turnaround: "1 — 2 Weeks",
+                image: shapeOrangeRibbed,
+                desc: "Custom autonomous agent pipelines and n8n workflows that handle heavy operations without manual effort.",
+                accent: "#f97316",
+              },
+              {
+                id: "home-serv-strategy",
+                tag: "AI STRATEGY",
+                dotColor: "#eab308",
+                title: "Architecture & Roadmap",
+                startingPrice: "$1,600",
+                turnaround: "3 — 7 Days",
+                image: shapeYellowCrystal,
+                desc: "Cohesive AI blueprints, cost-optimized token economics, and de-risked engineering roadmaps.",
+                accent: "#eab308",
+              },
+            ].map((s, i) => (
+              <motion.div
+                key={s.id}
+                onClick={() => setActiveTab("Services")}
+                className="group relative flex flex-col justify-between p-6 sm:p-7 md:p-8 hover:bg-white/[0.02] transition-all duration-500 cursor-pointer select-none overflow-hidden min-h-[370px]"
               >
-                <div>
-                  <div
-                    className="w-9 h-9 rounded-lg flex items-center justify-center mb-5 bg-white/[0.03] border border-white/[0.06] text-white/35 group-hover:text-white/80 group-hover:border-white/15 transition-all duration-300"
-                  >
-                    {s.icon}
+                {/* Full-Card Liquid Glow Aura on Hover */}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-700 pointer-events-none"
+                  style={{
+                    background: `radial-gradient(ellipse 90% 70% at 20% 30%, ${s.accent}30 0%, ${s.accent}14 45%, ${s.accent}04 75%, transparent 100%)`,
+                  }}
+                />
+
+                {/* Top Specular Accent Border */}
+                <div 
+                  className="absolute top-0 inset-x-4 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    background: `linear-gradient(90deg, transparent, ${s.accent}, transparent)`
+                  }}
+                />
+
+                {/* Content Header & Left-Aligned Transparent 3D Shape */}
+                <div className="relative z-10 text-left">
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <div className="flex items-center gap-2 font-mono text-[11px] sm:text-xs tracking-wider uppercase font-semibold text-white/90">
+                      <span
+                        className="w-2.5 h-2.5 rounded-[2px] shrink-0"
+                        style={{ backgroundColor: s.dotColor }}
+                      />
+                      <span>{s.tag}</span>
+                    </div>
+                    
+                    <span className="font-mono text-[10px] px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-white/70 group-hover:border-white/30 transition-colors">
+                      {s.turnaround}
+                    </span>
                   </div>
-                  <h3 className="text-lg font-bold tracking-tight mb-2 text-white/95">{s.title}</h3>
-                  <p className="text-xs sm:text-sm text-white/60 leading-relaxed font-normal">
-                    {s.desc}
-                  </p>
+
+                  {/* Left-Aligned Transparent PNG 3D Icon */}
+                  <div className="relative w-full flex items-center justify-start my-3 sm:my-4">
+                    <div 
+                      className="absolute left-1 w-16 h-16 rounded-full blur-xl opacity-0 group-hover:opacity-75 transition-opacity duration-500"
+                      style={{ backgroundColor: s.accent }}
+                    />
+                    
+                    <motion.div
+                      className="relative w-20 h-20 sm:w-22 sm:h-22 flex items-center justify-center shrink-0"
+                      whileHover={{ scale: 1.12, y: -4, rotate: 3 }}
+                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      <img
+                        src={s.image}
+                        alt={s.title}
+                        className="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.9)]"
+                        loading="lazy"
+                      />
+                    </motion.div>
+                  </div>
+
+                  <div className="mt-1">
+                    <div className="flex items-center justify-between gap-1 mb-2">
+                      <h3 className="text-lg font-bold tracking-tight text-white group-hover:text-white transition-colors">
+                        {s.title}
+                      </h3>
+                      <ArrowUpRight size={16} className="text-white/40 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
+                    </div>
+                    <p className="text-white/60 text-xs sm:text-sm leading-relaxed font-normal line-clamp-3">
+                      {s.desc}
+                    </p>
+                  </div>
                 </div>
-                <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between text-[11px] font-mono text-white/40 group-hover:text-white/70 transition-colors">
-                  <span>0{i + 1} // CAPABILITY</span>
-                  <ArrowRight size={13} strokeWidth={1.35} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+
+                {/* Bottom Pricing & Inspect Action */}
+                <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between relative z-10">
+                  <div>
+                    <span className="block text-[10px] font-mono uppercase text-white/40 mb-0.5">Starting Investment</span>
+                    <span className="text-lg font-bold font-mono tracking-tight text-white">
+                      {s.startingPrice}
+                    </span>
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 text-xs font-mono text-white/70 group-hover:text-white px-3 py-1.5 rounded-xl bg-white/[0.05] group-hover:bg-white/[0.14] border border-white/10 transition-all shadow-sm">
+                    <span>Inspect</span>
+                    <span className="text-white">→</span>
+                  </span>
                 </div>
-              </SpecularCard>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Bottom Row: 3 Services */}
+          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/20 bg-black">
+            {[
+              {
+                id: "home-serv-growth",
+                tag: "GROWTH ENGINES",
+                dotColor: "#ec4899",
+                title: "Growth & Acquisition",
+                startingPrice: "$2,200",
+                turnaround: "1 — 2 Weeks",
+                image: shapeMagentaLoop,
+                desc: "High-converting acquisition funnels with automated lead enrichment, scoring, and real-time alerts.",
+                accent: "#ec4899",
+              },
+              {
+                id: "home-serv-backend",
+                tag: "BACKEND APIS",
+                dotColor: "#a855f7",
+                title: "High-Throughput APIs",
+                startingPrice: "$3,400",
+                turnaround: "2 — 3 Weeks",
+                image: shapePurpleBlob,
+                desc: "Zero-downtime APIs, background queues, and database optimizations engineered for scale.",
+                accent: "#a855f7",
+              },
+              {
+                id: "home-serv-alacarte",
+                tag: "À LA CARTE",
+                dotColor: "#3b82f6",
+                title: "Bespoke Sprints",
+                startingPrice: "$1,200",
+                turnaround: "3 — 5 Days",
+                image: shapeBlueCloud,
+                desc: "Targeted engineering sprints for specialized technical needs, security audits, and quick refactors.",
+                accent: "#3b82f6",
+              },
+            ].map((s, i) => (
+              <motion.div
+                key={s.id}
+                onClick={() => setActiveTab("Services")}
+                className="group relative flex flex-col justify-between p-6 sm:p-7 md:p-8 hover:bg-white/[0.02] transition-all duration-500 cursor-pointer select-none overflow-hidden min-h-[370px]"
+              >
+                {/* Full-Card Liquid Glow Aura on Hover */}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-700 pointer-events-none"
+                  style={{
+                    background: `radial-gradient(ellipse 90% 70% at 20% 30%, ${s.accent}30 0%, ${s.accent}14 45%, ${s.accent}04 75%, transparent 100%)`,
+                  }}
+                />
+
+                {/* Top Specular Accent Border */}
+                <div 
+                  className="absolute top-0 inset-x-4 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    background: `linear-gradient(90deg, transparent, ${s.accent}, transparent)`
+                  }}
+                />
+
+                {/* Content Header & Left-Aligned Transparent 3D Shape */}
+                <div className="relative z-10 text-left">
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <div className="flex items-center gap-2 font-mono text-[11px] sm:text-xs tracking-wider uppercase font-semibold text-white/90">
+                      <span
+                        className="w-2.5 h-2.5 rounded-[2px] shrink-0"
+                        style={{ backgroundColor: s.dotColor }}
+                      />
+                      <span>{s.tag}</span>
+                    </div>
+                    
+                    <span className="font-mono text-[10px] px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-white/70 group-hover:border-white/30 transition-colors">
+                      {s.turnaround}
+                    </span>
+                  </div>
+
+                  {/* Left-Aligned Transparent PNG 3D Icon */}
+                  <div className="relative w-full flex items-center justify-start my-3 sm:my-4">
+                    <div 
+                      className="absolute left-1 w-16 h-16 rounded-full blur-xl opacity-0 group-hover:opacity-75 transition-opacity duration-500"
+                      style={{ backgroundColor: s.accent }}
+                    />
+                    
+                    <motion.div
+                      className="relative w-20 h-20 sm:w-22 sm:h-22 flex items-center justify-center shrink-0"
+                      whileHover={{ scale: 1.12, y: -4, rotate: 3 }}
+                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      <img
+                        src={s.image}
+                        alt={s.title}
+                        className="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.9)]"
+                        loading="lazy"
+                      />
+                    </motion.div>
+                  </div>
+
+                  <div className="mt-1">
+                    <div className="flex items-center justify-between gap-1 mb-2">
+                      <h3 className="text-lg font-bold tracking-tight text-white group-hover:text-white transition-colors">
+                        {s.title}
+                      </h3>
+                      <ArrowUpRight size={16} className="text-white/40 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
+                    </div>
+                    <p className="text-white/60 text-xs sm:text-sm leading-relaxed font-normal line-clamp-3">
+                      {s.desc}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bottom Pricing & Inspect Action */}
+                <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between relative z-10">
+                  <div>
+                    <span className="block text-[10px] font-mono uppercase text-white/40 mb-0.5">Starting Investment</span>
+                    <span className="text-lg font-bold font-mono tracking-tight text-white">
+                      {s.startingPrice}
+                    </span>
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 text-xs font-mono text-white/70 group-hover:text-white px-3 py-1.5 rounded-xl bg-white/[0.05] group-hover:bg-white/[0.14] border border-white/10 transition-all shadow-sm">
+                    <span>Inspect</span>
+                    <span className="text-white">→</span>
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
         </div>
 
-        <div className="mt-16 text-center">
+        <div className="mt-12 text-center">
           <button
             id="all-services-cta-btn"
             onClick={() => setActiveTab("Services")}
             className="inline-flex items-center gap-2 py-3.5 px-8 rounded-full bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(255,255,255,0.15)] hover:scale-105 active:scale-95 cursor-pointer"
           >
-            <span>Explore All Services</span>
+            <span>Explore Complete Services &amp; Roadmaps</span>
             <ArrowRight size={14} />
           </button>
         </div>
