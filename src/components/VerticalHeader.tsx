@@ -244,12 +244,58 @@ export const VerticalHeader = ({
         <button
           onClick={() => handleTabClick("Connect")}
           className={cn(
-            "bg-white hover:bg-neutral-200 text-black font-semibold text-xs tracking-tight rounded-full transition-all duration-200 flex items-center justify-center cursor-pointer shadow-[0_4px_16px_rgba(255,255,255,0.15)] hover:scale-[1.02] active:scale-[0.98]",
-            isCollapsed ? "w-10 h-10 p-0 rounded-full" : "w-full py-2.5"
+            "bg-white hover:bg-white/95 text-black font-semibold text-xs tracking-tight rounded-full transition-all duration-200 flex items-center justify-center cursor-pointer shadow-[0_4px_16px_rgba(255,255,255,0.18)] hover:scale-[1.02] active:scale-[0.98] overflow-hidden group",
+            isCollapsed ? "w-10 h-10 p-0 rounded-full" : "w-full py-2.5 gap-1.5"
           )}
           title={isCollapsed ? "Connect" : undefined}
         >
-          {isCollapsed ? <Send size={13} strokeWidth={1.35} /> : "Hire Me"}
+          {isCollapsed ? (
+            <Send size={13} strokeWidth={1.35} />
+          ) : (
+            <>
+              <div className="relative h-4 overflow-hidden flex flex-col justify-start w-[64px] text-center">
+                <motion.div
+                  animate={{
+                    y: [0, 0, -16, -16, 0],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    ease: [0.76, 0, 0.24, 1],
+                    times: [0, 0.4, 0.5, 0.9, 1],
+                  }}
+                  className="flex flex-col items-center"
+                >
+                  <span className="h-4 leading-4 block font-bold text-black select-none whitespace-nowrap">
+                    Hire Me
+                  </span>
+                  <span className="h-4 leading-4 block font-bold text-black select-none whitespace-nowrap">
+                    Get Quote
+                  </span>
+                </motion.div>
+              </div>
+
+              <motion.div
+                animate={{
+                  x: [0, 2, 0],
+                  y: [0, -2, 0],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatType: "mirror",
+                  ease: "easeInOut",
+                }}
+                className="shrink-0 flex items-center justify-center"
+              >
+                <ArrowUpRight 
+                  size={13} 
+                  className="text-black/80 stroke-[2.5]" 
+                />
+              </motion.div>
+            </>
+          )}
         </button>
 
         <div className={cn("flex items-center", isCollapsed ? "justify-center w-full" : "justify-between")}>

@@ -826,7 +826,10 @@ export const Home = ({
       </section>
 
       {/* 3. Services / Capabilities (Apple HIG Solid Liquid-Color List with Accordion Unfurl) */}
-      <HomeServicesSection onNavigateToServices={() => setActiveTab("Services")} />
+      <HomeServicesSection 
+        onNavigateToServices={() => setActiveTab("Services")} 
+        onNavigateToConnect={() => setActiveTab("Connect")}
+      />
 
       {/* 4. Portfolio */}
       <section className="py-24 md:py-32 max-w-[1400px] mx-auto px-4 md:px-8 relative border-t border-white/5">

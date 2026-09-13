@@ -112,24 +112,40 @@ const HOME_SERVICES: HomeServiceItem[] = [
 
 interface HomeServicesSectionProps {
   onNavigateToServices: () => void;
+  onNavigateToConnect?: () => void;
 }
 
-export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({ onNavigateToServices }) => {
+export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({ 
+  onNavigateToServices,
+  onNavigateToConnect,
+}) => {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
+  const handleCustomQuote = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onNavigateToConnect) {
+      onNavigateToConnect();
+    } else {
+      onNavigateToServices();
+    }
+  };
+
   return (
-    <section className="py-20 md:py-28 max-w-[1040px] mx-auto px-4 md:px-6 relative">
+    <section className="py-20 md:py-32 max-w-[1060px] mx-auto px-4 md:px-6 relative">
       
-      {/* Apple HIG Section Header */}
-      <div className="text-center max-w-2xl mx-auto mb-12 md:mb-14 relative z-10">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-white/10 text-white/70 font-mono text-[11px] mb-3.5 tracking-wider uppercase">
-          <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+      {/* Apple HIG Section Header - Enhanced Typography & Stature */}
+      <div className="text-center max-w-3xl mx-auto mb-14 md:mb-16 relative z-10">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-white/70 font-mono text-xs mb-4 tracking-wider uppercase shadow-inner">
+          <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
           <span>Capabilities &amp; Services</span>
         </div>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-3">
-          Engineered for Velocity. Crafted for Impact.
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white mb-4 leading-[1.08]">
+          Engineered for Velocity. <br className="hidden sm:inline" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/90 to-white/60">
+            Crafted for Impact.
+          </span>
         </h2>
-        <p className="text-white/60 text-sm md:text-base leading-relaxed">
+        <p className="text-white/65 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl mx-auto font-normal">
           Full-stack architectural precision, autonomous AI integration, bespoke UI/UX, and high-conversion brand mechanics.
         </p>
       </div>
@@ -270,15 +286,25 @@ export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({ onNavi
         })}
       </div>
 
-      {/* Explore Full Services Button */}
-      <div className="mt-10 text-center">
+      {/* Actions: Explore Full Services & Get a Custom Quote */}
+      <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
         <button
           id="all-services-cta-btn"
           onClick={onNavigateToServices}
-          className="inline-flex items-center gap-2 py-3 px-7 rounded-full bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(255,255,255,0.15)] hover:scale-105 active:scale-95 cursor-pointer"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full bg-white text-black hover:bg-neutral-100 font-semibold text-xs tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(255,255,255,0.18)] hover:scale-105 active:scale-95 cursor-pointer"
         >
-          <span>Explore Complete Services &amp; Roadmaps</span>
+          <span>Explore All Services &amp; Roadmaps</span>
           <ArrowRight size={14} />
+        </button>
+
+        <button
+          id="custom-quote-services-cta-btn"
+          onClick={handleCustomQuote}
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 hover:border-white/30 text-white font-semibold text-xs tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xl group"
+        >
+          <Sparkles size={14} className="text-amber-400 group-hover:rotate-12 transition-transform" />
+          <span>Get a Custom Quote</span>
+          <ArrowUpRight size={14} className="text-white/60 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
         </button>
       </div>
 

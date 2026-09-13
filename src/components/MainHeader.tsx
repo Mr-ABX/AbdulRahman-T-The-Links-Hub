@@ -269,15 +269,56 @@ export const MainHeader = ({
             )}
           </div>
 
-          {/* Right Action: Apple Pill CTA & Settings */}
+          {/* Right Action: Apple Pill CTA with Slot Machine / Jackpot Rolling Text & Animated Arrow */}
           <div className="flex items-center gap-2 pl-2 shrink-0">
             <button
               id="header-cta-hire-me"
               onClick={() => handleTabClick("Connect")}
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 bg-white text-black hover:bg-white/90 font-semibold text-xs tracking-tight rounded-full transition-all duration-200 shadow-[0_4px_16px_rgba(255,255,255,0.15)] hover:scale-[1.02] active:scale-[0.98]"
+              className="hidden sm:inline-flex items-center justify-center gap-1.5 px-4 py-1.5 bg-white text-black hover:bg-white/95 font-semibold text-xs tracking-tight rounded-full transition-all duration-300 shadow-[0_4px_16px_rgba(255,255,255,0.18)] hover:scale-[1.03] active:scale-[0.98] group overflow-hidden h-8"
             >
-              <span>Hire Me</span>
-              <ArrowUpRight size={13} className="text-black/70 stroke-[2.5]" />
+              {/* Jackpot / Slot Machine Rolling Text Cylinder */}
+              <div className="relative h-4 overflow-hidden flex flex-col justify-start w-[64px] text-left">
+                <motion.div
+                  animate={{
+                    y: [0, 0, -16, -16, 0],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    ease: [0.76, 0, 0.24, 1], // snappy mechanical rolling ease
+                    times: [0, 0.4, 0.5, 0.9, 1],
+                  }}
+                  className="flex flex-col"
+                >
+                  <span className="h-4 leading-4 block font-bold text-black select-none whitespace-nowrap">
+                    Hire Me
+                  </span>
+                  <span className="h-4 leading-4 block font-bold text-black select-none whitespace-nowrap">
+                    Get Quote
+                  </span>
+                </motion.div>
+              </div>
+
+              {/* Animated Floating & Directional Arrow */}
+              <motion.div
+                animate={{
+                  x: [0, 2, 0],
+                  y: [0, -2, 0],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatType: "mirror",
+                  ease: "easeInOut",
+                }}
+                className="shrink-0 flex items-center justify-center"
+              >
+                <ArrowUpRight 
+                  size={13} 
+                  className="text-black/80 stroke-[2.5] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" 
+                />
+              </motion.div>
             </button>
 
             <button
