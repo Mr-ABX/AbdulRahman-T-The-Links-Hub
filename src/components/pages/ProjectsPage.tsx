@@ -355,32 +355,31 @@ export const ProjectsPage = ({
                         <BentoCard
                           size="1x1"
                           className={cn(
-                            p.bg,
-                            "border-white/5 cursor-pointer relative overflow-hidden group/project flex flex-col p-0 shadow-lg transition-all duration-300",
+                            "bg-[#0c0c14] border-white/10 cursor-pointer relative overflow-hidden group/project flex flex-col p-0 shadow-lg hover:shadow-[0_24px_60px_rgba(0,0,0,0.9),0_0_30px_rgba(168,85,247,0.15)] hover:border-white/20 hover:scale-[1.02] transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]",
                             viewMode === "grid" ? "h-[450px]" : "h-auto md:h-44"
                           )}
                           onClick={() => openProjectModal(p)}
                           background={null}
                         >
                           {viewMode === "grid" ? (
-                            <div className="flex flex-col h-full w-full">
-                              {/* Top Image Area */}
-                              <div className="relative w-full h-[190px] shrink-0 overflow-hidden bg-black/40 border-b border-white/5">
+                            <div className="flex flex-col h-full w-full bg-[#0c0c14]">
+                              {/* Top Image Area - Seamlessly flows into card */}
+                              <div className="relative w-full h-[190px] shrink-0 overflow-hidden bg-[#0c0c14]">
                                 {imgUrl ? (
                                   <img
                                     src={imgUrl}
                                     alt={p.name}
-                                    className="w-full h-full object-cover opacity-80 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-110"
+                                    className="w-full h-full object-cover opacity-85 group-hover/project:opacity-100 transition-all duration-700 group-hover/project:scale-105"
                                     loading="lazy"
                                     referrerPolicy="no-referrer"
                                   />
                                 ) : (
-                                  <div className="w-full h-full flex items-center justify-center text-white/10 scale-150">
-                                    {p.icon}
+                                  <div className="w-full h-full flex items-center justify-center bg-white/[0.02]">
+                                    <span className="text-white/20 font-mono text-xs uppercase tracking-widest">{p.mainCategory}</span>
                                   </div>
                                 )}
-                                {/* Cover overlay gradient to transition nicely */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/20 to-transparent" />
+                                {/* Cover overlay gradient to blend seamlessly into card */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c14] via-[#0c0c14]/30 to-transparent" />
 
                                 {/* Play button indicator for video project ads */}
                                 {(p.previewUrl?.includes("youtube.com") || p.previewUrl?.includes("youtu.be")) && (
@@ -392,16 +391,11 @@ export const ProjectsPage = ({
                                 )}
 
                                 {/* Absolute Overlays inside Thumbnail area */}
-                                <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
-                                  <div
-                                    className={cn(
-                                      "p-2.5 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 shadow-lg text-white",
-                                      p.color
-                                    )}
-                                  >
-                                    {p.icon}
-                                  </div>
-                                  <div className="flex flex-col items-end gap-1.5">
+                                <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
+                                  <span className="text-[10px] font-mono text-white/80 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 uppercase tracking-wider font-semibold">
+                                    {p.mainCategory}
+                                  </span>
+                                  <div className="flex items-center gap-1.5">
                                     <span
                                       className={cn(
                                         "text-[8px] md:text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider backdrop-blur-md border border-white/10 shadow-lg font-mono text-white",
@@ -430,10 +424,10 @@ export const ProjectsPage = ({
                                 </div>
                               </div>
 
-                              {/* Bottom Content Area */}
-                              <div className="flex-1 p-5 flex flex-col justify-between bg-[#050505]/40">
+                              {/* Bottom Content Area - Continuous seamless background */}
+                              <div className="flex-1 p-5 flex flex-col justify-between bg-[#0c0c14]">
                                 <div className="space-y-2">
-                                  <h3 className="font-bold text-xl group-hover/project:text-indigo-400 transition-colors line-clamp-1 font-sans text-white">
+                                  <h3 className="font-extrabold text-xl group-hover/project:text-indigo-400 transition-colors line-clamp-1 font-sans text-white">
                                     {p.name}
                                   </h3>
                                   <p className="text-xs text-white/60 font-light leading-relaxed line-clamp-2 font-sans">
@@ -452,7 +446,7 @@ export const ProjectsPage = ({
                                   </div>
                                 </div>
 
-                                <div className="flex items-center justify-between pt-3 border-t border-white/5 mt-3">
+                                <div className="flex items-center justify-between pt-3 mt-3">
                                   <div className="text-[10px] font-bold text-white/40 group-hover:text-white transition-colors flex items-center gap-2 font-mono">
                                     <span>
                                       {p.mainCategory === "Video & Motion Graphics"
@@ -475,14 +469,7 @@ export const ProjectsPage = ({
                               </div>
                             </div>
                           ) : (
-                            <div className="flex flex-row items-center w-full h-full p-4 gap-4 bg-[#050505]/45">
-                              {/* Left Icon */}
-                              <div className="flex items-start shrink-0">
-                                <div className={cn("p-3 rounded-2xl bg-black/40 border border-white/10", p.color)}>
-                                  {p.icon}
-                                </div>
-                              </div>
-
+                            <div className="flex flex-row items-center w-full h-full p-5 gap-4 bg-[#0c0c14]">
                               {/* Mid Content */}
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2 mb-1">
@@ -552,19 +539,19 @@ export const ProjectsPage = ({
                                 </div>
                               </div>
 
-                              {/* Thumbnail preview - kept only on the right as a standard preview block */}
+                              {/* Thumbnail preview */}
                               <div className="hidden sm:block relative w-36 h-28 rounded-xl overflow-hidden shrink-0 border border-white/10">
                                 {imgUrl ? (
                                   <img
                                     src={imgUrl}
                                     alt={p.name}
-                                    className="w-full h-full object-cover opacity-80 group-hover/project:opacity-100 transition-all duration-500 group-hover/project:scale-110"
+                                    className="w-full h-full object-cover opacity-85 group-hover/project:opacity-100 transition-all duration-500 group-hover/project:scale-105"
                                     loading="lazy"
                                     referrerPolicy="no-referrer"
                                   />
                                 ) : (
-                                  <div className="w-full h-full bg-white/5 flex items-center justify-center">
-                                    <div className="opacity-20 scale-150 text-white">{p.icon}</div>
+                                  <div className="w-full h-full flex items-center justify-center bg-white/[0.02] text-white/30 text-xs font-mono">
+                                    PREVIEW
                                   </div>
                                 )}
                               </div>

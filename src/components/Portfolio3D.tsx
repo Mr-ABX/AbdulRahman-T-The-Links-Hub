@@ -142,15 +142,15 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                   duration: 0.6,
                   ease: [0.23, 1, 0.32, 1],
                 }}
-                className={`absolute w-[92%] sm:w-[580px] md:w-[650px] h-[440px] sm:h-[500px] rounded-[28px] bg-[#0c0c14]/95 border ${
+                className={`absolute w-[92%] sm:w-[580px] md:w-[650px] h-[440px] sm:h-[500px] rounded-[28px] bg-[#0c0c14] border ${
                   isCenter
-                    ? "border-white/20 shadow-[0_30px_90px_rgba(0,0,0,0.95),0_0_50px_rgba(168,85,247,0.18),inset_0_1px_0_0_rgba(255,255,255,0.2)] z-30"
+                    ? "border-white/15 shadow-[0_30px_90px_rgba(0,0,0,0.95),0_0_40px_rgba(168,85,247,0.15),inset_0_1px_0_0_rgba(255,255,255,0.15)] z-30 hover:scale-[1.02] hover:shadow-[0_40px_110px_rgba(0,0,0,0.98),0_0_65px_rgba(168,85,247,0.25)] hover:border-white/25 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
                     : "border-white/10 shadow-xl z-10 cursor-pointer hover:opacity-60"
                 } overflow-hidden flex flex-col backdrop-blur-3xl group`}
               >
                 {/* Top Specular Edge Highlight for Center Card */}
                 {isCenter && (
-                  <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-purple-400/60 to-transparent" />
+                  <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-purple-400/50 to-transparent pointer-events-none" />
                 )}
 
                 {/* Left/Right Card Edge Fade Gradients for Extra Depth */}
@@ -158,65 +158,60 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                   <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/70 z-20 pointer-events-none" />
                 )}
 
-                {/* Apple HIG Header Bar */}
-                <div className="px-5 py-4 border-b border-white/[0.08] flex items-center justify-between bg-white/[0.03]">
-                  <div className="flex items-center gap-3">
-                    <div className={`p-2.5 rounded-2xl ${project.bg} ${project.color} border border-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)] flex items-center justify-center`}>
-                      {project.icon}
-                    </div>
-                    <div>
-                      <h3 className="text-white font-bold text-base sm:text-lg tracking-tight flex items-center gap-2">
-                        <span>{project.name}</span>
-                      </h3>
-                      <p className="text-white/40 text-[11px] font-mono tracking-wide">
+                {/* Apple HIG Clean Header Bar without distracting icons or heavy line borders */}
+                <div className="px-6 pt-5 pb-3 flex items-center justify-between bg-transparent">
+                  <div className="flex flex-col text-left min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span className="text-[11px] font-mono uppercase tracking-wider text-white/50 font-semibold">
                         {project.mainCategory}
-                      </p>
+                      </span>
+                      {project.hasCaseStudy && (
+                        <span className="text-[9px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full uppercase tracking-wider font-semibold">
+                          Case Study
+                        </span>
+                      )}
                     </div>
+                    <h3 className="text-white font-extrabold text-lg sm:text-xl md:text-2xl tracking-tight truncate">
+                      {project.name}
+                    </h3>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    {/* Audio Toggle Pill for Video Cards - Compact Sound Icon */}
+                  <div className="flex items-center gap-2 shrink-0">
+                    {/* Audio Toggle Pill for Video Cards */}
                     {isVideo && isCenter && (
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           setUnmutedVideoId(isAudioActive ? null : project.youtubeId);
                         }}
-                        className={`p-2 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+                        className={`px-2.5 py-1.5 rounded-full flex items-center justify-center transition-all cursor-pointer ${
                           isAudioActive
-                            ? "bg-purple-500 text-white border border-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.6)]"
-                            : "bg-white/10 text-white/70 border border-white/10 hover:bg-white/20 hover:text-white"
+                            ? "bg-purple-500 text-white shadow-[0_0_14px_rgba(168,85,247,0.6)]"
+                            : "bg-white/10 text-white/70 hover:bg-white/20 hover:text-white"
                         }`}
-                        title={isAudioActive ? "Mute Audio (720p HD)" : "Unmute Audio (720p HD)"}
+                        title={isAudioActive ? "Mute Audio" : "Unmute Audio (HD)"}
                       >
                         {isAudioActive ? (
-                          <div className="flex items-center gap-1">
-                            <Volume2 size={14} className="animate-pulse text-white" />
-                            <span className="text-[9px] font-mono font-bold tracking-tight bg-black/40 px-1 py-0.5 rounded text-purple-200">720p</span>
+                          <div className="flex items-center gap-1.5">
+                            <Volume2 size={13} className="animate-pulse text-white" />
+                            <span className="text-[9px] font-mono font-bold text-purple-100">720p</span>
                           </div>
                         ) : (
-                          <div className="flex items-center gap-1">
-                            <VolumeX size={14} />
+                          <div className="flex items-center gap-1.5">
+                            <VolumeX size={13} />
                             <span className="text-[9px] font-mono text-white/50">HD</span>
                           </div>
                         )}
                       </button>
                     )}
 
-                    {project.hasCaseStudy && (
-                      <span className="text-[10px] font-mono text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 rounded-full uppercase tracking-wider flex items-center gap-1">
-                        <Sparkles size={11} />
-                        Case Study
-                      </span>
-                    )}
-
-                    <span className="text-[10px] font-mono text-purple-400 border border-purple-500/30 bg-purple-500/10 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                    <span className="text-[10px] font-mono text-white/60 bg-white/[0.06] px-2.5 py-1 rounded-full uppercase tracking-wider font-semibold">
                       {project.status || "Production"}
                     </span>
                   </div>
                 </div>
 
-                {/* Card Preview Viewport */}
+                {/* Seamless Edge-to-Edge Card Preview Viewport - Blends 100% with the card background */}
                 <div 
                   data-hide-cursor="true"
                   onMouseEnter={() => {
@@ -225,23 +220,23 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                   onMouseLeave={() => {
                     window.dispatchEvent(new CustomEvent('show-custom-cursor'));
                   }}
-                  className="relative flex-1 bg-black/80 overflow-hidden flex items-center justify-center p-2.5 preview-viewport"
+                  className="relative flex-1 bg-[#0c0c14] overflow-hidden flex items-center justify-center px-6 py-1 preview-viewport"
                 >
-                  <div className="w-full h-full rounded-2xl overflow-hidden border border-white/10 bg-[#05050a] relative">
+                  <div className="w-full h-full rounded-xl overflow-hidden bg-[#0c0c14] relative">
                     {project.name.includes("MSN Global") ? (
-                      <div className="w-full h-full flex flex-col justify-between p-5 sm:p-6 bg-gradient-to-br from-[#0c0c16] via-[#150f29] to-[#090912] relative overflow-hidden text-left">
+                      <div className="w-full h-full flex flex-col justify-between p-5 bg-gradient-to-br from-[#0c0c14] via-[#141026] to-[#0c0c14] relative overflow-hidden text-left rounded-xl">
                         {/* Background subtle mesh glow */}
-                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-rose-500/20 rounded-full blur-3xl pointer-events-none" />
-                        <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl pointer-events-none" />
+                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-rose-500/15 rounded-full blur-3xl pointer-events-none" />
+                        <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-purple-500/15 rounded-full blur-3xl pointer-events-none" />
                         
-                        {/* Top Simulated Browser Bar */}
-                        <div className="w-full flex items-center justify-between py-2 px-3 rounded-xl bg-white/[0.04] border border-white/10 backdrop-blur-md">
+                        {/* Top Clean Browser Bar */}
+                        <div className="w-full flex items-center justify-between py-2 px-3 rounded-lg bg-white/[0.03] backdrop-blur-md">
                           <div className="flex items-center gap-1.5">
-                            <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
-                            <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-                            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                            <span className="w-2 h-2 rounded-full bg-rose-500/80" />
+                            <span className="w-2 h-2 rounded-full bg-amber-500/80" />
+                            <span className="w-2 h-2 rounded-full bg-emerald-500/80" />
                           </div>
-                          <div className="flex items-center gap-1.5 text-[10px] font-mono text-white/60 bg-black/50 px-3 py-1 rounded-full border border-white/10">
+                          <div className="flex items-center gap-1.5 text-[10px] font-mono text-white/60 bg-black/40 px-3 py-1 rounded-full">
                             <Lock size={10} className="text-emerald-400" />
                             <span>trainings.msn-global.com</span>
                           </div>
@@ -249,9 +244,9 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                         </div>
 
                         {/* Center Hero Info */}
-                        <div className="w-full my-auto flex flex-col gap-2.5 z-10 py-2">
+                        <div className="w-full my-auto flex flex-col gap-2 z-10 py-1">
                           <div className="flex items-center gap-2">
-                            <span className="px-2.5 py-0.5 rounded-full bg-rose-500/20 border border-rose-500/40 text-rose-300 text-[10px] font-mono uppercase tracking-widest font-semibold flex items-center gap-1">
+                            <span className="px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 text-[10px] font-mono uppercase tracking-widest font-semibold flex items-center gap-1">
                               <GraduationCap size={12} />
                               Enterprise Academy
                             </span>
@@ -264,16 +259,16 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                             A premier corporate learning academy with interactive curriculum syllabus, fast lead funnels, and high-conversion enterprise UX.
                           </p>
 
-                          <div className="grid grid-cols-3 gap-2 mt-1 pt-2 border-t border-white/10">
-                            <div className="p-2 rounded-xl bg-white/[0.03] border border-white/5">
+                          <div className="grid grid-cols-3 gap-2 mt-1 pt-1.5">
+                            <div className="p-2 rounded-lg bg-white/[0.03]">
                               <p className="text-[9px] text-white/40 font-mono">ENROLLMENT</p>
                               <p className="text-xs sm:text-sm font-bold text-rose-400">+340%</p>
                             </div>
-                            <div className="p-2 rounded-xl bg-white/[0.03] border border-white/5">
+                            <div className="p-2 rounded-lg bg-white/[0.03]">
                               <p className="text-[9px] text-white/40 font-mono">AVG SESSION</p>
                               <p className="text-xs sm:text-sm font-bold text-white">4.8m</p>
                             </div>
-                            <div className="p-2 rounded-xl bg-white/[0.03] border border-white/5">
+                            <div className="p-2 rounded-lg bg-white/[0.03]">
                               <p className="text-[9px] text-white/40 font-mono">SATISFACTION</p>
                               <p className="text-xs sm:text-sm font-bold text-emerald-400">99.2%</p>
                             </div>
@@ -281,7 +276,7 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                         </div>
 
                         {/* Bottom Actions */}
-                        <div className="w-full flex items-center justify-between pt-2 border-t border-white/10 z-10">
+                        <div className="w-full flex items-center justify-between pt-1.5 z-10">
                           <span className="text-[10px] font-mono text-white/40">Live Production URL</span>
                           <div className="flex items-center gap-2">
                             {setActiveTab && (
@@ -290,7 +285,7 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                                   e.stopPropagation();
                                   setActiveTab("CaseStudies");
                                 }}
-                                className="px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 text-xs font-semibold flex items-center gap-1 transition-colors border border-rose-500/30 cursor-pointer"
+                                className="px-3 py-1.5 rounded-full bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
                               >
                                 <Sparkles size={11} />
                                 <span>Case Study</span>
@@ -301,7 +296,7 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                                 e.stopPropagation();
                                 openExternal("http://trainings.msn-global.com/");
                               }}
-                              className="px-3.5 py-1.5 rounded-lg bg-white text-black hover:bg-neutral-200 text-xs font-bold flex items-center gap-1 transition-transform hover:scale-105 cursor-pointer shadow-md"
+                              className="px-3.5 py-1.5 rounded-full bg-white text-black hover:bg-neutral-200 text-xs font-bold flex items-center gap-1 transition-transform hover:scale-105 cursor-pointer shadow-md"
                             >
                               <span>Open Live Portal</span>
                               <ExternalLink size={11} />
@@ -319,9 +314,6 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                       />
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center">
-                        <div className={`p-4 rounded-2xl ${project.bg} ${project.color} mb-3`}>
-                          {project.icon}
-                        </div>
                         <h4 className="text-white font-bold text-base mb-1">{project.name}</h4>
                         <p className="text-white/50 text-xs max-w-xs">{project.desc}</p>
                       </div>
@@ -329,10 +321,10 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                   </div>
                 </div>
 
-                {/* Apple HIG Card Footer */}
-                <div className="px-5 py-4 bg-[#08080f]/95 border-t border-white/[0.08] flex items-center justify-between gap-4">
+                {/* Apple HIG Clean Card Footer without Heavy Divider Lines */}
+                <div className="px-6 pt-3 pb-5 bg-transparent flex items-center justify-between gap-4">
                   <div className="flex-1 min-w-0">
-                    <p className="text-white/70 text-xs leading-relaxed line-clamp-1">
+                    <p className="text-white/65 text-xs leading-relaxed line-clamp-1 font-normal">
                       {project.desc}
                     </p>
                   </div>
@@ -345,7 +337,7 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                             e.stopPropagation();
                             setActiveTab("CaseStudies");
                           }}
-                          className="px-3.5 py-2 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 font-semibold text-xs tracking-tight transition-colors flex items-center gap-1.5 cursor-pointer border border-purple-500/30"
+                          className="px-3.5 py-1.5 rounded-full bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 font-semibold text-xs tracking-tight transition-colors flex items-center gap-1.5 cursor-pointer"
                         >
                           <Sparkles size={13} />
                           <span>Case Study</span>
@@ -356,7 +348,7 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                           e.stopPropagation();
                           setSelectedProject(project);
                         }}
-                        className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs tracking-tight transition-colors flex items-center gap-1.5 cursor-pointer border border-white/10"
+                        className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs tracking-tight transition-colors flex items-center gap-1.5 cursor-pointer"
                       >
                         <Maximize2 size={13} />
                         <span className="hidden sm:inline">Inspect</span>
@@ -366,10 +358,10 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                           e.stopPropagation();
                           openExternal(project.url);
                         }}
-                        className="px-4 py-2 rounded-xl bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight transition-colors flex items-center gap-1.5 cursor-pointer shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                        className="px-4 py-1.5 rounded-full bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight transition-all flex items-center gap-1.5 cursor-pointer shadow-[0_4px_16px_rgba(255,255,255,0.15)] hover:scale-105 active:scale-95"
                       >
                         <span>Launch</span>
-                        <ExternalLink size={13} />
+                        <ExternalLink size={12} />
                       </button>
                     </div>
                   )}
