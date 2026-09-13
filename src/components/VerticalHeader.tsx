@@ -253,17 +253,17 @@ export const VerticalHeader = ({
             <Send size={13} strokeWidth={1.35} />
           ) : (
             <>
-              <div className="relative h-4 overflow-hidden flex flex-col justify-start w-[64px] text-center">
+              <div className="relative h-4 overflow-hidden flex flex-col justify-start w-[58px] text-center">
                 <motion.div
                   animate={{
                     y: [0, 0, -16, -16, 0],
                   }}
                   transition={{
-                    duration: 4,
+                    duration: 7,
                     repeat: Infinity,
                     repeatType: "loop",
                     ease: [0.76, 0, 0.24, 1],
-                    times: [0, 0.4, 0.5, 0.9, 1],
+                    times: [0, 0.44, 0.50, 0.94, 1],
                   }}
                   className="flex flex-col items-center"
                 >
@@ -276,15 +276,17 @@ export const VerticalHeader = ({
                 </motion.div>
               </div>
 
+              {/* Animated Directional Arrow - Nudges twice during text roll, then stays at rest */}
               <motion.div
                 animate={{
-                  x: [0, 2, 0],
-                  y: [0, -2, 0],
+                  x: [0, 0, 2.5, 0, 2.5, 0, 0, 0, 2.5, 0, 2.5, 0],
+                  y: [0, 0, -2.5, 0, -2.5, 0, 0, 0, -2.5, 0, -2.5, 0],
                 }}
                 transition={{
-                  duration: 2,
+                  duration: 7,
                   repeat: Infinity,
-                  repeatType: "mirror",
+                  repeatType: "loop",
+                  times: [0, 0.44, 0.46, 0.48, 0.50, 0.53, 0.94, 0.96, 0.98, 1, 1, 1],
                   ease: "easeInOut",
                 }}
                 className="shrink-0 flex items-center justify-center"

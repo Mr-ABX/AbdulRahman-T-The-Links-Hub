@@ -277,17 +277,17 @@ export const MainHeader = ({
               className="hidden sm:inline-flex items-center justify-center gap-1.5 px-4 py-1.5 bg-white text-black hover:bg-white/95 font-semibold text-xs tracking-tight rounded-full transition-all duration-300 shadow-[0_4px_16px_rgba(255,255,255,0.18)] hover:scale-[1.03] active:scale-[0.98] group overflow-hidden h-8"
             >
               {/* Jackpot / Slot Machine Rolling Text Cylinder */}
-              <div className="relative h-4 overflow-hidden flex flex-col justify-start w-[64px] text-left">
+              <div className="relative h-4 overflow-hidden flex flex-col justify-start w-[58px] text-left">
                 <motion.div
                   animate={{
                     y: [0, 0, -16, -16, 0],
                   }}
                   transition={{
-                    duration: 4,
+                    duration: 7,
                     repeat: Infinity,
                     repeatType: "loop",
-                    ease: [0.76, 0, 0.24, 1], // snappy mechanical rolling ease
-                    times: [0, 0.4, 0.5, 0.9, 1],
+                    ease: [0.76, 0, 0.24, 1],
+                    times: [0, 0.44, 0.50, 0.94, 1],
                   }}
                   className="flex flex-col"
                 >
@@ -300,16 +300,17 @@ export const MainHeader = ({
                 </motion.div>
               </div>
 
-              {/* Animated Floating & Directional Arrow */}
+              {/* Animated Directional Arrow - Nudges twice during text roll, then stays at rest */}
               <motion.div
                 animate={{
-                  x: [0, 2, 0],
-                  y: [0, -2, 0],
+                  x: [0, 0, 2.5, 0, 2.5, 0, 0, 0, 2.5, 0, 2.5, 0],
+                  y: [0, 0, -2.5, 0, -2.5, 0, 0, 0, -2.5, 0, -2.5, 0],
                 }}
                 transition={{
-                  duration: 2,
+                  duration: 7,
                   repeat: Infinity,
-                  repeatType: "mirror",
+                  repeatType: "loop",
+                  times: [0, 0.44, 0.46, 0.48, 0.50, 0.53, 0.94, 0.96, 0.98, 1, 1, 1],
                   ease: "easeInOut",
                 }}
                 className="shrink-0 flex items-center justify-center"

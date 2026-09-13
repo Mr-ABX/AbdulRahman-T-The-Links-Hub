@@ -214,10 +214,10 @@ export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({
                       <span>{s.tag}</span>
                     </div>
 
-                    <h3 className="text-base sm:text-lg md:text-xl font-bold tracking-tight text-white flex items-center gap-2 truncate">
+                    <h3 className="text-[26px] leading-tight font-bold tracking-tight text-white flex items-center gap-2 truncate">
                       <span>{s.title}</span>
                       <ArrowUpRight 
-                        size={15} 
+                        size={17} 
                         className={`transition-all duration-300 shrink-0 ${
                           isHovered 
                             ? "text-white translate-x-0.5 -translate-y-0.5 opacity-100" 
