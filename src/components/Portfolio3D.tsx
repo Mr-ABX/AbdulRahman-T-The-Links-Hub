@@ -332,37 +332,57 @@ export const Portfolio3D: React.FC<Portfolio3DProps> = ({ setActiveTab }) => {
                   {isCenter && (
                     <div className="flex items-center gap-2 shrink-0">
                       {project.hasCaseStudy && setActiveTab && (
+                        <div className="relative group/tip">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setActiveTab("CaseStudies");
+                            }}
+                            className="px-3.5 py-1.5 rounded-full bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 font-semibold text-xs tracking-tight transition-all flex items-center gap-1.5 cursor-pointer hover:shadow-[inset_0_0_10px_rgba(168,85,247,0.4)] hover:scale-105 active:scale-95"
+                          >
+                            <Sparkles size={13} />
+                            <span>Case Study</span>
+                          </button>
+                          <div className="absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-[#161622]/95 border border-white/15 text-white/90 text-[10px] font-mono rounded-full backdrop-blur-md shadow-xl opacity-0 group-hover/tip:opacity-100 transition-all pointer-events-none whitespace-nowrap translate-y-1 group-hover/tip:translate-y-0 duration-150 z-30">
+                            <span>Deep Architecture Breakdown</span>
+                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#161622] border-r border-b border-white/15 rotate-45" />
+                          </div>
+                        </div>
+                      )}
+                      
+                      <div className="relative group/tip">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            setActiveTab("CaseStudies");
+                            setSelectedProject(project);
                           }}
-                          className="px-3.5 py-1.5 rounded-full bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 font-semibold text-xs tracking-tight transition-colors flex items-center gap-1.5 cursor-pointer"
+                          className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs tracking-tight transition-all flex items-center gap-1.5 cursor-pointer hover:shadow-[inset_0_0_10px_rgba(255,255,255,0.2)] hover:scale-105 active:scale-95"
                         >
-                          <Sparkles size={13} />
-                          <span>Case Study</span>
+                          <Maximize2 size={13} />
+                          <span className="hidden sm:inline">Inspect</span>
                         </button>
-                      )}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedProject(project);
-                        }}
-                        className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs tracking-tight transition-colors flex items-center gap-1.5 cursor-pointer"
-                      >
-                        <Maximize2 size={13} />
-                        <span className="hidden sm:inline">Inspect</span>
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          openExternal(project.url);
-                        }}
-                        className="px-4 py-1.5 rounded-full bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-tight transition-all flex items-center gap-1.5 cursor-pointer shadow-[0_4px_16px_rgba(255,255,255,0.15)] hover:scale-105 active:scale-95"
-                      >
-                        <span>Launch</span>
-                        <ExternalLink size={12} />
-                      </button>
+                        <div className="absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-[#161622]/95 border border-white/15 text-white/90 text-[10px] font-mono rounded-full backdrop-blur-md shadow-xl opacity-0 group-hover/tip:opacity-100 transition-all pointer-events-none whitespace-nowrap translate-y-1 group-hover/tip:translate-y-0 duration-150 z-30">
+                          <span>Quick Preview & Specs</span>
+                          <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#161622] border-r border-b border-white/15 rotate-45" />
+                        </div>
+                      </div>
+
+                      <div className="relative group/tip">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openExternal(project.url);
+                          }}
+                          className="px-4 py-1.5 rounded-full bg-white text-black hover:bg-neutral-100 font-semibold text-xs tracking-tight transition-all flex items-center gap-1.5 cursor-pointer shadow-[0_4px_16px_rgba(255,255,255,0.15)] hover:shadow-[inset_0_0_10px_rgba(255,255,255,0.6),0_6px_20px_rgba(255,255,255,0.25)] hover:scale-105 active:scale-95"
+                        >
+                          <span>Launch</span>
+                          <ExternalLink size={12} />
+                        </button>
+                        <div className="absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-[#161622]/95 border border-white/15 text-white/90 text-[10px] font-mono rounded-full backdrop-blur-md shadow-xl opacity-0 group-hover/tip:opacity-100 transition-all pointer-events-none whitespace-nowrap translate-y-1 group-hover/tip:translate-y-0 duration-150 z-30">
+                          <span>Open Live Production Site</span>
+                          <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#161622] border-r border-b border-white/15 rotate-45" />
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>

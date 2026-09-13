@@ -144,7 +144,7 @@ export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({
   };
 
   return (
-    <section className="py-20 md:py-32 max-w-[1060px] mx-auto px-4 md:px-6 relative">
+    <section className="py-20 md:py-32 max-w-[1060px] mx-auto px-4 md:px-6 relative border-t border-white/[0.08]">
       
       {/* Apple HIG Section Header - Enhanced Typography & Stature */}
       <div className="text-center max-w-3xl mx-auto mb-14 md:mb-16 relative z-10">
@@ -175,35 +175,57 @@ export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="border border-white/20 rounded-3xl bg-black/95 backdrop-blur-2xl overflow-hidden shadow-[0_25px_80px_rgba(0,0,0,0.95)] divide-y divide-white/10 relative z-10"
+            className="border border-white/10 rounded-3xl bg-[#0c0c14]/90 backdrop-blur-2xl overflow-hidden shadow-[0_25px_80px_rgba(0,0,0,0.95)] divide-y divide-white/5 relative z-10"
           >
-            {[1, 2, 3, 4, 5, 6].map((idx) => (
+            {[
+              { color: "rgba(34, 197, 94, 0.15)", border: "rgba(34, 197, 94, 0.3)" },
+              { color: "rgba(249, 115, 22, 0.15)", border: "rgba(249, 115, 22, 0.3)" },
+              { color: "rgba(234, 179, 8, 0.15)", border: "rgba(234, 179, 8, 0.3)" },
+              { color: "rgba(236, 72, 153, 0.15)", border: "rgba(236, 72, 153, 0.3)" },
+              { color: "rgba(168, 85, 247, 0.15)", border: "rgba(168, 85, 247, 0.3)" },
+              { color: "rgba(59, 130, 246, 0.15)", border: "rgba(59, 130, 246, 0.3)" },
+            ].map((theme, idx) => (
               <div
                 key={`service-skeleton-${idx}`}
                 className="p-5 sm:p-6 md:p-7 relative overflow-hidden"
               >
-                {/* Shimmer sweep effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent animate-pulse pointer-events-none" />
+                {/* Theme matched soft ambient pulse */}
+                <div 
+                  className="absolute inset-0 opacity-20 pointer-events-none animate-pulse"
+                  style={{
+                    background: `linear-gradient(90deg, transparent, ${theme.color}, transparent)`,
+                    animationDuration: "2s",
+                  }}
+                />
 
                 <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   {/* Left: Shape + Tag + Title placeholders */}
                   <div className="flex items-center gap-4 sm:gap-5 flex-1 min-w-0">
-                    {/* Shape Box Skeleton */}
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/[0.06] shrink-0 animate-pulse" />
+                    {/* Shape Box Skeleton with thematic glow */}
+                    <div 
+                      className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl shrink-0 animate-pulse border"
+                      style={{
+                        backgroundColor: theme.color,
+                        borderColor: theme.border,
+                      }}
+                    />
                     
                     {/* Tag & Title Skeletons */}
                     <div className="space-y-2 flex-1">
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-[2px] bg-white/[0.12] shrink-0" />
-                        <div className="h-3 w-20 rounded bg-white/[0.07] animate-pulse" />
+                        <div 
+                          className="w-2 h-2 rounded-[2px] shrink-0" 
+                          style={{ backgroundColor: theme.border }}
+                        />
+                        <div className="h-3 w-24 rounded bg-white/[0.08] animate-pulse" />
                       </div>
-                      <div className="h-6 w-44 sm:w-64 rounded bg-white/[0.09] animate-pulse" />
+                      <div className="h-6 w-48 sm:w-72 rounded bg-white/[0.1] animate-pulse" />
                     </div>
                   </div>
 
                   {/* Right: CTA Button Skeleton */}
                   <div className="pt-2 sm:pt-0 shrink-0">
-                    <div className="h-8 w-32 rounded-xl bg-white/[0.06] border border-white/[0.08] animate-pulse" />
+                    <div className="h-9 w-36 rounded-xl bg-white/[0.05] border border-white/[0.08] animate-pulse" />
                   </div>
                 </div>
               </div>
@@ -352,24 +374,38 @@ export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({
 
       {/* Actions: Explore Full Services & Get a Custom Quote */}
       <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
-        <button
-          id="all-services-cta-btn"
-          onClick={onNavigateToServices}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full bg-white text-black hover:bg-neutral-100 font-semibold text-xs tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(255,255,255,0.18)] hover:scale-105 active:scale-95 cursor-pointer"
-        >
-          <span>Explore All Services &amp; Roadmaps</span>
-          <ArrowRight size={14} />
-        </button>
+        <div className="relative group/tip w-full sm:w-auto">
+          <button
+            id="all-services-cta-btn"
+            onClick={onNavigateToServices}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full bg-white text-black hover:bg-neutral-100 font-semibold text-xs tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(255,255,255,0.18)] hover:scale-105 active:scale-95 cursor-pointer hover:shadow-[inset_0_0_12px_rgba(255,255,255,0.6),0_8px_25px_rgba(255,255,255,0.25)]"
+          >
+            <span>Explore All Services &amp; Roadmaps</span>
+            <ArrowRight size={14} />
+          </button>
+          {/* Apple HIG Floating Tooltip */}
+          <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#161622]/95 border border-white/15 text-white/90 text-[10px] font-mono rounded-full backdrop-blur-md shadow-xl opacity-0 group-hover/tip:opacity-100 transition-all pointer-events-none whitespace-nowrap translate-y-1 group-hover/tip:translate-y-0 duration-200 z-30">
+            <span>Browse Full Capabilities Catalog</span>
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#161622] border-r border-b border-white/15 rotate-45" />
+          </div>
+        </div>
 
-        <button
-          id="custom-quote-services-cta-btn"
-          onClick={handleCustomQuote}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 hover:border-white/30 text-white font-semibold text-xs tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xl group"
-        >
-          <FileText size={14} className="text-white/80 group-hover:text-white transition-colors stroke-[1.75]" />
-          <span>Get a Custom Quote</span>
-          <ArrowUpRight size={14} className="text-white/60 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-        </button>
+        <div className="relative group/tip w-full sm:w-auto">
+          <button
+            id="custom-quote-services-cta-btn"
+            onClick={handleCustomQuote}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 py-3.5 px-8 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 hover:border-white/30 text-white font-semibold text-xs tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xl group hover:shadow-[inset_0_0_14px_rgba(255,255,255,0.12)]"
+          >
+            <FileText size={14} className="text-white/80 group-hover:text-white transition-colors stroke-[1.75]" />
+            <span>Get a Custom Quote</span>
+            <ArrowUpRight size={14} className="text-white/60 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+          </button>
+          {/* Apple HIG Floating Tooltip */}
+          <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#161622]/95 border border-white/15 text-white/90 text-[10px] font-mono rounded-full backdrop-blur-md shadow-xl opacity-0 group-hover/tip:opacity-100 transition-all pointer-events-none whitespace-nowrap translate-y-1 group-hover/tip:translate-y-0 duration-200 z-30">
+            <span>Calculate Fixed Scope Proposal</span>
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#161622] border-r border-b border-white/15 rotate-45" />
+          </div>
+        </div>
       </div>
 
     </section>

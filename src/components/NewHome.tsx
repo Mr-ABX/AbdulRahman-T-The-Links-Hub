@@ -665,19 +665,32 @@ export const Home = ({
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3.5">
-            <button
-              onClick={() => setActiveTab("Projects")}
-              className="px-7 py-3.5 rounded-full bg-white hover:bg-neutral-200 text-black font-semibold tracking-tight text-xs uppercase transition-all hover:scale-105 active:scale-95 flex items-center gap-2 shadow-[0_4px_20px_rgba(255,255,255,0.18)] cursor-pointer"
-            >
-              <span>Explore Projects</span>
-              <ArrowRight size={14} className="stroke-[2.5]" />
-            </button>
-            <button
-              onClick={() => setActiveTab("Connect")}
-              className="px-6 py-3.5 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-white/80 hover:text-white font-semibold tracking-tight text-xs transition-all border border-white/10 hover:border-white/20 cursor-pointer"
-            >
-              Get in Touch
-            </button>
+            <div className="relative group/tip">
+              <button
+                onClick={() => setActiveTab("Projects")}
+                className="px-7 py-3.5 rounded-full bg-white hover:bg-neutral-100 text-black font-semibold tracking-tight text-xs uppercase transition-all hover:scale-105 active:scale-95 flex items-center gap-2 shadow-[0_4px_20px_rgba(255,255,255,0.18)] hover:shadow-[inset_0_0_12px_rgba(255,255,255,0.7),0_8px_25px_rgba(255,255,255,0.3)] cursor-pointer"
+              >
+                <span>Explore Projects</span>
+                <ArrowRight size={14} className="stroke-[2.5]" />
+              </button>
+              <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#161622]/95 border border-white/15 text-white/90 text-[10px] font-mono rounded-full backdrop-blur-md shadow-xl opacity-0 group-hover/tip:opacity-100 transition-all pointer-events-none whitespace-nowrap translate-y-1 group-hover/tip:translate-y-0 duration-200 z-30">
+                <span>View Full Works &amp; Spatial Demos</span>
+                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#161622] border-r border-b border-white/15 rotate-45" />
+              </div>
+            </div>
+
+            <div className="relative group/tip">
+              <button
+                onClick={() => setActiveTab("Connect")}
+                className="px-6 py-3.5 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-white/90 hover:text-white font-semibold tracking-tight text-xs transition-all border border-white/10 hover:border-white/25 hover:shadow-[inset_0_0_14px_rgba(255,255,255,0.14)] hover:scale-105 active:scale-95 cursor-pointer"
+              >
+                Get in Touch
+              </button>
+              <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#161622]/95 border border-white/15 text-white/90 text-[10px] font-mono rounded-full backdrop-blur-md shadow-xl opacity-0 group-hover/tip:opacity-100 transition-all pointer-events-none whitespace-nowrap translate-y-1 group-hover/tip:translate-y-0 duration-200 z-30">
+                <span>Start Direct Communication</span>
+                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#161622] border-r border-b border-white/15 rotate-45" />
+              </div>
+            </div>
           </div>
         </motion.div>
 
@@ -1050,7 +1063,7 @@ export const Home = ({
       <ClientJourney />
 
       {/* 7. Apple HIG Pro Contact & Strategy Call Area */}
-      <section className="py-20 md:py-28 max-w-[1250px] mx-auto px-4 md:px-8">
+      <section className="py-20 md:py-28 max-w-[1250px] mx-auto px-4 md:px-8 border-t border-white/[0.08]">
         <div className="bg-[#090912]/80 rounded-[2.5rem] md:rounded-[3rem] border border-white/10 p-6 sm:p-8 md:p-12 lg:p-14 flex flex-col lg:flex-row gap-10 lg:gap-14 relative overflow-hidden items-stretch shadow-[0_30px_90px_rgba(0,0,0,0.95)] backdrop-blur-2xl">
           {/* Subtle ambient lighting */}
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-purple-400/40 to-transparent" />
