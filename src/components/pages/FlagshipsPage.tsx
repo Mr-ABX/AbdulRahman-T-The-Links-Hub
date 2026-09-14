@@ -22,6 +22,7 @@ import {
   Bot,
   Eye,
   Lock,
+  MessageSquareQuote,
 } from "lucide-react";
 
 export interface FlagshipProduct {
@@ -32,7 +33,7 @@ export interface FlagshipProduct {
   status: "Active Beta (MVP)" | "Coming Soon" | "In Development";
   version?: string;
   icon?: string;
-  fallbackIconType: "mic" | "bot" | "palette" | "sparkles";
+  fallbackIconType: "mic" | "bot" | "palette" | "sparkles" | "snapcaption";
   tags: string[];
   githubTags: string[];
   pricing: string;
@@ -53,8 +54,7 @@ const FLAGSHIPS: FlagshipProduct[] = [
     category: "AI Tools",
     status: "Active Beta (MVP)",
     version: "v1.0.0",
-    icon: "https://snapcaption.netlify.app/favicon.ico",
-    fallbackIconType: "palette",
+    fallbackIconType: "snapcaption",
     tags: ["React", "AI", "Captions", "Open Source"],
     githubTags: [
       "ai",
@@ -62,7 +62,7 @@ const FLAGSHIPS: FlagshipProduct[] = [
       "react",
     ],
     pricing: "100% Free",
-    desc: "AI-powered caption generation tool for modern creators. Generate perfect captions instantly.",
+    desc: "AI-powered caption generation tool for modern creators. Generate high-converting captions and hashtags instantly.",
     previewUrl: "https://snapcaption.netlify.app/",
     repoUrl: "https://github.com/Mr-ABX",
     hasRichDetail: true,
@@ -196,6 +196,24 @@ export const FlagshipsPage = () => {
     size: "md" | "lg" = "md",
     isComingSoon: boolean = false
   ) => {
+    if (product.id === "snapcaption" || product.fallbackIconType === "snapcaption") {
+      const iconSize = size === "lg" ? 36 : 28;
+      return (
+        <div className="w-full h-full flex flex-col items-center justify-center relative overflow-hidden bg-gradient-to-br from-purple-500/20 via-pink-500/15 to-blue-500/20 group-hover:from-purple-500/30 group-hover:to-pink-500/30 transition-all duration-300">
+          <div className="relative flex items-center justify-center">
+            <MessageSquareQuote
+              size={iconSize}
+              className="text-purple-300 group-hover:text-white transition-colors duration-300 stroke-[1.8] drop-shadow-[0_2px_8px_rgba(168,85,247,0.4)]"
+            />
+            <Sparkles
+              size={size === "lg" ? 14 : 11}
+              className="absolute -top-1 -right-1 text-pink-400 fill-pink-400/40 animate-pulse"
+            />
+          </div>
+        </div>
+      );
+    }
+
     if (product.icon) {
       return (
         <img
@@ -621,8 +639,62 @@ export const FlagshipsPage = () => {
                 </>
               )}
 
+              {/* SnapCaption Specific Interactive Sections */}
+              {activeProduct.id === "snapcaption" && (
+                <div className="mt-3.5 space-y-3.5">
+                  <div className="p-4 sm:p-5 rounded-2xl bg-[#12121c] border border-white/10 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-xs font-mono text-purple-400">
+                        <Sparkles size={14} />
+                        <span>Instant Live Web App</span>
+                      </div>
+                      <a
+                        href="https://snapcaption.netlify.app/"
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-all hover:scale-105 active:scale-95 shadow-md shadow-purple-600/25"
+                      >
+                        <span>Launch App</span>
+                        <ExternalLink size={12} />
+                      </a>
+                    </div>
+                    <p className="text-xs text-white/70 leading-relaxed font-light">
+                      SnapCaption generates social media captions, tailored tone variations, and high-impact hashtag recommendations for content creators, agencies, and founders.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {[
+                      {
+                        title: "AI Tone Selection",
+                        badge: "Custom Voice",
+                        desc: "Switch between witty, professional, casual, and viral hooks to match any audience style.",
+                      },
+                      {
+                        title: "Smart Hashtag Engine",
+                        badge: "Reach Growth",
+                        desc: "Recommends niche and trending hashtags for Instagram, TikTok, LinkedIn, and X.",
+                      },
+                      {
+                        title: "Instant One-Click Copy",
+                        badge: "Zero Friction",
+                        desc: "Generate multiple caption drafts and copy your favorite variation straight to clipboard.",
+                      },
+                    ].map((item, idx) => (
+                      <div key={idx} className="p-3.5 rounded-2xl bg-[#12121c] border border-white/5 space-y-1.5">
+                        <span className="text-[10px] font-mono text-purple-300 bg-purple-500/10 px-2 py-0.5 rounded">
+                          {item.badge}
+                        </span>
+                        <h5 className="text-xs font-bold text-white">{item.title}</h5>
+                        <p className="text-[11px] text-white/50 leading-relaxed">{item.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Other Products Concept Architecture Preview */}
-              {activeProduct.id !== "murmur" && (
+              {activeProduct.id !== "murmur" && activeProduct.id !== "snapcaption" && (
                 <div className="mt-3.5 p-4 sm:p-5 rounded-2xl bg-[#12121c] border border-white/10 space-y-2.5">
                   <div className="flex items-center gap-2 text-xs font-mono text-purple-400">
                     <Sparkles size={14} />
